@@ -16,24 +16,41 @@
       <i class="fa-solid fa-arrow-left mr-2"></i>Back to Users
     </button>
     <div class="space-x-3">
+      {% if user.is_active %}
       <button
         id="banUser"
-        class="bg-red-50 text-red-600 px-4 py-2 rounded-lg hover:bg-red-100 cursor-pointer"
+        data-user-id="{{ user.userId }}"
+        class="bg-red-50 text-red-600 px-4 py-2 rounded-lg hover:bg-red-100 cursor-pointer ban-user"
       >
         <i class="fa-solid fa-ban mr-2"></i>Ban User
       </button>
+      {% else %}
       <button
         id="unbanUser"
-        class="bg-green-50 text-green-600 px-4 py-2 rounded-lg hover:bg-green-100 cursor-pointer"
+        data-user-id="{{ user.userId }}"
+        class="bg-green-50 text-green-600 px-4 py-2 rounded-lg hover:bg-green-100 cursor-pointer unban-user"
       >
         <i class="fa-solid fa-check mr-2"></i>Unban User
       </button>
+      {% endif %}
+      <!--  -->
+      {% if user.is_verified %}
       <button
         id="verifyUser"
-        class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 cursor-pointer"
+        data-user-id="{{ user.userId }}"
+        class="bg-green-50 text-green-600 px-4 py-2 rounded-lg hover:bg-green-100 cursor-pointer verify-user"
+      >
+        <i class="fa-solid fa-check-circle mr-2"></i>Verified
+      </button>
+      {% else %}
+      <button
+        id="verifyUser"
+        data-user-id="{{ user.userId }}"
+        class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 cursor-pointer verify-user"
       >
         <i class="fa-solid fa-check-circle mr-2"></i>Verify User
       </button>
+      {% endif %}
     </div>
   </div>
   <div class="grid grid-cols-3 gap-6">
@@ -198,11 +215,35 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const backToUsers = document.getElementsByClassName("back-to-users");
+    const banUser = document.getElementsByClassName("ban-user");
+    const unbanUser = document.getElementsByClassName("unban-user");
+    const verifyUser = document.getElementsByClassName("verify-user");
 
     // Add click event to all buttons with the class "findajob-btn"
     Array.from(backToUsers).forEach((btn) => {
       btn.addEventListener("click", () => {
         window.location.href = "{% url 'ad_freelancers' %}";
+      });
+    });
+
+    Array.from(banUser).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const userId = btn.getAttribute("data-user-id");
+        window.location.href = `{% url 'ban_user' %}?userId=${userId}`;
+      });
+    });
+
+    Array.from(unbanUser).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const userId = btn.getAttribute("data-user-id");
+        window.location.href = `{% url 'ban_user' %}?userId=${userId}`;
+      });
+    });
+
+    Array.from(verifyUser).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const userId = btn.getAttribute("data-user-id");
+        window.location.href = `{% url 'verify_user' %}?userId=${userId}`;
       });
     });
   });

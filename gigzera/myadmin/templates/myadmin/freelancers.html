@@ -16,9 +16,47 @@
     <p>Powered by Gigzera</p>
   </div>
 
+  <!-- <div class="stats">
+    <div
+      class="stat-card total-users cursor-pointer"
+      id="totalRecruiters"
+      onclick="highlightSection('totalRecruiters')"
+    >
+      <div class="stat-content">
+        <h3>Total Freelancers</h3>
+        <div class="number">{{total_users}}</div>
+        <i class="fas fa-users stat-icon total"></i>
+      </div>
+    </div>
+
+    <div
+      class="stat-card active-users cursor-pointer"
+      id="activeUsers"
+      onclick="highlightSection('activeUsers')"
+    >
+      <div class="stat-content">
+        <h3>Active Freelancers</h3>
+        <div class="number">{{active_users}}</div>
+        <i class="fas fa-user-check stat-icon active"></i>
+      </div>
+    </div>
+
+    <div
+      class="stat-card banned-users cursor-pointer"
+      id="bannedUsers"
+      onclick="highlightSection('bannedUsers')"
+    >
+      <div class="stat-content">
+        <h3>Banned Freelancers</h3>
+        <div class="number">{{baned_users}}</div>
+        <i class="fas fa-user-slash stat-icon banned"></i>
+      </div>
+    </div>
+  </div> -->
+
   <div class="stats">
     <div
-      class="stat-card"
+      class="stat-card total-users cursor-pointer"
       id="totalRecruiters"
       onclick="highlightSection('totalRecruiters')"
     >
@@ -29,7 +67,7 @@
       </div>
     </div>
     <div
-      class="stat-card"
+      class="stat-card active-users cursor-pointer"
       id="activeUsers"
       onclick="highlightSection('activeUsers')"
     >
@@ -40,7 +78,7 @@
       </div>
     </div>
     <div
-      class="stat-card"
+      class="stat-card banned-users cursor-pointer"
       id="bannedUsers"
       onclick="highlightSection('bannedUsers')"
     >
@@ -104,12 +142,39 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const userProfile = document.getElementsByClassName("view-profile");
+    const totalUsers = document.getElementsByClassName("total-users");
+    const activeUsers = document.getElementsByClassName("active-users");
+    const bannedUsers = document.getElementsByClassName("banned-users");
 
     // Add click event to all buttons with the class "findajob-btn"
     Array.from(userProfile).forEach((btn) => {
       btn.addEventListener("click", () => {
         const userId = btn.getAttribute("data-userid");
         window.location.href = `{% url 'ad_freelancerProfileView' %}?userId=${userId}`;
+      });
+    });
+
+    // Add click event to all buttons with the class "findajob-btn"
+    Array.from(totalUsers).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const userId = btn.getAttribute("data-userid");
+        window.location.href = `{% url 'ad_freelancers' %}`;
+      });
+    });
+
+    // Add click event to all buttons with the class "findajob-btn"
+    Array.from(activeUsers).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const userId = btn.getAttribute("data-userid");
+        window.location.href = `{% url 'filtered_freelancers' 'active' %}`;
+      });
+    });
+
+    // Add click event to all buttons with the class "findajob-btn"
+    Array.from(bannedUsers).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const userId = btn.getAttribute("data-userid");
+        window.location.href = `{% url 'filtered_freelancers' 'banned' %}`;
       });
     });
   });
