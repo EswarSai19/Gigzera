@@ -1,0 +1,35 @@
+{% extends 'ad_base.html' %} {% load static %}
+<!-- title -->
+{% block title %}User Managements{% endblock %}
+<!-- CSS -->
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/ad_userManagement.css' %}" />
+<link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
+{% endblock %}
+<!-- main content -->
+{% block content %}
+<div class="cntr">
+  <!-- Main Content -->
+  <!-- <main class="main-content"> -->
+  <div class="header">
+    <h2>User Management</h2>
+    <button class="filter-btn"><span class="icon">▼</span> Filter</button>
+  </div>
+
+  <!-- This div is important for the JavaScript to work -->
+  <div class="users-grid" id="usersGrid"></div>
+
+  <div class="pagination">
+    <button class="prev-btn">←</button>
+    <button class="page-btn active">1</button>
+    <button class="page-btn">2</button>
+    <button class="page-btn">3</button>
+    <button class="next-btn">→</button>
+  </div>
+  <!-- </main> -->
+</div>
+{% endblock %}
+<!-- JS -->
+{% block js %}
+<script src="{% static 'js/ad_userManagement.js' %}"></script>
+{% endblock %}
