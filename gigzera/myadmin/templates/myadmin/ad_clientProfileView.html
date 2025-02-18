@@ -1,0 +1,139 @@
+{% extends 'ad_base.html' %} {% load static %}
+<!-- title -->
+{% block title %}Dashboard{% endblock %}
+<!-- CSS -->
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/ad_clientProfileView.css' %}" />
+<link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
+{% endblock %}
+<!-- main content -->
+{% block content %}
+<div class="cntr flex-1 p-8">
+  <div class="flex justify-between items-center mb-8">
+    <button
+      class="bg-white px-4 py-2 rounded-lg shadow hover:shadow-md"
+      onclick="window.location.href='../html/Admin Recruiter Profile Overview (All).html';"
+    >
+      <i class="fa-solid fa-arrow-left mr-2"></i>Back to Users
+    </button>
+    <div class="space-x-3">
+      <button
+        id="banUserBtn"
+        class="bg-red-50 text-red-600 px-4 py-2 rounded-lg hover:bg-red-100"
+      >
+        <i class="fa-solid fa-ban mr-2"></i>Ban User
+      </button>
+      <button
+        id="unbanUserBtn"
+        class="bg-green-50 text-green-600 px-4 py-2 rounded-lg hover:bg-green-100"
+      >
+        <i class="fa-solid fa-check mr-2"></i>Unban User
+      </button>
+      <button
+        id="verifyUser"
+        class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100"
+      >
+        <i class="fa-solid fa-check-circle mr-2"></i
+        ><span id="verifyUserText">Verify User</span>
+      </button>
+    </div>
+  </div>
+  <div class="max-w-3xl mx-auto">
+    <div class="bg-white p-8 rounded-xl shadow-sm mb-6">
+      <div class="text-center mb-8">
+        <img
+          src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg"
+          alt="Profile"
+          class="w-32 h-32 rounded-full mx-auto mb-4"
+        />
+        <h1 class="text-2xl font-bold">John Anderson</h1>
+        <p class="text-indigo-600 font-semibold mb-4">
+          Senior Frontend Developer
+        </p>
+        <div class="flex justify-center space-x-6">
+          <div class="flex items-center">
+            <i class="fa-solid fa-envelope text-gray-400 mr-2"></i>
+            <span class="text-gray-600">john.anderson@email.com</span>
+          </div>
+          <div class="flex items-center">
+            <i class="fa-solid fa-share-from-square text-gray-400 mr-2"></i>
+            <a
+              href="https://linkedin.com/in/johnanderson"
+              class="text-indigo-600 hover:underline"
+              >https://linkedin.com/in/johnanderson</a
+            >
+          </div>
+          <div class="flex items-center">
+            <i class="fa-solid fa-phone text-gray-400 mr-2"></i>
+            <span class="text-gray-600">+91-6473627892</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-8">
+        <h2 class="text-xl font-bold mb-4">Company</h2>
+        <div
+          class="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+        >
+          <div class="flex items-center">
+            <i class="fa-solid fa-building text-indigo-600 text-xl mr-3"></i>
+            <div>
+              <h3 class="font-semibold">TechVision Solutions</h3>
+              <a
+                href="https://techvision.com"
+                class="text-indigo-600 text-sm hover:underline"
+                >www.techvision.com</a
+              >
+            </div>
+          </div>
+          <span
+            class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm"
+            >Active</span
+          >
+        </div>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold mb-4">Projects</h2>
+        <div class="space-y-4">
+          <div class="border rounded-lg p-4 hover:bg-gray-50">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-semibold">E-commerce Platform Redesign</h3>
+              <span
+                class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm"
+                >In Progress</span
+              >
+            </div>
+            <p class="text-gray-600 text-sm mb-3">
+              Complete redesign of the company's e-commerce platform with modern
+              UI/UX principles
+            </p>
+            <div class="flex items-center text-sm text-gray-500">
+              <i class="fa-regular fa-clock mr-2"></i>
+              <span>Due: March 2025</span>
+            </div>
+          </div>
+          <div class="border rounded-lg p-4 hover:bg-gray-50">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-semibold">Mobile App Development</h3>
+              <span
+                class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm"
+                >Completed</span
+              >
+            </div>
+            <p class="text-gray-600 text-sm mb-3">
+              iOS and Android app development for customer loyalty program
+            </p>
+            <div class="flex items-center text-sm text-gray-500">
+              <i class="fa-regular fa-clock mr-2"></i>
+              <span>Completed: January 2025</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+<!-- js -->
+{% block js %}
+<script src="{% static 'js/ad_clientProfileView.js' %}"></script>
+{% endjs %}
