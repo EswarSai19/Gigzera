@@ -11,8 +11,7 @@
 <div class="cntr flex-1 p-8">
   <div class="flex justify-between items-center mb-8">
     <button
-      class="bg-white px-4 py-2 rounded-lg shadow hover:shadow-md"
-      onclick="window.location.href='../html/Admin Recruiter Profile Overview (All).html';"
+      class="bg-white px-4 py-2 rounded-lg shadow hover:shadow-md back-to-users"
     >
       <i class="fa-solid fa-arrow-left mr-2"></i>Back to Users
     </button>
@@ -46,26 +45,24 @@
           alt="Profile"
           class="w-32 h-32 rounded-full mx-auto mb-4"
         />
-        <h1 class="text-2xl font-bold">John Anderson</h1>
-        <p class="text-indigo-600 font-semibold mb-4">
-          Senior Frontend Developer
-        </p>
+        <h1 class="text-2xl font-bold">{{user.name}}</h1>
+        <p class="text-indigo-600 font-semibold mb-4">{{user.designation}}</p>
         <div class="flex justify-center space-x-6">
           <div class="flex items-center">
             <i class="fa-solid fa-envelope text-gray-400 mr-2"></i>
-            <span class="text-gray-600">john.anderson@email.com</span>
+            <span class="text-gray-600">{{user.email}}</span>
           </div>
           <div class="flex items-center">
             <i class="fa-solid fa-share-from-square text-gray-400 mr-2"></i>
             <a
-              href="https://linkedin.com/in/johnanderson"
+              href="{{user.social_media}}"
               class="text-indigo-600 hover:underline"
-              >https://linkedin.com/in/johnanderson</a
+              >{{user.social_media}}</a
             >
           </div>
           <div class="flex items-center">
             <i class="fa-solid fa-phone text-gray-400 mr-2"></i>
-            <span class="text-gray-600">+91-6473627892</span>
+            <span class="text-gray-600">{{user.phone}}</span>
           </div>
         </div>
       </div>
@@ -77,7 +74,7 @@
           <div class="flex items-center">
             <i class="fa-solid fa-building text-indigo-600 text-xl mr-3"></i>
             <div>
-              <h3 class="font-semibold">TechVision Solutions</h3>
+              <h3 class="font-semibold">{{user.company}}</h3>
               <a
                 href="https://techvision.com"
                 class="text-indigo-600 text-sm hover:underline"
@@ -135,5 +132,17 @@
 {% endblock %}
 <!-- js -->
 {% block js %}
-<script src="{% static 'js/ad_clientProfileView.js' %}"></script>
-{% endjs %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const backToUsers = document.getElementsByClassName("back-to-users");
+
+    // Add click event to all buttons with the class "findajob-btn"
+    Array.from(backToUsers).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        window.location.href = "{% url 'ad_clients' %}";
+      });
+    });
+  });
+</script>
+<script src="{% static 'js/ad_clientProfileView.js'}"></script>
+{% endblock %}

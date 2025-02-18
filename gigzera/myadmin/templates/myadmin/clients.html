@@ -22,7 +22,7 @@
     >
       <div class="stat-content">
         <h3>Total Clients</h3>
-        <div class="number">2,543</div>
+        <div class="number">{{total_users}}</div>
         <i class="fas fa-users stat-icon total"></i>
       </div>
     </div>
@@ -33,7 +33,7 @@
     >
       <div class="stat-content">
         <h3>Active Clients</h3>
-        <div class="number">1,890</div>
+        <div class="number">{{active_users}}</div>
         <i class="fas fa-user-check stat-icon active"></i>
       </div>
     </div>
@@ -44,7 +44,7 @@
     >
       <div class="stat-content">
         <h3>Banned Clients</h3>
-        <div class="number">23</div>
+        <div class="number">{{baned_users}}</div>
         <i class="fas fa-user-slash stat-icon banned"></i>
       </div>
     </div>
@@ -70,6 +70,21 @@
           </button> -->
     <div class="profiles-grid" id="profilesGrid">
       <!-- Profiles will be dynamically added here -->
+      {% for user in users %}
+      <div class="profile-card">
+        <img
+          src="https://cdn.yellowmessenger.com/Xmnn1dek6nzZ1735637434099.jpeg"
+          alt="{{user.name}}"
+        />
+        <h3>{{user.name}}</h3>
+        <div class="id">ID: {{user.userId}}</div>
+        <div class="company">{{user.designation}}</div>
+        <div class="phone">{{user.phone}}</div>
+        <button class="view-profile" data-userid="{{ user.userId }}">
+          View Profile
+        </button>
+      </div>
+      {% endfor %}
     </div>
     <!-- <button class="navigation-arrow next-arrow" id="nextButton">
             <i class="fas fa-chevron-right"></i>
@@ -83,5 +98,18 @@
 {% endblock %}
 <!-- JS -->
 {% block js %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const userProfile = document.getElementsByClassName("view-profile");
+
+    // Add click event to all buttons with the class "findajob-btn"
+    Array.from(userProfile).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const userId = btn.getAttribute("data-userid");
+        window.location.href = `{% url 'ad_clientProfileView' %}?userId=${userId}`;
+      });
+    });
+  });
+</script>
 <script src="{% static 'js/ad_client_all.js' %}"></script>
 {% endblock %}
