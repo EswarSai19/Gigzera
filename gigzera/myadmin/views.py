@@ -47,6 +47,8 @@ def format_currency(amount, currency_code):
     """Formats the number according to the given currency locale."""
     try:
         locale.setlocale(locale.LC_ALL, currency_locales.get(currency_code, "en_US"))  # Set locale
+        amount = float(amount)  # Ensure amount is a float
+        
         if amount.is_integer():  # Check if the amount is a whole number
             print("I am going to if")
             formatted_amount = locale.format_string("%d", int(amount), grouping=True)  # Integer format
@@ -57,6 +59,7 @@ def format_currency(amount, currency_code):
         return f"{formatted_amount}"  # Add currency symbol
     except ValueError:
         return "Invalid amount"
+
     
 
 def add_and_format(budget, admin_margin, currency_code):
@@ -132,20 +135,44 @@ def dashboard(request):
     print(context)
     return render(request, 'myadmin/dashboard.html', context)
 
-def freelancers(request):
-    users = Freelancer.objects.all().order_by('-created_at')
-    ac_users = Freelancer.objects.all().filter(is_active=True).order_by('-created_at')
-    ban_users = Freelancer.objects.all().filter(is_active=False).order_by('-created_at')
-    total_users = format_currency(len(users), "INR")
-    active_users = format_currency(len(ac_users), "INR")
-    baned_users = format_currency(len(ban_users), "INR")
+# def freelancers(request):
+#     users = Freelancer.objects.all().order_by('-created_at')
+#     ac_users = Freelancer.objects.all().filter(is_active=True).order_by('-created_at')
+#     ban_users = Freelancer.objects.all().filter(is_active=False).order_by('-created_at')
+#     total_users = format_currency(len(users), "INR")
+#     active_users = format_currency(len(ac_users), "INR")
+#     baned_users = format_currency(len(ban_users), "INR")
+#     context = {
+#         'users': users,
+#         'total_users': total_users,
+#         'active_users': active_users,
+#         'baned_users': baned_users,
+#     }
+#     print(context)
+#     return render(request, 'myadmin/freelancers.html', context)
+
+def freelancers(request, filter_type=None):
+    # Get all users by default
+    if filter_type == 'active':
+        users = Freelancer.objects.filter(is_active=True).order_by('-created_at')
+    elif filter_type == 'banned':
+        users = Freelancer.objects.filter(is_active=False).order_by('-created_at')
+    else:
+        users = Freelancer.objects.all().order_by('-created_at')
+    
+    # Get counts for the stats
+    total_users = Freelancer.objects.count()
+    active_users = Freelancer.objects.filter(is_active=True).count()
+    banned_users = Freelancer.objects.filter(is_active=False).count()
+    
     context = {
         'users': users,
         'total_users': total_users,
         'active_users': active_users,
-        'baned_users': baned_users,
+        'baned_users': banned_users,  # keeping your original spelling
+        'current_filter': filter_type  # to track active filter
     }
-    print(context)
+    
     return render(request, 'myadmin/freelancers.html', context)
 
 def freelancerProfileView(request):
@@ -165,18 +192,63 @@ def freelancerProfileView(request):
     print(context)
     return render(request, 'myadmin/ad_freelancerProfileView.html', context)
 
-def clients(request):
-    users = Client.objects.all().order_by('-created_at')
-    ac_users = Client.objects.all().filter(is_active=True).order_by('-created_at')
-    ban_users = Client.objects.all().filter(is_active=False).order_by('-created_at')
-    total_users = format_currency(len(users), "INR")
-    active_users = format_currency(len(ac_users), "INR")
-    baned_users = format_currency(len(ban_users), "INR")
+# View to ban a user
+def ban_user(request):
+    user_id = request.GET.get("userId")
+    print(f"I am inside the ban_user", user_id)
+    if user_id.startswith('FL'):
+        user = get_object_or_404(Freelancer, userId=user_id)
+        # Toggle the is_active status
+        user.is_active = not user.is_active
+        user.save()
+        print("Saved")
+        return redirect('ad_freelancers')  # Redirect to the freelancers page
+
+    elif user_id.startswith('CL'):
+        user = get_object_or_404(Client, userId=user_id)
+        # Toggle the is_active status
+        user.is_active = not user.is_active
+        user.save()
+        return redirect('ad_clients')  # Redirect to the clients page
+    else:
+        return redirect('ad_freelancers')
+
+
+def verify_user(request):
+    user_id = request.GET.get("userId")
+    if user_id.startswith('FL'):
+        user = get_object_or_404(Freelancer, userId=user_id)
+        # Toggle the is_active status
+        user.is_verified = not user.is_verified
+        user.save()
+        return redirect('ad_freelancers')  # Redirect to the freelancers page
+
+    elif user_id.startswith('CL'):
+        user = get_object_or_404(Client, userId=user_id)
+        # Toggle the is_verified status
+        user.is_verified = not user.is_verified
+        user.save()
+        return redirect('ad_clients')  # Redirect to the clients page
+
+def clients(request, filter_type=None):
+    # Get all users by default
+    if filter_type == 'active':
+        users = Client.objects.filter(is_active=True).order_by('-created_at')
+    elif filter_type == 'banned':
+        users = Client.objects.filter(is_active=False).order_by('-created_at')
+    else:
+        users = Client.objects.all().order_by('-created_at')
+    
+    # Get counts for the stats
+    total_users = Client.objects.count()
+    active_users = Client.objects.filter(is_active=True).count()
+    banned_users = Client.objects.filter(is_active=False).count()
     context = {
         'users': users,
         'total_users': total_users,
         'active_users': active_users,
-        'baned_users': baned_users,
+        'baned_users': banned_users,  # keeping your original spelling
+        'current_filter': filter_type
     }
     print(context)
     return render(request, 'myadmin/clients.html', context)
@@ -189,8 +261,10 @@ def clientProfileView(request):
         job = ProjectsDisplay.objects.filter(opportunityId=proj.opportunityId).first()
         proj.title = job.title
         proj.description = job.description
+        proj.start_date = job.start_date
         print(f"this is prj id {proj.title}")
     user = Client.objects.filter(userId=user_id).first()
+    user.company = user.company.title()
     context = {
         'user': user,
         'projects': projects
