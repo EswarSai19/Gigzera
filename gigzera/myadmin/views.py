@@ -8,7 +8,7 @@ import os
 import locale
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from db_schemas.models import Contact, ProjectQuote, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
+from db_schemas.models import Contact, ProjectQuote, Client, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
 from django.core.exceptions import ValidationError
 from datetime import datetime
 
@@ -54,7 +54,7 @@ def format_currency(amount, currency_code):
             print("Else")
             formatted_amount = locale.format_string("%.2f", amount, grouping=True)  # Two decimal places
         
-        return f"{currency_symbols.get(currency_code, '')} {formatted_amount}"  # Add currency symbol
+        return f"{formatted_amount}"  # Add currency symbol
     except ValueError:
         return "Invalid amount"
     
@@ -89,22 +89,114 @@ def calculate_percentage(amount_str, percentage, currency_code):
 # print(add_and_format("1,220,000", "5,000", "USD"))  # Output: $ 1,225,000
 
 def ad_index(request):
-    return render(request, 'myadmin/ad_index.html')
+    freelancers = Freelancer.objects.all()
+    clients = Client.objects.all()
+    ongoingProjects = OngoingProjects.objects.all()
+    yourProjects = ProjectQuote.objects.filter(admin_bid_status='approved', client_bid_status='approved')
+    bids = ProjectQuote.objects.all().order_by('-created_at')[:3]
+    for bid in bids:
+        job = ProjectsDisplay.objects.filter(opportunityId=bid.opportunityId).first()
+        user = Freelancer.objects.filter(userId=bid.freelancer_id).first()
+        bid.title = job.title if job else "No Title"  # Fixed variable name
+        bid.username = user.name
+        bid.imgUrl = user.profilePic
+    context = {
+        'no_of_freelancers': format_currency(len(freelancers), "INR"),
+        'no_of_clients': format_currency(len(clients), "INR"),
+        'no_of_ogp': format_currency(len(ongoingProjects), "INR"),
+        'no_of_yp': format_currency(len(yourProjects), "INR"),
+        'bids': bids
+    }
+    print(context)
+    return render(request, 'myadmin/ad_index.html', context)
 
 def dashboard(request):
-    return render(request, 'myadmin/dashboard.html')
+    freelancers = Freelancer.objects.all()
+    clients = Client.objects.all()
+    ongoingProjects = OngoingProjects.objects.all()
+    yourProjects = ProjectQuote.objects.filter(admin_bid_status='approved', client_bid_status='approved')
+    bids = ProjectQuote.objects.all().order_by('-created_at')[:3]
+    for bid in bids:
+        job = ProjectsDisplay.objects.filter(opportunityId=bid.opportunityId).first()
+        user = Freelancer.objects.filter(userId=bid.freelancer_id).first()
+        bid.title = job.title if job else "No Title"  # Fixed variable name
+        bid.username = user.name
+        bid.imgUrl = user.profilePic
+    context = {
+        'no_of_freelancers': format_currency(len(freelancers), "INR"),
+        'no_of_clients': format_currency(len(clients), "INR"),
+        'no_of_ogp': format_currency(len(ongoingProjects), "INR"),
+        'no_of_yp': format_currency(len(yourProjects), "INR"),
+        'bids': bids
+    }
+    print(context)
+    return render(request, 'myadmin/dashboard.html', context)
 
 def freelancers(request):
-    return render(request, 'myadmin/freelancers.html')
+    users = Freelancer.objects.all().order_by('-created_at')
+    ac_users = Freelancer.objects.all().filter(is_active=True).order_by('-created_at')
+    ban_users = Freelancer.objects.all().filter(is_active=False).order_by('-created_at')
+    total_users = format_currency(len(users), "INR")
+    active_users = format_currency(len(ac_users), "INR")
+    baned_users = format_currency(len(ban_users), "INR")
+    context = {
+        'users': users,
+        'total_users': total_users,
+        'active_users': active_users,
+        'baned_users': baned_users,
+    }
+    print(context)
+    return render(request, 'myadmin/freelancers.html', context)
 
 def freelancerProfileView(request):
-    return render(request, 'myadmin/ad_freelancerProfileView.html')
+    user_id = request.GET.get("userId")
+    print("userid", user_id)
+    user = Freelancer.objects.filter(userId=user_id).first()
+    employment_history = EmploymentHistory.objects.filter(freelancer_id=user_id).order_by('-start_date')
+    certificates = Certificate.objects.filter(freelancer_id=user_id).order_by('-issue_date')
+    skills = Skill.objects.filter(freelancer_id=user_id).order_by('-updated_at')
+
+    context = {
+        'user': user,
+        'employment_history': employment_history,  # Corrected the assignment
+        'certificates': certificates,
+        'skills':skills,
+    }
+    print(context)
+    return render(request, 'myadmin/ad_freelancerProfileView.html', context)
 
 def clients(request):
-    return render(request, 'myadmin/clients.html')
+    users = Client.objects.all().order_by('-created_at')
+    ac_users = Client.objects.all().filter(is_active=True).order_by('-created_at')
+    ban_users = Client.objects.all().filter(is_active=False).order_by('-created_at')
+    total_users = format_currency(len(users), "INR")
+    active_users = format_currency(len(ac_users), "INR")
+    baned_users = format_currency(len(ban_users), "INR")
+    context = {
+        'users': users,
+        'total_users': total_users,
+        'active_users': active_users,
+        'baned_users': baned_users,
+    }
+    print(context)
+    return render(request, 'myadmin/clients.html', context)
 
 def clientProfileView(request):
-    return render(request, 'myadmin/ad_clientProfileView.html')
+    user_id = request.GET.get("userId")
+    print("userid", user_id)
+    projects = OngoingProjects.objects.filter(client_id=user_id)
+    for proj in projects:
+        job = ProjectsDisplay.objects.filter(opportunityId=proj.opportunityId).first()
+        proj.title = job.title
+        proj.description = job.description
+        print(f"this is prj id {proj.title}")
+    user = Client.objects.filter(userId=user_id).first()
+    context = {
+        'user': user,
+        'projects': projects
+    }
+    print(context)
+    return render(request, 'myadmin/ad_clientProfileView.html', context)
     
 def ongoingProjects(request):
     return render(request, 'myadmin/ongoingProjects.html')

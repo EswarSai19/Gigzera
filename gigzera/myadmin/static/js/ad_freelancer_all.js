@@ -441,24 +441,24 @@ function renderProfiles(page) {
   const profilesToShow = currentCategory.slice(start, end);
 
   const profilesGrid = document.getElementById("profilesGrid");
-  profilesGrid.innerHTML = "";
+  // profilesGrid.innerHTML = "";
 
-  profilesToShow.forEach((recruiter) => {
-    const profileCard = `
-            <div class="profile-card">
-                <button class="more-options">
-                    <i class="fas fa-ellipsis-v"></i>
-                </button>
-                <img src="${recruiter.img}" alt="${recruiter.name}">
-                <h3>${recruiter.name}</h3>
-                <div class="id">ID: ${recruiter.id}</div>
-                <div class="company">${recruiter.company}</div>
-                <div class="phone">${recruiter.phone}</div>
-                <button class="view-profile" onclick="window.location.href='../html/Design CR Admin Freelancer view.html'">View Profile</button>
-            </div>
-        `;
-    profilesGrid.innerHTML += profileCard;
-  });
+  // profilesToShow.forEach((recruiter) => {
+  //   const profileCard = `
+  //           <div class="profile-card">
+  //               <button class="more-options">
+  //                   <i class="fas fa-ellipsis-v"></i>
+  //               </button>
+  //               <img src="${recruiter.img}" alt="${recruiter.name}">
+  //               <h3>${recruiter.name}</h3>
+  //               <div class="id">ID: ${recruiter.id}</div>
+  //               <div class="company">${recruiter.company}</div>
+  //               <div class="phone">${recruiter.phone}</div>
+  //               <button class="view-profile" onclick="window.location.href='../html/Design CR Admin Freelancer view.html'">View Profile</button>
+  //           </div>
+  //       `;
+  //   profilesGrid.innerHTML += profileCard;
+  // });
 }
 
 function renderPagination() {
