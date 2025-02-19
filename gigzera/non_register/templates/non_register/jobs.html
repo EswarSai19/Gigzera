@@ -14,7 +14,7 @@
     <!-- Filter Jobs Section -->
     <div class="filter-box">
       <i class="fa-solid fa-filter filter-icon"></i>
-      <input type="text" placeholder="Filter jobs..." class="filter-input" />
+      <input type="text" id="job-filter" placeholder="Filter jobs..." class="filter-input" />
     </div>
 
     <!-- Social Media Updates Section -->
@@ -414,7 +414,7 @@
         {% for job in jobs %}
 
         <!-- Job Card 1 -->
-        <div class="job-card">
+        <div class="job-card" data-title="{{ job.title }}">
           <div class="job-title">
             {{job.title}}
             <span class="job-id">(Opp ID: {{job.opportunityId}})</span>
