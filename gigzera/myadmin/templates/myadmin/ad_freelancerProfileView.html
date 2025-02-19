@@ -222,7 +222,11 @@
     // Add click event to all buttons with the class "findajob-btn"
     Array.from(backToUsers).forEach((btn) => {
       btn.addEventListener("click", () => {
-        window.location.href = "{% url 'ad_freelancers' %}";
+        if (document.referrer) {
+          window.history.back(); // Go back to the previous page
+        } else {
+          window.location.href = "{% url 'ad_freelancers' %}"; // Default fallback
+        }
       });
     });
 
