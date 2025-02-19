@@ -8,9 +8,10 @@ body {
     /* Slight background color for the body */
 }
 
-/* .container {
+/* .cntr {
     display: flex;
     justify-content: space-between;
+    height: 900px;
     padding: 20px;
     gap: 20px;
     align-items: stretch;
@@ -26,7 +27,7 @@ body {
     background-color: #f9fbfc;
     border-right: 1px solid #e0e0e0;
     box-sizing: border-box;
-    /* overflow-y: auto; */
+    overflow-y: auto;
     font-family: Arial, sans-serif;
     /* margin-top: 20px; */
 }
@@ -158,7 +159,7 @@ body {
 
 /* Main Content */
 .main-content {
-    width: 40%;
+    width: 45%;
     height: 900px;
     padding: 20px;
     background-color: #fff;
@@ -303,26 +304,11 @@ body {
     background-color: #0056b3;
 }
 
-.status-container {
-    margin-top: 10px;
-    /* Add some space below the progress bar */
-    display: flex;
-    align-items: center;
-    /* Align the label and dropdown vertically */
-}
-
-.status-label {
-    margin-right: 10px;
-    /* Add space between the label and dropdown */
+.project-status {
+    margin-top: 20px;
+    font-size: 16px;
     font-weight: bold;
-    /* Make the label bold */
-}
-
-.status-dropdown {
-    padding: 5px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 14px;
+    color: #333;
 }
 
 /* Timeline Box */
@@ -362,26 +348,6 @@ body {
     font-size: 14px;
     /* Smaller font size */
     color: black;
-}
-
-.hidden {
-    display: none;
-}
-
-#alertBox {
-    position: fixed;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    z-index: 1000;
-}
-
-#alertBox.error {
-    background-color: #FF5733;
 }
 
 /* Finance Box */
@@ -451,8 +417,7 @@ body {
 }
 
 /* Editable Table for Finance Box */
-#financeTable input[type="number"],
-#financeTable input[type="text"] {
+#financeTable input[type="number"] {
     width: calc(40% - 24px);
     padding: 7px;
     border: 1px solid #ddd;
@@ -463,8 +428,7 @@ body {
 }
 
 /* Total Costing Box */
-.total-costing-box,
-.labor-costing-box {
+.total-costing-box {
     padding: 7px;
     width: calc(40% - 24px);
     background-color: #f1f1f1;
@@ -527,14 +491,14 @@ body {
 /* Messages Section */
 /* Styles for the messages container */
 .messages {
-    width: 30%;
+    width: 25%;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: start;
     margin-top: 20px;
     /* height: 60%; Slightly reduced vertical size */
 }
@@ -559,7 +523,7 @@ body {
 #messagesContainer {
     max-height: 280px;
     /* Reduced height slightly */
-    /* overflow-y: auto; */
+    overflow-y: auto;
     margin-bottom: 10px;
     padding-right: 5px;
     scrollbar-width: thin;
@@ -661,9 +625,9 @@ body {
 
 /* Adjust for smaller screens */
 @media (max-width: 768px) {
-    /* .container {
+    .cntr {
         flex-direction: column;
-    } */
+    }
 
     .sidebar {
         width: 100%;
@@ -678,156 +642,4 @@ body {
         width: 100%;
         margin-top: 20px;
     }
-}
-
-.left-sidebar {
-    width: 30% !important;
-    min-width: 300px;
-}
-
-.main-content {
-    width: 50% !important;
-}
-
-.messages {
-    width: 20% !important;
-    min-width: 250px;
-}
-
-/* css for modal */
-.modal-header {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #333;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.user-status {
-    font-size: 14px;
-    color: #0056b3;
-    border-radius: 4px;
-    background-color: #d1e7ff;
-    padding: 5px 10px;
-}
-
-#messageArea {
-    max-height: auto;
-    /* Reduced height slightly */
-    /* overflow-y: auto; */
-    margin-bottom: 10px;
-    padding-right: 5px;
-    scrollbar-width: thin;
-    scrollbar-color: #ccc transparent;
-    display: flex;
-    flex-direction: column;
-
-}
-
-#messageArea::-webkit-scrollbar {
-    width: 6px;
-}
-
-#messageArea::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 10px;
-}
-
-.message-box {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 15px;
-}
-
-.message-box.outgoing {
-    justify-content: flex-start;
-}
-
-.message-box img.avatar-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin: 0 10px;
-}
-
-.message-content-box {
-    background-color: #f1f1f1;
-    border-radius: 8px;
-    padding: 10px;
-    max-width: 250px;
-    font-size: 14px;
-}
-
-.message-box.outgoing .message-content-box {
-    background-color: #d1e7ff;
-}
-
-.message-content-box p {
-    margin: 0;
-    color: #333;
-}
-
-.message-content-box .time-stamp {
-    display: block;
-    font-size: 12px;
-    color: #777;
-    margin-top: 5px;
-    text-align: right;
-}
-
-.input-section {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: auto;
-}
-
-.input-section input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
-.input-section input:focus {
-    border-color: #007bff;
-    outline: none;
-}
-
-.send-message-btn {
-    background-color: #007bff;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.send-message-btn:hover {
-    background-color: #0056b3;
-}
-
-.send-message-btn svg {
-    fill: currentColor;
-}
-
-.comment-button {
-    padding: 6px 12px;
-    color: white;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 13px;
-    transition: background-color 0.3s ease;
-}
-
-.comment-button:hover {
-    background-color: #1d4ed8;
-    /* Darker Blue-700 */
 }
