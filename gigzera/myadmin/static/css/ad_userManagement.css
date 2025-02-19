@@ -87,6 +87,10 @@ body {
     margin-bottom: 30px;
 }
 
+.header h1 {
+    font-size: 24px;
+}
+
 .filter-btn {
     padding: 8px 16px;
     background-color: white;

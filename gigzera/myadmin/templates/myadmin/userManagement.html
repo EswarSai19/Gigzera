@@ -12,12 +12,41 @@
   <!-- Main Content -->
   <!-- <main class="main-content"> -->
   <div class="header">
-    <h2>User Management</h2>
+    <h1>User Management</h1>
     <button class="filter-btn"><span class="icon">▼</span> Filter</button>
   </div>
 
   <!-- This div is important for the JavaScript to work -->
-  <div class="users-grid" id="usersGrid"></div>
+  <div class="users-grid" id="usersGrid">
+    {% for user in users %}
+    <div class="user-card {{user.user_role}}">
+      <!-- <div class="menu-dots">⋮</div> -->
+      <div class="user-info">
+        <img
+          src="https://cdn.yellowmessenger.com/Xmnn1dek6nzZ1735637434099.jpeg"
+          alt="{{user.name}}"
+          class="user-avatar"
+        />
+        <div class="user-details">
+          <h3>{{user.name}}</h3>
+          <span class="user-type {{user.user_role}}">{{user.user_role_}}</span>
+        </div>
+      </div>
+      <div class="user-role">{{user.designation}}</div>
+      <a
+        href="{% if user.user_role == 'freelancer' %}
+            {% url 'ad_freelancerProfileView' %}?userId={{ user.userId }}
+         {% else %}
+            {% url 'ad_clientProfileView' %}?userId={{ user.userId }}
+         {% endif %}"
+        class="view-profile-btn"
+        data-type="{{user.user_role}}"
+        data-userId="{{user.userId}}"
+        >View Profile</a
+      >
+    </div>
+    {% endfor %}
+  </div>
 
   <div class="pagination">
     <button class="prev-btn">←</button>

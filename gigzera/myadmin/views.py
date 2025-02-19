@@ -6,6 +6,7 @@ from django.contrib import messages
 import json
 import os
 import locale
+from itertools import chain
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from db_schemas.models import Contact, ProjectQuote, Client, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
@@ -73,11 +74,7 @@ def add_and_format(budget, admin_margin, currency_code):
 def calculate_percentage(amount_str, percentage, currency_code):
     """Calculates a percentage of the given amount and formats it."""
     print(f" I am getting the amount {amount_str} {percentage} {currency_code}")
-    currency_symbol = amount_str[:2].strip()  # Extract currency symbol
-    numeric_part = amount_str[2:].replace(",", "").strip()  # Extract numeric value
-
-    if currency_symbol not in currency_symbols.values():
-        return "Invalid currency"
+    numeric_part = amount_str.replace(",", "").strip()  # Extract numeric value
 
     try:
         amount = float(str(numeric_part))
@@ -306,7 +303,7 @@ def singleYourProject(request):
     bid = ProjectQuote.objects.filter(projectQuoteId=singleOgp.bidId).first()
 
 
-    ad_payment = bid.revised_budget[2:].replace(",", "").strip()
+    ad_payment = bid.revised_budget.replace(",", "").strip()
     amount = float(ad_payment)
     bid.advance_payment = amount * (30 / 100)  # Calculate percentage
 
@@ -321,7 +318,15 @@ def singleYourProject(request):
 
 
 def userManagement(request):
-    return render(request, 'myadmin/userManagement.html')
+    users = Freelancer.objects.all().order_by('-created_at')
+    cl_users = Client.objects.all().order_by('-created_at')
+    total_users = list(chain(users, cl_users)) 
+    for user in total_users:
+        user.user_role_ = user.user_role.title()
+    context = {
+        'users': total_users,
+    }
+    return render(request, 'myadmin/userManagement.html', context)
 
 def latestProjectQuotes(request):
     bids = ProjectQuote.objects.all().order_by('-created_at')
@@ -353,6 +358,10 @@ def latestSinglePQ(request):
 
     bid = ProjectQuote.objects.filter(projectQuoteId=bid_id).first()
     bid.cur_symbol = get_currency_symbol(job.currency if job else "USD")
+
+    # basic_revised_budget = bid.budget.replace(",", "").strip()
+    # amount = float(basic_revised_budget)
+    bid.basic_revised_budget = calculate_percentage(bid.budget, 30, job.currency)  # Calculate percentage
     print("Job", bid)
     context = {'job':job, 'user':user, 'bid':bid}
     return render(request, 'myadmin/latestSinglePQ.html', context)
