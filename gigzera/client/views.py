@@ -12,7 +12,33 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from db_schemas.models import Client, ProjectsDisplay, OngoingProjects, Contact, ProjectQuote, Freelancer, EmploymentHistory,Certificate, Skill
 from django.core.exceptions import ValidationError
-from datetime import datetime
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
+
+
+
+
+def calculate_end_date(start_date: str, option: str) -> str:
+    option_mapping = {
+        "Less than 1 Month": 1,
+        "1-2 Months": 1,
+        "2-4 Months": 2,
+        "4-8 Months": 4,
+        "8-12 Months": 8,
+        "More than 12 Months": 12
+    }
+
+    months_to_add = option_mapping.get(option, 1)  # Default to 1 month if option is not found
+    start_date_obj = datetime.strptime(start_date, "%Y-%m-%d")
+    end_date_obj = start_date_obj + relativedelta(months=months_to_add)
+
+    return end_date_obj.strftime("%Y-%m-%d")
+
+# Example usage:
+# start_date = "2025-02-19"
+# option = "2-4 Months"
+# end_date = calculate_end_date(start_date, option)
+# print(end_date)  # Output: 2025-04-19
 
 # Create your views here.
 
@@ -390,6 +416,8 @@ def cl_bidApproved(request):
     bids = ProjectQuote.objects.all().order_by('-created_at')
     for bid in bids:
         job = ProjectsDisplay.objects.filter(opportunityId=bid.opportunityId).first()
+        og_start_date = job.start_date
+        og_end_date = calculate_end_date(str(job.start_date), job.duration)
         user = Freelancer.objects.filter(userId=bid.freelancer_id).first()
         bid.title = job.title if job else "No Title"  # Fixed variable name
         bid.cur_symbol = get_currency_symbol(job.currency if job else "USD")  # Ensure currency is handled properly
@@ -406,10 +434,15 @@ def cl_bidApproved(request):
             bid.client_bid_status = "approved"
             bid.save()  # Save changes
 
+            job = ProjectsDisplay.objects.filter(opportunityId=bid.opportunityId).first()
+            og_start_date = job.start_date
+            og_end_date = calculate_end_date(str(job.start_date), job.duration)
             # ONG recored creation:
             OngoingProjects.objects.create(
                 opportunityId = bid.opportunityId,
                 bidId = bid_id,
+                start_date=og_start_date,
+                end_date=og_end_date,
                 status = 'Bid Ongoing',
                 progress = '0',
                 admin_id = 'AD001',

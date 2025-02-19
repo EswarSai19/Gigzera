@@ -33,72 +33,28 @@
   <!-- Project Cards Grid -->
   <div class="grid" id="projectGrid">
     <!-- E-Commerce Platform Card -->
-    <div class="card">
-      <div
-        class="flex_"
-        style="justify-content: space-between; align-items: center"
-      >
-        <h2 class="project-name">E-Commerce Platform Redesign</h2>
-        <span class="badge badge-active">Active</span>
-      </div>
-      <p class="project-id">ID: OPP-2025-001</p>
-      <p>
-        Redesigning the user interface and experience of our main e-commerce
-        platform to improve conversion rates.
-      </p>
-      <div class="progress-bar">
-        <div class="progress-percentage">75%</div>
-        <div class="progress-bar-inner" style="width: 75%"></div>
-      </div>
-      <small>Assigned to: Sarah Johnson</small>
-      <div class="flex_" style="justify-content: space-between">
-        <a
-          href="javascript:void(0);"
-          class="read-more"
-          onclick="toggleReadMore(this)"
-          >Read More...</a
-        >
-        <a
-          href="../html/NewAdminsingleprojectview.html"
-          class="btn btn-outline"
-          style="
-            text-decoration: none;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-          "
-          >View Status</a
-        >
-      </div>
-      <div class="extra-info">
-        We are focusing on enhancing user experience through better design
-        principles. The project aims to increase conversion rates by at least
-        20% by introducing A/B testing and user feedback analysis.
-      </div>
-    </div>
 
-    <!-- Mobile App Redesign Card -->
+    {% for ogp in ongProjects %}
     <div class="card">
       <div
-        class="flex_"
+        class="flex"
         style="justify-content: space-between; align-items: center"
       >
-        <h2 class="project-name">Mobile App Redesign</h2>
-        <span class="badge badge-planning">Planning</span>
+        <h2 class="project-name">{{ogp.title}}</h2>
+        <span class="badge badge-active">{{ogp.status}}</span>
       </div>
-      <p class="project-id">ID: OPP-2025-002</p>
-      <p>
-        Redesigning the mobile app for improved user engagement and performance
-        optimization.
-      </p>
+      <p class="project-id">ID: {{ogp.opportunityId}}</p>
+      <p>{{ogp.short_description}}</p>
       <div class="progress-bar">
-        <div class="progress-percentage">30%</div>
-        <div class="progress-bar-inner" style="width: 30%"></div>
+        <div class="progress-percentage">{{ogp.progress}}%</div>
+        <div
+          class="progress-bar-inner"
+          data-progress="{{ ogp.progress }}"
+        ></div>
       </div>
-      <small>Assigned to: John Doe</small>
-      <div class="flex_" style="justify-content: space-between">
+      <small>Assigned to: {{ogp.name}}</small>
+      <div class="extra-info">{{ogp.full_description}}</div>
+      <div class="flex" style="justify-content: space-between">
         <a
           href="javascript:void(0);"
           class="read-more"
@@ -106,7 +62,7 @@
           >Read More...</a
         >
         <a
-          href="../html/NewAdminsingleprojectview.html"
+          href="{% url 'ad_singleOngoingProject' %}?ongpId={{ogp.ongProjectId}}"
           class="btn btn-outline"
           style="
             text-decoration: none;
@@ -119,191 +75,8 @@
           >View Status</a
         >
       </div>
-      <div class="extra-info">
-        Focus on enhancing mobile app features including speed, layout, and
-        functionality to increase user retention.
-      </div>
     </div>
-
-    <div class="card">
-      <div
-        class="flex_"
-        style="justify-content: space-between; align-items: center"
-      >
-        <h2 class="project-name">Cloud Infrastructure Migration</h2>
-        <span class="badge badge-progress">In Progress</span>
-      </div>
-      <p class="project-id">ID: OPP-2025-003</p>
-      <p>
-        Migrating legacy infrastructure to cloud for scalability and enhanced
-        security.
-      </p>
-      <div class="progress-bar">
-        <div class="progress-percentage">50%</div>
-        <div class="progress-bar-inner" style="width: 50%"></div>
-      </div>
-      <small>Assigned to: Emily Clark</small>
-      <div class="flex_" style="justify-content: space-between">
-        <a
-          href="javascript:void(0);"
-          class="read-more"
-          onclick="toggleReadMore(this)"
-          >Read More...</a
-        >
-        <a
-          href="../html/NewAdminsingleprojectview.html"
-          class="btn btn-outline"
-          style="
-            text-decoration: none;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-          "
-          >View Status</a
-        >
-      </div>
-      <div class="extra-info">
-        The migration is focused on ensuring zero downtime and securing
-        sensitive data during the process.
-      </div>
-    </div>
-
-    <div class="card">
-      <div
-        class="flex_"
-        style="justify-content: space-between; align-items: center"
-      >
-        <h2 class="project-name">API Integration for Payment Gateway</h2>
-        <span class="badge badge-review">Review</span>
-      </div>
-      <p class="project-id">ID: OPP-2025-004</p>
-      <p>
-        Integrating third-party payment gateway APIs into the application to
-        facilitate seamless transactions.
-      </p>
-      <div class="progress-bar">
-        <div class="progress-percentage">85%</div>
-        <div class="progress-bar-inner" style="width: 85%"></div>
-      </div>
-      <small>Assigned to: David Smith</small>
-      <div class="flex_" style="justify-content: space-between">
-        <a
-          href="javascript:void(0);"
-          class="read-more"
-          onclick="toggleReadMore(this)"
-          >Read More...</a
-        >
-        <a
-          href="../html/NewAdminsingleprojectview.html"
-          class="btn btn-outline"
-          style="
-            text-decoration: none;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-          "
-          >View Status</a
-        >
-      </div>
-      <div class="extra-info">
-        The payment gateway integration focuses on enhancing security and
-        ensuring a smooth user experience.
-      </div>
-    </div>
-
-    <div class="card">
-      <div
-        class="flex_"
-        style="justify-content: space-between; align-items: center"
-      >
-        <h2 class="project-name">Customer Support Chatbot</h2>
-        <span class="badge badge-onhold">On Hold</span>
-      </div>
-      <p class="project-id">ID: OPP-2025-005</p>
-      <p>
-        Developing an AI-powered chatbot to handle common customer support
-        queries and reduce response time.
-      </p>
-      <div class="progress-bar">
-        <div class="progress-percentage">10%</div>
-        <div class="progress-bar-inner" style="width: 10%"></div>
-      </div>
-      <small>Assigned to: Michael Brown</small>
-      <div class="flex_" style="justify-content: space-between">
-        <a
-          href="javascript:void(0);"
-          class="read-more"
-          onclick="toggleReadMore(this)"
-          >Read More...</a
-        >
-        <a
-          href="../html/NewAdminsingleprojectview.html"
-          class="btn btn-outline"
-          style="
-            text-decoration: none;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-          "
-          >View Status</a
-        >
-      </div>
-      <div class="extra-info">
-        The chatbot is in its early stages, focusing on gathering customer
-        feedback and optimizing response flow.
-      </div>
-    </div>
-
-    <div class="card">
-      <div
-        class="flex_"
-        style="justify-content: space-between; align-items: center"
-      >
-        <h2 class="project-name">Data Analytics Dashboard</h2>
-        <span class="badge badge-planning">Planning</span>
-      </div>
-      <p class="project-id">ID: OPP-2025-006</p>
-      <p>
-        Building a dashboard for analyzing and visualizing customer data to
-        provide insights and improve decision-making.
-      </p>
-      <div class="progress-bar">
-        <div class="progress-percentage">40%</div>
-        <div class="progress-bar-inner" style="width: 40%"></div>
-      </div>
-      <small>Assigned to: Lisa White</small>
-      <div class="flex_" style="justify-content: space-between">
-        <a
-          href="javascript:void(0);"
-          class="read-more"
-          onclick="toggleReadMore(this)"
-          >Read More...</a
-        >
-        <a
-          href="../html/NewAdminsingleprojectview.html"
-          class="btn btn-outline"
-          style="
-            text-decoration: none;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-          "
-          >View Status</a
-        >
-      </div>
-      <div class="extra-info">
-        The dashboard will aggregate and visualize key metrics for the executive
-        team to make data-driven decisions.
-      </div>
-    </div>
+    {% endfor %}
 
     <!-- Project Cards End -->
   </div>
@@ -348,5 +121,16 @@
 {% endblock %}
 <!-- JS -->
 {% block js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var progressElements =
+      document.getElementsByClassName("progress-bar-inner");
+
+    Array.from(progressElements).forEach((bar) => {
+      var progressValue = parseInt(bar.dataset.progress, 10) || 0; // Get progress safely
+      bar.style.width = progressValue + "%"; // Set width dynamically
+    });
+  });
+</script>
 <script src="{% static 'js/ad_ongoingProjects.js' %}"></script>
 {% endblock %}

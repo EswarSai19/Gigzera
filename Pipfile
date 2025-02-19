@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 psycopg2-binary = "*"
 pillow = "*"
-djanog = "*"
+django = "*"
 
 [dev-packages]
 

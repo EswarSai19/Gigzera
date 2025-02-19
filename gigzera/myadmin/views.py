@@ -3,6 +3,8 @@ from django.contrib.auth.models import User, auth
 from django.contrib.auth.hashers import check_password, make_password
 from django.http import HttpResponse
 from django.contrib import messages
+from django.urls import reverse
+from django.http import JsonResponse
 import json
 import os
 import locale
@@ -270,10 +272,49 @@ def clientProfileView(request):
     return render(request, 'myadmin/ad_clientProfileView.html', context)
     
 def ongoingProjects(request):
-    return render(request, 'myadmin/ongoingProjects.html')
+    ongProjects = OngoingProjects.objects.all()
+    print("OG", ongProjects)
+    for ogp in ongProjects:
+        print(ogp.opportunityId,"OPP id")
+        fl_user = Freelancer.objects.filter(userId=ogp.freelancer_id).first()
+        job = ProjectsDisplay.objects.filter(opportunityId=ogp.opportunityId).first()
+        if job:
+            full_description = job.description or ""
+            split_desc = full_description.split(".", 1)  # Split at first full stop
+
+            ogp.short_description = split_desc[0] + "." if len(split_desc) > 1 else full_description
+            ogp.full_description = split_desc[1] if len(split_desc) > 1 else ""
+
+        ogp.title = job.title if job else ""
+        ogp.name = fl_user.name if fl_user else ""
+
+    context={'ongProjects':ongProjects}
+    return render(request, 'myadmin/ongoingProjects.html', context)
+
+def singleOngoingProject(request):
+    ongp_id = request.GET.get('ongpId')
+    print("here is the id", ongp_id)
+    singleOgp = OngoingProjects.objects.filter(ongProjectId=ongp_id).first()
+    opportunity_id = singleOgp.opportunityId
+    bid = ProjectQuote.objects.filter(projectQuoteId=singleOgp.bidId).first()
+
+
+    ad_payment = bid.revised_budget.replace(",", "").strip()
+    amount = float(ad_payment)
+    bid.advance_payment = amount * (30 / 100)  # Calculate percentage
+    
+
+    job = ProjectsDisplay.objects.filter(opportunityId=opportunity_id).first()
+    job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
+    job.cur_symbol = get_currency_symbol(job.currency)
+    context={'job':job, 'bid':bid, 'singleOgp':singleOgp}
+
+    return render(request, 'myadmin/singleOngoingProject.html', context)
+    
+
 
 def yourProjects(request):
-    ongProjects = OngoingProjects.objects.filter(admin_id="AD001")
+    ongProjects = OngoingProjects.objects.filter(admin_id="AD001").all()
     print("OG", ongProjects)
     for ogp in ongProjects:
         print(ogp.opportunityId,"OPP id")
@@ -297,23 +338,83 @@ def yourProjects(request):
 
 def singleYourProject(request):
     ongp_id = request.GET.get('ongpId')
-    print("here is the id", ongp_id)
+    print("Here is the ID:", ongp_id)
+
     singleOgp = OngoingProjects.objects.filter(ongProjectId=ongp_id).first()
+
+    if not singleOgp:
+        messages.error(request, "No project found with the given ID.")
+        return redirect('ad_yourProjects')  # Redirect safely
+
     opportunity_id = singleOgp.opportunityId
     bid = ProjectQuote.objects.filter(projectQuoteId=singleOgp.bidId).first()
 
+    if not bid:
+        messages.error(request, "No bid found for this project.")
+        return redirect('ad_yourProjects')  # Redirect safely
 
+    # Fix budget calculations
     ad_payment = bid.revised_budget.replace(",", "").strip()
     amount = float(ad_payment)
-    bid.advance_payment = amount * (30 / 100)  # Calculate percentage
+    bid.advance_payment = amount * (30 / 100)
 
     job = ProjectsDisplay.objects.filter(opportunityId=opportunity_id).first()
-    job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
-    job.cur_symbol = get_currency_symbol(job.currency)
-    context={'job':job, 'bid':bid}
+
+    if job:
+        job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
+        job.cur_symbol = get_currency_symbol(job.currency)
+
+    context = {
+        'job': job,
+        'bid': bid,
+        'singleOgp': singleOgp
+    }
+    print("Context", context)
+    print(f"Date: {singleOgp.start_date}, {singleOgp.end_date}")
 
     return render(request, 'myadmin/singleYourProject.html', context)
-    
+
+def updateProgressStatus(request):
+    ongp_id = request.POST.get('ongpId') or request.GET.get('ongpId')
+    print("ID", ongp_id)
+
+    if request.method == "POST":
+        project_progress = request.POST.get('project_progress')
+        project_status = request.POST.get('project_status')
+
+        print("Progress:", project_progress, "Status:", project_status)
+
+        try:
+            ongp = get_object_or_404(OngoingProjects, ongProjectId=ongp_id)
+            ongp.progress = project_progress  
+            ongp.status = project_status  
+            ongp.save()
+
+            print("Updated")
+            return JsonResponse({"success": True, "message": "Progress updated successfully"})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
+
+    return JsonResponse({"success": False, "error": "Invalid request"})
+
+
+def updateTimelines(request):
+    if request.method == "POST":
+        ongp_id = request.POST.get("ongpId")  # Ensure this ID is passed
+        start_date = request.POST.get("start_date")
+        end_date = request.POST.get("end_date")
+
+        try:
+            project = get_object_or_404(OngoingProjects, ongProjectId=ongp_id)
+            project.start_date = start_date
+            project.end_date = end_date
+            project.save()
+
+            return JsonResponse({"success": True, "message": "Timeline updated successfully"})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
+
+    return JsonResponse({"success": False, "error": "Invalid request"})
 
 
 

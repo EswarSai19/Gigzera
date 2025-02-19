@@ -63,26 +63,23 @@ function sendMessage() {
 
 // JavaScript for Timeline and Finance Sections
 // Toggle Edit for Timeline Section
-function toggleTimelineEdit() {
+function toggleTimelineEdit(event) {
+  event.preventDefault(); // Prevent form from submitting if button is inside the form
+
   const startDate = document.getElementById("startDate");
   const endDate = document.getElementById("endDate");
+  const updateButton = document.getElementById("updateButton");
 
   // Toggle disabled state
   const isDisabled = startDate.disabled;
   startDate.disabled = !isDisabled;
   endDate.disabled = !isDisabled;
 
-  // Provide feedback when exiting edit mode
-  if (isDisabled === false) {
-    if (new Date(startDate.value) > new Date(endDate.value)) {
-      console.error("Start date cannot be later than the end date.");
-      startDate.disabled = true;
-      endDate.disabled = true;
-    } else {
-      console.log(
-        `Timeline updated successfully: ${startDate.value} to ${endDate.value}`
-      );
-    }
+  // Show or hide the Update button
+  if (isDisabled) {
+    updateButton.classList.remove("hidden");
+  } else {
+    updateButton.classList.add("hidden");
   }
 }
 
@@ -300,4 +297,53 @@ document.querySelectorAll("#milestoneTable tr").forEach((row) => {
   };
   deleteCell.appendChild(deleteIcon);
   row.appendChild(deleteCell);
+});
+
+//  New script part for adding the functionality of the updating progress and status
+
+document.addEventListener("DOMContentLoaded", function () {
+  let form = document.getElementById("updateStatusProgress");
+
+  if (!form) return; // Ensure form exists before adding event listeners
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent full page reload
+
+    // Enable status dropdown before submitting
+    let statusDropdown = form.querySelector("#projectStatus");
+    statusDropdown.disabled = false;
+
+    let formData = new FormData(form);
+
+    fetch(form.action, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert(data.message);
+
+          // Update progress bar dynamically
+          let progressBar = document.querySelector("#progressFill");
+          let newProgress = form.querySelector("#newProgress").value;
+          progressBar.style.width = newProgress + "%";
+
+          // Store state to prevent back button issues
+          history.replaceState(null, "", window.location.href);
+        } else {
+          alert("Error: " + data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  });
+
+  // Initialize progress bar on page load
+  let progressElement = document.getElementById("progressFill");
+  if (progressElement) {
+    let progressValue = parseInt(progressElement.dataset.progress, 10) || 0;
+    progressElement.style.width = progressValue + "%";
+  }
 });
