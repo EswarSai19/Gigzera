@@ -120,20 +120,20 @@ function toggleFinanceEdit() {
 
 // Update Total Cost Calculation dynamically when user enters values
 function updateFinance() {
-  const laborCost = parseFloat(document.getElementById("laborCost").value || 0);
+  // const laborCost = parseFloat(document.getElementById("laborCost").value || 0);
   const consultingCharges = parseFloat(
     document.getElementById("consultingCharges").value || 0
   );
 
   // Calculate Total Costing
-  const totalCosting = laborCost + consultingCharges;
+  const totalCosting = consultingCharges;
   document.getElementById(
     "totalCosting"
   ).textContent = `$${totalCosting.toFixed(2)}`;
 }
 
 // Automatically update total cost when user changes values
-document.getElementById("laborCost").addEventListener("input", updateFinance);
+// document.getElementById("laborCost").addEventListener("input", updateFinance);
 document
   .getElementById("consultingCharges")
   .addEventListener("input", updateFinance);
