@@ -242,11 +242,16 @@
         <table class="edit-table" id="financeTable">
           <tr>
             <td>Labor Cost</td>
+            <!-- <td>
+              <div class="labor-costing-box">
+                <div id="laborCosting">{{job.cur_symbol}} {{bid.budget}}</div>
+              </div>
+            </td> -->
             <td>
               <div class="input-wrapper">
                 <span class="dollar-sign">{{job.cur_symbol}}</span>
                 <input
-                  type="number"
+                  type="text"
                   id="laborCost"
                   value="{{bid.budget}}"
                   disabled
@@ -272,7 +277,9 @@
             <td>Total Costing</td>
             <td>
               <div class="total-costing-box">
-                <strong id="totalCosting">{{bid.revised_budget}}</strong>
+                <strong id="totalCosting"
+                  >{{job.cur_symbol}} {{bid.revised_budget}}</strong
+                >
               </div>
             </td>
           </tr>

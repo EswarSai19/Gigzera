@@ -431,7 +431,8 @@ body {
 }
 
 /* Editable Table for Finance Box */
-#financeTable input[type="number"] {
+#financeTable input[type="number"],
+#financeTable input[type="text"] {
     width: calc(40% - 24px);
     padding: 7px;
     border: 1px solid #ddd;
@@ -442,7 +443,8 @@ body {
 }
 
 /* Total Costing Box */
-.total-costing-box {
+.total-costing-box,
+.labor-costing-box {
     padding: 7px;
     width: calc(40% - 24px);
     background-color: #f1f1f1;
