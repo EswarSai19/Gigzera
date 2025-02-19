@@ -264,6 +264,8 @@ class OngoingProjects(models.Model):
     freelancer = models.ForeignKey(Freelancer, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     opportunityId = models.CharField(max_length=20)
+    start_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
     bidId = models.CharField(max_length=20)
     status = models.CharField(max_length=30)
     progress = models.CharField(max_length=5, default='0')

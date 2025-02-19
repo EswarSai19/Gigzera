@@ -3,7 +3,7 @@
 {% block title %}Ongoing Projects{% endblock %}
 <!-- css -->
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/ad_singleYourProject.css' %}" />
+<link rel="stylesheet" href="{% static 'css/ad_singleOngoingProject.css' %}" />
 <link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
 {% endblock %}
 <!-- content -->
@@ -80,88 +80,10 @@
       </div>
     </div>
   </div>
-  <div
-    id="chatModal"
-    class="fixed inset-0 flex items-center justify-center hidden bg-black bg-opacity-60 z-50"
-  >
-    <div
-      class="modal-container bg-white p-8 rounded-lg shadow-lg w-[500px] h-[600px] max-w-full flex flex-col justify-between"
-    >
-      <div class="modal-header">
-        <h2 class="text-xl font-semibold mb-4">Add Comments</h2>
-        <!-- <span class="user-status">Online</span> -->
-        <button
-          onclick="closeChatModal()"
-          class="text-gray-500 hover:text-gray-700 text-3xl"
-        >
-          &times;
-        </button>
-      </div>
-
-      <!-- Message Display Area -->
-      <div
-        id="messageArea"
-        class="flex-grow overflow-y-auto mb-4 border p-4 rounded bg-gray-100"
-      >
-        <!-- Messages will be added dynamically here -->
-        <div class="message-box incoming mb-3">
-          <img
-            src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
-            alt="User Avatar"
-            class="avatar-img"
-          />
-          <div class="message-content-box">
-            <p>Can you share the latest wireframes?</p>
-            <span class="time-stamp">10:30 AM</span>
-          </div>
-        </div>
-        <div class="message-box outgoing mb-3">
-          <img
-            src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
-            alt="User Avatar"
-            class="avatar-img"
-          />
-          <div class="message-content-box">
-            <p>I'll share them by end of day.</p>
-            <span class="time-stamp">10:32 AM</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Input Field for New Message -->
-      <div class="input-section">
-        <input
-          type="text"
-          placeholder="Type your message..."
-          id="newMessageInput"
-          class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button
-          onclick="sendNewMessage()"
-          class="send-message-btn px-5 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M22 2L11 13"></path>
-            <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </div>
 
   <!-- Main Content -->
   <div class="main-content">
     <!-- Project Progress Section -->
-
     <div class="project-header">
       <div class="progress-header-row">
         <h2 class="progress-title">Project Progress</h2>
@@ -172,59 +94,38 @@
           </div>
           <div class="progress-percentage">
             <strong id="progressPercentage">{{singleOgp.progress}}%</strong>
-            <button
-              id="editProgressIcon"
-              class="edit-btn"
-              onclick="toggleProgressEdit()"
-            >
-              <i class="fa-solid fa-pen-to-square"></i>
-            </button>
+            <!-- <button
+                id="editProgressIcon"
+                class="edit-btn"
+                onclick="toggleProgressEdit()"
+              >
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button> -->
           </div>
         </div>
       </div>
-      <form
-        id="updateStatusProgress"
-        action="{% url 'ad_updateProgressStatus' %}?ongpId={{singleOgp.ongProjectId}}"
-        method="POST"
-      >
-        {% csrf_token %}
-        <div class="progress-bar-container">
-          <div class="progress-bar">
-            <div
-              id="progressFill"
-              class="progress"
-              data-progress="{{ singleOgp.progress }}"
-            ></div>
-          </div>
-          <div class="status-container">
-            <span class="status-label">Project Status:</span>
-            <select
-              id="projectStatus"
-              name="project_status"
-              class="status-dropdown"
-              disabled
-            >
-              <option value="Bid Ongoing" {% if singleOgp.status == "Bid Ongoing" %}selected{% endif %}>Bid Ongoing</option>
-                <option value="Planning" {% if singleOgp.status == "Planning" %}selected{% endif %}>Planning</option>
-                <option value="In Progress" {% if singleOgp.status == "In Progress" %}selected{% endif %}>In Progress</option>
-                <option value="On Hold" {% if singleOgp.status == "On Hold" %}selected{% endif %}>On Hold</option>
-                <option value="Completed" {% if singleOgp.status == "Completed" %}selected{% endif %}>Completed</option>
-            </select>
-          </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar">
+          <div
+            id="progressFill"
+            class="progress"
+            data-progress="{{ singleOgp.progress }}"
+          ></div>
         </div>
-        <!-- Status Dropdown Added Here -->
-        <div id="progressEditForm" class="progress-edit hidden">
-          <input
-            type="number"
-            id="newProgress"
-            min="0"
-            max="100"
-            name="project_progress"
-            value="{{singleOgp.progress}}"
-          />
-          <button type="submit" onclick="updateProgress()">Update</button>
+        <div class="project-status mt-5">
+          Project Status : {{singleOgp.status}}
         </div>
-      </form>
+      </div>
+      <div id="progressEditForm" class="progress-edit hidden">
+        <input
+          type="number"
+          id="newProgress"
+          min="0"
+          max="100"
+          value="{{singleOgp.progress}}"
+        />
+        <button onclick="updateProgress()">Update</button>
+      </div>
     </div>
 
     <!-- Timeline Section -->
@@ -232,84 +133,44 @@
       <div class="timeline">
         <div class="timeline-header">
           <h3><strong>Timeline</strong></h3>
-          <button
-            id="editTimelineIcon"
-            class="edit-btn"
-            onclick="toggleTimelineEdit(event)"
-          >
-            <i class="fa-solid fa-pen-to-square"></i>
-          </button>
+          <!-- <button
+                id="editTimelineIcon"
+                class="edit-btn"
+                onclick="toggleTimelineEdit()"
+              >
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button> -->
         </div>
         <div class="edit-table">
-          <form action="{% url 'ad_updateTimelines' %}" method="POST">
-            {% csrf_token %}
-            <input
-              type="hidden"
-              name="ongpId"
-              value="{{ singleOgp.ongProjectId }}"
-            />
-            <input
-              type="date"
-              name="start_date"
-              id="startDate"
-              value="{{ singleOgp.start_date|date:'Y-m-d' }}"
-              disabled
-            />
-            <span>to</span>
-            <input
-              type="date"
-              name="end_date"
-              id="endDate"
-              value="{{ singleOgp.end_date|date:'Y-m-d' }}"
-              disabled
-            />
-            <button type="submit" id="updateButton" class="hidden">
-              Update
-            </button>
-          </form>
+          <input type="date" id="startDate" value="2025-01-15" disabled />
+          <span>to</span>
+          <input type="date" id="endDate" value="2025-03-15" disabled />
         </div>
       </div>
     </div>
-    <div id="alertBox" class="hidden"></div>
-
-    <!-- <style>
-      .hidden {
-        display: none;
-      }
-    </style> -->
 
     <div class="finance-box">
       <div class="finance">
         <!-- Finance Header with Inline Edit Button -->
         <div class="finance-header">
           <h3><strong>Finance</strong></h3>
-          <button
-            id="editFinanceIcon"
-            class="edit-btn"
-            onclick="toggleFinanceEdit()"
-          >
-            <i class="fa-solid fa-pen-to-square"></i>
-          </button>
+          <!-- <button
+                id="editFinanceIcon"
+                class="edit-btn"
+                onclick="toggleFinanceEdit()"
+              >
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button> -->
         </div>
 
         <!-- Editable Finance Table -->
         <table class="edit-table" id="financeTable">
           <tr>
             <td>Labor Cost</td>
-            <!-- <td>
-              <div class="labor-costing-box">
-                <div id="laborCosting">{{job.cur_symbol}} {{bid.budget}}</div>
-              </div>
-            </td> -->
             <td>
               <div class="input-wrapper">
-                <span class="dollar-sign">{{job.cur_symbol}}</span>
-                <input
-                  type="text"
-                  id="laborCost"
-                  value="{{bid.budget}}"
-                  disabled
-                />
+                <span class="dollar-sign">$</span>
+                <input type="number" id="laborCost" value="8000" disabled />
               </div>
             </td>
           </tr>
@@ -317,11 +178,11 @@
             <td>Consulting Charges</td>
             <td>
               <div class="input-wrapper">
-                <span class="dollar-sign">{{job.cur_symbol}}</span>
+                <span class="dollar-sign">$</span>
                 <input
                   type="number"
                   id="consultingCharges"
-                  value="{{bid.admin_margin}}"
+                  value="4000"
                   disabled
                 />
               </div>
@@ -331,9 +192,7 @@
             <td>Total Costing</td>
             <td>
               <div class="total-costing-box">
-                <strong id="totalCosting"
-                  >{{job.cur_symbol}} {{bid.revised_budget}}</strong
-                >
+                <strong id="totalCosting">$12,000</strong>
               </div>
             </td>
           </tr>
@@ -341,11 +200,11 @@
             <td>Advance Payment</td>
             <td>
               <div class="input-wrapper">
-                <span class="dollar-sign">{{job.cur_symbol}}</span>
+                <span class="dollar-sign">$</span>
                 <input
                   type="number"
                   id="advancePayment"
-                  value="{{bid.advance_payment}}"
+                  value="6000"
                   disabled
                 />
               </div>
@@ -356,12 +215,11 @@
         <!-- Milestone Payments Section -->
         <div class="milestone-header">
           <h3><strong>Milestone Payments</strong></h3>
-          <button id="addMilestoneBtn" class="milestone-btn" disabled>
-            Add Milestones
-            <i class="fa-solid fa-plus"></i>
-          </button>
+          <!-- <button id="editFinanceIcon" class="milestone-btn">
+                Add Milestones
+                <i class="fa-solid fa-plus"></i>
+              </button> -->
         </div>
-
         <!-- <h4><strong>Milestone Payments</strong></h4> -->
         <table class="edit-table" id="milestoneTable">
           <tr>
@@ -398,17 +256,7 @@
       </div>
     </div>
   </div>
-  <style>
-    .delete-icon {
-      color: red;
-      font-size: 18px;
-      padding: 5px;
-      margin-left: 10px;
-    }
-    .delete-icon:hover {
-      color: darkred;
-    }
-  </style>
+
   <!-- message section  -->
   <div class="messages">
     <!-- Messages content remains unchanged -->
@@ -463,6 +311,14 @@
 {% endblock %}
 <!-- js -->
 {% block js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var progressElement = document.getElementById("progressFill");
 
-<script src="{% static 'js/ad_singleYourProject.js' %}"></script>
+    var progressValue = parseInt(progressElement.dataset.progress, 10) || 0; // Get value safely
+
+    progressElement.style.width = progressValue + "%";
+  });
+</script>
+<script src="{% static 'js/ad_singleOngoingProject.js' %}"></script>
 {% endblock %}
