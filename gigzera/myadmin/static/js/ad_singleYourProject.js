@@ -85,9 +85,9 @@ function toggleTimelineEdit(event) {
 
 // Function to update Finance details
 // Toggle Finance Edit Mode
-function toggleFinanceEdit() {
+function toggleFinanceEdit(symbol) {
   const financeInputs = document.querySelectorAll(
-    ".finance .edit-table input, .finance .edit-table select, .milestone-btn"
+    ".finance .edit-table .consultingCharges, .finance .edit-table select, .milestone-btn"
   );
   const deleteIcons = document.querySelectorAll(".delete-icon"); // Select all delete icons
 
@@ -96,7 +96,7 @@ function toggleFinanceEdit() {
 
   // Update total costing dynamically before exiting edit mode
   if (isEditing) {
-    updateFinance();
+    updateFinance(symbol);
   }
 
   // Toggle disabled state for inputs
@@ -116,21 +116,21 @@ function toggleFinanceEdit() {
 }
 
 // Update Total Cost Calculation dynamically when user enters values
-function updateFinance() {
-  // const laborCost = parseFloat(document.getElementById("laborCost").value || 0);
+function updateFinance(symbol) {
+  const laborCost = parseFloat(document.getElementById("laborCost").value || 0);
   const consultingCharges = parseFloat(
     document.getElementById("consultingCharges").value || 0
   );
 
   // Calculate Total Costing
-  const totalCosting = consultingCharges;
+  const totalCosting = laborCost + consultingCharges;
   document.getElementById(
     "totalCosting"
-  ).textContent = `$${totalCosting.toFixed(2)}`;
+  ).textContent = `${symbol} ${totalCosting.toFixed(2)}`;
 }
 
 // Automatically update total cost when user changes values
-// document.getElementById("laborCost").addEventListener("input", updateFinance);
+document.getElementById("laborCost").addEventListener("input", updateFinance);
 document
   .getElementById("consultingCharges")
   .addEventListener("input", updateFinance);
@@ -300,7 +300,6 @@ document.querySelectorAll("#milestoneTable tr").forEach((row) => {
 });
 
 //  New script part for adding the functionality of the updating progress and status
-
 document.addEventListener("DOMContentLoaded", function () {
   let form = document.getElementById("updateStatusProgress");
 
@@ -346,4 +345,41 @@ document.addEventListener("DOMContentLoaded", function () {
     let progressValue = parseInt(progressElement.dataset.progress, 10) || 0;
     progressElement.style.width = progressValue + "%";
   }
+});
+
+// Update time lines funcitonality
+document.addEventListener("DOMContentLoaded", function () {
+  let datesForm = document.getElementById("updateDates");
+
+  if (!datesForm) return; // Ensure form exists before adding event listeners
+
+  datesForm.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent full page reload
+
+    let formData = new FormData(datesForm);
+
+    fetch(datesForm.action, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert("Timeline updated successfully!");
+
+          // Disable inputs after update
+          document.getElementById("startDate").disabled = true;
+          document.getElementById("endDate").disabled = true;
+
+          // Hide update button
+          document.getElementById("updateButton").classList.add("hidden");
+        } else {
+          alert("Error: " + data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred while updating the timeline.");
+      });
+  });
 });

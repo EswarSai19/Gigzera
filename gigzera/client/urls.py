@@ -13,6 +13,7 @@ urlpatterns = [
     path('submit_contact/', views.cl_contact, name='cl_contact'),
     path('ongoingProjects/', views.cl_ongoingProjects, name='cl_ongoingProjects'),
     path('singleOngoingProject/', views.cl_singleOgProject, name='cl_singleOgProject'),
+    path('updateProgress/', views.cl_updateProgress, name='cl_updateProgress'),
     path('singleViewBid/', views.cl_singleViewBid, name='cl_singleViewBid'),
     path('profileView/', views.profileView, name='cl_profileView'),
     path('viewBids/', views.cl_viewBids, name='cl_viewBids'),

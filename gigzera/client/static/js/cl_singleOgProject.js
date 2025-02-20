@@ -680,3 +680,53 @@ function openModal() {
 function closeModal() {
   document.getElementById("exampleModal").classList.add("hidden");
 }
+
+// New function for hadling the update progress
+document.addEventListener("DOMContentLoaded", function () {
+  let form = document.getElementById("updateProgress");
+
+  if (!form) return; // Ensure form exists before adding event listeners
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent full page reload
+
+    // Enable status dropdown before submitting
+    // let statusDropdown = form.querySelector("#projectStatus");
+    // statusDropdown.disabled = false;
+
+    let formData = new FormData(form);
+
+    fetch(form.action, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.text()) // Get raw response
+      .then((text) => {
+        try {
+          let data = JSON.parse(text);
+          if (data.success) {
+            alert(data.message);
+            let progressBar = document.querySelector("#progressFill");
+            let newProgress = form.querySelector("#newProgress").value;
+            progressBar.style.width = newProgress + "%";
+
+            document.getElementById("progressEditForm").classList.add("hidden");
+          } else {
+            alert("Error: " + data.error);
+          }
+        } catch (error) {
+          console.error("JSON Parsing Error:", text); // ✅ Log the unexpected response
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch Error:", error);
+      });
+  });
+
+  // Initialize progress bar on page load
+  let progressElement = document.getElementById("progressFill");
+  if (progressElement) {
+    let progressValue = parseInt(progressElement.dataset.progress, 10) || 0;
+    progressElement.style.width = progressValue + "%";
+  }
+});

@@ -249,6 +249,7 @@ class ProjectQuote(models.Model):
     admin_margin = models.CharField(max_length=20, default="0")
     currency = models.CharField(max_length=10, default="INR")
     revised_budget = models.CharField(max_length=50, default="0")
+    advance_payment = models.CharField(max_length=50, default="0")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -264,8 +265,8 @@ class OngoingProjects(models.Model):
     freelancer = models.ForeignKey(Freelancer, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     opportunityId = models.CharField(max_length=20)
-    start_date = models.DateField(null=True)
-    end_date = models.DateField(null=True)
+    start_date = models.DateField()
+    end_date = models.DateField()
     bidId = models.CharField(max_length=20)
     status = models.CharField(max_length=30)
     progress = models.CharField(max_length=5, default='0')

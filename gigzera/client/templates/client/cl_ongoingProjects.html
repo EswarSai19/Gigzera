@@ -53,7 +53,11 @@
         <p>{{ogp.short_description}}</p>
         <div class="progress-bar">
           <div class="progress-percentage">{{ogp.progress}}%</div>
-          <div class="progress-bar-inner w-{{ogp.progress}}%"></div>
+          <!-- <div class="progress-bar-inner w-20%"></div> -->
+          <div
+            class="progress-bar-inner"
+            data-progress="{{ ogp.progress }}"
+          ></div>
         </div>
         <small>Assigned to: {{ogp.name}}</small>
         <div class="flex" style="justify-content: space-between">
@@ -620,6 +624,16 @@
 {% endblock %}
 <!-- js -->
 {% block js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var progressElements =
+      document.getElementsByClassName("progress-bar-inner");
 
+    Array.from(progressElements).forEach((bar) => {
+      var progressValue = parseInt(bar.dataset.progress, 10) || 0; // Get progress safely
+      bar.style.width = progressValue + "%"; // Set width dynamically
+    });
+  });
+</script>
 <script src="{% static 'js/cl_ongoingProjects.js' %}"></script>
 {% endblock %}
