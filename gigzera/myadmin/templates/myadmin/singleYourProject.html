@@ -270,7 +270,7 @@
               value="{{ singleOgp.end_date|date:'Y-m-d' }}"
               disabled
             />
-            <button type="submit" id="updateButton" class="hidden">
+            <button type="submit" id="updateButton" class="hidden timeline-btn">
               Update
             </button>
           </form>
@@ -293,7 +293,7 @@
           <button
             id="editFinanceIcon"
             class="edit-btn"
-            onclick="toggleFinanceEdit()"
+            onclick="toggleFinanceEdit(`{{job.cur_symbol}}`)"
           >
             <i class="fa-solid fa-pen-to-square"></i>
           </button>
@@ -314,6 +314,7 @@
                 <input
                   type="text"
                   id="laborCost"
+                  class="laborCost"
                   value="{{bid.budget}}"
                   disabled
                 />
@@ -328,6 +329,7 @@
                 <input
                   type="text"
                   id="consultingCharges"
+                  class="consultingCharges"
                   value="{{bid.admin_margin}}"
                   disabled
                 />

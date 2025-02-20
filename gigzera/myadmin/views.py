@@ -41,36 +41,85 @@ currency_symbols = {
 }
 
 # Locale settings for number formatting
+
 currency_locales = {
-    "USD": "en_US", "EUR": "de_DE", "JPY": "ja_JP", "GBP": "en_GB", "CNY": "zh_CN", 
-    "AUD": "en_AU", "CAD": "en_CA", "CHF": "de_CH", "INR": "en_IN", "NZD": "en_NZ"
+    "USD": "en_US.UTF-8", "EUR": "de_DE.UTF-8", "JPY": "ja_JP.UTF-8",
+    "GBP": "en_GB.UTF-8", "CNY": "zh_CN.UTF-8", "AUD": "en_AU.UTF-8",
+    "CAD": "en_CA.UTF-8", "CHF": "de_CH.UTF-8", "INR": "en_IN.UTF-8",
+    "NZD": "en_NZ.UTF-8"
 }
+
+
+# Test
+# print(f"this is outside the print EUR: {format_currency(325.000, 'EUR')}")
+# print(f"this is outside the print JPY: {format_currency(325,000, 'JPY')}")
+# print(f"this is outside the print CHF: {format_currency("325'000", 'CHF')}")
+# print(f"this is outside the print GBP: {format_currency(325000, 'GBP')}")
+# print(f"this is outside the print CNY: {format_currency(325000, 'CNY')}")
+# print(f"this is outside the print AUD: {format_currency(325000, 'AUD')}")
+# print(f"this is outside the print CAD: {format_currency(325000, 'CAD')}")
+# print(f"this is outside the print NZD: {format_currency(325000, 'NZD')}")
+# print(f"this is outside the print USD: {format_currency(325000, 'USD')}")
+# print(f"this is outside the print INR: {format_currency(325000, 'INR')}")
+
+    
+import locale
+
+currency_locales = {
+    "USD": "en_US.UTF-8", "EUR": "de_DE.UTF-8", "JPY": "ja_JP.UTF-8", 
+    "GBP": "en_GB.UTF-8", "CNY": "zh_CN.UTF-8", "AUD": "en_AU.UTF-8", 
+    "CAD": "en_CA.UTF-8", "CHF": "de_CH.UTF-8", "INR": "en_IN.UTF-8", "NZD": "en_NZ.UTF-8"
+}
+
+def clean_number(value, currency_code):
+    """Cleans and converts numbers based on currency format."""
+    if isinstance(value, (int, float)):
+        return value  # Already a number
+    
+    value = str(value).replace("'", "").replace(" ", "")  # Remove Swiss & extra spaces
+    
+    if currency_code in ["EUR", "DE", "FR", "CHF"]:  # European style (dot as thousand separator)
+        value = value.replace(".", "").replace(",", ".")  # Remove thousand dots & fix decimal commas
+    else:  # Standard format (comma as thousand separator)
+        value = value.replace(",", "")
+
+    try:
+        return float(value) if "." in value else int(value)  # Convert to int if no decimals
+    except ValueError:
+        raise ValueError(f"Invalid number format: {value}")
+
+def add_and_format(budget, admin_margin, currency_code):
+    """Adds two numbers and formats them based on the currency code."""
+    budget = clean_number(budget, currency_code)
+    admin_margin = clean_number(admin_margin, currency_code)
+    
+    total = budget + admin_margin  # Calculate sum
+    print(f"Total is {total}")
+    
+    return format_currency(total, currency_code)
 
 def format_currency(amount, currency_code):
     """Formats the number according to the given currency locale."""
     try:
-        locale.setlocale(locale.LC_ALL, currency_locales.get(currency_code, "en_US"))  # Set locale
-        amount = float(amount)  # Ensure amount is a float
+        locale_code = currency_locales.get(currency_code, "en_US.UTF-8")
+        try:
+            locale.setlocale(locale.LC_ALL, locale_code)
+        except locale.Error:
+            print(f"Warning: Locale '{locale_code}' not found. Using default.")
         
-        if amount.is_integer():  # Check if the amount is a whole number
-            print("I am going to if")
-            formatted_amount = locale.format_string("%d", int(amount), grouping=True)  # Integer format
+        if isinstance(amount, int):
+            formatted_amount = locale.format_string("%d", amount, grouping=True)
         else:
-            print("Else")
-            formatted_amount = locale.format_string("%.2f", amount, grouping=True)  # Two decimal places
-        
-        return f"{formatted_amount}"  # Add currency symbol
+            formatted_amount = locale.format_string("%.2f", amount, grouping=True)
+
+        return formatted_amount
     except ValueError:
         return "Invalid amount"
 
-    
+# Test cases
+# print(f"EUR: {add_and_format('1.000', '3.00', 'EUR')}")  # Expected: 1.300 (1,000 + 300)
+# print(f"JPY: {add_and_format('325,000', '231,124', 'JPY')}")  # Expected: 556,124
 
-def add_and_format(budget, admin_margin, currency_code):
-    """Adds two numbers and formats them based on the currency code."""
-    budget = int(str(budget).replace(",", ""))  # Convert budget to integer
-    admin_margin = int(str(admin_margin).replace(",", ""))  # Convert admin margin to integer
-    total = budget + admin_margin  # Calculate sum
-    return format_currency(total, currency_code)  # Format according to currency
 
 
 def calculate_percentage(amount_str, percentage, currency_code):
@@ -301,13 +350,24 @@ def singleOngoingProject(request):
 
     ad_payment = bid.revised_budget.replace(",", "").strip()
     amount = float(ad_payment)
-    bid.advance_payment = amount * (30 / 100)  # Calculate percentage
-    
+    adv_payment = amount * (30 / 100)  # Calculate percentage
+    bid.advance_payment = format_currency(adv_payment, bid.currency)
 
     job = ProjectsDisplay.objects.filter(opportunityId=opportunity_id).first()
     job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
     job.cur_symbol = get_currency_symbol(job.currency)
-    context={'job':job, 'bid':bid, 'singleOgp':singleOgp}
+     # ✅ **Fix Date Formatting**
+    formatted_start_date = singleOgp.start_date.strftime("%Y-%m-%d") if singleOgp.start_date else ""
+    formatted_end_date = singleOgp.end_date.strftime("%Y-%m-%d") if singleOgp.end_date else ""
+
+    context = {
+        'job': job, 
+        'bid': bid, 
+        'singleOgp': singleOgp,
+        'formatted_start_date': formatted_start_date,  # ✅ Correct Format
+        'formatted_end_date': formatted_end_date       # ✅ Correct Format
+    }
+    
 
     return render(request, 'myadmin/singleOngoingProject.html', context)
     
@@ -483,7 +543,7 @@ def bidApproved(request):
         try:
             # Fetch the bid using bid_id
             bid = get_object_or_404(ProjectQuote, projectQuoteId=bid_id)  
-            
+            admin_margin = format_currency(admin_margin, bid.currency)
             # Update the admin margin and bid status
             bid.admin_margin = admin_margin
             bid.admin_bid_status = "approved"
@@ -515,7 +575,7 @@ def bidRejected(request):
         try:
             # Fetch the bid using bid_id
             bid = get_object_or_404(ProjectQuote, projectQuoteId=bid_id)  
-            
+            admin_margin = format_currency(admin_margin, bid.currency)
             # Update the admin margin and bid status
             bid.admin_margin = admin_margin
             bid.admin_bid_status = "rejected"

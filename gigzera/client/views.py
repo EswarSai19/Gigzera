@@ -3,7 +3,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, auth
 from django.contrib.auth.hashers import check_password, make_password
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 import json
 import os
@@ -324,11 +324,34 @@ def cl_singleOgProject(request):
 
     job = ProjectsDisplay.objects.filter(opportunityId=opportunity_id).first()
     job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
+
     job.cur_symbol = get_currency_symbol(job.currency)
-    context={'user':user, 'job':job, 'bid':bid}
+    context={'user':user, 'job':job, 'bid':bid, 'singleOgp':singleOgp}
 
     return render(request, 'client/cl_singleOgProject.html', context)
     
+def cl_updateProgress(request):
+    ongp_id = request.POST.get('ongpId') or request.GET.get('ongpId')
+    if not ongp_id:
+        return JsonResponse({"success": False, "error": "Missing ongpId"}, status=400)
+
+    if request.method == "POST":
+        project_progress = request.POST.get('project_progress')
+
+        if not project_progress:
+            return JsonResponse({"success": False, "error": "Missing project progress"}, status=400)
+
+        try:
+            ongp = get_object_or_404(OngoingProjects, ongProjectId=ongp_id)
+            ongp.progress = int(project_progress)  # Ensure it's an integer
+            ongp.save()
+
+            return JsonResponse({"success": True, "message": "Progress updated successfully"})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)}, status=500)
+
+    return JsonResponse({"success": False, "error": "Invalid request"}, status=400)
+
 
 def cl_viewBids(request):
     user_id = request.session.get('user_id')

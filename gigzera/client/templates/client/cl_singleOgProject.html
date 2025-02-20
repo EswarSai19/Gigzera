@@ -24,8 +24,13 @@
           <li>Payment Gateway</li> -->
     </ul>
     {% endfor %}
-    <p><strong>Total Cost:</strong> {{bid.revised_budget}}</p>
-    <p><strong>Advance Payment:</strong> $3,600</p>
+    <p>
+      <strong>Total Cost:</strong> {{job.cur_symbol}} {{bid.revised_budget}}
+    </p>
+    <p>
+      <strong>Advance Payment:</strong> {{job.cur_symbol}}
+      {{bid.advance_payment}}
+    </p>
     <p><strong>Milestone Payments:</strong></p>
     <ul>
       <li>
@@ -55,7 +60,7 @@
       </button>
     </div>
     <p>Start: {{job.start_date}}</p>
-    <p>End: Mar 15, 2025</p>
+    <p>End: {{singleOgp.end_date}}</p>
   </div>
   <!-- Main Content -->
   <div class="project-header">
@@ -71,7 +76,7 @@
 
         <!-- Right Section: Percentage and Edit Icon -->
         <div class="progress-percentage">
-          <strong id="progressPercentage">79%</strong>
+          <strong id="progressPercentage">{{singleOgp.progress}}%</strong>
           <button
             id="editProgressIcon"
             class="edit-btn"
@@ -85,15 +90,32 @@
       <!-- Progress Bar in a Separate Row -->
       <div class="progress-bar-container">
         <div class="progress-bar">
-          <div id="progressFill" class="progress" style="width: 79%"></div>
+          <div
+            id="progressFill"
+            class="progress"
+            data-progress="{{ singleOgp.progress }}"
+          ></div>
         </div>
       </div>
     </div>
-    <div id="progressEditForm" class="progress-edit hidden">
-      <input type="number" id="newProgress" min="0" max="100" value="79" />
-      <button onclick="updateProgress()">Update</button>
-    </div>
-
+    <form
+      id="updateProgress"
+      action="{% url 'cl_updateProgress' %}?ongpId={{singleOgp.ongProjectId}}"
+      method="POST"
+    >
+      {% csrf_token %}
+      <div id="progressEditForm" class="progress-edit hidden">
+        <input
+          type="number"
+          id="newProgress"
+          name="project_progress"
+          min="0"
+          max="100"
+          value="{{singleOgp.progress}}"
+        />
+        <button type="submit" onclick="updateProgress()">Update</button>
+      </div>
+    </form>
     <!-- Tasks -->
     <div class="tasks-box">
       <div class="tasks-header">

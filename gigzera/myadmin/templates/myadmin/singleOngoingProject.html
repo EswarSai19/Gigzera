@@ -142,9 +142,21 @@
               </button> -->
         </div>
         <div class="edit-table">
-          <input type="date" id="startDate" value="2025-01-15" disabled />
+          <input
+            type="date"
+            id="startDate"
+            name="start_date"
+            value="{{formatted_start_date}}"
+            disabled
+          />
           <span>to</span>
-          <input type="date" id="endDate" value="2025-03-15" disabled />
+          <input
+            type="date"
+            id="endDate"
+            name="end_date"
+            value="{{formatted_end_date}}"
+            disabled
+          />
         </div>
       </div>
     </div>
@@ -167,10 +179,21 @@
         <table class="edit-table" id="financeTable">
           <tr>
             <td>Labor Cost</td>
+            <!-- <td>
+              <div class="labor-costing-box">
+                <div id="laborCosting">{{job.cur_symbol}} {{bid.budget}}</div>
+              </div>
+            </td> -->
             <td>
               <div class="input-wrapper">
-                <span class="dollar-sign">$</span>
-                <input type="number" id="laborCost" value="8000" disabled />
+                <span class="dollar-sign">{{job.cur_symbol}}</span>
+                <input
+                  type="text"
+                  id="laborCost"
+                  class="laborCost"
+                  value="{{bid.budget}}"
+                  disabled
+                />
               </div>
             </td>
           </tr>
@@ -178,11 +201,12 @@
             <td>Consulting Charges</td>
             <td>
               <div class="input-wrapper">
-                <span class="dollar-sign">$</span>
+                <span class="dollar-sign">{{job.cur_symbol}}</span>
                 <input
-                  type="number"
+                  type="text"
                   id="consultingCharges"
-                  value="4000"
+                  class="consultingCharges"
+                  value="{{bid.admin_margin}}"
                   disabled
                 />
               </div>
@@ -192,7 +216,9 @@
             <td>Total Costing</td>
             <td>
               <div class="total-costing-box">
-                <strong id="totalCosting">$12,000</strong>
+                <strong id="totalCosting"
+                  >{{job.cur_symbol}} {{bid.revised_budget}}</strong
+                >
               </div>
             </td>
           </tr>
@@ -200,11 +226,11 @@
             <td>Advance Payment</td>
             <td>
               <div class="input-wrapper">
-                <span class="dollar-sign">$</span>
+                <span class="dollar-sign">{{job.cur_symbol}}</span>
                 <input
-                  type="number"
+                  type="text"
                   id="advancePayment"
-                  value="6000"
+                  value="{{bid.advance_payment}}"
                   disabled
                 />
               </div>

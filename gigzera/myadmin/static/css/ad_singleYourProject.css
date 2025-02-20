@@ -348,8 +348,23 @@ body {
 
 .timeline .edit-table {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    gap: 30px;
+}
+
+.timeline .edit-table span {
+    margin-right: 20px;
+}
+
+.timeline-btn {
+    padding: 5px 12px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-left: 10px;
 }
 
 .timeline .edit-table input[type="date"] {
@@ -360,6 +375,7 @@ body {
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 14px;
+    margin-right: 20px;
     /* Smaller font size */
     color: black;
 }
