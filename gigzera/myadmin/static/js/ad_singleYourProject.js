@@ -300,7 +300,6 @@ document.querySelectorAll("#milestoneTable tr").forEach((row) => {
 });
 
 //  New script part for adding the functionality of the updating progress and status
-
 document.addEventListener("DOMContentLoaded", function () {
   let form = document.getElementById("updateStatusProgress");
 
@@ -346,4 +345,41 @@ document.addEventListener("DOMContentLoaded", function () {
     let progressValue = parseInt(progressElement.dataset.progress, 10) || 0;
     progressElement.style.width = progressValue + "%";
   }
+});
+
+// Update time lines funcitonality
+document.addEventListener("DOMContentLoaded", function () {
+  let datesForm = document.getElementById("updateDates");
+
+  if (!datesForm) return; // Ensure form exists before adding event listeners
+
+  datesForm.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent full page reload
+
+    let formData = new FormData(datesForm);
+
+    fetch(datesForm.action, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert("Timeline updated successfully!");
+
+          // Disable inputs after update
+          document.getElementById("startDate").disabled = true;
+          document.getElementById("endDate").disabled = true;
+
+          // Hide update button
+          document.getElementById("updateButton").classList.add("hidden");
+        } else {
+          alert("Error: " + data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred while updating the timeline.");
+      });
+  });
 });
