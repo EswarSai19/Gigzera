@@ -123,26 +123,24 @@ body {
 .job-cards {
     display: flex;
     justify-content: center;
-    /* Centers the job cards horizontally */
-    gap: 60px;
+    gap: 30px;;
     flex-wrap: nowrap;
-    /* Prevents wrapping */
+    align-items: stretch;
+    /* Ensures all cards are of equal height */
 }
 
 .featured-jobs .job-card {
     background: #728c98;
-    /* Default background color */
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 25px;
-    /* Default padding */
+    padding: 15px;
     text-align: left;
-    flex: 0 0 calc(33.33% - 20px);
-    /* Ensures equal width for all job cards */
+    flex: 0 0 calc(28% - 10px);
     transition: background-color 0.3s ease, transform 0.2s ease;
-    /* Smooth transition */
     position: relative;
-    /* To position the icon */
+    display: flex;
+    flex-direction: column;
+    /* Ensures content stacks properly */
 }
 
 .featured-jobs .job-card:hover {

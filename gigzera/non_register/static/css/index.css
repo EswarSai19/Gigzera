@@ -124,7 +124,7 @@ body {
 .job-cards {
     display: flex;
     justify-content: center;
-    gap: 60px;
+    gap: 30px;;
     flex-wrap: nowrap;
     align-items: stretch;
     /* Ensures all cards are of equal height */
@@ -134,9 +134,9 @@ body {
     background: #728c98;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 25px;
+    padding: 15px;
     text-align: left;
-    flex: 0 0 calc(33.33% - 20px);
+    flex: 0 0 calc(28% - 10px);
     transition: background-color 0.3s ease, transform 0.2s ease;
     position: relative;
     display: flex;
