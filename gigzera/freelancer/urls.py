@@ -16,6 +16,7 @@ urlpatterns = [
     # path('job_detail_partial', views.load_job_details, name='job_detail_partial'),
     path('projectTracking/', views.projectTracking, name='fl_projectTracking'),
     path('singleProjectTracking/', views.singleProjectTracking, name='fl_singleProjectTracking'),
+    path('updateProgress/', views.fl_updateProgress, name='fl_updateProgress'),
     path('submit_contact/', views.fl_contact, name='fl_contact'),
     path('edit_freelancer/', views.edit_freelancer, name='edit_freelancer'),
     path('delete/', views.delete_profile_pic, name='delete_profile_pic'),

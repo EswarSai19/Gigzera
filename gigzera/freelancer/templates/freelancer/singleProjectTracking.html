@@ -27,7 +27,7 @@
     <h3>Budget:</h3>
     <p>{{job.cur_symbol}} {{bid.budget}}</p>
     <h3>Timeline</h3>
-    <p>Start: {{job.start_date}}<br />End: Mar 15, 2025</p>
+    <p>Start: {{job.start_date}}<br />End: {{singleOgp.end_date}}</p>
   </div>
 
   <!-- Main Content -->
@@ -44,7 +44,7 @@
 
         <!-- Right Section: Percentage and Edit Icon -->
         <div class="progress-percentage">
-          <strong id="progressPercentage">79%</strong>
+          <strong id="progressPercentage">{{singleOgp.progress}}%</strong>
           <button
             id="editProgressIcon"
             class="edit-btn"
@@ -58,16 +58,34 @@
       <!-- Progress Bar in a Separate Row -->
       <div class="progress-bar-container">
         <div class="progress-bar">
-          <div id="progressFill" class="progress" style="width: 79%"></div>
+          <div
+            id="progressFill"
+            class="progress"
+            data-progress="{{ singleOgp.progress }}"
+          ></div>
         </div>
         <!-- Project Status Text Below the Bar -->
-        <div class="project-status">Project Status : In Progress</div>
+        <div class="project-status">Project Status : {{singleOgp.status}}</div>
       </div>
     </div>
-    <div id="progressEditForm" class="progress-edit hidden">
-      <input type="number" id="newProgress" min="0" max="100" value="79" />
-      <button onclick="updateProgress()">Update</button>
-    </div>
+    <form
+      id="updateProgress"
+      action="{% url 'fl_updateProgress' %}?ongpId={{singleOgp.ongProjectId}}"
+      method="POST"
+    >
+      {% csrf_token %}
+      <div id="progressEditForm" class="progress-edit hidden">
+        <input
+          type="number"
+          id="newProgress"
+          name="project_progress"
+          min="0"
+          max="100"
+          value="{{singleOgp.progress}}"
+        />
+        <button type="submit" onclick="updateProgress()">Update</button>
+      </div>
+    </form>
 
     <!-- Tasks -->
     <div class="tasks-box">
@@ -257,5 +275,14 @@
 {% endblock %}
 <!-- JS -->
 {% block js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var progressElement = document.getElementById("progressFill");
+
+    var progressValue = parseInt(progressElement.dataset.progress, 10) || 0; // Get value safely
+
+    progressElement.style.width = progressValue + "%";
+  });
+</script>
 <script src="{% static 'js/singleProjectTracking.js' %}"></script>
 {% endblock %}

@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, auth
 from django.contrib.auth.hashers import check_password, make_password
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 import json
 import os
+import locale
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from db_schemas.models import Contact, ProjectQuote, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
@@ -29,6 +30,58 @@ currency_symbols = {
 
 def get_currency_symbol(currency_code):
     return currency_symbols.get(currency_code, "-")
+
+currency_locales = {
+    "USD": "en_US.UTF-8", "EUR": "de_DE.UTF-8", "JPY": "ja_JP.UTF-8",
+    "GBP": "en_GB.UTF-8", "CNY": "zh_CN.UTF-8", "AUD": "en_AU.UTF-8",
+    "CAD": "en_CA.UTF-8", "CHF": "de_CH.UTF-8", "INR": "en_IN.UTF-8",
+    "NZD": "en_NZ.UTF-8"
+}
+
+def clean_number(value, currency_code):
+    """Cleans and converts different numeric formats based on currency rules."""
+    if isinstance(value, (int, float)):  
+        return value  # Already a number
+
+    value = str(value).replace("'", "").replace(" ", "")  # Remove spaces and apostrophes
+
+    if currency_code in ["EUR", "CHF"]:
+        value = value.replace(".", "").replace(",", ".")  # Convert '2.000' → '2000' and '2,50' → '2.50'
+    else:
+        value = value.replace(",", "")  # Convert '2,000' → '2000'
+
+    try:
+        return float(value) if '.' in value else int(value)  
+    except ValueError:
+        raise ValueError(f"Invalid number format: {value}")
+
+def format_currency(amount, currency_code):
+    """Formats the number according to the given currency locale."""
+    try:
+        locale_code = currency_locales.get(currency_code, "en_US.UTF-8")
+        try:
+            locale.setlocale(locale.LC_ALL, locale_code)
+        except locale.Error:
+            print(f"Warning: Locale '{locale_code}' not found. Using default.")
+
+        amount = clean_number(amount, currency_code)  # Clean number before conversion
+
+        if amount.is_integer():
+            formatted_amount = locale.format_string("%d", int(amount), grouping=True)
+        else:
+            formatted_amount = locale.format_string("%.2f", amount, grouping=True)
+
+        # ✅ **Force decimal separator to be '.' (dot) instead of ',' (comma)**
+        if currency_code in ["EUR", "CHF"]:
+            formatted_amount = formatted_amount.replace(",", ".")
+
+        return formatted_amount
+    except ValueError:
+        return "Invalid amount"
+
+# print(format_currency("200000", "USD"))  # Output: 2,000.00
+# print(format_currency("2000", "INR"))  # Output: 2,000.00
+
 
 def index(request):
     user_id = request.session.get('user_id')
@@ -583,13 +636,14 @@ def submit_quote(request):
         # Debugging prints
         print(f"User ID from session: {freelancer_id}")
         print(f"Saving quote for {opportunityId} by {freelancer}")
-
+        formated_budget = format_currency(budget, job.currency)
+        print(f"Budget: {formated_budget} {job.currency}")
         # Store in DB
         ProjectQuote.objects.create(
             freelancer_id=freelancer.userId,  # Use ForeignKey if applicable
             opportunityId=opportunityId,
             currency=job.currency,
-            budget=budget,
+            budget=formated_budget,
             time_estimation=time_estimation,
             comments=comments,
             client_id=job.client_id
@@ -671,9 +725,34 @@ def singleProjectTracking(request):
     job = ProjectsDisplay.objects.filter(opportunityId=opportunity_id).first()
     job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
     job.cur_symbol = get_currency_symbol(job.currency)
-    context={'user':user, 'job':job, 'bid':bid}
+    context={'user':user, 'job':job, 'bid':bid, 'singleOgp':singleOgp}
 
     return render(request, 'freelancer/singleProjectTracking.html', context)
+
+
+def fl_updateProgress(request):
+    ongp_id = request.POST.get('ongpId') or request.GET.get('ongpId')
+    if not ongp_id:
+        return JsonResponse({"success": False, "error": "Missing ongpId"}, status=400)
+
+    if request.method == "POST":
+        project_progress = request.POST.get('project_progress')
+
+        if not project_progress:
+            return JsonResponse({"success": False, "error": "Missing project progress"}, status=400)
+
+        try:
+            ongp = get_object_or_404(OngoingProjects, ongProjectId=ongp_id)
+            ongp.progress = int(project_progress)  # Ensure it's an integer
+            ongp.save()
+
+            return JsonResponse({"success": True, "message": "Progress updated successfully"})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)}, status=500)
+
+    return JsonResponse({"success": False, "error": "Invalid request"}, status=400)
+
+
 
 # Contact form 
 def fl_contact(request):
