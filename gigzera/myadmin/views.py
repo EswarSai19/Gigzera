@@ -106,7 +106,9 @@ def format_currency(amount, currency_code):
             locale.setlocale(locale.LC_ALL, locale_code)
         except locale.Error:
             print(f"Warning: Locale '{locale_code}' not found. Using default.")
-        
+
+        amount = clean_number(amount, currency_code)
+
         if isinstance(amount, int):
             formatted_amount = locale.format_string("%d", amount, grouping=True)
         else:
@@ -134,6 +136,7 @@ def calculate_percentage(amount_str, percentage, currency_code):
     except ValueError:
         return "Invalid amount"
 
+# print("Percentage",calculate_percentage("12223123", 30, "USD"))
 # Example usage
 # print(add_and_format("2,00,000", "5,000", "INR"))  # Output: ₹ 2,05,000
 # print(add_and_format("200000", "5000", "USD"))  # Output: $ 205,000
@@ -414,9 +417,9 @@ def singleYourProject(request):
         return redirect('ad_yourProjects')  # Redirect safely
 
     # Fix budget calculations
-    ad_payment = bid.revised_budget.replace(",", "").strip()
-    amount = float(ad_payment)
-    bid.advance_payment = amount * (30 / 100)
+    # ad_payment = bid.revised_budget.replace(",", "").strip()
+    # amount = float(ad_payment)
+    # bid.advance_payment = amount * (30 / 100)
 
     job = ProjectsDisplay.objects.filter(opportunityId=opportunity_id).first()
 
@@ -548,6 +551,7 @@ def bidApproved(request):
             bid.admin_margin = admin_margin
             bid.admin_bid_status = "approved"
             bid.revised_budget = add_and_format(bid.budget, bid.admin_margin, bid.currency)
+            bid.advance_payment = calculate_percentage(bid.revised_budget, 30, bid.currency)
             bid.save()  # Save changes
 
             print(f"Updated bid {bid_id}: admin_margin={admin_margin}, bid_status=approved")
@@ -580,6 +584,7 @@ def bidRejected(request):
             bid.admin_margin = admin_margin
             bid.admin_bid_status = "rejected"
             bid.revised_budget = add_and_format(bid.budget, bid.admin_margin, job.currency)
+            bid.advance_payment = calculate_percentage(bid.revised_budget, 30, bid.currency)
             bid.save()  # Save changes
 
             print(f"Updated bid {bid_id}: admin_margin={admin_margin}, bid_status=approved")

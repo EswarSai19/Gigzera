@@ -87,7 +87,7 @@ function toggleTimelineEdit(event) {
 // Toggle Finance Edit Mode
 function toggleFinanceEdit(symbol) {
   const financeInputs = document.querySelectorAll(
-    ".finance .edit-table .consultingCharges, .finance .edit-table select, .milestone-btn"
+    ".consultingCharges, .advancePayment, .finance .edit-table select, .milestone-btn, .mile_stone_input"
   );
   const deleteIcons = document.querySelectorAll(".delete-icon"); // Select all delete icons
 
