@@ -352,8 +352,9 @@
               <div class="input-wrapper">
                 <span class="dollar-sign">{{job.cur_symbol}}</span>
                 <input
-                  type="number"
+                  type="text"
                   id="advancePayment"
+                  class="advancePayment"
                   value="{{bid.advance_payment}}"
                   disabled
                 />
@@ -374,11 +375,11 @@
         <!-- <h4><strong>Milestone Payments</strong></h4> -->
         <table class="edit-table" id="milestoneTable">
           <tr>
-            <td><input type="date" disabled /></td>
+            <td><input type="date" class="mile_stone_input" disabled /></td>
             <td>
               <div class="input-wrapper">
                 <span class="dollar-sign">$</span>
-                <input type="number" placeholder="Amount" disabled />
+                <input type="number" class="mile_stone_input" placeholder="Amount" disabled />
               </div>
             </td>
             <td>
@@ -389,11 +390,11 @@
             </td>
           </tr>
           <tr>
-            <td><input type="date" disabled /></td>
+            <td><input type="date" class="mile_stone_input" disabled /></td>
             <td>
               <div class="input-wrapper">
                 <span class="dollar-sign">$</span>
-                <input type="number" placeholder="Amount" disabled />
+                <input type="number" class="mile_stone_input" placeholder="Amount" disabled />
               </div>
             </td>
             <td>
