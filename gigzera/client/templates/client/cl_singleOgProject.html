@@ -31,22 +31,23 @@
       <strong>Advance Payment:</strong> {{job.cur_symbol}}
       {{bid.advance_payment}}
     </p>
+
     <p><strong>Milestone Payments:</strong></p>
     <ul>
+      {% for ms in milestones %}
       <li>
-        Feb 15, 2025: $4,200
-        <span class="status pending">
-          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Pending</span
-        >
+        {{ms.date}}: {{job.cur_symbol}} {{ms.amount}}
+        <span class="status_{{ms.cl_status}}"> {{ms.cl_status}}</span>
       </li>
-      <li>
+      {% endfor %}
+      <!-- <li>
         Mar 15, 2025: $4,200
         <span class="status pending">
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Pending</span
         >
-      </li>
+      </li> -->
     </ul>
-
+    <br />
     <div
       style="display: flex; align-items: center; justify-content: space-between"
     >

@@ -424,6 +424,22 @@ body {
     color: #000;
 }
 
+/* .dollar-sign {
+    border: 1px solid red;
+    color: green;
+    margin: auto;
+    display: inline-block;
+    align-items: center;
+} */
+
+.finEditBtns {
+    width: 300px;
+    display: flex;
+    /* border: 1px solid green; */
+    align-items: center;
+    justify-content: right;
+}
+
 /* Mile stone header */
 .milestone-header {
     display: flex;
@@ -498,7 +514,7 @@ body {
 }
 
 /* Milestone Payments Table */
-#milestoneTable input[type="number"],
+#milestoneTable input[type="text"],
 #milestoneTable input[type="date"],
 #milestoneTable select {
     width: calc(100% - 24px);

@@ -273,3 +273,18 @@ class OngoingProjects(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+class Milestones(models.Model):
+    bid = models.ForeignKey(
+        ProjectQuote, 
+        on_delete=models.CASCADE, 
+        related_name='milestones_model'  # Changed related_name to avoid conflict
+    )
+    date = models.DateField()
+    amount = models.CharField(max_length=20, default="0")
+    currency = models.CharField(max_length=10, default="INR")
+    status = models.CharField(max_length=20)
+    created_at = models.DateTimeField(default=now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.date}, {self.status} ({self.amount} are the project details)"
