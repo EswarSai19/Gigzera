@@ -85,55 +85,182 @@ function toggleTimelineEdit(event) {
 
 // Function to update Finance details
 // Toggle Finance Edit Mode
-function toggleFinanceEdit(symbol) {
+// let isToggleUB = false;
+// function toggleFinanceEdit(symbol) {
+//   const financeInputs = document.querySelectorAll(
+//     ".consultingCharges, .advancePayment, .finance .edit-table select, .milestone-btn, .mile_stone_input"
+//   );
+//   const updateFinMilBtn = document.getElementById("updateFinMilBtn");
+//   const deleteIcons = document.querySelectorAll(".delete-icon"); // Select all delete icons
+
+//   // Check current state of inputs
+//   const isEditing = !financeInputs[0].disabled;
+//   isToggleUB = !isToggleUB;
+//   if (isToggleUB) {
+//     updateFinMilBtn.classList.remove("hidden");
+//   } else {
+//     updateFinMilBtn.classList.add("hidden");
+//   }
+
+//   // Update total costing dynamically before exiting edit mode
+//   if (isEditing) {
+//     updateFinance(symbol);
+//   }
+
+//   // Toggle disabled state for inputs
+//   financeInputs.forEach((input) => {
+//     input.disabled = isEditing;
+//   });
+//   // Toggle delete icon functionality (disable it when in edit mode)
+//   deleteIcons.forEach((icon) => {
+//     if (isEditing) {
+//       icon.style.pointerEvents = "none"; // Disable delete icon click in Edit mode
+//       icon.style.opacity = "0.5"; // Dimmed when in edit mode
+//     } else {
+//       icon.style.pointerEvents = "auto"; // Enable delete icon click outside of edit mode
+//       icon.style.opacity = "1"; // Full opacity when not in edit mode
+//     }
+//   });
+// }
+
+// // Update Total Cost Calculation dynamically when user enters values
+// function updateFinance(symbol) {
+//   const laborCost = parseFloat(document.getElementById("laborCost").value || 0);
+//   const consultingCharges = parseFloat(
+//     document.getElementById("consultingCharges").value || 0
+//   );
+
+//   // Calculate Total Costing
+//   const totalCosting = laborCost + consultingCharges;
+//   document.getElementById(
+//     "totalCosting"
+//   ).textContent = `${symbol} ${totalCosting.toFixed(2)}`;
+// }
+
+// // Automatically update total cost when user changes values
+// document.getElementById("laborCost").addEventListener("input", updateFinance);
+// document
+//   .getElementById("consultingCharges")
+//   .addEventListener("input", updateFinance);
+
+function toggleFinanceEdit() {
   const financeInputs = document.querySelectorAll(
     ".consultingCharges, .advancePayment, .finance .edit-table select, .milestone-btn, .mile_stone_input"
   );
+  const updateFinMilBtn = document.getElementById("updateFinMilBtn");
   const deleteIcons = document.querySelectorAll(".delete-icon"); // Select all delete icons
 
   // Check current state of inputs
   const isEditing = !financeInputs[0].disabled;
 
-  // Update total costing dynamically before exiting edit mode
-  if (isEditing) {
-    updateFinance(symbol);
+  if (!isEditing) {
+    updateFinMilBtn.classList.remove("hidden");
+  } else {
+    updateFinMilBtn.classList.add("hidden");
+    updateFinance(); // Update total cost dynamically before exiting edit mode
   }
 
   // Toggle disabled state for inputs
   financeInputs.forEach((input) => {
     input.disabled = isEditing;
   });
-  // Toggle delete icon functionality (disable it when in edit mode)
+
+  // Toggle delete icon functionality (disable in edit mode)
   deleteIcons.forEach((icon) => {
-    if (isEditing) {
-      icon.style.pointerEvents = "none"; // Disable delete icon click in Edit mode
-      icon.style.opacity = "0.5"; // Dimmed when in edit mode
-    } else {
-      icon.style.pointerEvents = "auto"; // Enable delete icon click outside of edit mode
-      icon.style.opacity = "1"; // Full opacity when not in edit mode
-    }
+    icon.style.pointerEvents = isEditing ? "none" : "auto";
+    icon.style.opacity = isEditing ? "0.5" : "1";
   });
 }
 
 // Update Total Cost Calculation dynamically when user enters values
-function updateFinance(symbol) {
-  const laborCost = parseFloat(document.getElementById("laborCost").value || 0);
-  const consultingCharges = parseFloat(
-    document.getElementById("consultingCharges").value || 0
+function updateFinance(symbol, total) {
+  console.log("I am here updateFinance");
+
+  // Function to convert formatted numbers (with commas) to proper floats
+  function parseNumber(value) {
+    if (!value) return 0; // Handle empty input
+    return parseFloat(value.replace(/,/g, "")); // Remove commas and convert
+  }
+
+  const laborCost = parseNumber(document.getElementById("laborCost").value);
+  const consultingCharges = parseNumber(
+    document.getElementById("consultingCharges").value
   );
+  const advancePayment = parseNumber(
+    document.getElementById("advancePayment").value
+  );
+
+  console.log("Parsed values:", laborCost, consultingCharges, advancePayment);
+
+  if (isNaN(consultingCharges) || isNaN(advancePayment)) {
+    alert("Invalid numerical values in Consulting Charges or Advance Payment");
+    return;
+  }
+
+  console.log("I am here updateFinance22");
 
   // Calculate Total Costing
   const totalCosting = laborCost + consultingCharges;
-  document.getElementById(
-    "totalCosting"
-  ).textContent = `${symbol} ${totalCosting.toFixed(2)}`;
+  console.log(totalCosting, "Total Costing");
+
+  // Update total costing (ensure it's a text input if needed)
+  document.getElementById("totalCosting").textContent = `${totalCosting.toFixed(
+    2
+  )}`;
 }
 
 // Automatically update total cost when user changes values
-document.getElementById("laborCost").addEventListener("input", updateFinance);
-document
-  .getElementById("consultingCharges")
-  .addEventListener("input", updateFinance);
+// document
+//   .getElementById("consultingCharges")
+//   .addEventListener("input", () => updateFinance());
+// document
+//   .getElementById("advancePayment")
+//   .addEventListener("input", () => updateFinance());
+
+// Automatically update total cost when user changes values
+// document
+//   .getElementById("laborCost")
+//   .addEventListener("input", () => updateFinance("$"));
+// document
+//   .getElementById("consultingCharges")
+//   .addEventListener("input", () => updateFinance("$"));
+
+// Handle form submission via AJAX
+document.addEventListener("DOMContentLoaded", function () {
+  let FinForm = document.querySelector("#financeMilestoneForm");
+
+  if (!FinForm) {
+    console.error("Finance Milestone Form not found! Check your form ID.");
+    return;
+  }
+
+  FinForm.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent full page reload
+
+    let finFormData = new FormData(FinForm);
+
+    fetch(FinForm.action, {
+      method: "POST",
+      body: finFormData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("Form submitted successfully!");
+          alert(data.message); // Show success alert
+          toggleFinanceEdit(); // Lock fields after update
+
+          // Refresh the page with the same URL (including query parameters)
+          window.location.reload();
+        } else {
+          alert("Error: " + data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+      });
+  });
+});
 
 // Function to add a new milestone row with input fields
 function addMilestoneRow() {
@@ -190,37 +317,6 @@ function addMilestoneRow() {
 document
   .getElementById("addMilestoneBtn")
   .addEventListener("click", addMilestoneRow);
-
-// java script for modal
-function openChatModal() {
-  document.getElementById("chatModal").classList.remove("hidden");
-}
-
-// Close the message modal
-function closeChatModal() {
-  document.getElementById("chatModal").classList.add("hidden");
-}
-
-// Send a new message and display it in the message area
-function sendNewMessage() {
-  const input = document.getElementById("newMessageInput");
-  const container = document.getElementById("messageArea");
-
-  if (input.value.trim()) {
-    const messageDiv = document.createElement("div");
-    messageDiv.className = "message-box outgoing mb-3";
-    messageDiv.innerHTML = `   
-      <img src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg" alt="User Avatar" class="avatar-img">
-          <div class="message-content-box">
-              <p>${input.value}</p>  
-              <span class="time-stamp">just now</span>  
-          </div>
-      `;
-    container.appendChild(messageDiv);
-    input.value = "";
-    container.scrollTop = container.scrollHeight;
-  }
-}
 
 // Function to add a new milestone row with input fields
 function addMilestoneRow() {
@@ -283,6 +379,37 @@ function addMilestoneRow() {
 
   // Append the new row to the table
   milestoneTable.appendChild(newRow);
+}
+
+// java script for modal
+function openChatModal() {
+  document.getElementById("chatModal").classList.remove("hidden");
+}
+
+// Close the message modal
+function closeChatModal() {
+  document.getElementById("chatModal").classList.add("hidden");
+}
+
+// Send a new message and display it in the message area
+function sendNewMessage() {
+  const input = document.getElementById("newMessageInput");
+  const container = document.getElementById("messageArea");
+
+  if (input.value.trim()) {
+    const messageDiv = document.createElement("div");
+    messageDiv.className = "message-box outgoing mb-3";
+    messageDiv.innerHTML = `   
+      <img src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg" alt="User Avatar" class="avatar-img">
+          <div class="message-content-box">
+              <p>${input.value}</p>  
+              <span class="time-stamp">just now</span>  
+          </div>
+      `;
+    container.appendChild(messageDiv);
+    input.value = "";
+    container.scrollTop = container.scrollHeight;
+  }
 }
 
 // Add the delete icon to pre-existing rows as well

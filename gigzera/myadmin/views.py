@@ -11,7 +11,7 @@ import locale
 from itertools import chain
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from db_schemas.models import Contact, ProjectQuote, Client, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
+from db_schemas.models import Contact, ProjectQuote, Client, Milestones, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
 from django.core.exceptions import ValidationError
 from datetime import datetime
 
@@ -118,6 +118,27 @@ def format_currency(amount, currency_code):
     except ValueError:
         return "Invalid amount"
 
+def divide_budget(revised_budget, advance_payment, currency, no_of_parts):
+    """Divides the remaining budget into equal parts after deducting advance payment."""
+    # Convert string inputs to numbers
+    revised_budget = clean_number(revised_budget, currency)
+    advance_payment = clean_number(advance_payment, currency)
+
+    # Calculate remaining budget
+    remaining_budget = revised_budget - advance_payment
+
+    if no_of_parts <= 0:
+        raise ValueError("Number of parts must be greater than 0.")
+
+    # Calculate equal parts
+    part_amount = remaining_budget / no_of_parts
+
+    # Format and return results
+    return [format_currency(part_amount, currency) for _ in range(no_of_parts)]
+
+# Example usage
+# parts = divide_budget("10.000", "2.500", "EUR", 2)
+# print(parts)
 # Test cases
 # print(f"EUR: {add_and_format('1.000', '3.00', 'EUR')}")  # Expected: 1.300 (1,000 + 300)
 # print(f"JPY: {add_and_format('325,000', '231,124', 'JPY')}")  # Expected: 556,124
@@ -186,21 +207,6 @@ def dashboard(request):
     print(context)
     return render(request, 'myadmin/dashboard.html', context)
 
-# def freelancers(request):
-#     users = Freelancer.objects.all().order_by('-created_at')
-#     ac_users = Freelancer.objects.all().filter(is_active=True).order_by('-created_at')
-#     ban_users = Freelancer.objects.all().filter(is_active=False).order_by('-created_at')
-#     total_users = format_currency(len(users), "INR")
-#     active_users = format_currency(len(ac_users), "INR")
-#     baned_users = format_currency(len(ban_users), "INR")
-#     context = {
-#         'users': users,
-#         'total_users': total_users,
-#         'active_users': active_users,
-#         'baned_users': baned_users,
-#     }
-#     print(context)
-#     return render(request, 'myadmin/freelancers.html', context)
 
 def freelancers(request, filter_type=None):
     # Get all users by default
@@ -399,8 +405,10 @@ def yourProjects(request):
     # print("Projects",len(my_projects))
     # return render(request, 'myadmin/yourProjects.html', {'my_projects': my_projects})
 
+
 def singleYourProject(request):
-    ongp_id = request.GET.get('ongpId')
+
+    ongp_id = request.GET.get('ongpId') or request.POST.get('ongpId')
     print("Here is the ID:", ongp_id)
 
     singleOgp = OngoingProjects.objects.filter(ongProjectId=ongp_id).first()
@@ -426,16 +434,19 @@ def singleYourProject(request):
     if job:
         job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
         job.cur_symbol = get_currency_symbol(job.currency)
-
+    milestones = Milestones.objects.filter(bid_id=bid.projectQuoteId).all()
     context = {
         'job': job,
         'bid': bid,
-        'singleOgp': singleOgp
+        'singleOgp': singleOgp,
+        'milestones': milestones
     }
-    print("Context", context)
-    print(f"Date: {singleOgp.start_date}, {singleOgp.end_date}")
+    # print("Context", context)
+    # print(f"Date: {singleOgp.start_date}, {singleOgp.end_date}")
 
+    
     return render(request, 'myadmin/singleYourProject.html', context)
+
 
 def updateProgressStatus(request):
     ongp_id = request.POST.get('ongpId') or request.GET.get('ongpId')
@@ -462,8 +473,8 @@ def updateProgressStatus(request):
 
 
 def updateTimelines(request):
+    ongp_id = request.POST.get('ongpId') or request.GET.get('ongpId')
     if request.method == "POST":
-        ongp_id = request.POST.get("ongpId")  # Ensure this ID is passed
         start_date = request.POST.get("start_date")
         end_date = request.POST.get("end_date")
 
@@ -478,6 +489,56 @@ def updateTimelines(request):
             return JsonResponse({"success": False, "error": str(e)})
 
     return JsonResponse({"success": False, "error": "Invalid request"})
+
+def updateFinanceMilestones(request):
+    bid_id = request.POST.get('bidId') or request.GET.get('bidId')
+
+    if request.method == "POST":
+        consulting_charges = request.POST.get("consulting_charges")
+        advance_payment = request.POST.get("advance_payment")
+        print("I am getting details in updateFinanceMilestones", bid_id, consulting_charges, advance_payment)
+
+        try:
+            project = get_object_or_404(ProjectQuote, projectQuoteId=bid_id)
+            project.admin_margin = format_currency(consulting_charges, project.currency)
+            project.revised_budget = add_and_format(project.budget, project.admin_margin, project.currency)
+            project.advance_payment = format_currency(advance_payment, project.currency)
+            project.save()
+
+            return JsonResponse({"success": True, "message": "Timeline updated successfully"})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
+
+    return JsonResponse({"success": False, "error": "Invalid request"})
+
+
+# def updateFinanceMilestones(request):
+#     ongp_id = request.POST.get("bidId") or request.GET.get("bidId")
+
+#     if request.method == "POST":
+#         consulting_charges = request.POST.get("consulting_charges", "0").strip()
+#         advance_payment = request.POST.get("advance_payment", "0").strip()
+
+#         print("Received details:", ongp_id, consulting_charges, advance_payment)
+
+#         try:
+#             project = get_object_or_404(ProjectQuote, projectQuoteId=ongp_id)
+
+#             # Update values
+#             project.admin_margin = format_currency(consulting_charges, project.currency)
+#             project.revised_budget = add_and_format(project.budget, consulting_charges, project.currency)
+#             project.advance_payment = format_currency(advance_payment, project.currency)
+            
+#             project.save()
+
+#             return JsonResponse({"success": True, "message": "Finance milestones updated successfully"})
+#             # return render(request, 'myadmin/singleYourProject.html', context)
+#         except ValueError:
+#             return JsonResponse({"success": False, "error": "Invalid numerical values"})
+#         except Exception as e:
+#             return JsonResponse({"success": False, "error": str(e)})
+
+#     return JsonResponse({"success": False, "error": "Invalid request method"})
 
 
 

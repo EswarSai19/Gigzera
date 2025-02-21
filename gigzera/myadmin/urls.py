@@ -16,6 +16,7 @@ urlpatterns = [
     path('singleOngoingProject/', views.singleOngoingProject, name='ad_singleOngoingProject'),
     path('updateProgressStatus/', views.updateProgressStatus, name='ad_updateProgressStatus'),
     path('updateTimelines/', views.updateTimelines, name='ad_updateTimelines'),
+    path('updateFinanceMilestones/', views.updateFinanceMilestones, name='ad_updateFinanceMilestones'),
     path('yourProjects/', views.yourProjects, name='ad_yourProjects'),
     path('singleYourProject/', views.singleYourProject, name='ad_singleYourProject'),
     path('userManagement/', views.userManagement, name='ad_userManagement'),
