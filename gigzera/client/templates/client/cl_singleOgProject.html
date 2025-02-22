@@ -37,7 +37,7 @@
       {% for ms in milestones %}
       <li>
         {{ms.date}}: {{job.cur_symbol}} {{ms.amount}}
-        <span class="status_{{ms.cl_status}}"> {{ms.cl_status}}</span>
+        <span class="status_{{ms.cl_status}}"> {{ms.status}}</span>
       </li>
       {% endfor %}
       <!-- <li>
@@ -52,13 +52,13 @@
       style="display: flex; align-items: center; justify-content: space-between"
     >
       <strong>Timeline:</strong>
-      <button
+      <!-- <button
         class="change-request-button"
         onclick="openModal()"
         style="margin-left: auto"
       >
         Change Request
-      </button>
+      </button> -->
     </div>
     <p>Start: {{job.start_date}}</p>
     <p>End: {{singleOgp.end_date}}</p>
@@ -97,6 +97,8 @@
             data-progress="{{ singleOgp.progress }}"
           ></div>
         </div>
+        <!-- Project Status Text Below the Bar -->
+        <div class="project-status">Project Status : {{singleOgp.status}}</div>
       </div>
     </div>
     <form
@@ -118,7 +120,7 @@
       </div>
     </form>
     <!-- Tasks -->
-    <div class="tasks-box">
+    <!-- <div class="tasks-box">
       <div class="tasks-header">
         <h3>Tasks</h3>
         <div>
@@ -168,6 +170,59 @@
           </div>
         </div>
       </div>
+    </div> -->
+    <div class="tasks-box">
+      <div class="tasks-header">
+        <h3>Tasks</h3>
+        <div>
+          <button class="add-task-btn" id="addTaskBtn">+ Add Task</button>
+          <button class="delete-selected-btn" id="deleteSelectedBtn">
+            Delete Selected
+          </button>
+        </div>
+      </div>
+      <div class="task-list">
+        <div class="task">
+          <div class="task-row">
+            <input type="checkbox" class="task-checkbox" />
+            <label class="task-title">Create wireframes</label>
+            <i class="fa-solid fa-pen-to-square edit-icon"></i>
+            <select>
+              <option>Requirement Gathering</option>
+              <option>Designing</option>
+              <option>Development</option>
+              <option>Testing</option>
+              <option>UAT</option>
+              <option>Completed</option>
+            </select>
+          </div>
+          <div class="task-comment">
+            <button onclick="openChatModal()" class="comment-button" disabled>
+              Add Comment
+            </button>
+          </div>
+        </div>
+        <div class="task">
+          <div class="task-row">
+            <input type="checkbox" class="task-checkbox" />
+            <label class="task-title">Design system setup</label>
+            <i class="fa-solid fa-pen-to-square edit-icon"></i>
+            <select>
+              <option>Requirement Gathering</option>
+              <option>Designing</option>
+              <option>Development</option>
+              <option>Testing</option>
+              <option>UAT</option>
+              <option>Completed</option>
+            </select>
+          </div>
+          <div class="task-comment">
+            <button onclick="openChatModal()" class="comment-button" disabled>
+              Add Comment
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -205,6 +260,85 @@
     <div class="message-input">
       <input type="text" placeholder="Type your message..." id="messageInput" />
       <button onclick="sendMessage()">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M22 2L11 13"></path>
+          <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Message Modal -->
+<div
+  id="chatModal"
+  class="fixed inset-0 flex items-center justify-center hidden bg-black bg-opacity-50"
+>
+  <div
+    class="modal-container bg-white p-8 rounded-lg shadow-lg w-[500px] h-[600px] max-w-full flex flex-col justify-between"
+  >
+    <div class="modal-header">
+      <h2 class="text-xl font-semibold mb-4">Add Comments</h2>
+      <!-- <span class="user-status">Online</span> -->
+      <button
+        onclick="closeChatModal()"
+        class="text-gray-500 hover:text-gray-700 text-3xl"
+      >
+        &times;
+      </button>
+    </div>
+
+    <!-- Message Display Area -->
+    <div
+      id="messageArea"
+      class="flex-grow overflow-y-auto mb-4 border p-4 rounded bg-gray-100"
+    >
+      <!-- Messages will be added dynamically here -->
+      <div class="message-box incoming mb-3">
+        <img
+          src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
+          alt="User Avatar"
+          class="avatar-img"
+        />
+        <div class="message-content-box">
+          <p>Can you share the latest wireframes?</p>
+          <span class="time-stamp">10:30 AM</span>
+        </div>
+      </div>
+      <div class="message-box outgoing mb-3">
+        <img
+          src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
+          alt="User Avatar"
+          class="avatar-img"
+        />
+        <div class="message-content-box">
+          <p>I'll share them by end of day.</p>
+          <span class="time-stamp">10:32 AM</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Field for New Message -->
+    <div class="input-section">
+      <input
+        type="text"
+        placeholder="Type your message..."
+        id="newMessageInput"
+        class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <button
+        onclick="sendNewMessage()"
+        class="send-message-btn px-5 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
+      >
         <svg
           width="20"
           height="20"

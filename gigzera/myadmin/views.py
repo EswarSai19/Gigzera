@@ -505,7 +505,64 @@ def updateFinanceMilestones(request):
             project.advance_payment = format_currency(advance_payment, project.currency)
             project.save()
 
+            milestones = Milestones.objects.filter(bid_id=bid_id)
+            for milestone in milestones:
+                delete_flag = request.POST.get(f"{milestone.id}_delete")
+                if delete_flag == "1":
+                    milestone.delete()
+                    continue  # Skip updating this milestone
+                milestone_date = request.POST.get(f"{milestone.id}_date")
+                milestone_amount = request.POST.get(f"{milestone.id}_amount")
+                milestone_status = request.POST.get(f"{milestone.id}_status")
+
+                if milestone_date:
+                    milestone.date = milestone_date
+                if milestone_amount:
+                    milestone.amount = milestone_amount
+                if milestone_status:
+                    milestone.status = milestone_status
+                
+                milestone.save()
+
             return JsonResponse({"success": True, "message": "Timeline updated successfully"})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
+
+    return JsonResponse({"success": False, "error": "Invalid request"})
+
+def delete_milestone(request):
+    if request.method == "POST":
+        milestone_id = request.POST.get("milestone_id")
+        if not milestone_id:
+            return JsonResponse({"success": False, "error": "Milestone ID is required"})
+
+        try:
+            milestone = get_object_or_404(Milestones, id=milestone_id)
+            milestone.delete()
+            return JsonResponse({"success": True, "message": "Milestone deleted successfully"})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
+
+    return JsonResponse({"success": False, "error": "Invalid request"})
+
+
+def add_milestone(request):
+
+    if request.method == "POST":
+        try:
+            bid_id = request.POST.get("bidId")
+            date = request.POST.get("ad_ms_date")
+            amount = request.POST.get("ad_ms_amount")
+            status = request.POST.get("ad_ms_status")
+
+            if date and amount and status:
+                Milestones.objects.create(
+                    bid_id=bid_id,
+                    date=str(date),
+                    amount=amount,
+                    status=status,
+                )
+                return redirect(request.META.get("HTTP_REFERER", "/"))
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
 
