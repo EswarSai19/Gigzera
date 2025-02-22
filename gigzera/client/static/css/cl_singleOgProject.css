@@ -17,7 +17,7 @@ body {
 }
 
 .sidebar {
-    width: 550px;
+    width: 30%;
     background-color: #fff;
     padding: 10px;
     border-radius: 8px;
@@ -55,7 +55,6 @@ body {
 
 /* Main Content */
 .main-content {
-    width: 70%;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -71,6 +70,7 @@ body {
 
 /* Project Header Box */
 .project-header {
+    width: 45%;
     border: 1px solid #ddd;
     padding: 20px;
     background-color: #fff;
@@ -300,7 +300,7 @@ body {
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    width: 550px;
+    /* width: 550px; */
 
 }
 
@@ -500,7 +500,7 @@ textarea:focus {
 /* Messages Section */
 /* Styles for the messages container */
 .messages {
-    width: 40%;
+    width: 25%;
     /* Increased width slightly */
     padding: 20px;
     background-color: #fff;
