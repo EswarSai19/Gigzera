@@ -10,6 +10,9 @@ import json
 def generate_client_id():
     return f"CL{str(uuid.uuid4().int)[:8]}"
 
+def generate_task_id():
+    return f"TS{str(uuid.uuid4().int)[:3]}"
+
 def generate_projectquote_id():
     return f"PQ{str(uuid.uuid4().int)[:5]}"
 
@@ -272,4 +275,41 @@ class OngoingProjects(models.Model):
     progress = models.CharField(max_length=5, default='0')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class Milestones(models.Model):
+    bid = models.ForeignKey(
+        ProjectQuote, 
+        on_delete=models.CASCADE, 
+        related_name='milestones_model'  # Changed related_name to avoid conflict
+    )
+    date = models.DateField()
+    amount = models.CharField(max_length=20, default="0")
+    currency = models.CharField(max_length=10, default="INR")
+    status = models.CharField(max_length=20)
+    created_at = models.DateTimeField(default=now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.date}, {self.status} ({self.amount} are the project details)"
+
+
+class Tasks(models.Model):
+    taskId = models.CharField(
+        primary_key=True, max_length=8, default=generate_task_id, editable=False
+    )
+    taskBid = models.ForeignKey(
+        ProjectQuote, 
+        on_delete=models.CASCADE, 
+        related_name='tasks_model'  # Changed related_name to avoid conflict
+    )
+    title = models.DateField()
+    status = models.CharField(max_length=20, default="Requirement Gathering")
+    isChecked = models.BooleanField(default=False)
+    comments = models.JSONField(null=True, blank=True)
+    created_at = models.DateTimeField(default=now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.title}, {self.status} ({self.isChecked} are the task details)"
 

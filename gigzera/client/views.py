@@ -10,7 +10,7 @@ import os
 import locale
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
-from db_schemas.models import Client, ProjectsDisplay, OngoingProjects, Contact, ProjectQuote, Freelancer, EmploymentHistory,Certificate, Skill
+from db_schemas.models import Client, ProjectsDisplay, Milestones, OngoingProjects, Contact, ProjectQuote, Freelancer, EmploymentHistory,Certificate, Skill
 from django.core.exceptions import ValidationError
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
@@ -33,6 +33,107 @@ def calculate_end_date(start_date: str, option: str) -> str:
     end_date_obj = start_date_obj + relativedelta(months=months_to_add)
 
     return end_date_obj.strftime("%Y-%m-%d")
+
+
+
+def divide_dates(start_date: str, end_date: str):
+    # Convert strings to datetime objects
+    start = datetime.strptime(start_date, "%Y-%m-%d")
+    end = datetime.strptime(end_date, "%Y-%m-%d")
+
+    # Calculate the total duration
+    total_days = (end - start).days
+
+    # Check if total_days can be divided into 3 parts
+    if total_days < 3:
+        return "Date range is too short to divide into 3 parts."
+
+    # Calculate the interval for each part
+    interval = total_days // 3
+
+    # Find the last two division points
+    part2 = start + timedelta(days=interval)   # End of 1st part
+    part3 = part2 + timedelta(days=interval)   # End of 2nd part
+
+    # Return dates in "YYYY-MM-DD" format
+    return part2.strftime("%Y-%m-%d"), part3.strftime("%Y-%m-%d")
+
+
+currency_locales = {
+    "USD": "en_US.UTF-8", "EUR": "de_DE.UTF-8", "JPY": "ja_JP.UTF-8", 
+    "GBP": "en_GB.UTF-8", "CNY": "zh_CN.UTF-8", "AUD": "en_AU.UTF-8", 
+    "CAD": "en_CA.UTF-8", "CHF": "de_CH.UTF-8", "INR": "en_IN.UTF-8", "NZD": "en_NZ.UTF-8"
+}
+
+def clean_number(value, currency_code):
+    """Cleans and converts numbers based on currency format."""
+    if isinstance(value, (int, float)):
+        return value  # Already a number
+    
+    value = str(value).replace("'", "").replace(" ", "")  # Remove Swiss & extra spaces
+    
+    if currency_code in ["EUR", "DE", "FR", "CHF"]:  # European style (dot as thousand separator)
+        value = value.replace(".", "").replace(",", ".")  # Remove thousand dots & fix decimal commas
+    else:  # Standard format (comma as thousand separator)
+        value = value.replace(",", "")
+
+    try:
+        return float(value) if "." in value else int(value)  # Convert to int if no decimals
+    except ValueError:
+        raise ValueError(f"Invalid number format: {value}")
+
+def add_and_format(budget, admin_margin, currency_code):
+    """Adds two numbers and formats them based on the currency code."""
+    budget = clean_number(budget, currency_code)
+    admin_margin = clean_number(admin_margin, currency_code)
+    
+    total = budget + admin_margin  # Calculate sum
+    print(f"Total is {total}")
+    
+    return format_currency(total, currency_code)
+
+def format_currency(amount, currency_code):
+    """Formats the number according to the given currency locale."""
+    try:
+        locale_code = currency_locales.get(currency_code, "en_US.UTF-8")
+        try:
+            locale.setlocale(locale.LC_ALL, locale_code)
+        except locale.Error:
+            print(f"Warning: Locale '{locale_code}' not found. Using default.")
+
+        amount = clean_number(amount, currency_code)
+
+        if isinstance(amount, int):
+            formatted_amount = locale.format_string("%d", amount, grouping=True)
+        else:
+            formatted_amount = locale.format_string("%.2f", amount, grouping=True)
+
+        return formatted_amount
+    except ValueError:
+        return "Invalid amount"
+
+def divide_budget(revised_budget, advance_payment, currency, no_of_parts):
+    """Divides the remaining budget into equal parts after deducting advance payment."""
+    # Convert string inputs to numbers
+    revised_budget = clean_number(revised_budget, currency)
+    advance_payment = clean_number(advance_payment, currency)
+
+    # Calculate remaining budget
+    remaining_budget = revised_budget - advance_payment
+
+    if no_of_parts <= 0:
+        raise ValueError("Number of parts must be greater than 0.")
+
+    # Calculate equal parts
+    part_amount = remaining_budget / no_of_parts
+
+    # Format and return results
+    return [format_currency(part_amount, currency) for _ in range(no_of_parts)]
+
+# Example usage
+print(divide_dates("2024-01-01", "2024-02-20"))  # Example: 50 days
+
+
 
 # Example usage:
 # start_date = "2025-02-19"
@@ -324,9 +425,14 @@ def cl_singleOgProject(request):
 
     job = ProjectsDisplay.objects.filter(opportunityId=opportunity_id).first()
     job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
-
     job.cur_symbol = get_currency_symbol(job.currency)
-    context={'user':user, 'job':job, 'bid':bid, 'singleOgp':singleOgp}
+
+    milestones = Milestones.objects.filter(bid_id=bid.projectQuoteId)
+    for milestone in milestones:
+        milestone.cur_symbol = get_currency_symbol(milestone.currency)
+        milestone.cl_status = milestone.status.lower()
+
+    context={'user':user, 'job':job, 'bid':bid, 'singleOgp':singleOgp, 'milestones':milestones}
 
     return render(request, 'client/cl_singleOgProject.html', context)
     
@@ -460,6 +566,8 @@ def cl_bidApproved(request):
             job = ProjectsDisplay.objects.filter(opportunityId=bid.opportunityId).first()
             og_start_date = job.start_date
             og_end_date = calculate_end_date(str(job.start_date), job.duration)
+            ms_date1, ms_date2 = divide_dates(str(og_start_date), str(og_end_date))
+            ms_amt1, ms_amt2 = divide_budget(bid.revised_budget, bid.advance_payment, job.currency, 2)
             # ONG recored creation:
             OngoingProjects.objects.create(
                 opportunityId = bid.opportunityId,
@@ -472,6 +580,9 @@ def cl_bidApproved(request):
                 client_id = bid.client_id,
                 freelancer_id = bid.freelancer_id
             )
+
+            Milestones.objects.create(date=ms_date1, amount=ms_amt1, currency=job.currency, status="Pending", bid_id=bid_id)
+            Milestones.objects.create(date=ms_date2, amount=ms_amt2, currency=job.currency, status="Pending", bid_id=bid_id)
 
             print(f"Updated bid {bid_id}: bid_status=approved")
             messages.success(request, "Bid was sent to freelancer successfully")

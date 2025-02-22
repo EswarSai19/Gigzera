@@ -82,6 +82,21 @@ def format_currency(amount, currency_code):
 # print(format_currency("200000", "USD"))  # Output: 2,000.00
 # print(format_currency("2000", "INR"))  # Output: 2,000.00
 
+def calculate_percentage(amount_str, percentage, currency_code):
+    """Calculates a percentage of the given amount and formats it."""
+    print(f" I am getting the amount {amount_str} {percentage} {currency_code}")
+    numeric_part = amount_str.replace(",", "").strip()  # Extract numeric value
+
+    try:
+        amount = float(str(numeric_part))
+        percentage_value = amount * (percentage / 100)  # Calculate percentage
+        return format_currency(percentage_value, currency_code)  # Format result
+    except ValueError:
+        return "Invalid amount"
+
+
+
+# Normal functions start
 
 def index(request):
     user_id = request.session.get('user_id')
@@ -637,6 +652,7 @@ def submit_quote(request):
         print(f"User ID from session: {freelancer_id}")
         print(f"Saving quote for {opportunityId} by {freelancer}")
         formated_budget = format_currency(budget, job.currency)
+        admin_margin = calculate_percentage(budget, 30, job.currency)
         print(f"Budget: {formated_budget} {job.currency}")
         # Store in DB
         ProjectQuote.objects.create(
@@ -644,6 +660,7 @@ def submit_quote(request):
             opportunityId=opportunityId,
             currency=job.currency,
             budget=formated_budget,
+            admin_margin=admin_margin,
             time_estimation=time_estimation,
             comments=comments,
             client_id=job.client_id
