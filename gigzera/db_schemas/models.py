@@ -303,8 +303,8 @@ class Tasks(models.Model):
         on_delete=models.CASCADE, 
         related_name='tasks_model'  # Changed related_name to avoid conflict
     )
-    title = models.DateField()
-    status = models.CharField(max_length=20, default="Requirement Gathering")
+    title = models.CharField(max_length=50)
+    status = models.CharField(max_length=50, default="Requirement Gathering")
     isChecked = models.BooleanField(default=False)
     comments = models.JSONField(null=True, blank=True)
     created_at = models.DateTimeField(default=now)
