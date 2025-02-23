@@ -15,6 +15,7 @@ urlpatterns = [
     path('singleOngoingProject/', views.cl_singleOgProject, name='cl_singleOgProject'),
     path("add-task/", views.add_task, name="add_task"),
     path("delete_tasks/", views.delete_tasks, name="delete_tasks"),
+    path('update-task/', views.update_task, name='update_task'),
     path('updateProgress/', views.cl_updateProgress, name='cl_updateProgress'),
     path('singleViewBid/', views.cl_singleViewBid, name='cl_singleViewBid'),
     path('profileView/', views.profileView, name='cl_profileView'),

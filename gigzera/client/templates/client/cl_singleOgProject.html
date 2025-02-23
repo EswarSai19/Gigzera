@@ -121,44 +121,73 @@
     </form>
     <!-- Tasks -->
     <div class="tasks-box">
+      <!-- DELETE FORM (Wraps the delete button and checkboxes only) -->
       <form id="deleteTaskForm" action="{% url 'delete_tasks' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="bid_id" value="{{singleOgp.bidId}}" />
         <div class="tasks-header">
           <h3>Tasks</h3>
-            <div>
-              <button
-                type="button"
-                class="add-task-btn"
-                id="addTaskBtn"
-                onclick="showTaskForm()"
-              >
-                + Add Task
-              </button>
-              <button
-                type="submit"
-                class="delete-selected-btn"
-                id="deleteSelectedBtn"
-              >
-                Delete Selected
-              </button>
-            </div>
-          
+          <div>
+            <button
+              type="button"
+              class="add-task-btn"
+              id="addTaskBtn"
+              onclick="showTaskForm()"
+            >
+              + Add Task
+            </button>
+            <button
+              type="submit"
+              class="delete-selected-btn"
+              id="deleteSelectedBtn"
+            >
+              Delete Selected
+            </button>
+          </div>
         </div>
-        <div class="task-list">
-          {% for task in tasks %}
-          <div class="task">
+      </form>
+
+      <!-- TASK LIST (No Nested Forms) -->
+      <div class="task-list">
+        {% for task in tasks %}
+        <div class="task">
+          <!-- UPDATE FORM (Separate from Delete Form) -->
+          <form
+            method="POST"
+            action="{% url 'update_task' %}"
+            class="update-task-form"
+          >
+            {% csrf_token %}
             <div class="task-row">
+              <input type="hidden" name="task_id" value="{{ task.taskId }}" />
+              <input
+                type="hidden"
+                name="title"
+                class="task-title-input"
+                value="{{ task.title }}"
+              />
               <input
                 type="checkbox"
-                name="{{ task.taskId }}"
+                name="selected_tasks"
                 class="task-checkbox"
-                data-id="{{ task.taskId |default:'' }}"
-                value="{{ task.taskId|default:'' }}" 
+                data-id="{{ task.taskId | default:'' }}"
+                value="{{ task.taskId | default:'' }}"
+                form="deleteTaskForm"
               />
-              <label class="task-title">{{task.title}}</label>
-              <i class="fa-solid fa-pen-to-square edit-icon"></i>
-              <select name="status" class="task-status">  
+
+              <label
+                class="task-title"
+                contenteditable="true"
+                onblur="updateHiddenInput(this)"
+              >
+                {{ task.title }}
+              </label>
+
+              <select
+                name="status"
+                class="task-status"
+                onchange="submitUpdateForm(this)"
+              >
                 <option {% if task.status == "Requirement Gathering" %}selected{% endif %}>Requirement Gathering</option>
                 <option {% if task.status == "Designing" %}selected{% endif %}>Designing</option>
                 <option {% if task.status == "Development" %}selected{% endif %}>Development</option>
@@ -167,39 +196,24 @@
                 <option {% if task.status == "Completed" %}selected{% endif %}>Completed</option>
               </select>
             </div>
-            <div class="task-comment">
-              <button type="button" onclick="openChatModal()" class="comment-button">
-                Add Comment
-              </button>
-            </div>
+          </form>
+
+          <div class="task-comment">
+            <button
+              type="button"
+              onclick="openChatModal()"
+              class="comment-button"
+            >
+              Add Comment
+            </button>
           </div>
-          {% empty %}
-          <!-- <div class="task">
-            <div class="task-row">
-              <input type="checkbox" class="task-checkbox" />
-              <label class="task-title">New Task</label>
-              <i class="fa-solid fa-pen-to-square edit-icon"></i>
-              <select>
-                <option>Requirement Gathering</option>
-                <option>Designing</option>
-                <option>Development</option>
-                <option>Testing</option>
-                <option>UAT</option>
-                <option>Completed</option>
-              </select>
-            </div>
-            <div class="task-comment">
-              <button onclick="openChatModal()" class="comment-button" disabled>
-                Add Comment
-              </button>
-            </div>
-          </div> -->
-          <div>
-            <h1> You have No tasks were added</h1>
-          </div>
-          {% endfor %}
         </div>
-      </form>
+        {% empty %}
+        <div>
+          <h1>You have No tasks added</h1>
+        </div>
+        {% endfor %}
+      </div>
     </div>
   </div>
 
@@ -207,8 +221,9 @@
   <!-- Task Form (Initially Hidden) -->
   <div
     id="taskFormPopup"
-    class="fixed inset-0 bg-grey-500 bg-opacity-70 flex items-center justify-center hidden">
+    class="fixed inset-0 bg-grey-500 bg-opacity-70 flex items-center justify-center hidden"
   >
+    >
     <div class="bg-white p-6 rounded-lg shadow-lg w-96">
       <h2 class="text-lg font-semibold mb-4">Add Task</h2>
 
