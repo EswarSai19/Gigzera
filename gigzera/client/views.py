@@ -480,7 +480,6 @@ def delete_tasks(request):
     
     return JsonResponse({"success": False, "message": "Invalid request method."})
 
-
 def add_task(request):
     print("I am inside the add task")
     if request.method == "POST":
@@ -498,6 +497,30 @@ def add_task(request):
             return JsonResponse({"success": False, "error": str(e)})
 
     return JsonResponse({"success": False, "error": "Invalid request"})
+
+def update_task(request):
+    if request.method == "POST":
+        task_id = request.POST.get("task_id")  # ✅ Use POST, not GET
+        new_title = request.POST.get("title")  # ✅ Get title from POST
+        new_status = request.POST.get("status")  # ✅ Get status from POST
+        
+        print(f"Updating Task: {task_id}, New Title: {new_title}, New Status: {new_status}")
+
+        if not task_id:
+            return JsonResponse({"success": False, "message": "No tasks selected."}, status=400)
+        
+        try:
+            task = Tasks.objects.get(taskId=task_id)
+            if new_title:
+                task.title = new_title.title()
+            if new_status:
+                task.status = new_status
+            task.save()
+            return JsonResponse({"success": True, "message": "Task updated successfully."})
+        except Tasks.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Task not found."}, status=404)
+    return JsonResponse({"success": False, "message": "Invalid request."}, status=400)
+
 
 
 def cl_viewBids(request):

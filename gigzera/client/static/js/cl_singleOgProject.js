@@ -718,9 +718,9 @@ function addEditFunctionality(task) {
 }
 
 // Initialize edit functionality for existing tasks
-document
-  .querySelectorAll(".task")
-  .forEach((task) => addEditFunctionality(task));
+// document
+//   .querySelectorAll(".task")
+//   .forEach((task) => addEditFunctionality(task));
 
 // Open the message modal when clicking 'Add Comment'
 function openChatModal() {
@@ -942,4 +942,144 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("Something went wrong! Please try again.");
       });
   });
+});
+
+// updating the tasks
+// document.addEventListener("DOMContentLoaded", function () {
+//   document.querySelectorAll(".task-title").forEach((input) => {
+//     input.addEventListener("blur", function () {
+//       console.log("Title changed:", this.value);
+//     });
+//   });
+
+//   document.querySelectorAll(".task-status").forEach((select) => {
+//     select.addEventListener("change", function () {
+//       console.log("Status changed:", this.value);
+//     });
+//   });
+// });
+
+// document.addEventListener("DOMContentLoaded", function () {
+//   document.querySelectorAll(".task-title").forEach((label) => {
+//     label.addEventListener("blur", function () {
+//       updateTask(this);
+//     });
+//   });
+
+//   document.querySelectorAll(".task-status").forEach((select) => {
+//     select.addEventListener("change", function () {
+//       updateTask(this);
+//     });
+//   });
+
+//   function updateTask(element) {
+//     let taskElement = element.closest(".task-row"); // Adjust selector as per your structure
+//     let taskId = taskElement.getAttribute("data-task-id");
+//     let newTitle = taskElement.querySelector(".task-title").innerText.trim();
+//     let newStatus = taskElement.querySelector(".task-status").value;
+
+//     console.log("I am inside the update task function");
+//     console.log(taskElement, taskId, newTitle, newStatus);
+//     // fetch(`/update-task/${taskId}/`, {
+//     //   method: "POST",
+//     //   headers: {
+//     //     "Content-Type": "application/json",
+//     //     "X-CSRFToken": getCsrfToken(), // Ensure CSRF token is included
+//     //   },
+//     //   body: JSON.stringify({ title: newTitle, status: newStatus }),
+//     // })
+//     //   .then((response) => response.json())
+//     //   .then((data) => {
+//     //     if (data.message) {
+//     //       alert("Task updated successfully!");
+//     //     } else {
+//     //       alert("Error: " + data.error);
+//     //     }
+//     //   })
+//     //   .catch((error) => alert("Something went wrong!"));
+//   }
+
+//   // function getCsrfToken() {
+//   //   return document.querySelector("[name=csrfmiddlewaretoken]").value;
+//   // }
+// });
+
+// function updateHiddenInput(element) {
+//   console.log("I am inside the update task function");
+//   let taskElement = element.closest(".task-row");
+//   let hiddenInput = taskElement.querySelector(".task-title-input");
+//   hiddenInput.value = element.innerText.trim();
+//   console.log("taskElement", hiddenInput.value);
+//   element.closest("form").submit(); // Submit form on blur
+// }
+
+// Ensure title updates correctly
+// function updateHiddenInput(element) {
+//   let taskElement = element.closest(".task-row");
+//   let hiddenInput = taskElement.querySelector(".task-title-input");
+//   hiddenInput.value = element.innerText.trim();
+
+//   // Submit the update form
+//   submitUpdateForm(element);
+// }
+
+// // Ensure the correct form is submitted
+// function submitUpdateForm(element) {
+//   let form = element.closest(".update-task-form");
+//   form.submit();
+// }
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Ensure title updates correctly
+  document.querySelectorAll(".task-title").forEach((label) => {
+    label.addEventListener("blur", function () {
+      updateHiddenInput(this);
+    });
+  });
+
+  // Ensure correct form is submitted via AJAX
+  document.querySelectorAll(".task-status").forEach((select) => {
+    select.addEventListener("change", function () {
+      submitUpdateForm(this);
+    });
+  });
+
+  function updateHiddenInput(element) {
+    let taskElement = element.closest(".task-row");
+    let hiddenInput = taskElement.querySelector(".task-title-input");
+    hiddenInput.value = element.innerText.trim();
+
+    // Submit update via AJAX
+    submitUpdateForm(element);
+  }
+
+  function submitUpdateForm(element) {
+    let form = element.closest(".update-task-form");
+
+    // Prevent default form submission
+    event.preventDefault();
+
+    let formData = new FormData(form);
+
+    fetch(form.action, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "X-CSRFToken": form.querySelector("[name=csrfmiddlewaretoken]").value,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          alert("Task updated successfully!");
+          window.location.reload(); // Refresh the page
+        } else {
+          alert("Error: " + (data.error || "Something went wrong!"));
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred while updating the task.");
+      });
+  }
 });
