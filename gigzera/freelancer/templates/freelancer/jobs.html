@@ -14,28 +14,53 @@
     <!-- Filter Jobs Section -->
     <div class="filter-box">
       <i class="fa-solid fa-filter filter-icon"></i>
-      <input type="text" id="job-filter" placeholder="Filter jobs..." class="filter-input" />
+      <input
+        type="text"
+        id="job-filter"
+        placeholder="Filter jobs..."
+        class="filter-input"
+      />
     </div>
 
     <!-- Social Media Updates Section -->
     <div class="social-media-box">
       <h3>Social Media Updates</h3>
-      <div class="social-update">
+
+      <a
+        href="https://x.com/gigzera?t=6u9xg6cCXeWSBQHH1vP8Ig&s=08"
+        target="_blank"
+        class="social-update"
+      >
         <i class="fa-brands fa-twitter icon"></i>
         <p>Latest job opportunities in #WebDevelopment...</p>
-      </div>
-      <div class="social-update">
+      </a>
+
+      <a
+        href="https://www.linkedin.com/company/gigzera/"
+        target="_blank"
+        class="social-update"
+      >
         <i class="fa-brands fa-linkedin icon"></i>
         <p>Join our tech community on LinkedIn...</p>
-      </div>
-      <div class="social-update">
+      </a>
+
+      <a
+        href="https://www.facebook.com/share/1A6ghPZxaC/?mibextid=wwXIfr"
+        target="_blank"
+        class="social-update"
+      >
         <i class="fa-brands fa-facebook icon"></i>
         <p>Join our tech community on Facebook...</p>
-      </div>
-      <div class="social-update">
+      </a>
+
+      <a
+        href="https://www.instagram.com/gigzera?igsh=MWNzZzhjcWcybjE3Ng=="
+        target="_blank"
+        class="social-update"
+      >
         <i class="fa-brands fa-instagram icon"></i>
         <p>Join our tech community on Instagram...</p>
-      </div>
+      </a>
     </div>
     <div class="announcement-box">
       <h1>Announcement</h1>
@@ -232,7 +257,10 @@
       <div class="ctnr">
         <div class="job-cards">
           {% for job in jobs %}
-          <div class="job-card border p-4 mb-4 rounded shadow" data-title="{{ job.title }}">
+          <div
+            class="job-card border p-4 mb-4 rounded shadow"
+            data-title="{{ job.title }}"
+          >
             <div class="job-title font-bold text-lg">
               {{ job.title }}
               <span class="job-id text-gray-500"
