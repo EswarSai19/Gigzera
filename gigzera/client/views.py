@@ -158,7 +158,7 @@ def get_currency_symbol(currency_code):
 def cl_contact(request):
 
     if request.method == 'POST':
-        user_id = request.session.get('user_id')
+        user_id = request.POST.get('user_id')
         if not user_id:
             return redirect('login')  # Redirect to login if session is missing
         name = request.POST.get('name')
@@ -183,7 +183,7 @@ def cl_contact(request):
             description=description
         )
 
-        messages.success(request, "Your form has been submitted successfully!")
+        messages.success(request, "Your concern has been submitted successfully!")
         return redirect('cl_index')  # Redirect to home page
 
     messages.error(request, "Invalid request!")

@@ -31,13 +31,13 @@
 
 .footer-tagline {
     font-size: 16px;
-    margin-left: 10px;
+    margin-left: 5px;
     margin-bottom: 15px;
 }
 
 .footer-social-icons {
     display: flex;
-    margin-left: 10px;
+    margin-left: 5px;
     gap: 10px;
 }
 

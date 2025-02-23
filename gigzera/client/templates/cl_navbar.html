@@ -47,10 +47,12 @@
   </div>
   <form id="help-form" method="post" action="{% url 'cl_contact' %}">
     {% csrf_token %}
+    <input type="hidden" name="user_id" value="{{ user.userId }}" />
     <div>
       <label class="required">Name <span class="text-red-500">*</span></label>
       <input
         type="text"
+        name="name"
         class="form-input"
         placeholder="Enter your name"
         required
@@ -62,6 +64,7 @@
       >
       <input
         type="number"
+        name="phone_number"
         class="form-input"
         placeholder="Enter your phone number"
         required
@@ -71,6 +74,7 @@
       <label class="required">Email <span class="text-red-500">*</span></label>
       <input
         type="email"
+        name="email"
         class="form-input"
         placeholder="Enter your email address"
         required
@@ -78,22 +82,30 @@
     </div>
     <div>
       <label class="required">Reason <span class="text-red-500">*</span></label>
-      <select class="form-input" required>
+      <select class="form-input" name="reason" required>
         <option value="">Select a reason</option>
-        <option value="Suitablejobs">Unable to find suitable jobs</option>
-        <option value="suitablefreelancer">
+        <option value="Unable to find suitable jobs">
+          Unable to find suitable jobs
+        </option>
+        <option value="Unable to find suitable freelancers">
           Unable to find suitable freelancers
         </option>
-        <option value="payments">Issues with payment processing</option>
-        <option value="contractclients">Contract disputes with clients</option>
-        <option value="contractfreelancer">
+        <option value="Issues with payment processing">
+          Issues with payment processing
+        </option>
+        <option value="Contract disputes with clients">
+          Contract disputes with clients
+        </option>
+        <option value="Contract disputes with freelancers">
           Contract disputes with freelancers
         </option>
-        <option value="technical">
+        <option value="Technical difficulties with the platform">
           Technical difficulties with the platform
         </option>
-        <option value="security">Concerns about platform security</option>
-        <option value="account">
+        <option value="Concerns about platform security">
+          Concerns about platform security
+        </option>
+        <option value="Account related issues (login, password, etc.)">
           Account related issues (login, password, etc.)
         </option>
         <option value="other">Other</option>
@@ -106,6 +118,7 @@
       <textarea
         rows="4"
         class="form-input"
+        name="description"
         placeholder="Describe your concern in detail"
         required
       ></textarea>

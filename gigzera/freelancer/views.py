@@ -110,7 +110,7 @@ def index(request):
         job.cur_symbol = get_currency_symbol(job.currency)
     user.initials = get_initials(user.name)
     print(user.initials)
-    context = {'jobs': jobs, 'user': user}    
+    context = {'jobs': jobs, 'user': user}
     return render(request, 'freelancer/index.html', context)
 
 
@@ -774,7 +774,7 @@ def fl_updateProgress(request):
 # Contact form 
 def fl_contact(request):
     if request.method == 'POST':
-        user_id = request.session.get('user_id')
+        user_id = request.POST.get('user_id')
         if not user_id:
             return redirect('login')  # Redirect to login if session is missing
         name = request.POST.get('name')
@@ -782,6 +782,7 @@ def fl_contact(request):
         email = request.POST.get('email')
         reason = request.POST.get('reason')
         description = request.POST.get('description')
+        print(user_id, name, phone_number, email, reason, description)
 
         # Check if all fields are filled
         if not all([name, phone_number, email, reason, description]):
@@ -799,7 +800,7 @@ def fl_contact(request):
             description=description
         )
 
-        messages.success(request, "Your form has been submitted successfully!")
+        messages.success(request, "Your concern has been submitted successfully!")
         return redirect('fl_index')  # Redirect to home page
 
     messages.error(request, "Invalid request!")
