@@ -114,6 +114,7 @@ def submit_freelancer(request):
         phone = request.POST.get("phone")
         email = request.POST.get("email")
         designation = request.POST.get("designation")
+        otherdesignation=request.POST.get("otherdesignation")
         education = request.POST.get("education")
         certifications = request.POST.get("certifications")
         experience = request.POST.get("experience")
@@ -122,11 +123,16 @@ def submit_freelancer(request):
         social_media = request.POST.get("social_media")
         print("Certificates", certifications)
         
+                # Assign the non-empty value
+        designation = otherdesignation if otherdesignation else designation
+        
         # Collect skills and experiences
         skills = {}
         for i in range(1, 4):  # Adjust range if you have more skill fields
+            print("Top Counter", i)
             skill = request.POST.get(f"skill{i}")
             exp = request.POST.get(f"experience{i}")
+            print(f"skill {skill}, exp:{exp}")
             if skill and exp:
                 skills[skill] = float(exp)  # Convert experience to float
                 
@@ -170,8 +176,10 @@ def submit_freelancer(request):
                 )
                 freelancer.save()
                 for i in range(1,4):
+                    print("Counter", i)
                     skill = request.POST.get(f"skill{i}")
                     exp = request.POST.get(f"experience{i}")
+                    print(f"skill {skill}, exp:{exp}")
                     if skill and exp:
                         Skill.objects.create(freelancer=freelancer, skill_name=skill, experience_years=exp)
 
