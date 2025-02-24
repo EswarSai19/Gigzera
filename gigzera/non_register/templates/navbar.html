@@ -24,17 +24,17 @@
       <nav class="hidden lg:flex items-center gap-8">
         <a
           href="{% url 'index' %}"
-          class="text-gray-600 hover:text-blue-600 cursor-pointer"
+          class="nav-item text-gray-600 hover:text-blue-600 cursor-pointer"
           >Home</a
         >
         <a
           href="{% url 'jobs' %}"
-          class="text-gray-600 hover:text-blue-600 cursor-pointer"
+          class="nav-item text-gray-600 hover:text-blue-600 cursor-pointer"
           >Jobs</a
         >
         <a
           href="{% url 'aboutus' %}"
-          class="text-gray-600 hover:text-blue-600 cursor-pointer"
+          class="nav-item text-gray-600 hover:text-blue-600 cursor-pointer"
           >About Us</a
         >
         <a
@@ -44,7 +44,7 @@
         >
         <a
           href="{% url 'industries' %}"
-          class="text-gray-600 hover:text-blue-600 cursor-pointer"
+          class="nav-item text-gray-600 hover:text-blue-600 cursor-pointer"
           >Industries</a
         >
         <div class="flex gap-4">
@@ -60,6 +60,7 @@
           >
         </div>
       </nav>
+
       <button class="lg:hidden text-gray-600">
         <i class="fa-solid fa-bars text-2xl"></i>
       </button>
@@ -183,5 +184,25 @@
 
 <!-- JS -->
 {% block js %}
+<script>
+  // Get current path
+  let currentPath = window.location.pathname;
+
+  // Select all navigation items
+  let navItems = document.querySelectorAll(".nav-item");
+
+  // Loop through each item and highlight the active link
+  navItems.forEach((item) => {
+    if (item.getAttribute("href") === currentPath) {
+      item.classList.add(
+        "text-blue-600",
+        "underline",
+        "decoration-blue-600",
+        "font-bold"
+      );
+      item.classList.remove("text-gray-600");
+    }
+  });
+</script>
 <script src="{% static 'js/navbar.js' %}"></script>
 {% endblock %}

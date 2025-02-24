@@ -4,6 +4,15 @@
     /* color: #333; */
 }
 
+/* Navbar active  */
+/* .active {
+    color: #007bff !important;
+    font-weight: bold;
+    border-bottom: 3px solid #007bff;
+    padding-bottom: 5px;
+} */
+
+
 /* Contact us image */
 .popup-image {
     display: block;

@@ -8,7 +8,7 @@ import os
 import locale
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from db_schemas.models import Contact, ProjectQuote, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
+from db_schemas.models import Contact, ProjectQuote, Tasks, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
 from django.core.exceptions import ValidationError
 from datetime import datetime
 # from django.contrib.auth.decorators import login_required
@@ -742,7 +742,10 @@ def singleProjectTracking(request):
     job = ProjectsDisplay.objects.filter(opportunityId=opportunity_id).first()
     job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
     job.cur_symbol = get_currency_symbol(job.currency)
-    context={'user':user, 'job':job, 'bid':bid, 'singleOgp':singleOgp}
+
+    tasks = Tasks.objects.filter(taskBid_id=bid.projectQuoteId)
+
+    context={'user':user, 'job':job, 'bid':bid, 'singleOgp':singleOgp, 'tasks':tasks}
 
     return render(request, 'freelancer/singleProjectTracking.html', context)
 
@@ -805,4 +808,66 @@ def fl_contact(request):
 
     messages.error(request, "Invalid request!")
     return redirect(request.META.get('HTTP_REFERER', 'contact'))
+
+# taks related
+def delete_tasks(request):
+    print("I am inside the delete tasks")
+    if request.method == "POST":
+        try:
+            task_ids = request.POST.getlist("task_ids[]")
+            print(f"Received Task IDs: {task_ids}")  # Debugging print
+
+            if not task_ids:
+                return JsonResponse({"success": False, "message": "No tasks selected."})
+
+            deleted_count, _ = Tasks.objects.filter(taskId__in=task_ids).delete()
+            print(f"Deleted {deleted_count} tasks.")  # Debugging print
+
+            return JsonResponse({"success": True, "message": f"Deleted {deleted_count} tasks."})
+        except Exception as e:
+            print(f"Error: {str(e)}")  # Debugging print
+            return JsonResponse({"success": False, "message": "An error occurred."})
+    
+    return JsonResponse({"success": False, "message": "Invalid request method."})
+
+def add_task(request):
+    print("I am inside the add task")
+    if request.method == "POST":
+        try:
+            title = request.POST.get("title").title()
+            status = request.POST.get("status", "Requirement Gathering")
+            bid_id = request.POST.get('bid_id')
+            print(f"I am getting add tasks details: {title}, {status}, {bid_id}")
+
+            Tasks.objects.create(title=title, status=status, taskBid_id=bid_id)
+            print("Saved task successfully")
+            return JsonResponse({"success": True, "message": "Task added successfully!"})
+            
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
+
+    return JsonResponse({"success": False, "error": "Invalid request"})
+
+def update_task(request):
+    if request.method == "POST":
+        task_id = request.POST.get("task_id")  # ✅ Use POST, not GET
+        new_title = request.POST.get("title")  # ✅ Get title from POST
+        new_status = request.POST.get("status")  # ✅ Get status from POST
+        
+        print(f"Updating Task: {task_id}, New Title: {new_title}, New Status: {new_status}")
+
+        if not task_id:
+            return JsonResponse({"success": False, "message": "No tasks selected."}, status=400)
+        
+        try:
+            task = Tasks.objects.get(taskId=task_id)
+            if new_title:
+                task.title = new_title.title()
+            if new_status:
+                task.status = new_status
+            task.save()
+            return JsonResponse({"success": True, "message": "Task updated successfully."})
+        except Tasks.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Task not found."}, status=404)
+    return JsonResponse({"success": False, "message": "Invalid request."}, status=400)
 

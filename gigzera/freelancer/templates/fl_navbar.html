@@ -18,11 +18,11 @@
     <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i>
   </div>
   <nav class="nav">
-    <a href="{% url 'fl_index' %}">Home</a>
-    <a href="{% url 'fl_jobs' %}">Jobs</a>
-    <a href="{% url 'fl_aboutus' %}">About Us</a>
-    <a id="contactBtn">Contact Us</a>
-    <a href="{% url 'fl_industries' %}">Industries</a>
+    <a class="nav-item" href="{% url 'fl_index' %}">Home</a>
+    <a class="nav-item" href="{% url 'fl_jobs' %}">Jobs</a>
+    <a class="nav-item" href="{% url 'fl_aboutus' %}">About Us</a>
+    <a class="nav-item" id="contactBtn">Contact Us</a>
+    <a class="nav-item" href="{% url 'fl_industries' %}">Industries</a>
     <div class="profile-dropdown">
       <div class="profile-trigger" id="profile-trigger">
         <div class="profile-avatar">
@@ -149,5 +149,25 @@
 </div>
 
 {% block js %}
+<script>
+  // Get current path
+  let currentPath = window.location.pathname;
+
+  // Select all navigation items
+  let navItems = document.querySelectorAll(".nav-item");
+
+  // Loop through each item and highlight the active link
+  navItems.forEach((item) => {
+    if (item.getAttribute("href") === currentPath) {
+      item.classList.add(
+        "text-blue-600",
+        "underline",
+        "decoration-blue-600",
+        "font-bold"
+      );
+      item.classList.remove("text-gray-600");
+    }
+  });
+</script>
 <script src="{% static 'js/navbar.js' %}"></script>
 {% endblock %}
