@@ -30,3 +30,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 });
+
+// document.addEventListener("DOMContentLoaded", function () {
+//   const navLinks = document.querySelectorAll(".nav-link"); // Select all nav links
+//   const currentPath = window.location.pathname.split("/").pop(); // Get current page name
+
+//   navLinks.forEach((link) => {
+//     if (
+//       link.getAttribute("href") &&
+//       link.getAttribute("href").includes(currentPath)
+//     ) {
+//       link.classList.add("active"); // Add the active class if the link matches the current page
+//     }
+//   });
+// });

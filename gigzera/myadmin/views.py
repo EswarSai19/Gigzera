@@ -11,7 +11,7 @@ import locale
 from itertools import chain
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from db_schemas.models import Contact, ProjectQuote, Client, Milestones, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
+from db_schemas.models import Contact, ProjectQuote, Tasks, Client, Milestones, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
 from django.core.exceptions import ValidationError
 from datetime import datetime
 
@@ -435,11 +435,14 @@ def singleYourProject(request):
         job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
         job.cur_symbol = get_currency_symbol(job.currency)
     milestones = Milestones.objects.filter(bid_id=bid.projectQuoteId).all()
+    tasks = Tasks.objects.filter(taskBid_id=bid.projectQuoteId).all()
+    # print("Milestones", milestones)
     context = {
         'job': job,
         'bid': bid,
         'singleOgp': singleOgp,
-        'milestones': milestones
+        'milestones': milestones,
+        'tasks': tasks
     }
     # print("Context", context)
     # print(f"Date: {singleOgp.start_date}, {singleOgp.end_date}")

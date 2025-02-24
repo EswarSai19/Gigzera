@@ -31,11 +31,11 @@
       {% endfor %}
 
       <h3>Tasks</h3>
-
+      {% for task in tasks %}
       <div class="task-box">
         <div class="task-header">
-          <span class="task-title">Create Wireframes</span>
-          <span class="status in-progress">In Progress</span>
+          <span class="task-title">{{task.title}}</span>
+          <span class="status in-progress">{{task.status}}</span>
         </div>
         <div class="task-comments">
           <p><strong>Comments (2)</strong></p>
@@ -50,8 +50,8 @@
           </button>
         </div>
       </div>
-
-      <div class="task-box">
+      {% endfor %}
+      <!-- <div class="task-box">
         <div class="task-header">
           <span class="task-title">Design System Setup</span>
           <span class="status completed">Completed</span>
@@ -59,7 +59,7 @@
         <div class="task-comments">
           <p><strong>Comments (1)</strong></p>
           <div class="comment">
-            <!-- <img src="user-avatar.png" alt="User Avatar" class="avatar"> -->
+            <img src="user-avatar.png" alt="User Avatar" class="avatar">
             <p>Design system documentation complete.</p>
           </div>
         </div>
@@ -68,9 +68,9 @@
             Add Comment
           </button>
         </div>
-      </div>
+      </div> -->
 
-      <div class="task-box">
+      <!-- <div class="task-box">
         <div class="task-header">
           <span class="task-title">Responsive Testing</span>
           <span class="status pending">Pending</span>
@@ -80,7 +80,7 @@
             Add Comment
           </button>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
   <div
