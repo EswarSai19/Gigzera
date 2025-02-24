@@ -80,11 +80,15 @@
       <h2>Bidder Profile</h2>
       <p><strong>User ID:</strong> {{fl_user.userId}}</p>
       <p><strong>Name:</strong> {{fl_user.name}}</p>
-      <!-- <a
-        href="{% url 'cl_profileView' %}?opportunityId={{ bid.opportunityId }}&userId={{ bid.freelancer_id }}&bidId={{ bid.projectQuoteId }}"
-        class="view-profile"
-        >View Profile</a
-      > -->
+      {% if fl_user.is_verified %}
+      <button class="more-options view-profile">
+        <i class="fa-solid fa-circle-check"></i> Verified
+      </button>
+      {% else %}
+      <button class="more-options" disabled>
+        <i class="fa-solid fa-circle-check" style="opacity: 0"></i>
+      </button>
+      {% endif %}
       <p><strong>Professional Summary:</strong> {{fl_user.profile_summary}}</p>
       <p><strong>Total Experience:</strong> {{fl_user.experience}} Years</p>
       <p><strong>Total Completed projects:</strong> 2</p>

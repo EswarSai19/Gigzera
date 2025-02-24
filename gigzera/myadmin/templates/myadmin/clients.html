@@ -72,6 +72,15 @@
       <!-- Profiles will be dynamically added here -->
       {% for user in users %}
       <div class="profile-card">
+        {% if user.is_verified %}
+        <button class="more-options">
+          <i class="fa-solid fa-circle-check"></i>
+        </button>
+        {% else %}
+        <button class="more-options" disabled>
+          <i class="fa-solid fa-circle-check" style="opacity: 0"></i>
+        </button>
+        {% endif %}
         <img
           src="https://cdn.yellowmessenger.com/Xmnn1dek6nzZ1735637434099.jpeg"
           alt="{{user.name}}"
