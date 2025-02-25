@@ -1,7 +1,4 @@
 /*! tailwindcss v4.0.6 | MIT License | https://tailwindcss.com */
-.collapse {
-  visibility: collapse;
-}
 .visible {
   visibility: visible;
 }
@@ -37,9 +34,6 @@
 }
 .top-4 {
   top: calc(var(--spacing) * 4);
-}
-.top-5 {
-  top: calc(var(--spacing) * 5);
 }
 .right-0 {
   right: calc(var(--spacing) * 0);
@@ -131,9 +125,6 @@
 .mb-4 {
   margin-bottom: calc(var(--spacing) * 4);
 }
-.mb-5 {
-  margin-bottom: calc(var(--spacing) * 5);
-}
 .mb-6 {
   margin-bottom: calc(var(--spacing) * 6);
 }
@@ -170,17 +161,8 @@
 .inline-block {
   display: inline-block;
 }
-.inline-flex {
-  display: inline-flex;
-}
-.list-item {
-  display: list-item;
-}
 .table {
   display: table;
-}
-.h-4 {
-  height: calc(var(--spacing) * 4);
 }
 .h-6 {
   height: calc(var(--spacing) * 6);
@@ -230,9 +212,6 @@
 .min-h-screen {
   min-height: 100vh;
 }
-.w-1 {
-  width: calc(var(--spacing) * 1);
-}
 .w-1\/2 {
   width: calc(1/2 * 100%);
 }
@@ -244,9 +223,6 @@
 }
 .w-2\/3 {
   width: calc(2/3 * 100%);
-}
-.w-4 {
-  width: calc(var(--spacing) * 4);
 }
 .w-5 {
   width: calc(var(--spacing) * 5);
@@ -302,6 +278,9 @@
 .max-w-sm {
   max-width: var(--container-sm);
 }
+.min-w-\[120px\] {
+  min-width: 120px;
+}
 .min-w-full {
   min-width: 100%;
 }
@@ -313,9 +292,6 @@
 }
 .grow {
   flex-grow: 1;
-}
-.border-collapse {
-  border-collapse: collapse;
 }
 .border-separate {
   border-collapse: separate;
@@ -331,17 +307,11 @@
 .cursor-pointer {
   cursor: pointer;
 }
-.resize {
-  resize: both;
-}
 .list-inside {
   list-style-position: inside;
 }
 .list-disc {
   list-style-type: disc;
-}
-.appearance-none {
-  appearance: none;
 }
 .grid-cols-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -458,6 +428,9 @@
 }
 .overflow-y-auto {
   overflow-y: auto;
+}
+.overflow-y-scroll {
+  overflow-y: scroll;
 }
 .rounded {
   border-radius: 0.25rem;
@@ -719,14 +692,8 @@
 .pb-3 {
   padding-bottom: calc(var(--spacing) * 3);
 }
-.pl-3 {
-  padding-left: calc(var(--spacing) * 3);
-}
 .pl-10 {
   padding-left: calc(var(--spacing) * 10);
-}
-.pl-15 {
-  padding-left: calc(var(--spacing) * 15);
 }
 .text-center {
   text-align: center;
@@ -885,9 +852,6 @@
 .decoration-blue-600 {
   text-decoration-color: var(--color-blue-600);
 }
-.decoration-red-600 {
-  text-decoration-color: var(--color-red-600);
-}
 .shadow {
   --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
   box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -933,10 +897,6 @@
   -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
   backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
 }
-.backdrop-filter {
-  -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
-  backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
-}
 .transition {
   transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter;
   transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
@@ -964,14 +924,6 @@
 .duration-300 {
   --tw-duration: 300ms;
   transition-duration: 300ms;
-}
-.ease-in-out {
-  --tw-ease: var(--ease-in-out);
-  transition-timing-function: var(--ease-in-out);
-}
-.ease-out {
-  --tw-ease: var(--ease-out);
-  transition-timing-function: var(--ease-out);
 }
 .hover\:scale-105 {
   &:hover {
@@ -1985,10 +1937,6 @@
   inherits: false;
 }
 @property --tw-duration {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-ease {
   syntax: "*";
   inherits: false;
 }

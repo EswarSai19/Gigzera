@@ -73,10 +73,19 @@
 </div> -->
 
 <!-- New one -->
-<div class="sidebar inset-y-0 left-0 w-72 h-auto bg-white shadow-lg">
+<div
+  class="sidebar inset-y-0 left-0 w-72 h-auto bg-white shadow-lg overflow-y-scroll"
+>
   <div class="flex items-center justify-center h-16 border-b">
-    <h1 class="text-xl font-bold text-gray-800">Gigzera</h1>
+    <img
+      class="w-[130px] h-[50px] cursor-pointer"
+      src="https://d2m054rmna67sd.cloudfront.net/header_logo.png"
+      alt="Gigzera Logo"
+    />
   </div>
+  <!-- <div class="flex items-center justify-center h-16 border-b">
+    <h1 class="text-xl font-bold text-gray-800">Gigzera</h1>
+  </div> -->
   <nav class="p-4 space-y-2">
     <a
       href="{% url 'ad_dashboard' %}"
@@ -137,6 +146,12 @@
       class="menu-item flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg"
     >
       <i class="fas fa-handshake mr-3"></i> Partner Company Logos
+    </a>
+    <a
+      href="{% url 'ad_adminManagement' %}"
+      class="menu-item flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+    >
+      <i class="fas fa-user mr-3"></i> Admin Management
     </a>
     <a
       href="{% url 'ad_logout' %}"
