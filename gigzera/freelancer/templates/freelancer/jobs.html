@@ -159,7 +159,7 @@
   <!-- Modal pop up for provide quote -->
   <div
     id="quoteModal"
-    class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+    class="hidden fixed inset-0 bg-blur bg-opacity-50 flex justify-center items-center z-50"
   >
     <div
       class="bg-white rounded-lg shadow-lg w-full max-w-2xl mx-auto p-10 relative"
@@ -188,21 +188,28 @@
         <!-- Budget Field -->
         {% csrf_token %}
         <input type="hidden" id="quote_opportunityId" name="opportunity_id" />
-        <input type="hidden" id="quote_title" name="title" />
+        <!-- <input type="hidden" id="quote_title" name="title" />
         <input type="hidden" id="quote_currency" name="currency" />
-        <input type="hidden" id="quote_cur_symbol" name="cur_symbol" />
+        <input type="hidden" id="quote_cur_symbol" name="cur_symbol" /> -->
         <div class="mb-4">
           <label for="budget" class="block text-sm font-semibold text-gray-700">
             Budget <span class="text-red-500">*</span>
           </label>
-          <input
-            type="text"
-            id="budget"
-            name="budget"
-            placeholder="Budget: Estimation to complete the project"
-            required
-            class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <div class="flex items-center border rounded-md">
+            <span
+              class="px-3 py-2 text-gray-700 text-sm rounded-l-md"
+              id="quote_currency"
+              >{{job.cur_symbol}}</span
+            >
+            <input
+              type="text"
+              id="budget"
+              name="budget"
+              placeholder="Budget: Estimation to complete the project"
+              required
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
         </div>
 
         <!-- Timeline Field -->
@@ -285,7 +292,7 @@
             </div>
             <div class="job-actions mt-3">
               <button
-                class="text-blue-500 underline"
+                class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:text-white hover:bg-blue-600 cursor-pointer"
                 hx-post="{% url 'load_job_details' %}"
                 hx-vals='{"job_id": "{{ job.opportunityId }}"}'
                 hx-target="#tailwind-popup-content"
@@ -296,8 +303,8 @@
                 View More
               </button>
               <button
-                class="btn btn-primary provide-quote bg-blue-500 text-white px-4 py-2 rounded ml-2"
-                onclick="openModal('{{ job.opportunityId }}')"
+                class="btn btn-primary provide-quote bg-blue-500 text-white px-4 py-2 rounded ml-2 cursor-pointer"
+                onclick="openModal('{{ job.opportunityId }}', '{{ job.cur_symbol }}', '{{ job.duration }}', '{{ job.budget }}')"
               >
                 Provide Quote
               </button>
@@ -312,7 +319,7 @@
   <!-- Toggle right offcanvas of view more button  -->
   <div
     id="tailwind-overlay"
-    class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
+    class="fixed inset-0 bg-grey-50 bg-opacity-50 z-50 hidden"
   >
     <div
       id="tailwind-popup"
@@ -338,17 +345,6 @@
         class="p-6 h-[calc(100vh-180px)] overflow-y-auto"
       >
         <!-- Dynamic content coming from the job_details_partial page -->
-        <div
-          id="tailwind-popup-footer"
-          class="absolute bottom-0 left-0 right-0 p-6 bg-white border-t"
-        >
-          <button
-            class="w-full py-3 px-6 bg-gradient-to-r from-blue-600 to-white-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-blue-700 transition-all"
-            onclick="openModal()"
-          >
-            Apply Now
-          </button>
-        </div>
       </div>
     </div>
   </div>
@@ -435,5 +431,6 @@
 
 <!-- JS -->
 {% block js %}
+<script></script>
 <script src="{% static 'js/fl_jobs.js' %}"></script>
 {% endblock %}

@@ -30,5 +30,9 @@ urlpatterns = [
     path('jobPageAdv/', views.jobPageAdv, name='ad_jobPageAdv'),
     path('jobPageImages/', views.jobPageImages, name='ad_jobPageImages'),
     path('partnerLogos/', views.partnerLogos, name='ad_partnerLogos'),
+    path('adminManagement/', views.adminManagement, name='ad_adminManagement'),
+    path('add_admin/', views.add_admin, name='ad_addAdmin'),
+    path('edit_admin/', views.edit_admin, name='ad_editAdmin'),
+    path('delete_admin/', views.delete_admin, name='ad_deleteAdmin'),
     path('logout/', views.logout, name='ad_logout'),
 ]

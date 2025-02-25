@@ -105,22 +105,29 @@ class Freelancer(models.Model):
     def __str__(self):
         return self.name
 
+
+
 class MyAdmin(models.Model):
     adminId = models.CharField(
         primary_key=True, max_length=12, default=generate_admin_id, editable=False
     )
     name = models.CharField(max_length=255)
-    phone = models.CharField(max_length=15, unique=True)
+    phone = models.CharField(max_length=15, blank=True, null=True)
     email = models.EmailField(unique=True)
-    user_role = models.CharField(max_length=50, default='admin')
-    password = models.CharField(max_length=128)
+    user_role = models.CharField(max_length=50, default='admin')  # Can be 'admin' or 'super'
+    password = models.CharField(max_length=128, blank=True)  # No default here
     created_at = models.DateTimeField(default=now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        """Hash the password before saving the freelancer."""
+        """Set default password based on user role before saving."""
+        if not self.password:  # Only set default if password is not provided
+            role_suffix = "admin" if self.user_role.lower() == "admin" else "super"
+            self.password = f"{self.adminId}_{role_suffix}"  # Default password format
+        
         if not self.password.startswith("pbkdf2_sha256$"):  # Avoid re-hashing
             self.password = make_password(self.password)
+        
         super().save(*args, **kwargs)
 
     def check_password(self, raw_password):

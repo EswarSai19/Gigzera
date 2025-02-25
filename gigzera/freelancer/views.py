@@ -694,6 +694,7 @@ def load_job_details(request):
     job_id = request.POST.get("job_id")  # Get job ID from HTMX request
     job = get_object_or_404(ProjectsDisplay, opportunityId=job_id)
     # Process skills into a list for the selected job
+    job.cur_symbol = get_currency_symbol(job.currency)
     job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
     job.requirements_list = [line.strip() for line in job.requirements.split("\n")]
     job.challenges_list = [line.strip() for line in job.challenges.split("\n")]
