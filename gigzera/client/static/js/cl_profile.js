@@ -61,18 +61,18 @@ function toggleProfileMenu() {
 }
 
 // Update profile from localStorage (sync with profile.html)
-function updateProfileHeader() {
-  const initials = localStorage.getItem("profileInitials") || "Guest";
-  const name = localStorage.getItem("profileName") || "Guest";
-  const email = localStorage.getItem("profileEmail") || "guest@example.com";
+// function updateProfileHeader() {
+//   const initials = localStorage.getItem("profileInitials") || "Guest";
+//   const name = localStorage.getItem("profileName") || "Guest";
+//   const email = localStorage.getItem("profileEmail") || "guest@example.com";
 
-  document.getElementById("profile-initials").textContent = initials;
-  document.getElementById("profile-name-dropdown").textContent = name;
-  document.getElementById("profile-email-dropdown").textContent = email;
-}
+//   document.getElementById("profile-initials").textContent = initials;
+//   document.getElementById("profile-name-dropdown").textContent = name;
+//   document.getElementById("profile-email-dropdown").textContent = email;
+// }
 
-// Call on page load
-document.addEventListener("DOMContentLoaded", updateProfileHeader);
+// // Call on page load
+// document.addEventListener("DOMContentLoaded", updateProfileHeader);
 
 // New part of the file
 const skillsInput = document.getElementById("skills-required");

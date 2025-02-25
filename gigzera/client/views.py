@@ -527,17 +527,17 @@ def cl_viewBids(request):
     user_id = request.session.get('user_id')
     if not user_id:
         return redirect('login')
-    user = Client.objects.get(userId=user_id)
+    user = Client.objects.filter(userId=user_id).first()
     user.initials = get_initials(user.name)
     print(f"here is the user: {user.initials}, {user.name}, {user.email}")
     bids = ProjectQuote.objects.all().order_by('-created_at')
 
     for bid in bids:
         job = ProjectsDisplay.objects.filter(opportunityId=bid.opportunityId).first()
-        user = Freelancer.objects.filter(userId=bid.freelancer_id).first()
+        fl_user = Freelancer.objects.filter(userId=bid.freelancer_id).first()
         bid.title = job.title if job else "No Title"  # Fixed variable name
         bid.cur_symbol = get_currency_symbol(job.currency if job else "USD")  # Ensure currency is handled properly
-        bid.user_experience = user.experience if user else "No Experience"
+        bid.user_experience = fl_user.experience if fl_user else "No Experience"
         
     context={'user':user,'bids': bids}
     return render(request, 'client/cl_viewBids.html', context)
@@ -569,7 +569,7 @@ def cl_singleViewBid(request):
     bid = ProjectQuote.objects.filter(projectQuoteId=bid_id).first()
     bid.cur_symbol = get_currency_symbol(bid.currency if bid else "USD")
     print("Job", bid)
-    context = {'job':job, 'cl_user':user, 'fl_user':fl_user, 'bid':bid}
+    context = {'job':job, 'user':user, 'fl_user':fl_user, 'bid':bid}
     return render(request, 'client/cl_singleViewBid.html', context)
 
 def profileView(request):

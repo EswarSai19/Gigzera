@@ -129,6 +129,7 @@ def jobs(request):
     context = {'jobs': jobs, 'user': user}    
     return render(request, 'freelancer/jobs.html', context)
 
+
 def aboutus(request):
     user_id = request.session.get('user_id')
     if not user_id:
@@ -138,6 +139,7 @@ def aboutus(request):
     context = {'user': user}
     return render(request, 'freelancer/aboutus.html', context)
 
+
 def industries(request):
     user_id = request.session.get('user_id')
     if not user_id:
@@ -146,6 +148,7 @@ def industries(request):
     user.initials = get_initials(user.name)
     context = {'user': user}
     return render(request, 'freelancer/industries.html', context)
+
 
 def profile(request):
     user_id = request.session.get('user_id')
@@ -165,6 +168,7 @@ def profile(request):
         'skills':skills
     }
     return render(request, 'freelancer/profile.html', context)
+
 
 def test(request):
     user_id = request.session.get('user_id')
@@ -263,6 +267,7 @@ def add_work_history(request):
 
     return render(request, 'freelancer/profile.html', {'user': freelancer})
 
+
 def edit_job(request):
     user_id = request.session.get('user_id')
     if not user_id:
@@ -312,6 +317,7 @@ def edit_job(request):
             return redirect('fl_profile')
 
     return render('freelancer/profile.html', {'user':freelancer})  # Redirect to an error page if not POST
+
 
 def delete_job(request, job_id):
     user_id = request.session.get('user_id')
@@ -377,6 +383,7 @@ def add_certification(request):
 
     return render(request, 'freelancer/profile.html', {'user': freelancer})
 
+
 def edit_cert(request):
     user_id = request.session.get('user_id')
     if not user_id:
@@ -418,6 +425,7 @@ def edit_cert(request):
             return redirect('fl_profile')
 
     return render('freelancer/profile.html', {'user':freelancer}) 
+
 
 def delete_cert(request, cert_id):
     user_id = request.session.get('user_id')
@@ -499,6 +507,7 @@ def delete_skill(request, skill_id):
 
     return render(request, 'freelancer/profile.html', {'user': freelancer})
 
+
 def add_skill(request):
     user_id = request.session.get('user_id')
     if not user_id:
@@ -570,10 +579,12 @@ def edit_freelancer(request):
         # Handle file upload for profilePic
         profile_pic = request.FILES.get('profilePic')
         if profile_pic:
-            fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'freelancer/profile_pics'))
-            filename = fs.save(profile_pic.name, profile_pic)
-            freelancer.profilePic = f'freelancer/profile_pics/{filename}'  # Save relative path instead of URL
-            print("Profile pic uploaded:", freelancer.profilePic)
+            # fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'freelancer/profile_pics'))
+            # filename = fs.save(profile_pic.name, profile_pic)
+            # freelancer.profilePic = f'freelancer/profile_pics/{filename}'  # Save relative path instead of URL
+            # print("Profile pic uploaded:", freelancer.profilePic)
+            freelancer.profilePic = profile_pic  # Directly assign the file (Django will handle S3 upload)
+            print("Profile pic uploaded:", freelancer.profilePic.url)
         else:
             print("Using existing profile pic:", freelancer.profilePic)
             freelancer.profilePic = f'freelancer/profile_pics/default_profile.png'
@@ -701,6 +712,7 @@ def load_job_details(request):
     job.skills_list = [skill.strip().title() for skill in job.skills_required.split(',')]
     return render(request, "freelancer/job_detail_partial.html", {"job": job})
 
+
 def projectTracking(request):
     user_id = request.session.get('user_id')
     if not user_id:
@@ -726,6 +738,7 @@ def projectTracking(request):
 
     context={'user':user, 'ongProjects':ongProjects}
     return render(request, 'freelancer/projectTracking.html', context)
+
 
 def singleProjectTracking(request):
     user_id = request.session.get('user_id')
@@ -831,6 +844,7 @@ def delete_tasks(request):
     
     return JsonResponse({"success": False, "message": "Invalid request method."})
 
+
 def add_task(request):
     print("I am inside the add task")
     if request.method == "POST":
@@ -848,6 +862,7 @@ def add_task(request):
             return JsonResponse({"success": False, "error": str(e)})
 
     return JsonResponse({"success": False, "error": "Invalid request"})
+
 
 def update_task(request):
     if request.method == "POST":
@@ -872,3 +887,23 @@ def update_task(request):
             return JsonResponse({"success": False, "message": "Task not found."}, status=404)
     return JsonResponse({"success": False, "message": "Invalid request."}, status=400)
 
+
+
+
+
+# Testing
+from django.conf import settings
+
+def aws_profile_view(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')  # Redirect if session is missing
+
+    freelancer = Freelancer.objects.get(userId=user_id)
+
+    if request.method == 'POST' and request.FILES.get('profilePic'):
+        freelancer.profilePic = request.FILES['profilePic']
+        freelancer.save()
+        return redirect('aws_profile')  # Reload profile page
+
+    return render(request, 'freelancer/test_profile_aws.html', {'user': freelancer})

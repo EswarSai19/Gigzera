@@ -185,6 +185,66 @@ def ad_index(request):
     print(context)
     return render(request, 'myadmin/ad_index.html', context)
 
+def ad_login(request):
+    if request.method == 'POST':
+        print("I am inside the post")
+        userid_or_email = request.POST.get('email')
+        password = request.POST.get('password')
+        print(userid_or_email, password)
+
+        if userid_or_email.startswith('AD') and len(userid_or_email) == 5:
+            admin = MyAdmin.objects.filter(adminId=userid_or_email).first()
+            if admin and check_password(password, admin.password):
+                request.session['user_id'] = admin.adminId
+                print("I am inside the admin if condition")
+                return redirect('ad_dashboard')  # Redirect on success
+        
+        elif '@' in userid_or_email:
+            admin = MyAdmin.objects.filter(email=userid_or_email).first()
+            if admin and check_password(password, admin.password):
+                request.session['user_id'] = admin.adminId
+                print("I am inside the admin else condition")
+                return redirect('ad_dashboard')  # Redirect on success
+        
+        print("Error: Invalid credentials")
+        messages.error(request, 'Invalid credentials')
+        return redirect('ad_login')  # Redirect on error (Prevents form resubmission on refresh)
+
+    return render(request, 'myadmin/ad_login.html')
+
+def ad_forgot(request):
+    if request.method == "POST":
+        print("I am inside the forogt page")
+        userid_or_email = request.POST.get('useridOrMail')
+        old_pass = request.POST.get('oldPassword')
+        new_pass = request.POST.get('newPassword')
+        print(userid_or_email, old_pass, new_pass)
+        if userid_or_email.startswith('AD') and len(userid_or_email) == 5:
+            admin = MyAdmin.objects.filter(adminId=userid_or_email).first()
+            if admin and check_password(old_pass, admin.password):
+                admin.password = make_password(new_pass)
+                admin.save()
+                messages.success(request, "Password updated successfully")
+                return redirect('ad_login')
+        elif '@' in userid_or_email:
+            admin = MyAdmin.objects.filter(email=userid_or_email).first()
+            if admin and check_password(old_pass, admin.password):
+                admin.password = make_password(new_pass)
+                admin.save()
+                messages.success(request, "Password updated successfully")
+                return redirect('ad_login')
+
+        print("Error: Invalid credentials")
+        messages.error(request, 'Invalid credentials')
+        return redirect('ad_forgot')
+ 
+    return render(request, 'myadmin/ad_forgot.html')
+
+
+def ad_logout(request):
+    request.session.flush()  # ✅ Clears all session data (logs user out)
+    return redirect('ad_login')
+
 def dashboard(request):
     freelancers = Freelancer.objects.all()
     clients = Client.objects.all()

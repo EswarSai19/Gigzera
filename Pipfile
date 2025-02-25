@@ -7,6 +7,9 @@ name = "pypi"
 psycopg2-binary = "*"
 pillow = "*"
 django = "*"
+django-storages = "*"
+boto3 = "*"
+dotenv = "*"
 
 [dev-packages]
 

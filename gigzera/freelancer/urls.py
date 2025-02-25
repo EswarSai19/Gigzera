@@ -34,5 +34,5 @@ urlpatterns = [
     path('add_skill/', views.add_skill, name='add_skill'),
     
 
-  
+   path('aws-profile/', views.aws_profile_view, name='aws_profile'),
 ]
