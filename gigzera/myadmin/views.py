@@ -11,7 +11,7 @@ import locale
 from itertools import chain
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from db_schemas.models import Contact, ProjectQuote, Tasks, Client, Milestones, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
+from db_schemas.models import Contact, ProjectQuote, MyAdmin, Tasks, Client, Milestones, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
 from django.core.exceptions import ValidationError
 from datetime import datetime
 
@@ -750,6 +750,58 @@ def jobPageImages(request):
 
 def partnerLogos(request):
     return render(request, 'myadmin/partnerLogos.html')
+
+
+def adminManagement(request):
+    users = MyAdmin.objects.all().order_by('-created_at')
+    for user in users:
+        user.user_role_ = user.user_role.lower()
+    context = {
+        'users': users,
+    }
+    return render(request, 'myadmin/adminManagement.html', context)
+
+def add_admin(request):
+    print(f"I am inside the add admin")
+    if request.method == "POST":
+        name = request.POST.get('name').title()
+        email = request.POST.get('email')
+        user_role = request.POST.get('userRole')
+        print(f"Details", name, email, user_role)
+        user = MyAdmin.objects.create(name=name, email=email, user_role=user_role)
+        user.save()
+        return redirect('ad_adminManagement')
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+def edit_admin(request):
+    admin_id = request.POST.get('adminId')
+    admin = get_object_or_404(MyAdmin, adminId=admin_id)
+
+    if request.method == "POST":
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        user_role = request.POST.get('userRole')
+
+        # Update the fields
+        admin.name = name
+        admin.email = email
+        admin.user_role = user_role
+        admin.save()
+
+        return redirect('ad_adminManagement')  # Redirect to admin list page
+
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+def delete_admin(request):
+    admin_id = request.GET.get('adminId')
+    admin = get_object_or_404(MyAdmin, adminId=admin_id)
+
+    if request.method == "POST":
+        admin.delete()
+        return redirect('ad_adminManagement')
+
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
 
 def logout(request):
     return render(request, 'myadmin/ad_logout.html')
