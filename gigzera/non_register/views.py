@@ -173,6 +173,7 @@ def submit_freelancer(request):
                     skills=skills,
                     social_media=social_media,
                     password=password1,
+                    profilePic = "https://eswar-s3-bkt.s3.ap-south-1.amazonaws.com/freelancers/profile_sample.jpeg"
                 )
                 freelancer.save()
                 for i in range(1,4):
@@ -235,6 +236,7 @@ def submit_client(request):
                     designation=designation,
                     social_media=social_media,
                     password=password1,
+                    profilePic = "https://eswar-s3-bkt.s3.ap-south-1.amazonaws.com/clients/default_profile.png"
                 )
                 client.save()
                 return render(request, "non_register/login.html")
