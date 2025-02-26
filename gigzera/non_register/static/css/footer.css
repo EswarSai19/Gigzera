@@ -32,13 +32,29 @@
 
 .footer-tagline {
     font-size: 16px;
+<<<<<<< HEAD
     margin-left: 5px;
+=======
+<<<<<<< HEAD
+    margin-left: 10px;
+=======
+    margin-left: 5px;
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     margin-bottom: 15px;
 }
 
 .footer-social-icons {
     display: flex;
+<<<<<<< HEAD
     margin-left: 5px;
+=======
+<<<<<<< HEAD
+    margin-left: 10px;
+=======
+    margin-left: 5px;
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     gap: 10px;
 }
 

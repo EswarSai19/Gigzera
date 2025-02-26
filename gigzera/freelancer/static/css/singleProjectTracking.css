@@ -18,7 +18,15 @@ body {
 
 /* Sidebar */
 .sidebar {
+<<<<<<< HEAD
     width: 30%;
+=======
+<<<<<<< HEAD
+    width: 25%;
+=======
+    width: 30%;
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     padding: 20px;
     background-color: #fff;
     /* White background for sidebar */
@@ -64,6 +72,13 @@ body {
 
 /* Main Content */
 .main-content {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    width: 70%;
+=======
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -79,7 +94,14 @@ body {
 
 /* Project Header Box */
 .project-header {
+<<<<<<< HEAD
     width: 45%;
+=======
+<<<<<<< HEAD
+=======
+    width: 45%;
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     border: 1px solid #ddd;
     padding: 20px;
     background-color: #fff;
@@ -307,7 +329,15 @@ body {
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
+<<<<<<< HEAD
     /* width: 550px; */
+=======
+<<<<<<< HEAD
+    width: 550px;
+=======
+    /* width: 550px; */
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 
 }
 

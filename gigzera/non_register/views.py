@@ -120,7 +120,14 @@ def submit_freelancer(request):
         phone = request.POST.get("phone")
         email = request.POST.get("email")
         designation = request.POST.get("designation")
+<<<<<<< HEAD
         otherdesignation=request.POST.get("otherdesignation")
+=======
+<<<<<<< HEAD
+=======
+        otherdesignation=request.POST.get("otherdesignation")
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
         education = request.POST.get("education")
         certifications = request.POST.get("certifications")
         experience = request.POST.get("experience")
@@ -129,6 +136,23 @@ def submit_freelancer(request):
         social_media = request.POST.get("social_media")
         print("Certificates", certifications)
         
+<<<<<<< HEAD
+                # Assign the non-empty value
+        designation = otherdesignation if otherdesignation else designation
+        
+=======
+<<<<<<< HEAD
+>>>>>>> main
+        # Collect skills and experiences
+        skills = {}
+        for i in range(1, 4):  # Adjust range if you have more skill fields
+            print("Top Counter", i)
+            skill = request.POST.get(f"skill{i}")
+            exp = request.POST.get(f"experience{i}")
+<<<<<<< HEAD
+            print(f"skill {skill}, exp:{exp}")
+=======
+=======
                 # Assign the non-empty value
         designation = otherdesignation if otherdesignation else designation
         
@@ -139,6 +163,8 @@ def submit_freelancer(request):
             skill = request.POST.get(f"skill{i}")
             exp = request.POST.get(f"experience{i}")
             print(f"skill {skill}, exp:{exp}")
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
             if skill and exp:
                 skills[skill] = float(exp)  # Convert experience to float
                 
@@ -182,10 +208,22 @@ def submit_freelancer(request):
                 )
                 freelancer.save()
                 for i in range(1,4):
+<<<<<<< HEAD
                     print("Counter", i)
                     skill = request.POST.get(f"skill{i}")
                     exp = request.POST.get(f"experience{i}")
                     print(f"skill {skill}, exp:{exp}")
+=======
+<<<<<<< HEAD
+                    skill = request.POST.get(f"skill{i}")
+                    exp = request.POST.get(f"experience{i}")
+=======
+                    print("Counter", i)
+                    skill = request.POST.get(f"skill{i}")
+                    exp = request.POST.get(f"experience{i}")
+                    print(f"skill {skill}, exp:{exp}")
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
                     if skill and exp:
                         Skill.objects.create(freelancer=freelancer, skill_name=skill, experience_years=exp)
 

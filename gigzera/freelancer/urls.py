@@ -16,10 +16,19 @@ urlpatterns = [
     # path('job_detail_partial', views.load_job_details, name='job_detail_partial'),
     path('projectTracking/', views.projectTracking, name='fl_projectTracking'),
     path('singleProjectTracking/', views.singleProjectTracking, name='fl_singleProjectTracking'),
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> main
     path("add-task/", views.add_task, name="add_task"),
     path("delete_tasks/", views.delete_tasks, name="delete_tasks"),
     path('update-task/', views.update_task, name='update_task'),
     path('updateProgress/', views.fl_updateProgress, name='fl_updateProgress'),
+<<<<<<< HEAD
+=======
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     path('submit_contact/', views.fl_contact, name='fl_contact'),
     path('edit_freelancer/', views.edit_freelancer, name='edit_freelancer'),
     path('delete/', views.delete_profile_pic, name='delete_profile_pic'),

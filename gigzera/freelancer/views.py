@@ -1,6 +1,23 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, auth
 from django.contrib.auth.hashers import check_password, make_password
+<<<<<<< HEAD
+from django.http import HttpResponse, JsonResponse
+=======
+<<<<<<< HEAD
+from django.http import HttpResponse
+>>>>>>> main
+from django.contrib import messages
+import json
+import os
+import locale
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+<<<<<<< HEAD
+from db_schemas.models import Contact, ProjectQuote, Tasks, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
+=======
+from db_schemas.models import Contact, ProjectQuote, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
+=======
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 import json
@@ -9,6 +26,8 @@ import locale
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from db_schemas.models import Contact, ProjectQuote, Tasks, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 from django.core.exceptions import ValidationError
 from datetime import datetime
 # from django.contrib.auth.decorators import login_required
@@ -31,6 +50,11 @@ currency_symbols = {
 def get_currency_symbol(currency_code):
     return currency_symbols.get(currency_code, "-")
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> main
 currency_locales = {
     "USD": "en_US.UTF-8", "EUR": "de_DE.UTF-8", "JPY": "ja_JP.UTF-8",
     "GBP": "en_GB.UTF-8", "CNY": "zh_CN.UTF-8", "AUD": "en_AU.UTF-8",
@@ -98,6 +122,10 @@ def calculate_percentage(amount_str, percentage, currency_code):
 
 # Normal functions start
 
+<<<<<<< HEAD
+=======
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 def index(request):
     user_id = request.session.get('user_id')
     if not user_id:
@@ -110,7 +138,15 @@ def index(request):
         job.cur_symbol = get_currency_symbol(job.currency)
     user.initials = get_initials(user.name)
     print(user.initials)
+<<<<<<< HEAD
     context = {'jobs': jobs, 'user': user}
+=======
+<<<<<<< HEAD
+    context = {'jobs': jobs, 'user': user}    
+=======
+    context = {'jobs': jobs, 'user': user}
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     return render(request, 'freelancer/index.html', context)
 
 
@@ -662,16 +698,35 @@ def submit_quote(request):
         # Debugging prints
         print(f"User ID from session: {freelancer_id}")
         print(f"Saving quote for {opportunityId} by {freelancer}")
+<<<<<<< HEAD
         formated_budget = format_currency(budget, job.currency)
         admin_margin = calculate_percentage(budget, 30, job.currency)
         print(f"Budget: {formated_budget} {job.currency}")
+=======
+<<<<<<< HEAD
+
+=======
+        formated_budget = format_currency(budget, job.currency)
+        admin_margin = calculate_percentage(budget, 30, job.currency)
+        print(f"Budget: {formated_budget} {job.currency}")
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
         # Store in DB
         ProjectQuote.objects.create(
             freelancer_id=freelancer.userId,  # Use ForeignKey if applicable
             opportunityId=opportunityId,
             currency=job.currency,
+<<<<<<< HEAD
             budget=formated_budget,
             admin_margin=admin_margin,
+=======
+<<<<<<< HEAD
+            budget=budget,
+=======
+            budget=formated_budget,
+            admin_margin=admin_margin,
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
             time_estimation=time_estimation,
             comments=comments,
             client_id=job.client_id
@@ -705,7 +760,14 @@ def load_job_details(request):
     job_id = request.POST.get("job_id")  # Get job ID from HTMX request
     job = get_object_or_404(ProjectsDisplay, opportunityId=job_id)
     # Process skills into a list for the selected job
+<<<<<<< HEAD
     job.cur_symbol = get_currency_symbol(job.currency)
+=======
+<<<<<<< HEAD
+=======
+    job.cur_symbol = get_currency_symbol(job.currency)
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
     job.requirements_list = [line.strip() for line in job.requirements.split("\n")]
     job.challenges_list = [line.strip() for line in job.challenges.split("\n")]
@@ -756,6 +818,51 @@ def singleProjectTracking(request):
     job = ProjectsDisplay.objects.filter(opportunityId=opportunity_id).first()
     job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
     job.cur_symbol = get_currency_symbol(job.currency)
+<<<<<<< HEAD
+
+    tasks = Tasks.objects.filter(taskBid_id=bid.projectQuoteId)
+
+    context={'user':user, 'job':job, 'bid':bid, 'singleOgp':singleOgp, 'tasks':tasks}
+=======
+<<<<<<< HEAD
+    context={'user':user, 'job':job, 'bid':bid}
+>>>>>>> main
+
+    return render(request, 'freelancer/singleProjectTracking.html', context)
+
+
+def fl_updateProgress(request):
+    ongp_id = request.POST.get('ongpId') or request.GET.get('ongpId')
+    if not ongp_id:
+        return JsonResponse({"success": False, "error": "Missing ongpId"}, status=400)
+
+    if request.method == "POST":
+        project_progress = request.POST.get('project_progress')
+
+        if not project_progress:
+            return JsonResponse({"success": False, "error": "Missing project progress"}, status=400)
+
+        try:
+            ongp = get_object_or_404(OngoingProjects, ongProjectId=ongp_id)
+            ongp.progress = int(project_progress)  # Ensure it's an integer
+            ongp.save()
+
+            return JsonResponse({"success": True, "message": "Progress updated successfully"})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)}, status=500)
+
+    return JsonResponse({"success": False, "error": "Invalid request"}, status=400)
+
+
+
+# Contact form 
+def fl_contact(request):
+    if request.method == 'POST':
+<<<<<<< HEAD
+        user_id = request.POST.get('user_id')
+=======
+        user_id = request.session.get('user_id')
+=======
 
     tasks = Tasks.objects.filter(taskBid_id=bid.projectQuoteId)
 
@@ -792,6 +899,8 @@ def fl_updateProgress(request):
 def fl_contact(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
         if not user_id:
             return redirect('login')  # Redirect to login if session is missing
         name = request.POST.get('name')
@@ -799,7 +908,14 @@ def fl_contact(request):
         email = request.POST.get('email')
         reason = request.POST.get('reason')
         description = request.POST.get('description')
+<<<<<<< HEAD
         print(user_id, name, phone_number, email, reason, description)
+=======
+<<<<<<< HEAD
+=======
+        print(user_id, name, phone_number, email, reason, description)
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 
         # Check if all fields are filled
         if not all([name, phone_number, email, reason, description]):
@@ -817,12 +933,25 @@ def fl_contact(request):
             description=description
         )
 
+<<<<<<< HEAD
         messages.success(request, "Your concern has been submitted successfully!")
+=======
+<<<<<<< HEAD
+        messages.success(request, "Your form has been submitted successfully!")
+=======
+        messages.success(request, "Your concern has been submitted successfully!")
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
         return redirect('fl_index')  # Redirect to home page
 
     messages.error(request, "Invalid request!")
     return redirect(request.META.get('HTTP_REFERER', 'contact'))
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> main
 # taks related
 def delete_tasks(request):
     print("I am inside the delete tasks")
@@ -844,7 +973,10 @@ def delete_tasks(request):
     
     return JsonResponse({"success": False, "message": "Invalid request method."})
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
 def add_task(request):
     print("I am inside the add task")
     if request.method == "POST":
@@ -863,7 +995,10 @@ def add_task(request):
 
     return JsonResponse({"success": False, "error": "Invalid request"})
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
 def update_task(request):
     if request.method == "POST":
         task_id = request.POST.get("task_id")  # ✅ Use POST, not GET
@@ -887,6 +1022,7 @@ def update_task(request):
             return JsonResponse({"success": False, "message": "Task not found."}, status=404)
     return JsonResponse({"success": False, "message": "Invalid request."}, status=400)
 
+<<<<<<< HEAD
 
 
 
@@ -907,3 +1043,6 @@ def aws_profile_view(request):
         return redirect('aws_profile')  # Reload profile page
 
     return render(request, 'freelancer/test_profile_aws.html', {'user': freelancer})
+=======
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main

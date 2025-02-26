@@ -27,7 +27,15 @@
     <h3>Budget:</h3>
     <p>{{job.cur_symbol}} {{bid.budget}}</p>
     <h3>Timeline</h3>
+<<<<<<< HEAD
     <p>Start: {{job.start_date}}<br />End: {{singleOgp.end_date}}</p>
+=======
+<<<<<<< HEAD
+    <p>Start: {{job.start_date}}<br />End: Mar 15, 2025</p>
+=======
+    <p>Start: {{job.start_date}}<br />End: {{singleOgp.end_date}}</p>
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   </div>
 
   <!-- Main Content -->
@@ -44,7 +52,15 @@
 
         <!-- Right Section: Percentage and Edit Icon -->
         <div class="progress-percentage">
+<<<<<<< HEAD
           <strong id="progressPercentage">{{singleOgp.progress}}%</strong>
+=======
+<<<<<<< HEAD
+          <strong id="progressPercentage">79%</strong>
+=======
+          <strong id="progressPercentage">{{singleOgp.progress}}%</strong>
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
           <button
             id="editProgressIcon"
             class="edit-btn"
@@ -58,6 +74,124 @@
       <!-- Progress Bar in a Separate Row -->
       <div class="progress-bar-container">
         <div class="progress-bar">
+<<<<<<< HEAD
+          <div
+            id="progressFill"
+            class="progress"
+            data-progress="{{ singleOgp.progress }}"
+          ></div>
+=======
+<<<<<<< HEAD
+          <div id="progressFill" class="progress" style="width: 79%"></div>
+>>>>>>> main
+        </div>
+        <!-- Project Status Text Below the Bar -->
+        <div class="project-status">Project Status : {{singleOgp.status}}</div>
+      </div>
+    </div>
+    <form
+      id="updateProgress"
+      action="{% url 'fl_updateProgress' %}?ongpId={{singleOgp.ongProjectId}}"
+      method="POST"
+    >
+      {% csrf_token %}
+      <div id="progressEditForm" class="progress-edit hidden">
+        <input
+          type="number"
+          id="newProgress"
+          name="project_progress"
+          min="0"
+          max="100"
+          value="{{singleOgp.progress}}"
+        />
+        <button type="submit" onclick="updateProgress()">Update</button>
+      </div>
+    </form>
+
+    <!-- Tasks -->
+    <div class="tasks-box">
+      <!-- DELETE FORM (Wraps the delete button and checkboxes only) -->
+      <form id="deleteTaskForm" action="{% url 'delete_tasks' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="bid_id" value="{{singleOgp.bidId}}" />
+        <div class="tasks-header">
+          <h3>Tasks</h3>
+          <div>
+            <button
+              type="button"
+              class="add-task-btn"
+              id="addTaskBtn"
+              onclick="showTaskForm()"
+            >
+              + Add Task
+            </button>
+            <button
+              type="submit"
+              class="delete-selected-btn"
+              id="deleteSelectedBtn"
+            >
+              Delete Selected
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- TASK LIST (No Nested Forms) -->
+      <div class="task-list">
+        {% for task in tasks %}
+        <div class="task">
+          <!-- UPDATE FORM (Separate from Delete Form) -->
+          <form
+            method="POST"
+            action="{% url 'update_task' %}"
+            class="update-task-form"
+          >
+            {% csrf_token %}
+            <div class="task-row">
+              <input type="hidden" name="task_id" value="{{ task.taskId }}" />
+              <input
+                type="hidden"
+                name="title"
+                class="task-title-input"
+                value="{{ task.title }}"
+              />
+              <input
+                type="checkbox"
+                name="selected_tasks"
+                class="task-checkbox"
+                data-id="{{ task.taskId | default:'' }}"
+                value="{{ task.taskId | default:'' }}"
+                form="deleteTaskForm"
+              />
+
+              <label
+                class="task-title"
+                contenteditable="true"
+                onblur="updateHiddenInput(this)"
+              >
+                {{ task.title }}
+              </label>
+
+              <select
+                name="status"
+                class="task-status"
+                onchange="submitUpdateForm(this)"
+              >
+                <option {% if task.status == "Requirement Gathering" %}selected{% endif %}>Requirement Gathering</option>
+                <option {% if task.status == "Designing" %}selected{% endif %}>Designing</option>
+                <option {% if task.status == "Development" %}selected{% endif %}>Development</option>
+                <option {% if task.status == "Testing" %}selected{% endif %}>Testing</option>
+                <option {% if task.status == "UAT" %}selected{% endif %}>UAT</option>
+                <option {% if task.status == "Completed" %}selected{% endif %}>Completed</option>
+              </select>
+            </div>
+          </form>
+
+          <div class="task-comment">
+<<<<<<< HEAD
+=======
+            <button onclick="openChatModal()" class="comment-button" disabled>
+=======
           <div
             id="progressFill"
             class="progress"
@@ -167,15 +301,54 @@
           </form>
 
           <div class="task-comment">
+>>>>>>> main
             <button
               type="button"
               onclick="openChatModal()"
               class="comment-button"
             >
+<<<<<<< HEAD
+=======
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
               Add Comment
             </button>
           </div>
         </div>
+<<<<<<< HEAD
+        {% empty %}
+        <div>
+          <h1>You have No tasks added</h1>
+=======
+<<<<<<< HEAD
+        <div class="task">
+          <div class="task-row">
+            <input type="checkbox" class="task-checkbox" />
+            <label class="task-title">Design system setup</label>
+            <i class="fa-solid fa-pen-to-square edit-icon"></i>
+            <select>
+              <option>Requirement Gathering</option>
+              <option>Designing</option>
+              <option>Development</option>
+              <option>Testing</option>
+              <option>UAT</option>
+              <option>Completed</option>
+            </select>
+          </div>
+          <div class="task-comment">
+            <button onclick="openChatModal()" class="comment-button" disabled>
+              Add Comment
+            </button>
+          </div>
+>>>>>>> main
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+<<<<<<< HEAD
+=======
+=======
         {% empty %}
         <div>
           <h1>You have No tasks added</h1>
@@ -184,6 +357,7 @@
       </div>
     </div>
   </div>
+>>>>>>> main
 
     <!-- Add task -->
   <!-- Task Form (Initially Hidden) -->
@@ -233,6 +407,10 @@
     </div>
   </div>
   
+<<<<<<< HEAD
+=======
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   <!-- Message Modal -->
   <div
     id="chatModal"
@@ -366,6 +544,11 @@
 {% endblock %}
 <!-- JS -->
 {% block js %}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> main
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     var progressElement = document.getElementById("progressFill");
@@ -375,5 +558,9 @@
     progressElement.style.width = progressValue + "%";
   });
 </script>
+<<<<<<< HEAD
+=======
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 <script src="{% static 'js/singleProjectTracking.js' %}"></script>
 {% endblock %}

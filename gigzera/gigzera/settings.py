@@ -12,7 +12,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+<<<<<<< HEAD
 from dotenv import load_dotenv
+=======
+>>>>>>> main
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +30,11 @@ SECRET_KEY = 'django-insecure-8veuiojh=5^rhyx&2%d+3=mu(9+bskvpdiupx#c+h6f)7w#82%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+<<<<<<< HEAD
 ALLOWED_HOSTS = ['*']
+=======
+ALLOWED_HOSTS = ["3.108.215.117", "localhost", "127.0.0.1"]
+>>>>>>> main
 
 
 
@@ -46,9 +53,12 @@ INSTALLED_APPS = [
     'client',
     'db_schemas',
     'myadmin',
+<<<<<<< HEAD
 
     # custom
     'storages',
+=======
+>>>>>>> main
 ]
 
 MIDDLEWARE = [
@@ -151,6 +161,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+<<<<<<< HEAD
 
 
 # Load environment variables from .env
@@ -183,3 +194,7 @@ else:
     print("Using local storage")
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+=======
+# Custom user model
+# AUTH_USER_MODEL = 'non_register.CustomUser'  # Replace 'your_app_name' with your actual app name
+>>>>>>> main

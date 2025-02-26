@@ -279,7 +279,15 @@ body {
     background: none;
     cursor: pointer;
     padding: 4px;
+<<<<<<< HEAD
     color: green;
+=======
+<<<<<<< HEAD
+    color: #666;
+=======
+    color: green;
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 }
 
 .disabled {

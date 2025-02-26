@@ -13,10 +13,19 @@ urlpatterns = [
     path('submit_contact/', views.cl_contact, name='cl_contact'),
     path('ongoingProjects/', views.cl_ongoingProjects, name='cl_ongoingProjects'),
     path('singleOngoingProject/', views.cl_singleOgProject, name='cl_singleOgProject'),
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> main
     path("add-task/", views.add_task, name="add_task"),
     path("delete_tasks/", views.delete_tasks, name="delete_tasks"),
     path('update-task/', views.update_task, name='update_task'),
     path('updateProgress/', views.cl_updateProgress, name='cl_updateProgress'),
+<<<<<<< HEAD
+=======
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     path('singleViewBid/', views.cl_singleViewBid, name='cl_singleViewBid'),
     path('profileView/', views.profileView, name='cl_profileView'),
     path('viewBids/', views.cl_viewBids, name='cl_viewBids'),
