@@ -80,7 +80,10 @@ const suggestionsList = document.getElementById("suggestions-list");
 const selectedSkillsContainer = document.getElementById("selected-skills");
 const hiddenSkillsInput = document.getElementById("skills-list"); // Hidden input
 const availableSkills = [
+<<<<<<< HEAD
   "Python",
+=======
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "Java",
   "JavaScript",
   "C#",
@@ -153,9 +156,12 @@ const availableSkills = [
   "AWS CloudFormation",
   "Azure DevOps",
   "GCP Deployment Manager",
+<<<<<<< HEAD
   "Python",
   "JavaScript",
   "SQL",
+=======
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "Data Modeling",
   "Microservices",
   "Monolithic Architecture",
@@ -166,6 +172,7 @@ const availableSkills = [
   "Tableau",
   "Power BI",
   "Google Analytics",
+<<<<<<< HEAD
   "JIRA",
   "Confluence",
   "Rally",
@@ -174,6 +181,12 @@ const availableSkills = [
   "Excel (Advanced)",
   "Power BI",
   "Tableau",
+=======
+  "Confluence",
+  "Rally",
+  "Lucidchart",
+  "Excel (Advanced)",
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "BPMN",
   "Visio",
   "Bizagi",
@@ -182,8 +195,11 @@ const availableSkills = [
   "Use Case Diagrams",
   "Sequence Diagrams",
   "Class Diagrams",
+<<<<<<< HEAD
   "Postman",
   "Selenium",
+=======
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "Figma",
   "Adobe XD",
   "Axure RP",
@@ -200,20 +216,27 @@ const availableSkills = [
   "TestRail",
   "Zephyr",
   "HP ALM",
+<<<<<<< HEAD
   "Selenium",
   "Cypress",
+=======
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "Playwright",
   "Appium",
   "Katalon Studio",
   "JMeter",
   "LoadRunner",
   "Gatling",
+<<<<<<< HEAD
   "Postman",
+=======
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "SoapUI",
   "Swagger",
   "OWASP ZAP",
   "Burp Suite",
   "Nessus",
+<<<<<<< HEAD
   "Git",
   "GitHub",
   "JIRA",
@@ -229,6 +252,14 @@ const availableSkills = [
   "Espresso",
   "XCTest",
   "SQL",
+=======
+  "Bugzilla",
+  "TestLink",
+  "CircleCI",
+  "Bamboo",
+  "Espresso",
+  "XCTest",
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "Oracle DB",
   "AWS Device Farm",
   "Sauce Labs",
@@ -264,8 +295,12 @@ const availableSkills = [
   "Arduino Programmer",
   "Artifactory Engineer",
   "Artificial Intelligence (AI) / Machine Learning Engineer",
+<<<<<<< HEAD
   "Artificial intelligence / Machine Learning Engineer",
   "Artificial intelligence Architect",
+=======
+  "Artificial Intelligence Architect",
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "Artificial Intelligence Engineer",
   "Artificial Intelligence Researcher",
   "ASP.NET Developer",
@@ -295,12 +330,21 @@ const availableSkills = [
   "Chief Architect Specialist",
   "Chief Operations Engineer",
   "Chrome Extension Developer",
+<<<<<<< HEAD
   "Cloud administrator",
   "Cloud Architect",
   "Cloud automation engineer",
   "Cloud Computing Specialist",
   "Cloud engineer",
   "Cloud network engineer",
+=======
+  "Cloud Administrator",
+  "Cloud Architect",
+  "Cloud Automation Engineer",
+  "Cloud Computing Specialist",
+  "Cloud Engineer",
+  "Cloud Network Engineer",
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "Cloud Security Engineer",
   "CNC Programmer",
   "CodeIgniter Developer",
@@ -337,7 +381,11 @@ const availableSkills = [
   "Delphi Developer",
   "DevOps Architect",
   "DevOps Engineer",
+<<<<<<< HEAD
   "Devops Manager",
+=======
+  "DevOps Manager",
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "DevSecOps Architect",
   "DevSecOps Engineer",
   "Django Freelancer",
@@ -365,39 +413,66 @@ const availableSkills = [
   "Flutter Developer",
   "Fortify Engineer",
   "Front End Web Developer",
+<<<<<<< HEAD
   "Front end Desiner",
   "Full Stack Developer",
   "Full Stack JAVA Developer/Programmer/Engineer",
   "Full Stack Python Developer/Programmer/Engineer",
+=======
+  "Front End Designer",
+  "Full Stack Developer",
+  "Full Stack Java Developer",
+  "Full Stack Python Developer",
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "Fusion 360 Specialist",
   "Game Developer",
   "GCP DevOps Engineer",
   "Gerrit Administrator",
   "Gerrit Engineer",
   "Git Engineer",
+<<<<<<< HEAD
   "Github Engineer",
+=======
+  "GitHub Engineer",
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "GitLab Engineer",
   "Gradle Engineer",
   "Grafana Engineer",
   "Groovy Engineer",
   "Information Architect",
   "Information Security Analyst",
+<<<<<<< HEAD
   "IOS Developer",
   "Istio Engineer",
   "IT Manager",
   "JaCoCO Engineer",
+=======
+  "iOS Developer",
+  "Istio Engineer",
+  "IT Manager",
+  "JaCoCo Engineer",
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "Java Developer",
   "JavaScript Developer",
   "Jenkins Engineer",
   "Jira Administrator",
   "JIRA Engineer",
   "JUnit Engineer",
+<<<<<<< HEAD
   "kubernetes Administrator",
   "Kubernetes Engineer",
   "Kubernetes Operations Engineer",
   "Machine learning Architect",
   "Machine Learning Engineer",
   "Micro services / API Lead Designer",
+=======
+  "Kubernetes Administrator",
+  "Kubernetes Engineer",
+  "Kubernetes Operations Engineer",
+  "Machine Learning Architect",
+  "Machine Learning Engineer",
+  "Microservices / API Lead Designer",
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "Mobile Application Developer",
   "Mulesoft Developer",
   "Nagios Engineer",
@@ -416,10 +491,17 @@ const availableSkills = [
   "Packer Engineer",
   "PHP Developer",
   "Powershell Engineer",
+<<<<<<< HEAD
   "Principle Engineer in Artificial Intelligence",
   "Principle Engineer in Big Data",
   "Principle Engineer in Data Analysis",
   "Principle Engineer in Machine Learning",
+=======
+  "Principal Engineer in Artificial Intelligence",
+  "Principal Engineer in Big Data",
+  "Principal Engineer in Data Analysis",
+  "Principal Engineer in Machine Learning",
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "Product Manager",
   "Production Support Engineer",
   "Programmer",
@@ -431,7 +513,11 @@ const availableSkills = [
   "QA Engineer",
   "React Developer",
   "Robotics Engineer",
+<<<<<<< HEAD
   "Ruby on rails Developer",
+=======
+  "Ruby on Rails Developer",
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "Salesforce Developer",
   "Search Engine Optimization",
   "Security Specialist",
@@ -444,8 +530,13 @@ const availableSkills = [
   "Senior DevOps Engineer",
   "Senior DevSecOps Architect",
   "Senior DevSecOps Engineer",
+<<<<<<< HEAD
   "Senior Site reliability Engineer",
   "Sharepoint Developer",
+=======
+  "Senior Site Reliability Engineer",
+  "SharePoint Developer",
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "Site Reliability Engineer (Kubernetes – Docker)",
   "Software Engineer",
   "SonarQube Engineer",
@@ -460,12 +551,21 @@ const availableSkills = [
   "Technical Lead",
   "Terraform Engineer",
   "TFS Engineer",
+<<<<<<< HEAD
   "Twistkock Engineer",
   "UDeploy Engineer",
   "UI DESIGNER",
   "UI Developer",
   "Unity Developer",
   "UX DESIGNER",
+=======
+  "Twistlock Engineer",
+  "UDeploy Engineer",
+  "UI Designer",
+  "UI Developer",
+  "Unity Developer",
+  "UX Designer",
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   "Vault Engineer",
   "Web Designer (UI/UX Designer)",
   "Web Developer",
@@ -633,3 +733,149 @@ function openModal() {
 function closeModal() {
   document.getElementById("exampleModal").classList.add("hidden");
 }
+<<<<<<< HEAD
+=======
+
+document.addEventListener("DOMContentLoaded", function () {
+  const budgetRanges = {
+    USD: [
+      "Less than 12",
+      "12 - 60",
+      "60 - 120",
+      "120 - 240",
+      "240 - 600",
+      "600 - 2,400",
+      "2,400 - 6,000",
+      "6,000 - 12,000",
+      "12,000 - 24,000",
+      "More than 24,000",
+    ],
+    EUR: [
+      "Less than 12",
+      "12 - 60",
+      "60 - 120",
+      "120 - 240",
+      "240 - 600",
+      "600 - 2,400",
+      "2,400 - 6,000",
+      "6,000 - 12,000",
+      "12,000 - 24,000",
+      "More than 24,000",
+    ],
+    JPY: [
+      "Less than 1,800",
+      "1,800 - 9,000",
+      "9,000 - 18,000",
+      "18,000 - 36,000",
+      "36,000 - 90,000",
+      "90,000 - 360,000",
+      "360,000 - 900,000",
+      "900,000 - 1,800,000",
+      "1,800,000 - 3,600,000",
+      "More than 3,600,000",
+    ],
+    GBP: [
+      "Less than 10",
+      "10 - 50",
+      "50 - 100",
+      "100 - 200",
+      "200 - 500",
+      "500 - 2,000",
+      "2,000 - 5,000",
+      "5,000 - 10,000",
+      "10,000 - 20,000",
+      "More than 20,000",
+    ],
+    CNY: [
+      "Less than 90",
+      "90 - 450",
+      "450 - 900",
+      "900 - 1,800",
+      "1,800 - 4,500",
+      "4,500 - 18,000",
+      "18,000 - 45,000",
+      "45,000 - 90,000",
+      "90,000 - 180,000",
+      "More than 180,000",
+    ],
+    AUD: [
+      "Less than 20",
+      "20 - 100",
+      "100 - 200",
+      "200 - 400",
+      "400 - 1,000",
+      "1,000 - 4,000",
+      "4,000 - 10,000",
+      "10,000 - 20,000",
+      "20,000 - 40,000",
+      "More than 40,000",
+    ],
+    CAD: [
+      "Less than 18",
+      "18 - 90",
+      "90 - 180",
+      "180 - 360",
+      "360 - 900",
+      "900 - 3,600",
+      "3,600 - 9,000",
+      "9,000 - 18,000",
+      "18,000 - 36,000",
+      "More than 36,000",
+    ],
+    CHF: [
+      "Less than 12",
+      "12 - 60",
+      "60 - 120",
+      "120 - 240",
+      "240 - 600",
+      "600 - 2'400",
+      "2'400 - 6'000",
+      "6'000 - 12'000",
+      "12'000 - 24'000",
+      "More than 24'000",
+    ],
+    INR: [
+      "Less than 1,000",
+      "1,000 - 5,000",
+      "5,000 - 10,000",
+      "10,000 - 20,000",
+      "20,000 - 50,000",
+      "50,000 - 2,00,000",
+      "2,00,000 - 5,00,000",
+      "5,00,000 - 10,00,000",
+      "10,00,000 - 20,00,000",
+      "More than 20,00,000",
+    ],
+    NZD: [
+      "Less than 20",
+      "20 - 100",
+      "100 - 200",
+      "200 - 400",
+      "400 - 1,000",
+      "1,000 - 4,000",
+      "4,000 - 10,000",
+      "10,000 - 20,000",
+      "20,000 - 40,000",
+      "More than 40,000",
+    ],
+  };
+
+  const currencySelect = document.getElementById("currency");
+  const budgetRangeSelect = document.getElementById("budget-range");
+
+  function updateBudgetRanges() {
+    const selectedCurrency = currencySelect.value;
+    budgetRangeSelect.innerHTML = ""; // Clear existing options
+
+    budgetRanges[selectedCurrency].forEach((range) => {
+      const option = document.createElement("option");
+      option.textContent = range;
+      budgetRangeSelect.appendChild(option);
+    });
+  }
+
+  currencySelect.addEventListener("change", updateBudgetRanges);
+
+  updateBudgetRanges(); // Initialize with default selection
+});
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362

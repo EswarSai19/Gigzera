@@ -23,7 +23,11 @@
       <p>Opportunity ID: {{ bid.opportunityId }}</p>
       <p>Gigz ID: {{ bid.freelancer_id }}</p>
       <p>Experience: {{ bid.user_experience }} Years</p>
+<<<<<<< HEAD
       <p>Budget: {{ bid.revised_budget }}</p>
+=======
+      <p>Budget: {{bid.cur_symbol}} {{ bid.revised_budget }}</p>
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
       <p>Timeline: {{ bid.time_estimation }}</p>
       <a
         href="{% url 'cl_singleViewBid' %}?opportunityId={{ bid.opportunityId }}&userId={{ bid.freelancer_id }}&bidId={{ bid.projectQuoteId }}"

@@ -3,16 +3,153 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, auth
 from django.contrib.auth.hashers import check_password, make_password
+<<<<<<< HEAD
 from django.http import HttpResponse
+=======
+from django.http import HttpResponse, JsonResponse
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 from django.contrib import messages
 import json
 import os
 import locale
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
+<<<<<<< HEAD
 from db_schemas.models import Client, ProjectsDisplay, OngoingProjects, Contact, ProjectQuote, Freelancer, EmploymentHistory,Certificate, Skill
 from django.core.exceptions import ValidationError
 from datetime import datetime
+=======
+from db_schemas.models import Client, Tasks, ProjectsDisplay, Milestones, OngoingProjects, Contact, ProjectQuote, Freelancer, EmploymentHistory,Certificate, Skill
+from django.core.exceptions import ValidationError
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
+
+
+
+
+def calculate_end_date(start_date: str, option: str) -> str:
+    option_mapping = {
+        "Less than 1 Month": 1,
+        "1-2 Months": 1,
+        "2-4 Months": 2,
+        "4-8 Months": 4,
+        "8-12 Months": 8,
+        "More than 12 Months": 12
+    }
+
+    months_to_add = option_mapping.get(option, 1)  # Default to 1 month if option is not found
+    start_date_obj = datetime.strptime(start_date, "%Y-%m-%d")
+    end_date_obj = start_date_obj + relativedelta(months=months_to_add)
+
+    return end_date_obj.strftime("%Y-%m-%d")
+
+
+
+def divide_dates(start_date: str, end_date: str):
+    # Convert strings to datetime objects
+    start = datetime.strptime(start_date, "%Y-%m-%d")
+    end = datetime.strptime(end_date, "%Y-%m-%d")
+
+    # Calculate the total duration
+    total_days = (end - start).days
+
+    # Check if total_days can be divided into 3 parts
+    if total_days < 3:
+        return "Date range is too short to divide into 3 parts."
+
+    # Calculate the interval for each part
+    interval = total_days // 3
+
+    # Find the last two division points
+    part2 = start + timedelta(days=interval)   # End of 1st part
+    part3 = part2 + timedelta(days=interval)   # End of 2nd part
+
+    # Return dates in "YYYY-MM-DD" format
+    return part2.strftime("%Y-%m-%d"), part3.strftime("%Y-%m-%d")
+
+
+currency_locales = {
+    "USD": "en_US.UTF-8", "EUR": "de_DE.UTF-8", "JPY": "ja_JP.UTF-8", 
+    "GBP": "en_GB.UTF-8", "CNY": "zh_CN.UTF-8", "AUD": "en_AU.UTF-8", 
+    "CAD": "en_CA.UTF-8", "CHF": "de_CH.UTF-8", "INR": "en_IN.UTF-8", "NZD": "en_NZ.UTF-8"
+}
+
+def clean_number(value, currency_code):
+    """Cleans and converts numbers based on currency format."""
+    if isinstance(value, (int, float)):
+        return value  # Already a number
+    
+    value = str(value).replace("'", "").replace(" ", "")  # Remove Swiss & extra spaces
+    
+    if currency_code in ["EUR", "DE", "FR", "CHF"]:  # European style (dot as thousand separator)
+        value = value.replace(".", "").replace(",", ".")  # Remove thousand dots & fix decimal commas
+    else:  # Standard format (comma as thousand separator)
+        value = value.replace(",", "")
+
+    try:
+        return float(value) if "." in value else int(value)  # Convert to int if no decimals
+    except ValueError:
+        raise ValueError(f"Invalid number format: {value}")
+
+def add_and_format(budget, admin_margin, currency_code):
+    """Adds two numbers and formats them based on the currency code."""
+    budget = clean_number(budget, currency_code)
+    admin_margin = clean_number(admin_margin, currency_code)
+    
+    total = budget + admin_margin  # Calculate sum
+    print(f"Total is {total}")
+    
+    return format_currency(total, currency_code)
+
+def format_currency(amount, currency_code):
+    """Formats the number according to the given currency locale."""
+    try:
+        locale_code = currency_locales.get(currency_code, "en_US.UTF-8")
+        try:
+            locale.setlocale(locale.LC_ALL, locale_code)
+        except locale.Error:
+            print(f"Warning: Locale '{locale_code}' not found. Using default.")
+
+        amount = clean_number(amount, currency_code)
+
+        if isinstance(amount, int):
+            formatted_amount = locale.format_string("%d", amount, grouping=True)
+        else:
+            formatted_amount = locale.format_string("%.2f", amount, grouping=True)
+
+        return formatted_amount
+    except ValueError:
+        return "Invalid amount"
+
+def divide_budget(revised_budget, advance_payment, currency, no_of_parts):
+    """Divides the remaining budget into equal parts after deducting advance payment."""
+    # Convert string inputs to numbers
+    revised_budget = clean_number(revised_budget, currency)
+    advance_payment = clean_number(advance_payment, currency)
+
+    # Calculate remaining budget
+    remaining_budget = revised_budget - advance_payment
+
+    if no_of_parts <= 0:
+        raise ValueError("Number of parts must be greater than 0.")
+
+    # Calculate equal parts
+    part_amount = remaining_budget / no_of_parts
+
+    # Format and return results
+    return [format_currency(part_amount, currency) for _ in range(no_of_parts)]
+
+# Example usage
+print(divide_dates("2024-01-01", "2024-02-20"))  # Example: 50 days
+
+
+
+# Example usage:
+# start_date = "2025-02-19"
+# option = "2-4 Months"
+# end_date = calculate_end_date(start_date, option)
+# print(end_date)  # Output: 2025-04-19
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 
 # Create your views here.
 
@@ -31,7 +168,11 @@ def get_currency_symbol(currency_code):
 def cl_contact(request):
 
     if request.method == 'POST':
+<<<<<<< HEAD
         user_id = request.session.get('user_id')
+=======
+        user_id = request.POST.get('user_id')
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
         if not user_id:
             return redirect('login')  # Redirect to login if session is missing
         name = request.POST.get('name')
@@ -56,7 +197,11 @@ def cl_contact(request):
             description=description
         )
 
+<<<<<<< HEAD
         messages.success(request, "Your form has been submitted successfully!")
+=======
+        messages.success(request, "Your concern has been submitted successfully!")
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
         return redirect('cl_index')  # Redirect to home page
 
     messages.error(request, "Invalid request!")
@@ -299,10 +444,109 @@ def cl_singleOgProject(request):
     job = ProjectsDisplay.objects.filter(opportunityId=opportunity_id).first()
     job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
     job.cur_symbol = get_currency_symbol(job.currency)
+<<<<<<< HEAD
     context={'user':user, 'job':job, 'bid':bid}
 
     return render(request, 'client/cl_singleOgProject.html', context)
     
+=======
+
+    milestones = Milestones.objects.filter(bid_id=bid.projectQuoteId)
+    for milestone in milestones:
+        milestone.cur_symbol = get_currency_symbol(milestone.currency)
+        milestone.cl_status = milestone.status.lower()
+
+    tasks = Tasks.objects.filter(taskBid_id=bid.projectQuoteId)
+
+    context={'user':user, 'job':job, 'bid':bid, 'singleOgp':singleOgp, 'milestones':milestones, 'tasks':tasks}
+
+    return render(request, 'client/cl_singleOgProject.html', context)
+    
+def cl_updateProgress(request):
+    ongp_id = request.POST.get('ongpId') or request.GET.get('ongpId')
+    if not ongp_id:
+        return JsonResponse({"success": False, "error": "Missing ongpId"}, status=400)
+
+    if request.method == "POST":
+        project_progress = request.POST.get('project_progress')
+
+        if not project_progress:
+            return JsonResponse({"success": False, "error": "Missing project progress"}, status=400)
+
+        try:
+            ongp = get_object_or_404(OngoingProjects, ongProjectId=ongp_id)
+            ongp.progress = int(project_progress)  # Ensure it's an integer
+            ongp.save()
+
+            return JsonResponse({"success": True, "message": "Progress updated successfully"})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)}, status=500)
+
+    return JsonResponse({"success": False, "error": "Invalid request"}, status=400)
+
+def delete_tasks(request):
+    print("I am inside the delete tasks")
+    if request.method == "POST":
+        try:
+            task_ids = request.POST.getlist("task_ids[]")
+            print(f"Received Task IDs: {task_ids}")  # Debugging print
+
+            if not task_ids:
+                return JsonResponse({"success": False, "message": "No tasks selected."})
+
+            deleted_count, _ = Tasks.objects.filter(taskId__in=task_ids).delete()
+            print(f"Deleted {deleted_count} tasks.")  # Debugging print
+
+            return JsonResponse({"success": True, "message": f"Deleted {deleted_count} tasks."})
+        except Exception as e:
+            print(f"Error: {str(e)}")  # Debugging print
+            return JsonResponse({"success": False, "message": "An error occurred."})
+    
+    return JsonResponse({"success": False, "message": "Invalid request method."})
+
+def add_task(request):
+    print("I am inside the add task")
+    if request.method == "POST":
+        try:
+            title = request.POST.get("title").title()
+            status = request.POST.get("status", "Requirement Gathering")
+            bid_id = request.POST.get('bid_id')
+            print(f"I am getting add tasks details: {title}, {status}, {bid_id}")
+
+            Tasks.objects.create(title=title, status=status, taskBid_id=bid_id)
+            print("Saved task successfully")
+            return JsonResponse({"success": True, "message": "Task added successfully!"})
+            
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
+
+    return JsonResponse({"success": False, "error": "Invalid request"})
+
+def update_task(request):
+    if request.method == "POST":
+        task_id = request.POST.get("task_id")  # ✅ Use POST, not GET
+        new_title = request.POST.get("title")  # ✅ Get title from POST
+        new_status = request.POST.get("status")  # ✅ Get status from POST
+        
+        print(f"Updating Task: {task_id}, New Title: {new_title}, New Status: {new_status}")
+
+        if not task_id:
+            return JsonResponse({"success": False, "message": "No tasks selected."}, status=400)
+        
+        try:
+            task = Tasks.objects.get(taskId=task_id)
+            if new_title:
+                task.title = new_title.title()
+            if new_status:
+                task.status = new_status
+            task.save()
+            return JsonResponse({"success": True, "message": "Task updated successfully."})
+        except Tasks.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Task not found."}, status=404)
+    return JsonResponse({"success": False, "message": "Invalid request."}, status=400)
+
+
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 
 def cl_viewBids(request):
     user_id = request.session.get('user_id')
@@ -390,6 +634,11 @@ def cl_bidApproved(request):
     bids = ProjectQuote.objects.all().order_by('-created_at')
     for bid in bids:
         job = ProjectsDisplay.objects.filter(opportunityId=bid.opportunityId).first()
+<<<<<<< HEAD
+=======
+        og_start_date = job.start_date
+        og_end_date = calculate_end_date(str(job.start_date), job.duration)
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
         user = Freelancer.objects.filter(userId=bid.freelancer_id).first()
         bid.title = job.title if job else "No Title"  # Fixed variable name
         bid.cur_symbol = get_currency_symbol(job.currency if job else "USD")  # Ensure currency is handled properly
@@ -406,10 +655,23 @@ def cl_bidApproved(request):
             bid.client_bid_status = "approved"
             bid.save()  # Save changes
 
+<<<<<<< HEAD
+=======
+            job = ProjectsDisplay.objects.filter(opportunityId=bid.opportunityId).first()
+            og_start_date = job.start_date
+            og_end_date = calculate_end_date(str(job.start_date), job.duration)
+            ms_date1, ms_date2 = divide_dates(str(og_start_date), str(og_end_date))
+            ms_amt1, ms_amt2 = divide_budget(bid.revised_budget, bid.advance_payment, job.currency, 2)
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
             # ONG recored creation:
             OngoingProjects.objects.create(
                 opportunityId = bid.opportunityId,
                 bidId = bid_id,
+<<<<<<< HEAD
+=======
+                start_date=og_start_date,
+                end_date=og_end_date,
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
                 status = 'Bid Ongoing',
                 progress = '0',
                 admin_id = 'AD001',
@@ -417,6 +679,12 @@ def cl_bidApproved(request):
                 freelancer_id = bid.freelancer_id
             )
 
+<<<<<<< HEAD
+=======
+            Milestones.objects.create(date=ms_date1, amount=ms_amt1, currency=job.currency, status="Pending", bid_id=bid_id)
+            Milestones.objects.create(date=ms_date2, amount=ms_amt2, currency=job.currency, status="Pending", bid_id=bid_id)
+
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
             print(f"Updated bid {bid_id}: bid_status=approved")
             messages.success(request, "Bid was sent to freelancer successfully")
             return redirect('cl_viewBids')

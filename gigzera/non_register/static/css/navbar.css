@@ -4,6 +4,18 @@
     /* color: #333; */
 }
 
+<<<<<<< HEAD
+=======
+/* Navbar active  */
+/* .active {
+    color: #007bff !important;
+    font-weight: bold;
+    border-bottom: 3px solid #007bff;
+    padding-bottom: 5px;
+} */
+
+
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 /* Contact us image */
 .popup-image {
     display: block;

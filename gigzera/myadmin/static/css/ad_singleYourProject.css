@@ -348,8 +348,28 @@ body {
 
 .timeline .edit-table {
     display: flex;
+<<<<<<< HEAD
     align-items: center;
     gap: 10px;
+=======
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+}
+
+.timeline .edit-table span {
+    margin-right: 20px;
+}
+
+.timeline-btn {
+    padding: 5px 12px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-left: 10px;
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 }
 
 .timeline .edit-table input[type="date"] {
@@ -360,10 +380,37 @@ body {
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 14px;
+<<<<<<< HEAD
+=======
+    margin-right: 20px;
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
     /* Smaller font size */
     color: black;
 }
 
+<<<<<<< HEAD
+=======
+.hidden {
+    display: none;
+}
+
+#alertBox {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+#alertBox.error {
+    background-color: #FF5733;
+}
+
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 /* Finance Box */
 .finance-box {
     border: 1px solid #ddd;
@@ -388,6 +435,25 @@ body {
     color: #000;
 }
 
+<<<<<<< HEAD
+=======
+/* .dollar-sign {
+    border: 1px solid red;
+    color: green;
+    margin: auto;
+    display: inline-block;
+    align-items: center;
+} */
+
+.finEditBtns {
+    width: 300px;
+    display: flex;
+    /* border: 1px solid green; */
+    align-items: center;
+    justify-content: right;
+}
+
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 /* Mile stone header */
 .milestone-header {
     display: flex;
@@ -431,7 +497,12 @@ body {
 }
 
 /* Editable Table for Finance Box */
+<<<<<<< HEAD
 #financeTable input[type="number"] {
+=======
+#financeTable input[type="number"],
+#financeTable input[type="text"] {
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
     width: calc(40% - 24px);
     padding: 7px;
     border: 1px solid #ddd;
@@ -442,7 +513,12 @@ body {
 }
 
 /* Total Costing Box */
+<<<<<<< HEAD
 .total-costing-box {
+=======
+.total-costing-box,
+.labor-costing-box {
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
     padding: 7px;
     width: calc(40% - 24px);
     background-color: #f1f1f1;
@@ -460,7 +536,11 @@ body {
 }
 
 /* Milestone Payments Table */
+<<<<<<< HEAD
 #milestoneTable input[type="number"],
+=======
+#milestoneTable input[type="text"],
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 #milestoneTable input[type="date"],
 #milestoneTable select {
     width: calc(100% - 24px);

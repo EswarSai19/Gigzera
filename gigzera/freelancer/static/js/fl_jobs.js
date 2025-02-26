@@ -67,6 +67,7 @@ function startImageSlideshow() {
 }
 
 // //Pop up javascript
+<<<<<<< HEAD
 
 // Javascript for modal open for provide quote
 function openModal(opportunityId) {
@@ -82,6 +83,36 @@ function openModal(opportunityId) {
 function closeModal() {
   document.getElementById("quoteModal").classList.add("hidden");
 }
+=======
+function openModal(opportunityId, curSymbol, duration, budget) {
+  // Set values in the modal fields
+  document.getElementById("quote_opportunityId").value = opportunityId;
+  document.getElementById("quote_currency").innerText = curSymbol;
+  document.getElementById("budget").placeholder = budget;
+  document.getElementById("timeline").placeholder = duration;
+
+  // Show the modal
+  document.getElementById("quoteModal").classList.remove("hidden");
+}
+
+function closeModal() {
+  document.getElementById("quoteModal").classList.add("hidden");
+}
+// Javascript for modal open for provide quote
+// function openModal(opportunityId) {
+//   console.log(opportunityId, "ID is coming");
+//   document.getElementById("quote_opportunityId").value = opportunityId;
+//   // document.getElementById("quote_title").value = title;
+//   // document.getElementById("quote_currency").value = curr;
+//   // document.getElementById("quote_cur_symbol").value = cur_symbol;
+//   document.getElementById("quoteModal").classList.remove("hidden");
+// }
+
+// // Close the modal
+// function closeModal() {
+//   document.getElementById("quoteModal").classList.add("hidden");
+// }
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 
 // Close the modal when clicking outside the modal content
 document.getElementById("quoteModal").addEventListener("click", function (e) {
@@ -141,16 +172,29 @@ setInterval(() => {
 
 const filterInput = document.getElementById("job-filter");
 const jobCards = document.querySelectorAll(".job-card");
+<<<<<<< HEAD
 filterInput.addEventListener("input", function() {
   const filterValue = filterInput.value.toLowerCase();
 
   jobCards.forEach(card => {
     const jobTitle = card.getAttribute("data-title").toLowerCase();
     
+=======
+filterInput.addEventListener("input", function () {
+  const filterValue = filterInput.value.toLowerCase();
+
+  jobCards.forEach((card) => {
+    const jobTitle = card.getAttribute("data-title").toLowerCase();
+
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
     if (jobTitle.includes(filterValue)) {
       card.style.display = "block"; // Show the job card
     } else {
       card.style.display = "none"; // Hide the job card
     }
   });
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362

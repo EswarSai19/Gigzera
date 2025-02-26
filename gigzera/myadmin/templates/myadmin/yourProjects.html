@@ -38,6 +38,7 @@
     <!-- Project Cards Grid -->
     <div class="grid" id="projectGrid">
       <!-- AWS Cloud Computing Implementation Card -->
+<<<<<<< HEAD
       <!-- <div class="card">
         <div
           class="flex_"
@@ -82,6 +83,9 @@
           and RDS for database management to improve application performance.
         </div>
       </div> -->
+=======
+
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
       {% for ogp in ongProjects %}
       <div class="card">
         <div
@@ -95,7 +99,14 @@
         <p>{{ogp.short_description}}</p>
         <div class="progress-bar">
           <div class="progress-percentage">{{ogp.progress}}%</div>
+<<<<<<< HEAD
           <div class="progress-bar-inner" style="width: 0%"></div>
+=======
+          <div
+            class="progress-bar-inner"
+            data-progress="{{ ogp.progress }}"
+          ></div>
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
         </div>
         <small>Assigned to: {{ogp.name}}</small>
         <div class="extra-info">{{ogp.full_description}}</div>
@@ -123,6 +134,7 @@
       </div>
       {% endfor %}
       <!-- Artificial Intelligence for Predictive Analytics Card -->
+<<<<<<< HEAD
       <!-- <div class="card">
         <div
           class="flex_"
@@ -351,6 +363,8 @@
           models and track performance analytics seamlessly.
         </div>
       </div> -->
+=======
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
     </div>
     <!-- Project Cards End -->
 
@@ -396,5 +410,19 @@
 {% endblock %}
 <!-- JS -->
 {% block js %}
+<<<<<<< HEAD
+=======
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var progressElements =
+      document.getElementsByClassName("progress-bar-inner");
+
+    Array.from(progressElements).forEach((bar) => {
+      var progressValue = parseInt(bar.dataset.progress, 10) || 0; // Get progress safely
+      bar.style.width = progressValue + "%"; // Set width dynamically
+    });
+  });
+</script>
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 <script src="{% static 'js/ad_yourProjects.js' %}"></script>
 {% endblock %}

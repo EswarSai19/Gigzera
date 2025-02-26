@@ -24,17 +24,29 @@
       <nav class="hidden lg:flex items-center gap-8">
         <a
           href="{% url 'index' %}"
+<<<<<<< HEAD
           class="text-gray-600 hover:text-blue-600 cursor-pointer"
+=======
+          class="nav-item text-gray-600 hover:text-blue-600 cursor-pointer"
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
           >Home</a
         >
         <a
           href="{% url 'jobs' %}"
+<<<<<<< HEAD
           class="text-gray-600 hover:text-blue-600 cursor-pointer"
+=======
+          class="nav-item text-gray-600 hover:text-blue-600 cursor-pointer"
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
           >Jobs</a
         >
         <a
           href="{% url 'aboutus' %}"
+<<<<<<< HEAD
           class="text-gray-600 hover:text-blue-600 cursor-pointer"
+=======
+          class="nav-item text-gray-600 hover:text-blue-600 cursor-pointer"
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
           >About Us</a
         >
         <a
@@ -44,7 +56,11 @@
         >
         <a
           href="{% url 'industries' %}"
+<<<<<<< HEAD
           class="text-gray-600 hover:text-blue-600 cursor-pointer"
+=======
+          class="nav-item text-gray-600 hover:text-blue-600 cursor-pointer"
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
           >Industries</a
         >
         <div class="flex gap-4">
@@ -60,6 +76,10 @@
           >
         </div>
       </nav>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
       <button class="lg:hidden text-gray-600">
         <i class="fa-solid fa-bars text-2xl"></i>
       </button>
@@ -114,9 +134,36 @@
       <label>Reason <span class="text-red-500">*</span></label>
       <select class="form-input" name="reason" required>
         <option value="">Select a reason</option>
+<<<<<<< HEAD
         <option value="technical">Technical Support</option>
         <option value="billing">Billing Issue</option>
         <option value="account">Account Management</option>
+=======
+        <option value="Unable to find suitable jobs">
+          Unable to find suitable jobs
+        </option>
+        <option value="Unable to find suitable freelancers">
+          Unable to find suitable freelancers
+        </option>
+        <option value="Issues with payment processing">
+          Issues with payment processing
+        </option>
+        <option value="Contract disputes with clients">
+          Contract disputes with clients
+        </option>
+        <option value="Contract disputes with freelancers">
+          Contract disputes with freelancers
+        </option>
+        <option value="Technical difficulties with the platform">
+          Technical difficulties with the platform
+        </option>
+        <option value="Concerns about platform security">
+          Concerns about platform security
+        </option>
+        <option value="Account related issues (login, password, etc.)">
+          Account related issues (login, password, etc.)
+        </option>
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
         <option value="other">Other</option>
       </select>
     </div>
@@ -162,5 +209,28 @@
 
 <!-- JS -->
 {% block js %}
+<<<<<<< HEAD
+=======
+<script>
+  // Get current path
+  let currentPath = window.location.pathname;
+
+  // Select all navigation items
+  let navItems = document.querySelectorAll(".nav-item");
+
+  // Loop through each item and highlight the active link
+  navItems.forEach((item) => {
+    if (item.getAttribute("href") === currentPath) {
+      item.classList.add(
+        "text-blue-600",
+        "underline",
+        "decoration-blue-600",
+        "font-bold"
+      );
+      item.classList.remove("text-gray-600");
+    }
+  });
+</script>
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 <script src="{% static 'js/navbar.js' %}"></script>
 {% endblock %}

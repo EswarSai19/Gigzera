@@ -63,15 +63,25 @@ function sendMessage() {
 
 // JavaScript for Timeline and Finance Sections
 // Toggle Edit for Timeline Section
+<<<<<<< HEAD
 function toggleTimelineEdit() {
   const startDate = document.getElementById("startDate");
   const endDate = document.getElementById("endDate");
+=======
+function toggleTimelineEdit(event) {
+  event.preventDefault(); // Prevent form from submitting if button is inside the form
+
+  const startDate = document.getElementById("startDate");
+  const endDate = document.getElementById("endDate");
+  const updateButton = document.getElementById("updateButton");
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 
   // Toggle disabled state
   const isDisabled = startDate.disabled;
   startDate.disabled = !isDisabled;
   endDate.disabled = !isDisabled;
 
+<<<<<<< HEAD
   // Provide feedback when exiting edit mode
   if (isDisabled === false) {
     if (new Date(startDate.value) > new Date(endDate.value)) {
@@ -93,19 +103,46 @@ function toggleFinanceEdit() {
     ".finance .edit-table input, .finance .edit-table select, .milestone-btn"
   );
   const deleteIcons = document.querySelectorAll(".delete-icon"); // Select all delete icons
+=======
+  // Show or hide the Update button
+  if (isDisabled) {
+    updateButton.classList.remove("hidden");
+  } else {
+    updateButton.classList.add("hidden");
+  }
+}
+
+function toggleFinanceEdit() {
+  const financeInputs = document.querySelectorAll(
+    ".consultingCharges, .advancePayment, .finance .edit-table select, .milestone-btn, .mile_stone_input"
+  );
+  const updateFinMilBtn = document.getElementById("updateFinMilBtn");
+  const deleteIcons = document.querySelectorAll(
+    ".delete-icon, .delete-milestone"
+  ); // Include delete-milestone
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 
   // Check current state of inputs
   const isEditing = !financeInputs[0].disabled;
 
+<<<<<<< HEAD
   // Update total costing dynamically before exiting edit mode
   if (isEditing) {
     updateFinance();
+=======
+  if (!isEditing) {
+    updateFinMilBtn.classList.remove("hidden");
+  } else {
+    updateFinMilBtn.classList.add("hidden");
+    updateFinance(); // Update total cost dynamically before exiting edit mode
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   }
 
   // Toggle disabled state for inputs
   financeInputs.forEach((input) => {
     input.disabled = isEditing;
   });
+<<<<<<< HEAD
   // Toggle delete icon functionality (disable it when in edit mode)
   deleteIcons.forEach((icon) => {
     if (isEditing) {
@@ -114,12 +151,24 @@ function toggleFinanceEdit() {
     } else {
       icon.style.pointerEvents = "auto"; // Enable delete icon click outside of edit mode
       icon.style.opacity = "1"; // Full opacity when not in edit mode
+=======
+
+  // Toggle delete icon functionality (disable outside edit mode)
+  deleteIcons.forEach((icon) => {
+    if (!isEditing) {
+      icon.style.pointerEvents = "auto"; // Enable clicking
+      icon.style.opacity = "1"; // Make it fully visible
+    } else {
+      icon.style.pointerEvents = "none"; // Disable clicking
+      icon.style.opacity = "0.5"; // Dim when disabled
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
     }
   });
 }
 
 // Update Total Cost Calculation dynamically when user enters values
 function updateFinance() {
+<<<<<<< HEAD
   const laborCost = parseFloat(document.getElementById("laborCost").value || 0);
   const consultingCharges = parseFloat(
     document.getElementById("consultingCharges").value || 0
@@ -193,6 +242,116 @@ function addMilestoneRow() {
 document
   .getElementById("addMilestoneBtn")
   .addEventListener("click", addMilestoneRow);
+=======
+  console.log("I am here updateFinance");
+
+  // Function to convert formatted numbers (with commas) to proper floats
+  function parseNumber(value) {
+    if (!value) return 0; // Handle empty input
+    return parseFloat(value.replace(/,/g, "")); // Remove commas and convert
+  }
+
+  const laborCost = parseNumber(document.getElementById("laborCost").value);
+  const consultingCharges = parseNumber(
+    document.getElementById("consultingCharges").value
+  );
+  const advancePayment = parseNumber(
+    document.getElementById("advancePayment").value
+  );
+
+  console.log("Parsed values:", laborCost, consultingCharges, advancePayment);
+
+  if (isNaN(consultingCharges) || isNaN(advancePayment)) {
+    alert("Invalid numerical values in Consulting Charges or Advance Payment");
+    return;
+  }
+
+  console.log("I am here updateFinance22");
+
+  // Calculate Total Costing
+  const totalCosting = laborCost + consultingCharges;
+  console.log(totalCosting, "Total Costing");
+
+  // Update total costing (ensure it's a text input if needed)
+  document.getElementById("totalCosting").textContent = `${totalCosting.toFixed(
+    2
+  )}`;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("Finance Milestone Form Loaded");
+
+  let FinForm = document.querySelector("#financeMilestoneForm");
+  if (!FinForm) {
+    console.error("Finance Milestone Form not found! Check your form ID.");
+    return;
+  }
+
+  // ✅ Handle Update Form Submission
+  FinForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    let finFormData = new FormData(FinForm);
+
+    fetch(FinForm.action, {
+      method: "POST",
+      body: finFormData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("Form submitted successfully!");
+          alert(data.message);
+          toggleFinanceEdit(); // Lock fields after update
+          window.location.reload();
+        } else {
+          alert("Error: " + data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+      });
+  });
+
+  // ✅ Handle Milestone Deletion (Event Delegation)
+  document.addEventListener("click", function (event) {
+    let deleteIcon = event.target.closest(".delete-milestone");
+    if (!deleteIcon) return;
+
+    let milestoneRow = deleteIcon.closest("tr");
+    let deleteMarker = milestoneRow
+      ? milestoneRow.querySelector(".delete-marker")
+      : null;
+
+    if (!deleteMarker) {
+      console.error(
+        "Hidden delete marker input not found in row:",
+        milestoneRow
+      );
+      return; // Exit function if the hidden input is missing
+    }
+
+    if (confirm("Are you sure you want to delete this milestone?")) {
+      deleteMarker.value = "1"; // Mark for deletion
+      milestoneRow.style.display = "none"; // Hide the row instead of removing it
+    }
+  });
+});
+
+// ✅ Function to Get CSRF Token
+function getCSRFToken() {
+  return document.querySelector("[name=csrfmiddlewaretoken]").value;
+}
+
+// for opening and closing the popup of add milestone
+function openPopup() {
+  document.getElementById("milestonePopup").classList.remove("hidden");
+}
+
+function closePopup() {
+  document.getElementById("milestonePopup").classList.add("hidden");
+}
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 
 // java script for modal
 function openChatModal() {
@@ -225,6 +384,7 @@ function sendNewMessage() {
   }
 }
 
+<<<<<<< HEAD
 // Function to add a new milestone row with input fields
 function addMilestoneRow() {
   const milestoneTable = document.getElementById("milestoneTable");
@@ -300,4 +460,89 @@ document.querySelectorAll("#milestoneTable tr").forEach((row) => {
   };
   deleteCell.appendChild(deleteIcon);
   row.appendChild(deleteCell);
+=======
+//  New script part for adding the functionality of the updating progress and status
+document.addEventListener("DOMContentLoaded", function () {
+  let form = document.getElementById("updateStatusProgress");
+
+  if (!form) return; // Ensure form exists before adding event listeners
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent full page reload
+
+    // Enable status dropdown before submitting
+    let statusDropdown = form.querySelector("#projectStatus");
+    statusDropdown.disabled = false;
+
+    let formData = new FormData(form);
+
+    fetch(form.action, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert(data.message);
+
+          // Update progress bar dynamically
+          let progressBar = document.querySelector("#progressFill");
+          let newProgress = form.querySelector("#newProgress").value;
+          progressBar.style.width = newProgress + "%";
+
+          // Store state to prevent back button issues
+          history.replaceState(null, "", window.location.href);
+        } else {
+          alert("Error: " + data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  });
+
+  // Initialize progress bar on page load
+  let progressElement = document.getElementById("progressFill");
+  if (progressElement) {
+    let progressValue = parseInt(progressElement.dataset.progress, 10) || 0;
+    progressElement.style.width = progressValue + "%";
+  }
+});
+
+// Update time lines funcitonality
+document.addEventListener("DOMContentLoaded", function () {
+  let datesForm = document.getElementById("updateDates");
+
+  if (!datesForm) return; // Ensure form exists before adding event listeners
+
+  datesForm.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent full page reload
+
+    let formData = new FormData(datesForm);
+
+    fetch(datesForm.action, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert("Timeline updated successfully!");
+
+          // Disable inputs after update
+          document.getElementById("startDate").disabled = true;
+          document.getElementById("endDate").disabled = true;
+
+          // Hide update button
+          document.getElementById("updateButton").classList.add("hidden");
+        } else {
+          alert("Error: " + data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred while updating the timeline.");
+      });
+  });
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 });

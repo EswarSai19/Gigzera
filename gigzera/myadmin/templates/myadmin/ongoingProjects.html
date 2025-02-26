@@ -33,6 +33,7 @@
   <!-- Project Cards Grid -->
   <div class="grid" id="projectGrid">
     <!-- E-Commerce Platform Card -->
+<<<<<<< HEAD
     <div class="card">
       <div
         class="flex_"
@@ -99,6 +100,30 @@
       </div>
       <small>Assigned to: John Doe</small>
       <div class="flex_" style="justify-content: space-between">
+=======
+
+    {% for ogp in ongProjects %}
+    <div class="card">
+      <div
+        class="flex"
+        style="justify-content: space-between; align-items: center"
+      >
+        <h2 class="project-name">{{ogp.title}}</h2>
+        <span class="badge badge-active">{{ogp.status}}</span>
+      </div>
+      <p class="project-id">ID: {{ogp.opportunityId}}</p>
+      <p>{{ogp.short_description}}</p>
+      <div class="progress-bar">
+        <div class="progress-percentage">{{ogp.progress}}%</div>
+        <div
+          class="progress-bar-inner"
+          data-progress="{{ ogp.progress }}"
+        ></div>
+      </div>
+      <small>Assigned to: {{ogp.name}}</small>
+      <div class="extra-info">{{ogp.full_description}}</div>
+      <div class="flex" style="justify-content: space-between">
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
         <a
           href="javascript:void(0);"
           class="read-more"
@@ -106,7 +131,11 @@
           >Read More...</a
         >
         <a
+<<<<<<< HEAD
           href="../html/NewAdminsingleprojectview.html"
+=======
+          href="{% url 'ad_singleOngoingProject' %}?ongpId={{ogp.ongProjectId}}"
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
           class="btn btn-outline"
           style="
             text-decoration: none;
@@ -119,6 +148,7 @@
           >View Status</a
         >
       </div>
+<<<<<<< HEAD
       <div class="extra-info">
         Focus on enhancing mobile app features including speed, layout, and
         functionality to increase user retention.
@@ -304,6 +334,10 @@
         team to make data-driven decisions.
       </div>
     </div>
+=======
+    </div>
+    {% endfor %}
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 
     <!-- Project Cards End -->
   </div>
@@ -348,5 +382,19 @@
 {% endblock %}
 <!-- JS -->
 {% block js %}
+<<<<<<< HEAD
+=======
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var progressElements =
+      document.getElementsByClassName("progress-bar-inner");
+
+    Array.from(progressElements).forEach((bar) => {
+      var progressValue = parseInt(bar.dataset.progress, 10) || 0; // Get progress safely
+      bar.style.width = progressValue + "%"; // Set width dynamically
+    });
+  });
+</script>
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 <script src="{% static 'js/ad_ongoingProjects.js' %}"></script>
 {% endblock %}

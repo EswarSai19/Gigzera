@@ -17,7 +17,7 @@ body {
 }
 
 .sidebar {
-    width: 550px;
+    width: 30%;
     background-color: #fff;
     padding: 10px;
     border-radius: 8px;
@@ -25,7 +25,7 @@ body {
 }
 
 .sidebar p {
-    line-height: 2;
+    line-height: 2.2;
 }
 
 .sidebar h2 {
@@ -44,6 +44,16 @@ body {
 
 .status pending {
     margin-left: 10px;
+}
+
+.sidebar .status_completed {
+    font-size: 15px;
+    color: green;
+}
+
+.status_pending,
+.status_completed {
+    margin-left: 40px;
     /* Adjust the space as needed */
 }
 
@@ -65,6 +75,7 @@ body {
 
 /* Project Header Box */
 .project-header {
+    width: 45%;
     border: 1px solid #ddd;
     padding: 20px;
     background-color: #fff;
@@ -232,6 +243,12 @@ body {
     /* Darker blue on hover for better UX */
 }
 
+.project-status {
+    margin-top: 12px;
+    font-size: 16px;
+    /* font-weight: bold; */
+}
+
 /* Tasks Box */
 .tasks-box {
     border: 1px solid #ddd;
@@ -288,12 +305,14 @@ body {
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    width: 550px;
+    /* width: 550px; */
+
 }
 
 .task-row {
     display: flex;
     align-items: center;
+    /* border: 1px solid green; */
     gap: 10px;
 }
 
@@ -301,10 +320,11 @@ body {
     flex: 1;
     font-size: 14px;
     border: 1px solid transparent;
-    /* padding: 5px; */
+    /* padding: 5px 0px; */
     border-radius: 4px;
     margin: auto;
     cursor: text;
+    /* border: 1px solid red; */
 }
 
 .task-title:focus {
@@ -345,10 +365,147 @@ textarea:focus {
     border-color: #007bff;
 }
 
+.modal-header {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-status {
+    font-size: 14px;
+    color: #0056b3;
+    border-radius: 4px;
+    background-color: #d1e7ff;
+    padding: 5px 10px;
+}
+
+#messageArea {
+    max-height: auto;
+    /* Reduced height slightly */
+    overflow-y: auto;
+    margin-bottom: 10px;
+    padding-right: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc transparent;
+    display: flex;
+    flex-direction: column;
+
+}
+
+#messageArea::-webkit-scrollbar {
+    width: 6px;
+}
+
+#messageArea::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+.message-box {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.message-box.outgoing {
+    justify-content: flex-start;
+}
+
+.message-box img.avatar-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 10px;
+}
+
+.message-content-box {
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    padding: 10px;
+    max-width: 250px;
+    font-size: 14px;
+}
+
+.message-box.outgoing .message-content-box {
+    background-color: #d1e7ff;
+}
+
+.message-content-box p {
+    margin: 0;
+    color: #333;
+}
+
+.message-content-box .time-stamp {
+    display: block;
+    font-size: 12px;
+    color: #777;
+    margin-top: 5px;
+    text-align: right;
+}
+
+.input-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.input-section input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.input-section input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.send-message-btn {
+    background-color: #007bff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.send-message-btn:hover {
+    background-color: #0056b3;
+}
+
+.send-message-btn svg {
+    fill: currentColor;
+}
+
+.comment-button {
+    padding: 6px 12px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.3s ease;
+}
+
+.comment-button:hover {
+    background-color: #1d4ed8;
+    /* Darker Blue-700 */
+}
+
 /* Messages Section */
 /* Styles for the messages container */
 .messages {
-    width: 40%;
+    width: 25%;
     /* Increased width slightly */
     padding: 20px;
     background-color: #fff;

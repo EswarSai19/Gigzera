@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, auth
 from django.contrib.auth.hashers import check_password, make_password
+<<<<<<< HEAD
 from django.http import HttpResponse
 from django.contrib import messages
 import json
@@ -8,6 +9,16 @@ import os
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from db_schemas.models import Contact, ProjectQuote, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
+=======
+from django.http import HttpResponse, JsonResponse
+from django.contrib import messages
+import json
+import os
+import locale
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+from db_schemas.models import Contact, ProjectQuote, Tasks, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 from django.core.exceptions import ValidationError
 from datetime import datetime
 # from django.contrib.auth.decorators import login_required
@@ -30,6 +41,76 @@ currency_symbols = {
 def get_currency_symbol(currency_code):
     return currency_symbols.get(currency_code, "-")
 
+<<<<<<< HEAD
+=======
+currency_locales = {
+    "USD": "en_US.UTF-8", "EUR": "de_DE.UTF-8", "JPY": "ja_JP.UTF-8",
+    "GBP": "en_GB.UTF-8", "CNY": "zh_CN.UTF-8", "AUD": "en_AU.UTF-8",
+    "CAD": "en_CA.UTF-8", "CHF": "de_CH.UTF-8", "INR": "en_IN.UTF-8",
+    "NZD": "en_NZ.UTF-8"
+}
+
+def clean_number(value, currency_code):
+    """Cleans and converts different numeric formats based on currency rules."""
+    if isinstance(value, (int, float)):  
+        return value  # Already a number
+
+    value = str(value).replace("'", "").replace(" ", "")  # Remove spaces and apostrophes
+
+    if currency_code in ["EUR", "CHF"]:
+        value = value.replace(".", "").replace(",", ".")  # Convert '2.000' → '2000' and '2,50' → '2.50'
+    else:
+        value = value.replace(",", "")  # Convert '2,000' → '2000'
+
+    try:
+        return float(value) if '.' in value else int(value)  
+    except ValueError:
+        raise ValueError(f"Invalid number format: {value}")
+
+def format_currency(amount, currency_code):
+    """Formats the number according to the given currency locale."""
+    try:
+        locale_code = currency_locales.get(currency_code, "en_US.UTF-8")
+        try:
+            locale.setlocale(locale.LC_ALL, locale_code)
+        except locale.Error:
+            print(f"Warning: Locale '{locale_code}' not found. Using default.")
+
+        amount = clean_number(amount, currency_code)  # Clean number before conversion
+
+        if amount.is_integer():
+            formatted_amount = locale.format_string("%d", int(amount), grouping=True)
+        else:
+            formatted_amount = locale.format_string("%.2f", amount, grouping=True)
+
+        # ✅ **Force decimal separator to be '.' (dot) instead of ',' (comma)**
+        if currency_code in ["EUR", "CHF"]:
+            formatted_amount = formatted_amount.replace(",", ".")
+
+        return formatted_amount
+    except ValueError:
+        return "Invalid amount"
+
+# print(format_currency("200000", "USD"))  # Output: 2,000.00
+# print(format_currency("2000", "INR"))  # Output: 2,000.00
+
+def calculate_percentage(amount_str, percentage, currency_code):
+    """Calculates a percentage of the given amount and formats it."""
+    print(f" I am getting the amount {amount_str} {percentage} {currency_code}")
+    numeric_part = amount_str.replace(",", "").strip()  # Extract numeric value
+
+    try:
+        amount = float(str(numeric_part))
+        percentage_value = amount * (percentage / 100)  # Calculate percentage
+        return format_currency(percentage_value, currency_code)  # Format result
+    except ValueError:
+        return "Invalid amount"
+
+
+
+# Normal functions start
+
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 def index(request):
     user_id = request.session.get('user_id')
     if not user_id:
@@ -42,7 +123,11 @@ def index(request):
         job.cur_symbol = get_currency_symbol(job.currency)
     user.initials = get_initials(user.name)
     print(user.initials)
+<<<<<<< HEAD
     context = {'jobs': jobs, 'user': user}    
+=======
+    context = {'jobs': jobs, 'user': user}
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
     return render(request, 'freelancer/index.html', context)
 
 
@@ -583,13 +668,24 @@ def submit_quote(request):
         # Debugging prints
         print(f"User ID from session: {freelancer_id}")
         print(f"Saving quote for {opportunityId} by {freelancer}")
+<<<<<<< HEAD
 
+=======
+        formated_budget = format_currency(budget, job.currency)
+        admin_margin = calculate_percentage(budget, 30, job.currency)
+        print(f"Budget: {formated_budget} {job.currency}")
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
         # Store in DB
         ProjectQuote.objects.create(
             freelancer_id=freelancer.userId,  # Use ForeignKey if applicable
             opportunityId=opportunityId,
             currency=job.currency,
+<<<<<<< HEAD
             budget=budget,
+=======
+            budget=formated_budget,
+            admin_margin=admin_margin,
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
             time_estimation=time_estimation,
             comments=comments,
             client_id=job.client_id
@@ -623,6 +719,10 @@ def load_job_details(request):
     job_id = request.POST.get("job_id")  # Get job ID from HTMX request
     job = get_object_or_404(ProjectsDisplay, opportunityId=job_id)
     # Process skills into a list for the selected job
+<<<<<<< HEAD
+=======
+    job.cur_symbol = get_currency_symbol(job.currency)
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
     job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
     job.requirements_list = [line.strip() for line in job.requirements.split("\n")]
     job.challenges_list = [line.strip() for line in job.challenges.split("\n")]
@@ -671,6 +771,7 @@ def singleProjectTracking(request):
     job = ProjectsDisplay.objects.filter(opportunityId=opportunity_id).first()
     job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
     job.cur_symbol = get_currency_symbol(job.currency)
+<<<<<<< HEAD
     context={'user':user, 'job':job, 'bid':bid}
 
     return render(request, 'freelancer/singleProjectTracking.html', context)
@@ -679,6 +780,44 @@ def singleProjectTracking(request):
 def fl_contact(request):
     if request.method == 'POST':
         user_id = request.session.get('user_id')
+=======
+
+    tasks = Tasks.objects.filter(taskBid_id=bid.projectQuoteId)
+
+    context={'user':user, 'job':job, 'bid':bid, 'singleOgp':singleOgp, 'tasks':tasks}
+
+    return render(request, 'freelancer/singleProjectTracking.html', context)
+
+
+def fl_updateProgress(request):
+    ongp_id = request.POST.get('ongpId') or request.GET.get('ongpId')
+    if not ongp_id:
+        return JsonResponse({"success": False, "error": "Missing ongpId"}, status=400)
+
+    if request.method == "POST":
+        project_progress = request.POST.get('project_progress')
+
+        if not project_progress:
+            return JsonResponse({"success": False, "error": "Missing project progress"}, status=400)
+
+        try:
+            ongp = get_object_or_404(OngoingProjects, ongProjectId=ongp_id)
+            ongp.progress = int(project_progress)  # Ensure it's an integer
+            ongp.save()
+
+            return JsonResponse({"success": True, "message": "Progress updated successfully"})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)}, status=500)
+
+    return JsonResponse({"success": False, "error": "Invalid request"}, status=400)
+
+
+
+# Contact form 
+def fl_contact(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
         if not user_id:
             return redirect('login')  # Redirect to login if session is missing
         name = request.POST.get('name')
@@ -686,6 +825,10 @@ def fl_contact(request):
         email = request.POST.get('email')
         reason = request.POST.get('reason')
         description = request.POST.get('description')
+<<<<<<< HEAD
+=======
+        print(user_id, name, phone_number, email, reason, description)
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 
         # Check if all fields are filled
         if not all([name, phone_number, email, reason, description]):
@@ -703,9 +846,78 @@ def fl_contact(request):
             description=description
         )
 
+<<<<<<< HEAD
         messages.success(request, "Your form has been submitted successfully!")
+=======
+        messages.success(request, "Your concern has been submitted successfully!")
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
         return redirect('fl_index')  # Redirect to home page
 
     messages.error(request, "Invalid request!")
     return redirect(request.META.get('HTTP_REFERER', 'contact'))
 
+<<<<<<< HEAD
+=======
+# taks related
+def delete_tasks(request):
+    print("I am inside the delete tasks")
+    if request.method == "POST":
+        try:
+            task_ids = request.POST.getlist("task_ids[]")
+            print(f"Received Task IDs: {task_ids}")  # Debugging print
+
+            if not task_ids:
+                return JsonResponse({"success": False, "message": "No tasks selected."})
+
+            deleted_count, _ = Tasks.objects.filter(taskId__in=task_ids).delete()
+            print(f"Deleted {deleted_count} tasks.")  # Debugging print
+
+            return JsonResponse({"success": True, "message": f"Deleted {deleted_count} tasks."})
+        except Exception as e:
+            print(f"Error: {str(e)}")  # Debugging print
+            return JsonResponse({"success": False, "message": "An error occurred."})
+    
+    return JsonResponse({"success": False, "message": "Invalid request method."})
+
+def add_task(request):
+    print("I am inside the add task")
+    if request.method == "POST":
+        try:
+            title = request.POST.get("title").title()
+            status = request.POST.get("status", "Requirement Gathering")
+            bid_id = request.POST.get('bid_id')
+            print(f"I am getting add tasks details: {title}, {status}, {bid_id}")
+
+            Tasks.objects.create(title=title, status=status, taskBid_id=bid_id)
+            print("Saved task successfully")
+            return JsonResponse({"success": True, "message": "Task added successfully!"})
+            
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
+
+    return JsonResponse({"success": False, "error": "Invalid request"})
+
+def update_task(request):
+    if request.method == "POST":
+        task_id = request.POST.get("task_id")  # ✅ Use POST, not GET
+        new_title = request.POST.get("title")  # ✅ Get title from POST
+        new_status = request.POST.get("status")  # ✅ Get status from POST
+        
+        print(f"Updating Task: {task_id}, New Title: {new_title}, New Status: {new_status}")
+
+        if not task_id:
+            return JsonResponse({"success": False, "message": "No tasks selected."}, status=400)
+        
+        try:
+            task = Tasks.objects.get(taskId=task_id)
+            if new_title:
+                task.title = new_title.title()
+            if new_status:
+                task.status = new_status
+            task.save()
+            return JsonResponse({"success": True, "message": "Task updated successfully."})
+        except Tasks.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Task not found."}, status=404)
+    return JsonResponse({"success": False, "message": "Invalid request."}, status=400)
+
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362

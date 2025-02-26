@@ -80,11 +80,23 @@
       <h2>Bidder Profile</h2>
       <p><strong>User ID:</strong> {{fl_user.userId}}</p>
       <p><strong>Name:</strong> {{fl_user.name}}</p>
+<<<<<<< HEAD
       <!-- <a
         href="{% url 'cl_profileView' %}?opportunityId={{ bid.opportunityId }}&userId={{ bid.freelancer_id }}&bidId={{ bid.projectQuoteId }}"
         class="view-profile"
         >View Profile</a
       > -->
+=======
+      {% if fl_user.is_verified %}
+      <button class="more-options view-profile">
+        <i class="fa-solid fa-circle-check"></i> Verified
+      </button>
+      {% else %}
+      <button class="more-options" disabled>
+        <i class="fa-solid fa-circle-check" style="opacity: 0"></i>
+      </button>
+      {% endif %}
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
       <p><strong>Professional Summary:</strong> {{fl_user.profile_summary}}</p>
       <p><strong>Total Experience:</strong> {{fl_user.experience}} Years</p>
       <p><strong>Total Completed projects:</strong> 2</p>
@@ -109,7 +121,13 @@
     <!-- bid details -->
     <div class="card bid-details">
       <h2>Bid Details</h2>
+<<<<<<< HEAD
       <p><strong>Total Cost:</strong> {{bid.revised_budget}}</p>
+=======
+      <p>
+        <strong>Total Cost:</strong> {{bid.cur_symbol}} {{bid.revised_budget}}
+      </p>
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
       <br />
       <p><strong>Proposed Timeline:</strong> {{bid.time_estimation}}</p>
       <br />

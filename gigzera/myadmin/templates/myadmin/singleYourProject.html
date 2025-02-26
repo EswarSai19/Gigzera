@@ -9,9 +9,18 @@
 <!-- content -->
 {% block content %}
 <!-- Main -->
+<<<<<<< HEAD
 <div class="flex w-full min-h-screen gap-x-4 mt-6 px-4">
   <!-- Left Sidebar -->
   <div class="left-sidebar">
+=======
+
+<div class="flex w-full min-h-screen gap-x-4 mt-6 px-4">
+  <!-- Left Sidebar -->
+
+  <div class="left-sidebar">
+    <!-- <button class="back">Go back</button> -->
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
     <!-- Combined Project and Tasks Section -->
     <div class="project-tasks-box">
       <h3>{{job.title}}</h3>
@@ -28,11 +37,19 @@
       {% endfor %}
 
       <h3>Tasks</h3>
+<<<<<<< HEAD
 
       <div class="task-box">
         <div class="task-header">
           <span class="task-title">Create Wireframes</span>
           <span class="status in-progress">In Progress</span>
+=======
+      {% for task in tasks %}
+      <div class="task-box">
+        <div class="task-header">
+          <span class="task-title">{{task.title}}</span>
+          <span class="status in-progress">{{task.status}}</span>
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
         </div>
         <div class="task-comments">
           <p><strong>Comments (2)</strong></p>
@@ -47,8 +64,13 @@
           </button>
         </div>
       </div>
+<<<<<<< HEAD
 
       <div class="task-box">
+=======
+      {% endfor %}
+      <!-- <div class="task-box">
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
         <div class="task-header">
           <span class="task-title">Design System Setup</span>
           <span class="status completed">Completed</span>
@@ -56,7 +78,11 @@
         <div class="task-comments">
           <p><strong>Comments (1)</strong></p>
           <div class="comment">
+<<<<<<< HEAD
             <!-- <img src="user-avatar.png" alt="User Avatar" class="avatar"> -->
+=======
+            <img src="user-avatar.png" alt="User Avatar" class="avatar">
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
             <p>Design system documentation complete.</p>
           </div>
         </div>
@@ -65,9 +91,15 @@
             Add Comment
           </button>
         </div>
+<<<<<<< HEAD
       </div>
 
       <div class="task-box">
+=======
+      </div> -->
+
+      <!-- <div class="task-box">
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
         <div class="task-header">
           <span class="task-title">Responsive Testing</span>
           <span class="status pending">Pending</span>
@@ -77,7 +109,11 @@
             Add Comment
           </button>
         </div>
+<<<<<<< HEAD
       </div>
+=======
+      </div> -->
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
     </div>
   </div>
   <div
@@ -161,6 +197,10 @@
   <!-- Main Content -->
   <div class="main-content">
     <!-- Project Progress Section -->
+<<<<<<< HEAD
+=======
+
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
     <div class="project-header">
       <div class="progress-header-row">
         <h2 class="progress-title">Project Progress</h2>
@@ -170,7 +210,11 @@
             <b>• <span id="lastUpdatedTime">just now</span></b>
           </div>
           <div class="progress-percentage">
+<<<<<<< HEAD
             <strong id="progressPercentage">{{bid.progress}}%</strong>
+=======
+            <strong id="progressPercentage">{{singleOgp.progress}}%</strong>
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
             <button
               id="editProgressIcon"
               class="edit-btn"
@@ -181,6 +225,7 @@
           </div>
         </div>
       </div>
+<<<<<<< HEAD
       <div class="progress-bar-container">
         <div class="progress-bar">
           <div id="progressFill" class="progress" style="width: 79%"></div>
@@ -201,6 +246,51 @@
         <input type="number" id="newProgress" min="0" max="100" value="79" />
         <button onclick="updateProgress()">Update</button>
       </div>
+=======
+      <form
+        id="updateStatusProgress"
+        action="{% url 'ad_updateProgressStatus' %}?ongpId={{singleOgp.ongProjectId}}"
+        method="POST"
+      >
+        {% csrf_token %}
+        <div class="progress-bar-container">
+          <div class="progress-bar">
+            <div
+              id="progressFill"
+              class="progress"
+              data-progress="{{ singleOgp.progress }}"
+            ></div>
+          </div>
+          <div class="status-container">
+            <span class="status-label">Project Status:</span>
+            <select
+              id="projectStatus"
+              name="project_status"
+              class="status-dropdown"
+              disabled
+            >
+              <option value="Bid Ongoing" {% if singleOgp.status == "Bid Ongoing" %}selected{% endif %}>Bid Ongoing</option>
+              <option value="Planning" {% if singleOgp.status == "Planning" %}selected{% endif %}>Planning</option>
+              <option value="In Progress" {% if singleOgp.status == "In Progress" %}selected{% endif %}>In Progress</option>
+              <option value="On Hold" {% if singleOgp.status == "On Hold" %}selected{% endif %}>On Hold</option>
+              <option value="Completed" {% if singleOgp.status == "Completed" %}selected{% endif %}>Completed</option>
+            </select>
+          </div>
+        </div>
+        <!-- Status Dropdown Added Here -->
+        <div id="progressEditForm" class="progress-edit hidden">
+          <input
+            type="number"
+            id="newProgress"
+            min="0"
+            max="100"
+            name="project_progress"
+            value="{{singleOgp.progress}}"
+          />
+          <button type="submit" onclick="updateProgress()">Update</button>
+        </div>
+      </form>
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
     </div>
 
     <!-- Timeline Section -->
@@ -211,18 +301,60 @@
           <button
             id="editTimelineIcon"
             class="edit-btn"
+<<<<<<< HEAD
             onclick="toggleTimelineEdit()"
+=======
+            onclick="toggleTimelineEdit(event)"
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
           >
             <i class="fa-solid fa-pen-to-square"></i>
           </button>
         </div>
         <div class="edit-table">
+<<<<<<< HEAD
           <input type="date" id="startDate" value="2025-01-15" disabled />
           <span>to</span>
           <input type="date" id="endDate" value="2025-03-15" disabled />
         </div>
       </div>
     </div>
+=======
+          <form
+            id="updateDates"
+            action="{% url 'ad_updateTimelines' %}"
+            method="POST"
+          >
+            {% csrf_token %}
+            <input
+              type="hidden"
+              name="ongpId"
+              value="{{ singleOgp.ongProjectId }}"
+            />
+            <input
+              type="date"
+              name="start_date"
+              id="startDate"
+              value="{{ singleOgp.start_date|date:'Y-m-d' }}"
+              disabled
+            />
+            <span>to</span>
+            <input
+              type="date"
+              name="end_date"
+              id="endDate"
+              value="{{ singleOgp.end_date|date:'Y-m-d' }}"
+              disabled
+            />
+            <button type="submit" id="updateButton" class="hidden timeline-btn">
+              Update
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div id="alertBox" class="hidden"></div>
+
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 
     <div class="finance-box">
       <div class="finance">
@@ -232,11 +364,16 @@
           <button
             id="editFinanceIcon"
             class="edit-btn"
+<<<<<<< HEAD
             onclick="toggleFinanceEdit()"
+=======
+            onclick="toggleFinanceEdit(`{{job.cur_symbol}}`)"
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
           >
             <i class="fa-solid fa-pen-to-square"></i>
           </button>
         </div>
+<<<<<<< HEAD
 
         <!-- Editable Finance Table -->
         <table class="edit-table" id="financeTable">
@@ -348,6 +485,220 @@
       color: darkred;
     }
   </style>
+=======
+        <form
+          action="{% url 'ad_updateFinanceMilestones' %}"
+          method="POST"
+          id="financeMilestoneForm"
+        >
+          {% csrf_token %}
+          <input type="hidden" name="bidId" value="{{ bid.projectQuoteId }}" />
+          <!-- Editable Finance Table -->
+          <table class="edit-table" id="financeTable">
+            <tr>
+              <td>Labor Cost</td>
+              <!-- <td>
+              <div class="labor-costing-box">
+                <div id="laborCosting">{{job.cur_symbol}} {{bid.budget}}</div>
+              </div>
+            </td> -->
+              <td>
+                <div class="input-wrapper">
+                  <span class="dollar-sign">{{job.cur_symbol}}</span>
+                  <input
+                    type="text"
+                    id="laborCost"
+                    class="laborCost"
+                    name="labor_cost"
+                    value="{{bid.budget}}"
+                    disabled
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Consulting Charges</td>
+              <td>
+                <div class="input-wrapper">
+                  <span class="dollar-sign">{{job.cur_symbol}}</span>
+                  <input
+                    type="text"
+                    name="consulting_charges"
+                    id="consultingCharges"
+                    class="consultingCharges"
+                    value="{{bid.admin_margin}}"
+                    disabled
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Total Costing</td>
+              <td>
+                <div class="total-costing-box">
+                  <strong id="totalCosting"
+                    >{{job.cur_symbol}} {{bid.revised_budget}}</strong
+                  >
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Advance Payment</td>
+              <td>
+                <div class="input-wrapper">
+                  <span class="dollar-sign">{{job.cur_symbol}}</span>
+                  <input
+                    type="text"
+                    id="advancePayment"
+                    name="advance_payment"
+                    class="advancePayment"
+                    value="{{bid.advance_payment}}"
+                    disabled
+                  />
+                </div>
+              </td>
+            </tr>
+          </table>
+
+          <!-- Milestone Payments Section -->
+          <div class="milestone-header">
+            <h3><strong>Milestone Payments</strong></h3>
+            <div class="finEditBtns">
+              <button
+                type="submit"
+                id="updateFinMilBtn"
+                class="hidden milestone-btn"
+              >
+                Update
+              </button>
+              <button
+                type="button"
+                id="addMilestoneBtn"
+                class="milestone-btn"
+                onclick="openPopup()"
+                disabled
+              >
+                Add Milestones
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- <h4><strong>Milestone Payments</strong></h4> -->
+          <table class="edit-table" id="milestoneTable">
+            {% for ms in milestones %}
+
+            <tr>
+              <td>
+                <input
+                  type="hidden"
+                  name="{{ms.id}}_delete"
+                  class="delete-marker"
+                  value="0"
+                />
+              </td>
+              <td>
+                <input
+                  type="date"
+                  name="{{ms.id}}_date"
+                  class="mile_stone_input"
+                  value="{{ ms.date | date:'Y-m-d' }}"
+                  disabled
+                />
+              </td>
+              <td>
+                <div class="input-wrapper">
+                  <span class="dollar-sign">{{job.cur_symbol}}</span>
+                  <input
+                    type="text"
+                    name="{{ms.id}}_amount"
+                    class="mile_stone_input"
+                    placeholder="Amount"
+                    value="{{ms.amount}}"
+                    disabled
+                  />
+                </div>
+              </td>
+              <td>
+                <select name="{{ms.id}}_status" disabled>
+                  <option value="Pending" {% if ms.status == "Pending" %}selected{% endif %}>Pending</option>
+                  <option value="Completed" {% if ms.status == "Completed" %}selected{% endif %}>Completed</option>
+                </select>
+              </td>
+              <td>
+                <i
+                  class="fa-solid fa-trash delete-milestone disabled-milestone"
+                  data-id="{{ ms.id }}"
+                  style="
+                    cursor: pointer;
+                    color: red;
+                    pointer-events: none;
+                    opacity: 0.5;
+                  "
+                ></i>
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add milestone popup -->
+  <div
+    id="milestonePopup"
+    class="fixed inset-0 backdrop-blur-md flex items-center justify-center hidden"
+  >
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+      <h2 class="text-lg font-semibold mb-4">Add Milestone</h2>
+
+      <form id="milestoneForm" action="{% url 'add_milestone' %}" method="POST">
+        {% csrf_token %}
+        <input
+          type="hidden"
+          name="bidId"
+          value="{{ singleOgp.bidId }}">
+        <input
+          type="date"
+          id="date"
+          name="ad_ms_date"
+          class="w-full px-3 py-2 border rounded mb-3"
+          required
+        />
+        <input
+          type="text"
+          id="amount"
+          name="ad_ms_amount"
+          class="w-full px-3 py-2 border rounded mb-3"
+          placeholder="Amount"
+          required
+        />
+        <select id="status" name="ad_ms_status" class="w-full px-3 py-2 border rounded mb-3">
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+        </select>
+
+        <div class="flex justify-between">
+          <button
+            type="button"
+            onclick="closePopup()"
+            class="bg-gray-500 text-white px-4 py-2 rounded"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            Add
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
   <!-- message section  -->
   <div class="messages">
     <!-- Messages content remains unchanged -->
@@ -402,5 +753,9 @@
 {% endblock %}
 <!-- js -->
 {% block js %}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
 <script src="{% static 'js/ad_singleYourProject.js' %}"></script>
 {% endblock %}
