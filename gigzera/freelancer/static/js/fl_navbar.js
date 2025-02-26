@@ -30,3 +30,37 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 });
+
+// Color code for active tabs
+// color Active for navbar
+document.addEventListener("DOMContentLoaded", function () {
+  const navLinks = document.querySelectorAll(".nav a:not(.profile-dropdown a)"); // Exclude profile dropdown links
+  const currentPath = window.location.pathname; // Get the current page path
+
+  // Function to remove active class from all links
+  function removeActiveClass() {
+    navLinks.forEach((nav) => nav.classList.remove("active"));
+  }
+
+  // Apply active class based on current page URL
+  navLinks.forEach((link) => {
+    if (link.pathname === currentPath) {
+      link.classList.add("active");
+    }
+
+    // Click event for dynamic class switching
+    link.addEventListener("click", function () {
+      removeActiveClass();
+      this.classList.add("active");
+    });
+  });
+
+  // Handle "Contact Us" button separately (if needed)
+  const contactBtn = document.getElementById("contactBtn");
+  if (contactBtn) {
+    contactBtn.addEventListener("click", function () {
+      removeActiveClass();
+      contactBtn.classList.add("active");
+    });
+  }
+});

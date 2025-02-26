@@ -38,9 +38,17 @@
 
 .nav a.active {
   color: #3dd9d6;
-  font-weight: bold;
-  border-bottom: 2px solid #3dd9d6;
+  /* font-weight: bold; */
+  border-bottom: 1px solid #3dd9d6;
 }
+
+/* .nav a.active {
+  color: white;
+  background-color: #007bff;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 5px 10px;
+} */
 
 .nav a:hover {
   color: #3dd9d6;

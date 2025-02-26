@@ -34,40 +34,27 @@ document.addEventListener("DOMContentLoaded", function () {
 // color Active for navbar
 document.addEventListener("DOMContentLoaded", function () {
   const navLinks = document.querySelectorAll(".nav a:not(.profile-dropdown a)"); // Exclude profile dropdown links
-  const allowedPaths = [
-    "{% url 'cl_index' %}",
-    "{% url 'cl_postajob' %}",
-    "{% url 'cl_aboutus' %}",
-    "{% url 'cl_industries' %}",
-  ];
+  const currentPath = window.location.pathname; // Get the current page path
 
   // Function to remove active class from all links
   function removeActiveClass() {
     navLinks.forEach((nav) => nav.classList.remove("active"));
   }
 
-  // Click event for navigation links
+  // Apply active class based on current page URL
   navLinks.forEach((link) => {
+    if (link.pathname === currentPath) {
+      link.classList.add("active");
+    }
+
+    // Click event for dynamic class switching
     link.addEventListener("click", function () {
       removeActiveClass();
-      if (allowedPaths.includes(this.getAttribute("href"))) {
-        this.classList.add("active");
-      }
+      this.classList.add("active");
     });
   });
 
-  // Preserve active state on page reload
-  const currentPath = window.location.pathname;
-  navLinks.forEach((link) => {
-    if (
-      allowedPaths.includes(link.getAttribute("href")) &&
-      link.getAttribute("href") === currentPath
-    ) {
-      link.classList.add("active");
-    }
-  });
-
-  // Handle "Contact Us" button separately
+  // Handle "Contact Us" button separately (if needed)
   const contactBtn = document.getElementById("contactBtn");
   if (contactBtn) {
     contactBtn.addEventListener("click", function () {
