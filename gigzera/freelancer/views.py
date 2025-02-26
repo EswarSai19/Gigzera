@@ -5,7 +5,9 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 import json
 import os
+import time
 import locale
+import boto3
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from db_schemas.models import Contact, ProjectQuote, Tasks, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
@@ -569,14 +571,7 @@ def edit_freelancer(request):
 
         # Handle file upload for profilePic
         profile_pic = request.FILES.get('profilePic')
-        if profile_pic:
-            fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'freelancer/profile_pics'))
-            filename = fs.save(profile_pic.name, profile_pic)
-            freelancer.profilePic = f'freelancer/profile_pics/{filename}'  # Save relative path instead of URL
-            print("Profile pic uploaded:", freelancer.profilePic)
-        else:
-            print("Using existing profile pic:", freelancer.profilePic)
-            freelancer.profilePic = f'freelancer/profile_pics/default_profile.png'
+        image_url = upload_to_s3("freelancers", profile_pic)
 
         # Update the freelancer instance
         freelancer.name = name
@@ -584,6 +579,7 @@ def edit_freelancer(request):
         freelancer.email = email
         freelancer.designation = designation
         freelancer.social_media = social_media
+        freelancer.profilePic = image_url
 
         # Save the updated freelancer object
         freelancer.save()
@@ -592,6 +588,44 @@ def edit_freelancer(request):
         return redirect('fl_profile')
 
     return render(request, 'freelancer/profile.html', {'user': freelancer})
+
+
+def upload_to_s3(folder_name, image):
+    """
+    Uploads an image to the specified S3 folder and returns the image URL.
+    Handles duplicate file names by appending a timestamp.
+    """
+    s3_client = boto3.client(
+        's3',
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        region_name=settings.AWS_S3_REGION_NAME
+    )
+
+    # Get the file extension
+    file_extension = os.path.splitext(image.name)[1]
+    base_filename = os.path.splitext(image.name)[0]
+
+    # Generate a unique file name to avoid duplicates
+    timestamp = int(time.time())  # Current Unix timestamp
+    unique_filename = f"{base_filename}_{timestamp}{file_extension}"
+
+    # Full path in S3
+    file_path = f"{folder_name}/{unique_filename}"
+
+    # Upload image to S3
+    s3_client.upload_fileobj(
+        image,
+        settings.AWS_STORAGE_BUCKET_NAME,
+        file_path,
+        ExtraArgs={'ContentType': image.content_type}
+    )
+
+    # Generate the S3 image URL
+    image_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{file_path}"
+    print(f"I just completed the upload image process with url: {image_url}")
+    return image_url
+
 
 
 def delete_profile_pic(request):
@@ -874,19 +908,31 @@ def update_task(request):
 
 # testing
 
-# Testing
-from django.conf import settings
-
 def aws_profile_view(request):
-    user_id = request.session.get('user_id')
-    if not user_id:
-        return redirect('login')  # Redirect if session is missing
+    if request.method == 'POST' and request.FILES.get('image'):
+        image = request.FILES['image']
+        folder_name = "freelancers"  # Folder inside the S3 bucket
+        file_path = f"{folder_name}/{image.name}"  # Full path in S3
 
-    freelancer = Freelancer.objects.get(userId=user_id)
+        s3_client = boto3.client(
+            's3',
+            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+            region_name=settings.AWS_S3_REGION_NAME
+        )
 
-    if request.method == 'POST' and request.FILES.get('profilePic'):
-        freelancer.profilePic = request.FILES['profilePic']
-        freelancer.save()
-        return redirect('aws_profile')  # Reload profile page
+        # Upload image to S3 inside the 'freelancers/' folder
+        s3_client.upload_fileobj(
+            image,
+            settings.AWS_STORAGE_BUCKET_NAME,
+            file_path,
+            ExtraArgs={'ContentType': image.content_type}
+        )
 
-    return render(request, 'freelancer/test_profile_aws.html', {'user': freelancer})
+        # Generate the S3 image URL
+        image_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{file_path}"
+        
+        return JsonResponse({'image_url': image_url})
+
+    return render(request, 'freelancer/test_profile_aws.html')
+

@@ -972,7 +972,7 @@
         <div class="profile-img-container">
           <img
             id="profile-img"
-            src="{{user.profilePic.url}}"
+            src="{{user.profilePic}}"
             alt="Profile Picture"
             class="profile-img"
             onclick="editImage()"
@@ -1074,7 +1074,6 @@
           name="profilePic"
           class="profile-img-input"
           accept="image/*"
-          onchange="uploadImageEdit()"
         />
 
         <!-- onclick="deletePhoto()" -->

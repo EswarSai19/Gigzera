@@ -7,7 +7,11 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 import json
 import os
+import boto3
+import time
 import locale
+import re
+from urllib.parse import urlparse
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from db_schemas.models import Client, Tasks, ProjectsDisplay, Milestones, OngoingProjects, Contact, ProjectQuote, Freelancer, EmploymentHistory,Certificate, Skill
@@ -347,7 +351,8 @@ def edit_profile(request):
     user = Client.objects.get(userId=user_id)
     user.initials = get_initials(user.name)
     client = get_object_or_404(Client, userId=user_id)
-
+    current_img_url = str(client.profilePic)
+    print("Current", current_img_url, type(current_img_url))
     # Check if the request method is POST
     if request.method == 'POST':
         # Retrieve the data from the request
@@ -360,14 +365,11 @@ def edit_profile(request):
 
         # Handle file upload for profilePic
         profile_pic = request.FILES.get('profilePic')
-        if profile_pic:
-            fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'client/profile_pics'))
-            filename = fs.save(profile_pic.name, profile_pic)
-            client.profilePic = f'client/profile_pics/{filename}'  # Save relative path instead of URL
-            print("Profile pic uploaded:", client.profilePic)
-        else:
-            print("Using existing profile pic:", client.profilePic)
-            client.profilePic = f'client/profile_pics/default_profile.png'
+        
+        response = delete_if_uploaded(current_img_url)
+        print("Response", response)
+        image_url = upload_to_s3("clients", profile_pic)
+
         print(name, email, phone, designation, social_media, company, profile_pic)
         # Update the client instance
         client.name = name
@@ -376,6 +378,7 @@ def edit_profile(request):
         client.designation = designation
         client.social_media = social_media
         client.company = company
+        client.profilePic = image_url
 
         # Save the updated client object
         client.save()
@@ -384,6 +387,85 @@ def edit_profile(request):
         return redirect('cl_profile')
 
     return render(request, 'client/cl_profile.html', {'user': client})
+
+
+def upload_to_s3(folder_name, image):
+    """
+    Uploads an image to the specified S3 folder and returns the image URL.
+    Handles duplicate file names by appending a timestamp.
+    """
+    s3_client = boto3.client(
+        's3',
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        region_name=settings.AWS_S3_REGION_NAME
+    )
+
+    # Get the file extension
+    file_extension = os.path.splitext(image.name)[1]
+    base_filename = os.path.splitext(image.name)[0]
+
+    # Generate a unique file name to avoid duplicates
+    timestamp = int(time.time())  # Current Unix timestamp
+    unique_filename = f"{base_filename}_{timestamp}{file_extension}"
+
+    # Full path in S3
+    file_path = f"{folder_name}/{unique_filename}"
+
+    # Upload image to S3
+    s3_client.upload_fileobj(
+        image,
+        settings.AWS_STORAGE_BUCKET_NAME,
+        file_path,
+        ExtraArgs={'ContentType': image.content_type}
+    )
+
+    # Generate the S3 image URL
+    image_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{file_path}"
+    print(f"I just completed the upload image process with url: {image_url}")
+    return image_url
+
+
+def delete_if_uploaded(url):
+    """
+    Deletes the file from S3 only if the filename contains a 10-digit number.
+    :param url: The full S3 file URL.
+    :return: A response message indicating success or failure.
+    """
+    print("I am inside the delete:", url)
+
+    # Extract the file path from the URL
+    parsed_url = urlparse(url)
+    file_path = parsed_url.path.lstrip('/')  # Remove leading '/'
+    
+    # Extract the filename from the path
+    filename = str(file_path.split('/')[-1]).strip()  # Ensure it's a clean string
+    print("Deleted file name:", repr(filename))  # Debugging print
+
+    # Check if the filename contains a 10-digit number
+    match = re.search(r'\d{10}', filename)
+    print("Regex Match:", match.group() if match else "No Match")  # Debugging print
+
+    if match:  
+        s3_client = boto3.client(
+            's3',
+            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+            region_name=settings.AWS_S3_REGION_NAME
+        )
+
+        try:
+            # Delete the file from S3
+            s3_client.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=file_path)
+            print(f"Successfully deleted {file_path}")
+            return {"success": True, "message": f"File '{file_path}' deleted successfully"}
+        except Exception as e:
+            print(f"Error during S3 deletion: {str(e)}")  # Debugging print
+            return {"success": False, "message": str(e)}
+
+    print("File name does not contain a 10-digit number, skipping deletion.")
+    return {"success": False, "message": "File name does not contain a 10-digit number, deletion skipped"}
+
 
 def cl_ongoingProjects(request):
     user_id = request.session.get('user_id')

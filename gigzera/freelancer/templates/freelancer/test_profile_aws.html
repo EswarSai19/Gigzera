@@ -1,21 +1,44 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Upload Image to S3</title>
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
   </head>
-  <body>
-    <form
-      method="POST"
-      enctype="multipart/form-data"
-      action="{% url 'aws_profile' %}"
-    >
-      {% csrf_token %}
-      <input type="file" name="profilePic" accept="image/*" required />
-      <button type="submit">Upload</button>
-    </form>
+  <body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white shadow-lg rounded-lg p-6 w-96">
+      <h2 class="text-2xl font-semibold text-gray-700 text-center mb-4">
+        Upload Image
+      </h2>
 
-    <img src="{{ user.profilePic.url }}" alt="Profile Picture" />
+      <form
+        action="{% url 'aws_profile' %}"
+        method="POST"
+        enctype="multipart/form-data"
+        class="space-y-4"
+      >
+        {% csrf_token %}
+
+        <div class="flex flex-col space-y-2">
+          <label class="text-gray-600 font-medium">Choose an Image</label>
+          <input
+            type="file"
+            name="image"
+            required
+            class="border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+        <img src="{{user.profilePic.url}}" alt="image" />
+
+        <button
+          type="submit"
+          class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition duration-300"
+        >
+          Upload
+        </button>
+      </form>
+    </div>
   </body>
 </html>

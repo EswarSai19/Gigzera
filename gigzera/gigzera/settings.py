@@ -153,6 +153,28 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 
+
+
+
+
+
+
+# AWS_ACCESS_KEY_ID = 'AKIAW5BDQ2NAQPRYNQQX'
+# AWS_SECRET_ACCESS_KEY = '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'
+# AWS_S3_REGION_NAME = 'ap-south-1'
+# AWS_STORAGE_BUCKET_NAME = 'eswar-s3-bkt'
+
+# AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+# AWS_S3_FILE_OVERWRITE = False
+# AWS_DEFAULT_ACL = None
+# AWS_S3_OBJECT_PARAMETERS = {
+#     "CacheControl": "max-age=86400",
+# }
+# DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+# AWS_LOCATION = "media"
+# MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
+
+
 # Load environment variables from .env
 load_dotenv()
 
@@ -169,12 +191,13 @@ if USE_S3:
 
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
     AWS_S3_FILE_OVERWRITE = False
+    AWS_DEFAULT_ACL = None
     AWS_S3_OBJECT_PARAMETERS = {
         "CacheControl": "max-age=86400",
     }
 
-    AWS_LOCATION = ""  # Remove "media" if it’s causing duplication in the path
-    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
+    AWS_LOCATION = "media"  # Remove "media" if it’s causing duplication in the path
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
     DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
     # AWS_LOCATION = "media"
@@ -185,3 +208,5 @@ else:
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # AWS completed
+# AWS_LOCATION = ""
+
