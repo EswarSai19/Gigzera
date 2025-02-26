@@ -17,6 +17,7 @@ def index(request):
     context = {'jobs': jobs}
     return render(request, 'non_register/index.html', context)
 
+
 def jobs(request):
     jobs = ProjectsDisplay.objects.all().order_by('-created_at')
     for job in jobs:
@@ -25,17 +26,22 @@ def jobs(request):
     print("Jobs: ", jobs)
     return render(request, 'non_register/jobs.html', context)
 
+
 def aboutus(request):
     return render(request, 'non_register/aboutus.html')
+
 
 def industries(request):
     return render(request, 'non_register/industries.html')
 
+
 def findajob(request):
     return render(request, 'non_register/findajob.html')
 
+
 def postajob(request):
     return render(request, 'non_register/postajob.html')
+
 
 def signup(request):
     return render(request, 'non_register/signup.html')
@@ -115,9 +121,13 @@ def submit_freelancer(request):
         email = request.POST.get("email")
         designation = request.POST.get("designation")
 <<<<<<< HEAD
+        otherdesignation=request.POST.get("otherdesignation")
+=======
+<<<<<<< HEAD
 =======
         otherdesignation=request.POST.get("otherdesignation")
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
         education = request.POST.get("education")
         certifications = request.POST.get("certifications")
         experience = request.POST.get("experience")
@@ -127,11 +137,21 @@ def submit_freelancer(request):
         print("Certificates", certifications)
         
 <<<<<<< HEAD
+                # Assign the non-empty value
+        designation = otherdesignation if otherdesignation else designation
+        
+=======
+<<<<<<< HEAD
+>>>>>>> main
         # Collect skills and experiences
         skills = {}
         for i in range(1, 4):  # Adjust range if you have more skill fields
+            print("Top Counter", i)
             skill = request.POST.get(f"skill{i}")
             exp = request.POST.get(f"experience{i}")
+<<<<<<< HEAD
+            print(f"skill {skill}, exp:{exp}")
+=======
 =======
                 # Assign the non-empty value
         designation = otherdesignation if otherdesignation else designation
@@ -144,6 +164,7 @@ def submit_freelancer(request):
             exp = request.POST.get(f"experience{i}")
             print(f"skill {skill}, exp:{exp}")
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
             if skill and exp:
                 skills[skill] = float(exp)  # Convert experience to float
                 
@@ -188,6 +209,12 @@ def submit_freelancer(request):
                 freelancer.save()
                 for i in range(1,4):
 <<<<<<< HEAD
+                    print("Counter", i)
+                    skill = request.POST.get(f"skill{i}")
+                    exp = request.POST.get(f"experience{i}")
+                    print(f"skill {skill}, exp:{exp}")
+=======
+<<<<<<< HEAD
                     skill = request.POST.get(f"skill{i}")
                     exp = request.POST.get(f"experience{i}")
 =======
@@ -196,6 +223,7 @@ def submit_freelancer(request):
                     exp = request.POST.get(f"experience{i}")
                     print(f"skill {skill}, exp:{exp}")
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
                     if skill and exp:
                         Skill.objects.create(freelancer=freelancer, skill_name=skill, experience_years=exp)
 
@@ -265,6 +293,7 @@ def extract_digits(phone_number):
     """Extracts only the numeric part of the phone number."""
     return re.sub(r"\D", "", phone_number)  # Removes non-numeric characters
 
+
 def forgot(request):
     if request.method == "POST":
         input_phone = request.POST.get("phone", "").strip()  # Ensure input is valid
@@ -311,10 +340,12 @@ def validate_otp(otp):
     if not otp.isdigit() or len(otp) != 6:
         raise ValidationError("Invalid OTP")
 
+
 def validate_password(password, confirm_password):
     """Ensure passwords match."""
     if password != confirm_password:
         raise ValidationError("Passwords do not match.")
+
 
 def test_resetpass(request):
     user_role = request.session.get('user_role')  # Get user role from session

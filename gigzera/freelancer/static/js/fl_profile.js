@@ -263,6 +263,41 @@ let editMode = false;
 
 const skills = [
 <<<<<<< HEAD
+  "Java",
+  "JavaScript",
+  "C#",
+  "C++",
+  "Ruby",
+  "PHP",
+  "Kotlin",
+  "Swift",
+  "HTML5",
+  "CSS3",
+  "React.js",
+  "Angular",
+  "Vue.js",
+  "SASS",
+  "Bootstrap",
+  "Node.js",
+  "Django",
+  "Flask",
+  "Spring Boot",
+  ".NET",
+  "Express.js",
+  "SQL",
+  "PostgreSQL",
+  "MongoDB",
+  "MySQL",
+  "Oracle",
+  "Redis",
+  "Git",
+  "GitHub",
+  "GitLab",
+  "Bitbucket",
+  "Docker",
+  "Kubernetes",
+=======
+<<<<<<< HEAD
   "Adaptability",
   "Analytical thinking",
   "Artificial Intelligence",
@@ -426,6 +461,7 @@ const skills = [
   "Bitbucket",
   "Docker",
   "Kubernetes",
+>>>>>>> main
   "Jenkins",
   "Ansible",
   "Terraform",
@@ -762,7 +798,10 @@ const skills = [
   "WordPress Developer",
   "XL Deploy Engineer",
   "Zabbix Engineer",
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 ];
 
 // Toggle edit mode

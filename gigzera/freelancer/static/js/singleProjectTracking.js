@@ -35,77 +35,87 @@ function updateProgress() {
 // javascript for task box
 // JavaScript to add new task when button is clicked
 <<<<<<< HEAD
+// document.getElementById("addTaskBtn").addEventListener("click", () => {
+//   const taskList = document.querySelector(".task-list");
+=======
+<<<<<<< HEAD
 document.getElementById("addTaskBtn").addEventListener("click", () => {
   const taskList = document.querySelector(".task-list");
+>>>>>>> main
 
-  // Create new task div
-  const newTask = document.createElement("div");
-  newTask.classList.add("task");
-  newTask.innerHTML = `
-    <div class="task-row">
-      <input type="checkbox" class="task-checkbox">
-      <label class="task-title">New Task</label>
-      <i class="fa-solid fa-pen-to-square edit-icon"></i>
-      <select>
-         <option>Requirement Gathering</option>
-                  <option>Designing</option>
-                  <option>Development</option>
-                  <option>Testing</option>
-                  <option>UAT</option>
-                  <option>Completed</option>
-      </select>
-    </div>
-    <div class="task-comment">
-     <button onclick="openChatModal()" class="comment-button" disabled>
-      Add Comment
-      </button>          
-    </div>
-  `;
+//   // Create new task div
+//   const newTask = document.createElement("div");
+//   newTask.classList.add("task");
+//   newTask.innerHTML = `
+//     <div class="task-row">
+//       <input type="checkbox" class="task-checkbox">
+//       <label class="task-title">New Task</label>
+//       <i class="fa-solid fa-pen-to-square edit-icon"></i>
+//       <select>
+//          <option>Requirement Gathering</option>
+//                   <option>Designing</option>
+//                   <option>Development</option>
+//                   <option>Testing</option>
+//                   <option>UAT</option>
+//                   <option>Completed</option>
+//       </select>
+//     </div>
+//     <div class="task-comment">
+//      <button onclick="openChatModal()" class="comment-button" disabled>
+//       Add Comment
+//       </button>
+//     </div>
+//   `;
 
-  taskList.appendChild(newTask);
-  addEditFunctionality(newTask);
-});
+//   taskList.appendChild(newTask);
+//   addEditFunctionality(newTask);
+// });
 
-document.getElementById("deleteSelectedBtn").addEventListener("click", () => {
-  const tasks = document.querySelectorAll(".task");
-  tasks.forEach((task) => {
-    const checkbox = task.querySelector(".task-checkbox");
-    if (checkbox.checked) {
-      task.remove();
-    }
-  });
-});
+// document.getElementById("deleteSelectedBtn").addEventListener("click", () => {
+//   const tasks = document.querySelectorAll(".task");
+//   tasks.forEach((task) => {
+//     const checkbox = task.querySelector(".task-checkbox");
+//     if (checkbox.checked) {
+//       task.remove();
+//     }
+//   });
+// });
 
-function addEditFunctionality(task) {
-  const editIcon = task.querySelector(".edit-icon");
-  const title = task.querySelector(".task-title");
-  const commentButton = task.querySelector(".comment-button");
+// function addEditFunctionality(task) {
+//   const editIcon = task.querySelector(".edit-icon");
+//   const title = task.querySelector(".task-title");
+//   const commentButton = task.querySelector(".comment-button");
 
-  editIcon.addEventListener("click", () => {
-    if (editIcon.classList.contains("editing")) {
-      // Save and reset after editing
-      title.contentEditable = "false";
-      commentButton.disabled = true;
-      editIcon.classList.remove("editing");
-      editIcon.style.color = "#007bff"; // Reset icon color
-    } else {
-      // Enable editing
-      title.contentEditable = "true";
-      commentButton.disabled = false;
-      title.focus();
-      editIcon.classList.add("editing");
-      editIcon.style.color = "#0056b3"; // Indicate editing mode
-    }
-  });
-  // Open comment modal and set task reference
-  commentButton.addEventListener("click", () => {
-    if (!commentButton.disabled) {
-      openChatModal(task);
-    }
-  });
-}
+//   editIcon.addEventListener("click", () => {
+//     if (editIcon.classList.contains("editing")) {
+//       // Save and reset after editing
+//       title.contentEditable = "false";
+//       commentButton.disabled = true;
+//       editIcon.classList.remove("editing");
+//       editIcon.style.color = "#007bff"; // Reset icon color
+//     } else {
+//       // Enable editing
+//       title.contentEditable = "true";
+//       commentButton.disabled = false;
+//       title.focus();
+//       editIcon.classList.add("editing");
+//       editIcon.style.color = "#0056b3"; // Indicate editing mode
+//     }
+//   });
+//   // Open comment modal and set task reference
+//   commentButton.addEventListener("click", () => {
+//     if (!commentButton.disabled) {
+//       openChatModal(task);
+//     }
+//   });
+// }
 
 // Initialize edit functionality for existing tasks
+<<<<<<< HEAD
+// document
+//   .querySelectorAll(".task")
+//   .forEach((task) => addEditFunctionality(task));
+=======
 document
   .querySelectorAll(".task")
   .forEach((task) => addEditFunctionality(task));
@@ -185,6 +195,7 @@ document
 //   .querySelectorAll(".task")
 //   .forEach((task) => addEditFunctionality(task));
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 
 // Open the message modal when clicking 'Add Comment'
 function openChatModal() {
@@ -243,6 +254,9 @@ function sendMessage() {
 }
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
+>>>>>>> main
 
 // New function for hadling the update progress
 document.addEventListener("DOMContentLoaded", function () {
@@ -528,4 +542,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 });
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main

@@ -64,6 +64,14 @@ function sendMessage() {
 // JavaScript for Timeline and Finance Sections
 // Toggle Edit for Timeline Section
 <<<<<<< HEAD
+function toggleTimelineEdit(event) {
+  event.preventDefault(); // Prevent form from submitting if button is inside the form
+
+  const startDate = document.getElementById("startDate");
+  const endDate = document.getElementById("endDate");
+  const updateButton = document.getElementById("updateButton");
+=======
+<<<<<<< HEAD
 function toggleTimelineEdit() {
   const startDate = document.getElementById("startDate");
   const endDate = document.getElementById("endDate");
@@ -75,12 +83,20 @@ function toggleTimelineEdit(event) {
   const endDate = document.getElementById("endDate");
   const updateButton = document.getElementById("updateButton");
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 
   // Toggle disabled state
   const isDisabled = startDate.disabled;
   startDate.disabled = !isDisabled;
   endDate.disabled = !isDisabled;
 
+<<<<<<< HEAD
+  // Show or hide the Update button
+  if (isDisabled) {
+    updateButton.classList.remove("hidden");
+  } else {
+    updateButton.classList.add("hidden");
+=======
 <<<<<<< HEAD
   // Provide feedback when exiting edit mode
   if (isDisabled === false) {
@@ -93,15 +109,16 @@ function toggleTimelineEdit(event) {
         `Timeline updated successfully: ${startDate.value} to ${endDate.value}`
       );
     }
+>>>>>>> main
   }
 }
 
-// Function to update Finance details
-// Toggle Finance Edit Mode
 function toggleFinanceEdit() {
   const financeInputs = document.querySelectorAll(
-    ".finance .edit-table input, .finance .edit-table select, .milestone-btn"
+    ".consultingCharges, .advancePayment, .finance .edit-table select, .milestone-btn, .mile_stone_input"
   );
+<<<<<<< HEAD
+=======
   const deleteIcons = document.querySelectorAll(".delete-icon"); // Select all delete icons
 =======
   // Show or hide the Update button
@@ -116,26 +133,36 @@ function toggleFinanceEdit() {
   const financeInputs = document.querySelectorAll(
     ".consultingCharges, .advancePayment, .finance .edit-table select, .milestone-btn, .mile_stone_input"
   );
+>>>>>>> main
   const updateFinMilBtn = document.getElementById("updateFinMilBtn");
   const deleteIcons = document.querySelectorAll(
     ".delete-icon, .delete-milestone"
   ); // Include delete-milestone
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 
   // Check current state of inputs
   const isEditing = !financeInputs[0].disabled;
 
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   // Update total costing dynamically before exiting edit mode
   if (isEditing) {
     updateFinance();
 =======
+>>>>>>> main
   if (!isEditing) {
     updateFinMilBtn.classList.remove("hidden");
   } else {
     updateFinMilBtn.classList.add("hidden");
     updateFinance(); // Update total cost dynamically before exiting edit mode
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   }
 
   // Toggle disabled state for inputs
@@ -143,12 +170,21 @@ function toggleFinanceEdit() {
     input.disabled = isEditing;
   });
 <<<<<<< HEAD
+
+  // Toggle delete icon functionality (disable outside edit mode)
+=======
+<<<<<<< HEAD
   // Toggle delete icon functionality (disable it when in edit mode)
+>>>>>>> main
   deleteIcons.forEach((icon) => {
-    if (isEditing) {
-      icon.style.pointerEvents = "none"; // Disable delete icon click in Edit mode
-      icon.style.opacity = "0.5"; // Dimmed when in edit mode
+    if (!isEditing) {
+      icon.style.pointerEvents = "auto"; // Enable clicking
+      icon.style.opacity = "1"; // Make it fully visible
     } else {
+<<<<<<< HEAD
+      icon.style.pointerEvents = "none"; // Disable clicking
+      icon.style.opacity = "0.5"; // Dim when disabled
+=======
       icon.style.pointerEvents = "auto"; // Enable delete icon click outside of edit mode
       icon.style.opacity = "1"; // Full opacity when not in edit mode
 =======
@@ -162,6 +198,7 @@ function toggleFinanceEdit() {
       icon.style.pointerEvents = "none"; // Disable clicking
       icon.style.opacity = "0.5"; // Dim when disabled
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     }
   });
 }
@@ -169,75 +206,114 @@ function toggleFinanceEdit() {
 // Update Total Cost Calculation dynamically when user enters values
 function updateFinance() {
 <<<<<<< HEAD
+  console.log("I am here updateFinance");
+
+  // Function to convert formatted numbers (with commas) to proper floats
+  function parseNumber(value) {
+    if (!value) return 0; // Handle empty input
+    return parseFloat(value.replace(/,/g, "")); // Remove commas and convert
+  }
+
+  const laborCost = parseNumber(document.getElementById("laborCost").value);
+  const consultingCharges = parseNumber(
+    document.getElementById("consultingCharges").value
+=======
+<<<<<<< HEAD
   const laborCost = parseFloat(document.getElementById("laborCost").value || 0);
   const consultingCharges = parseFloat(
     document.getElementById("consultingCharges").value || 0
+>>>>>>> main
   );
+  const advancePayment = parseNumber(
+    document.getElementById("advancePayment").value
+  );
+
+  console.log("Parsed values:", laborCost, consultingCharges, advancePayment);
+
+  if (isNaN(consultingCharges) || isNaN(advancePayment)) {
+    alert("Invalid numerical values in Consulting Charges or Advance Payment");
+    return;
+  }
+
+  console.log("I am here updateFinance22");
 
   // Calculate Total Costing
   const totalCosting = laborCost + consultingCharges;
-  document.getElementById(
-    "totalCosting"
-  ).textContent = `$${totalCosting.toFixed(2)}`;
+  console.log(totalCosting, "Total Costing");
+
+  // Update total costing (ensure it's a text input if needed)
+  document.getElementById("totalCosting").textContent = `${totalCosting.toFixed(
+    2
+  )}`;
 }
 
-// Automatically update total cost when user changes values
-document.getElementById("laborCost").addEventListener("input", updateFinance);
-document
-  .getElementById("consultingCharges")
-  .addEventListener("input", updateFinance);
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("Finance Milestone Form Loaded");
 
-// Function to add a new milestone row with input fields
-function addMilestoneRow() {
-  const milestoneTable = document.getElementById("milestoneTable");
+  let FinForm = document.querySelector("#financeMilestoneForm");
+  if (!FinForm) {
+    console.error("Finance Milestone Form not found! Check your form ID.");
+    return;
+  }
 
-  // Create a new row
-  const newRow = document.createElement("tr");
+  // ✅ Handle Update Form Submission
+  FinForm.addEventListener("submit", function (event) {
+    event.preventDefault();
 
-  // Create date input field
-  const dateCell = document.createElement("td");
-  const dateInput = document.createElement("input");
-  dateInput.type = "date";
-  dateInput.disabled = false; // Enable it for editing
-  dateCell.appendChild(dateInput);
+    let finFormData = new FormData(FinForm);
 
-  // Create amount input field
-  const amountCell = document.createElement("td");
-  const amountInputWrapper = document.createElement("div");
-  amountInputWrapper.classList.add("input-wrapper");
-  const dollarSign = document.createElement("span");
-  dollarSign.classList.add("dollar-sign");
-  dollarSign.textContent = "$";
-  const amountInput = document.createElement("input");
-  amountInput.type = "number";
-  amountInput.placeholder = "Amount";
-  amountInput.disabled = false; // Enable it for editing
-  amountInputWrapper.appendChild(dollarSign);
-  amountInputWrapper.appendChild(amountInput);
-  amountCell.appendChild(amountInputWrapper);
+    fetch(FinForm.action, {
+      method: "POST",
+      body: finFormData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("Form submitted successfully!");
+          alert(data.message);
+          toggleFinanceEdit(); // Lock fields after update
+          window.location.reload();
+        } else {
+          alert("Error: " + data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+      });
+  });
 
-  // Create status select field
-  const statusCell = document.createElement("td");
-  const statusSelect = document.createElement("select");
-  const optionPending = document.createElement("option");
-  optionPending.value = "Pending";
-  optionPending.textContent = "Pending";
-  const optionCompleted = document.createElement("option");
-  optionCompleted.value = "Completed";
-  optionCompleted.textContent = "Completed";
-  statusSelect.appendChild(optionPending);
-  statusSelect.appendChild(optionCompleted);
-  statusCell.appendChild(statusSelect);
+  // ✅ Handle Milestone Deletion (Event Delegation)
+  document.addEventListener("click", function (event) {
+    let deleteIcon = event.target.closest(".delete-milestone");
+    if (!deleteIcon) return;
 
-  // Append the created cells to the new row
-  newRow.appendChild(dateCell);
-  newRow.appendChild(amountCell);
-  newRow.appendChild(statusCell);
+    let milestoneRow = deleteIcon.closest("tr");
+    let deleteMarker = milestoneRow
+      ? milestoneRow.querySelector(".delete-marker")
+      : null;
 
-  // Append the new row to the table
-  milestoneTable.appendChild(newRow);
+    if (!deleteMarker) {
+      console.error(
+        "Hidden delete marker input not found in row:",
+        milestoneRow
+      );
+      return; // Exit function if the hidden input is missing
+    }
+
+    if (confirm("Are you sure you want to delete this milestone?")) {
+      deleteMarker.value = "1"; // Mark for deletion
+      milestoneRow.style.display = "none"; // Hide the row instead of removing it
+    }
+  });
+});
+
+// ✅ Function to Get CSRF Token
+function getCSRFToken() {
+  return document.querySelector("[name=csrfmiddlewaretoken]").value;
 }
 
+<<<<<<< HEAD
+=======
 // Attach an event listener to the "Add Milestones" button
 document
   .getElementById("addMilestoneBtn")
@@ -343,6 +419,7 @@ function getCSRFToken() {
   return document.querySelector("[name=csrfmiddlewaretoken]").value;
 }
 
+>>>>>>> main
 // for opening and closing the popup of add milestone
 function openPopup() {
   document.getElementById("milestonePopup").classList.remove("hidden");
@@ -351,7 +428,10 @@ function openPopup() {
 function closePopup() {
   document.getElementById("milestonePopup").classList.add("hidden");
 }
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 
 // java script for modal
 function openChatModal() {
@@ -385,69 +465,54 @@ function sendNewMessage() {
 }
 
 <<<<<<< HEAD
+//  New script part for adding the functionality of the updating progress and status
+document.addEventListener("DOMContentLoaded", function () {
+  let form = document.getElementById("updateStatusProgress");
+=======
+<<<<<<< HEAD
 // Function to add a new milestone row with input fields
 function addMilestoneRow() {
   const milestoneTable = document.getElementById("milestoneTable");
+>>>>>>> main
 
-  // Create a new row
-  const newRow = document.createElement("tr");
+  if (!form) return; // Ensure form exists before adding event listeners
 
-  // Create date input field
-  const dateCell = document.createElement("td");
-  const dateInput = document.createElement("input");
-  dateInput.type = "date";
-  dateInput.disabled = false; // Enable it for editing
-  dateCell.appendChild(dateInput);
+  form.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent full page reload
 
-  // Create amount input field
-  const amountCell = document.createElement("td");
-  const amountInputWrapper = document.createElement("div");
-  amountInputWrapper.classList.add("input-wrapper");
-  const dollarSign = document.createElement("span");
-  dollarSign.classList.add("dollar-sign");
-  dollarSign.textContent = "$";
-  const amountInput = document.createElement("input");
-  amountInput.type = "number";
-  amountInput.placeholder = "Amount";
-  amountInput.disabled = false; // Enable it for editing
-  amountInputWrapper.appendChild(dollarSign);
-  amountInputWrapper.appendChild(amountInput);
-  amountCell.appendChild(amountInputWrapper);
+    // Enable status dropdown before submitting
+    let statusDropdown = form.querySelector("#projectStatus");
+    statusDropdown.disabled = false;
 
-  // Create status select field
-  const statusCell = document.createElement("td");
-  const statusSelect = document.createElement("select");
-  const optionPending = document.createElement("option");
-  optionPending.value = "Pending";
-  optionPending.textContent = "Pending";
-  const optionCompleted = document.createElement("option");
-  optionCompleted.value = "Completed";
-  optionCompleted.textContent = "Completed";
-  statusSelect.appendChild(optionPending);
-  statusSelect.appendChild(optionCompleted);
-  statusCell.appendChild(statusSelect);
+    let formData = new FormData(form);
 
-  // Create delete icon
-  const deleteCell = document.createElement("td");
-  const deleteIcon = document.createElement("i");
-  deleteIcon.classList.add("fa", "fa-trash", "delete-icon");
-  deleteIcon.style.cursor = "pointer";
-  deleteIcon.onclick = function () {
-    // Delete the row when the delete icon is clicked
-    milestoneTable.removeChild(newRow);
-  };
-  deleteCell.appendChild(deleteIcon);
+    fetch(form.action, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert(data.message);
 
-  // Append the created cells to the new row
-  newRow.appendChild(dateCell);
-  newRow.appendChild(amountCell);
-  newRow.appendChild(statusCell);
-  newRow.appendChild(deleteCell);
+          // Update progress bar dynamically
+          let progressBar = document.querySelector("#progressFill");
+          let newProgress = form.querySelector("#newProgress").value;
+          progressBar.style.width = newProgress + "%";
 
-  // Append the new row to the table
-  milestoneTable.appendChild(newRow);
-}
+          // Store state to prevent back button issues
+          history.replaceState(null, "", window.location.href);
+        } else {
+          alert("Error: " + data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  });
 
+<<<<<<< HEAD
+=======
 // Add the delete icon to pre-existing rows as well
 document.querySelectorAll("#milestoneTable tr").forEach((row) => {
   const deleteCell = document.createElement("td");
@@ -501,6 +566,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 
+>>>>>>> main
   // Initialize progress bar on page load
   let progressElement = document.getElementById("progressFill");
   if (progressElement) {
@@ -544,5 +610,8 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("An error occurred while updating the timeline.");
       });
   });
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 });

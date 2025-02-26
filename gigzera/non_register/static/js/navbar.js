@@ -32,6 +32,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
+>>>>>>> main
 
 // document.addEventListener("DOMContentLoaded", function () {
 //   const navLinks = document.querySelectorAll(".nav-link"); // Select all nav links
@@ -46,4 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
 //     }
 //   });
 // });
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main

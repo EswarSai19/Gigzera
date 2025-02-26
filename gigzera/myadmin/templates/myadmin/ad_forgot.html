@@ -1,0 +1,76 @@
+{% load static %}
+<!-- title -->
+<!-- {% block title %}Login{% endblock %} -->
+<!-- CSS -->
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/ad_login.css' %}" />
+<link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+/>
+
+{% endblock %}
+<!-- main content -->
+{% block content %}
+<!-- Main -->
+<!-- <div class="sidebar inset-y-0 left-0 w-72 h-auto">
+  <div class="flex items-center justify-center h-16"> -->
+<div class="img-container">
+  <img
+    class="w-[130px] h-[50px] cursor-pointer ml-4 mt-4"
+    src="https://d2m054rmna67sd.cloudfront.net/header_logo.png"
+    alt="Gigzera Logo"
+  />
+</div>
+<!-- </div>
+</div> -->
+<!--  -->
+
+{% if messages %} {% for message in messages %}
+<div id="alert-banner" class="alert-banner">
+  <h1 class="alert-message">{{ message }}</h1>
+  <button class="close-btn" onclick="this.parentElement.style.display='none'">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+{% endfor %} {% endif %}
+
+<!-- main -->
+<main class="login-container">
+  <div class="login-box">
+    <h1>Forgot Password</h1>
+    <p>Sign in to your admin account</p>
+    <form method="POST" action="{% url 'ad_forgot' %}">
+      {% csrf_token %}
+      <input
+        type="text"
+        name="useridOrMail"
+        placeholder="Enter your email or userid"
+        required
+      />
+      <input
+        type="password"
+        name="oldPassword"
+        placeholder="Enter your old password"
+        required
+      />
+      <input
+        type="password"
+        name="newPassword"
+        placeholder="Enter your new password"
+        required
+      />
+      <button type="submit">Reset Password</button>
+    </form>
+    <div class="links">
+      <a href="{% url 'ad_login' %}">Sign in</a>
+      <!-- <a href="{% url 'signup' %}">Sign Up</a> -->
+    </div>
+  </div>
+</main>
+{% endblock %}
+<!-- Script -->
+{% block script %}
+<script src=""></script>
+{% endblock %}

@@ -4,10 +4,15 @@ from django.contrib.auth.hashers import check_password, make_password
 from django.http import HttpResponse
 from django.contrib import messages
 <<<<<<< HEAD
+from django.urls import reverse
+from django.http import JsonResponse
+=======
+<<<<<<< HEAD
 =======
 from django.urls import reverse
 from django.http import JsonResponse
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 import json
 import os
 import locale
@@ -15,10 +20,14 @@ from itertools import chain
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 <<<<<<< HEAD
+from db_schemas.models import Contact, ProjectQuote, MyAdmin, Tasks, Client, Milestones, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
+=======
+<<<<<<< HEAD
 from db_schemas.models import Contact, ProjectQuote, Client, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
 =======
 from db_schemas.models import Contact, ProjectQuote, MyAdmin, Tasks, Client, Milestones, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 from django.core.exceptions import ValidationError
 from datetime import datetime
 
@@ -49,30 +58,113 @@ currency_symbols = {
 
 # Locale settings for number formatting
 <<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+>>>>>>> main
 currency_locales = {
-    "USD": "en_US", "EUR": "de_DE", "JPY": "ja_JP", "GBP": "en_GB", "CNY": "zh_CN", 
-    "AUD": "en_AU", "CAD": "en_CA", "CHF": "de_CH", "INR": "en_IN", "NZD": "en_NZ"
+    "USD": "en_US.UTF-8", "EUR": "de_DE.UTF-8", "JPY": "ja_JP.UTF-8",
+    "GBP": "en_GB.UTF-8", "CNY": "zh_CN.UTF-8", "AUD": "en_AU.UTF-8",
+    "CAD": "en_CA.UTF-8", "CHF": "de_CH.UTF-8", "INR": "en_IN.UTF-8",
+    "NZD": "en_NZ.UTF-8"
 }
+
+
+# Test
+# print(f"this is outside the print EUR: {format_currency(325.000, 'EUR')}")
+# print(f"this is outside the print JPY: {format_currency(325,000, 'JPY')}")
+# print(f"this is outside the print CHF: {format_currency("325'000", 'CHF')}")
+# print(f"this is outside the print GBP: {format_currency(325000, 'GBP')}")
+# print(f"this is outside the print CNY: {format_currency(325000, 'CNY')}")
+# print(f"this is outside the print AUD: {format_currency(325000, 'AUD')}")
+# print(f"this is outside the print CAD: {format_currency(325000, 'CAD')}")
+# print(f"this is outside the print NZD: {format_currency(325000, 'NZD')}")
+# print(f"this is outside the print USD: {format_currency(325000, 'USD')}")
+# print(f"this is outside the print INR: {format_currency(325000, 'INR')}")
+
+    
+import locale
+
+currency_locales = {
+    "USD": "en_US.UTF-8", "EUR": "de_DE.UTF-8", "JPY": "ja_JP.UTF-8", 
+    "GBP": "en_GB.UTF-8", "CNY": "zh_CN.UTF-8", "AUD": "en_AU.UTF-8", 
+    "CAD": "en_CA.UTF-8", "CHF": "de_CH.UTF-8", "INR": "en_IN.UTF-8", "NZD": "en_NZ.UTF-8"
+}
+
+def clean_number(value, currency_code):
+    """Cleans and converts numbers based on currency format."""
+    if isinstance(value, (int, float)):
+        return value  # Already a number
+    
+    value = str(value).replace("'", "").replace(" ", "")  # Remove Swiss & extra spaces
+    
+    if currency_code in ["EUR", "DE", "FR", "CHF"]:  # European style (dot as thousand separator)
+        value = value.replace(".", "").replace(",", ".")  # Remove thousand dots & fix decimal commas
+    else:  # Standard format (comma as thousand separator)
+        value = value.replace(",", "")
+
+    try:
+        return float(value) if "." in value else int(value)  # Convert to int if no decimals
+    except ValueError:
+        raise ValueError(f"Invalid number format: {value}")
+
+def add_and_format(budget, admin_margin, currency_code):
+    """Adds two numbers and formats them based on the currency code."""
+    budget = clean_number(budget, currency_code)
+    admin_margin = clean_number(admin_margin, currency_code)
+    
+    total = budget + admin_margin  # Calculate sum
+    print(f"Total is {total}")
+    
+    return format_currency(total, currency_code)
 
 def format_currency(amount, currency_code):
     """Formats the number according to the given currency locale."""
     try:
-        locale.setlocale(locale.LC_ALL, currency_locales.get(currency_code, "en_US"))  # Set locale
-        amount = float(amount)  # Ensure amount is a float
-        
-        if amount.is_integer():  # Check if the amount is a whole number
-            print("I am going to if")
-            formatted_amount = locale.format_string("%d", int(amount), grouping=True)  # Integer format
+        locale_code = currency_locales.get(currency_code, "en_US.UTF-8")
+        try:
+            locale.setlocale(locale.LC_ALL, locale_code)
+        except locale.Error:
+            print(f"Warning: Locale '{locale_code}' not found. Using default.")
+
+        amount = clean_number(amount, currency_code)
+
+        if isinstance(amount, int):
+            formatted_amount = locale.format_string("%d", amount, grouping=True)
         else:
-            print("Else")
-            formatted_amount = locale.format_string("%.2f", amount, grouping=True)  # Two decimal places
-        
-        return f"{formatted_amount}"  # Add currency symbol
+            formatted_amount = locale.format_string("%.2f", amount, grouping=True)
+
+        return formatted_amount
     except ValueError:
         return "Invalid amount"
 
-    
+def divide_budget(revised_budget, advance_payment, currency, no_of_parts):
+    """Divides the remaining budget into equal parts after deducting advance payment."""
+    # Convert string inputs to numbers
+    revised_budget = clean_number(revised_budget, currency)
+    advance_payment = clean_number(advance_payment, currency)
 
+    # Calculate remaining budget
+    remaining_budget = revised_budget - advance_payment
+
+    if no_of_parts <= 0:
+        raise ValueError("Number of parts must be greater than 0.")
+
+    # Calculate equal parts
+    part_amount = remaining_budget / no_of_parts
+
+    # Format and return results
+    return [format_currency(part_amount, currency) for _ in range(no_of_parts)]
+
+# Example usage
+# parts = divide_budget("10.000", "2.500", "EUR", 2)
+# print(parts)
+# Test cases
+# print(f"EUR: {add_and_format('1.000', '3.00', 'EUR')}")  # Expected: 1.300 (1,000 + 300)
+# print(f"JPY: {add_and_format('325,000', '231,124', 'JPY')}")  # Expected: 556,124
+
+<<<<<<< HEAD
+=======
 def add_and_format(budget, admin_margin, currency_code):
     """Adds two numbers and formats them based on the currency code."""
     budget = int(str(budget).replace(",", ""))  # Convert budget to integer
@@ -183,6 +275,7 @@ def divide_budget(revised_budget, advance_payment, currency, no_of_parts):
 # print(f"JPY: {add_and_format('325,000', '231,124', 'JPY')}")  # Expected: 556,124
 
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 
 
 def calculate_percentage(amount_str, percentage, currency_code):
@@ -198,9 +291,13 @@ def calculate_percentage(amount_str, percentage, currency_code):
         return "Invalid amount"
 
 <<<<<<< HEAD
+# print("Percentage",calculate_percentage("12223123", 30, "USD"))
+=======
+<<<<<<< HEAD
 =======
 # print("Percentage",calculate_percentage("12223123", 30, "USD"))
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 # Example usage
 # print(add_and_format("2,00,000", "5,000", "INR"))  # Output: ₹ 2,05,000
 # print(add_and_format("200000", "5000", "USD"))  # Output: $ 205,000
@@ -228,6 +325,66 @@ def ad_index(request):
     print(context)
     return render(request, 'myadmin/ad_index.html', context)
 
+def ad_login(request):
+    if request.method == 'POST':
+        print("I am inside the post")
+        userid_or_email = request.POST.get('email')
+        password = request.POST.get('password')
+        print(userid_or_email, password)
+
+        if userid_or_email.startswith('AD') and len(userid_or_email) == 5:
+            admin = MyAdmin.objects.filter(adminId=userid_or_email).first()
+            if admin and check_password(password, admin.password):
+                request.session['user_id'] = admin.adminId
+                print("I am inside the admin if condition")
+                return redirect('ad_dashboard')  # Redirect on success
+        
+        elif '@' in userid_or_email:
+            admin = MyAdmin.objects.filter(email=userid_or_email).first()
+            if admin and check_password(password, admin.password):
+                request.session['user_id'] = admin.adminId
+                print("I am inside the admin else condition")
+                return redirect('ad_dashboard')  # Redirect on success
+        
+        print("Error: Invalid credentials")
+        messages.error(request, 'Invalid credentials')
+        return redirect('ad_login')  # Redirect on error (Prevents form resubmission on refresh)
+
+    return render(request, 'myadmin/ad_login.html')
+
+def ad_forgot(request):
+    if request.method == "POST":
+        print("I am inside the forogt page")
+        userid_or_email = request.POST.get('useridOrMail')
+        old_pass = request.POST.get('oldPassword')
+        new_pass = request.POST.get('newPassword')
+        print(userid_or_email, old_pass, new_pass)
+        if userid_or_email.startswith('AD') and len(userid_or_email) == 5:
+            admin = MyAdmin.objects.filter(adminId=userid_or_email).first()
+            if admin and check_password(old_pass, admin.password):
+                admin.password = make_password(new_pass)
+                admin.save()
+                messages.success(request, "Password updated successfully")
+                return redirect('ad_login')
+        elif '@' in userid_or_email:
+            admin = MyAdmin.objects.filter(email=userid_or_email).first()
+            if admin and check_password(old_pass, admin.password):
+                admin.password = make_password(new_pass)
+                admin.save()
+                messages.success(request, "Password updated successfully")
+                return redirect('ad_login')
+
+        print("Error: Invalid credentials")
+        messages.error(request, 'Invalid credentials')
+        return redirect('ad_forgot')
+ 
+    return render(request, 'myadmin/ad_forgot.html')
+
+
+def ad_logout(request):
+    request.session.flush()  # ✅ Clears all session data (logs user out)
+    return redirect('ad_login')
+
 def dashboard(request):
     freelancers = Freelancer.objects.all()
     clients = Client.objects.all()
@@ -251,6 +408,8 @@ def dashboard(request):
     return render(request, 'myadmin/dashboard.html', context)
 
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
 # def freelancers(request):
 #     users = Freelancer.objects.all().order_by('-created_at')
 #     ac_users = Freelancer.objects.all().filter(is_active=True).order_by('-created_at')
@@ -268,6 +427,7 @@ def dashboard(request):
 #     return render(request, 'myadmin/freelancers.html', context)
 =======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 
 def freelancers(request, filter_type=None):
     # Get all users by default
@@ -392,6 +552,62 @@ def clientProfileView(request):
     
 def ongoingProjects(request):
 <<<<<<< HEAD
+    ongProjects = OngoingProjects.objects.all()
+    print("OG", ongProjects)
+    for ogp in ongProjects:
+        print(ogp.opportunityId,"OPP id")
+        fl_user = Freelancer.objects.filter(userId=ogp.freelancer_id).first()
+        job = ProjectsDisplay.objects.filter(opportunityId=ogp.opportunityId).first()
+        if job:
+            full_description = job.description or ""
+            split_desc = full_description.split(".", 1)  # Split at first full stop
+
+            ogp.short_description = split_desc[0] + "." if len(split_desc) > 1 else full_description
+            ogp.full_description = split_desc[1] if len(split_desc) > 1 else ""
+
+        ogp.title = job.title if job else ""
+        ogp.name = fl_user.name if fl_user else ""
+
+    context={'ongProjects':ongProjects}
+    return render(request, 'myadmin/ongoingProjects.html', context)
+
+def singleOngoingProject(request):
+    ongp_id = request.GET.get('ongpId')
+    print("here is the id", ongp_id)
+    singleOgp = OngoingProjects.objects.filter(ongProjectId=ongp_id).first()
+    opportunity_id = singleOgp.opportunityId
+    bid = ProjectQuote.objects.filter(projectQuoteId=singleOgp.bidId).first()
+
+
+    ad_payment = bid.revised_budget.replace(",", "").strip()
+    amount = float(ad_payment)
+    adv_payment = amount * (30 / 100)  # Calculate percentage
+    bid.advance_payment = format_currency(adv_payment, bid.currency)
+
+    job = ProjectsDisplay.objects.filter(opportunityId=opportunity_id).first()
+    job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
+    job.cur_symbol = get_currency_symbol(job.currency)
+     # ✅ **Fix Date Formatting**
+    formatted_start_date = singleOgp.start_date.strftime("%Y-%m-%d") if singleOgp.start_date else ""
+    formatted_end_date = singleOgp.end_date.strftime("%Y-%m-%d") if singleOgp.end_date else ""
+
+    context = {
+        'job': job, 
+        'bid': bid, 
+        'singleOgp': singleOgp,
+        'formatted_start_date': formatted_start_date,  # ✅ Correct Format
+        'formatted_end_date': formatted_end_date       # ✅ Correct Format
+    }
+    
+
+    return render(request, 'myadmin/singleOngoingProject.html', context)
+    
+
+
+def yourProjects(request):
+    ongProjects = OngoingProjects.objects.filter(admin_id="AD001").all()
+=======
+<<<<<<< HEAD
     return render(request, 'myadmin/ongoingProjects.html')
 
 def yourProjects(request):
@@ -452,6 +668,7 @@ def singleOngoingProject(request):
 def yourProjects(request):
     ongProjects = OngoingProjects.objects.filter(admin_id="AD001").all()
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     print("OG", ongProjects)
     for ogp in ongProjects:
         print(ogp.opportunityId,"OPP id")
@@ -474,25 +691,54 @@ def yourProjects(request):
     # return render(request, 'myadmin/yourProjects.html', {'my_projects': my_projects})
 
 <<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+>>>>>>> main
 def singleYourProject(request):
-    ongp_id = request.GET.get('ongpId')
-    print("here is the id", ongp_id)
+
+    ongp_id = request.GET.get('ongpId') or request.POST.get('ongpId')
+    print("Here is the ID:", ongp_id)
+
     singleOgp = OngoingProjects.objects.filter(ongProjectId=ongp_id).first()
+
+    if not singleOgp:
+        messages.error(request, "No project found with the given ID.")
+        return redirect('ad_yourProjects')  # Redirect safely
+
     opportunity_id = singleOgp.opportunityId
     bid = ProjectQuote.objects.filter(projectQuoteId=singleOgp.bidId).first()
 
+    if not bid:
+        messages.error(request, "No bid found for this project.")
+        return redirect('ad_yourProjects')  # Redirect safely
 
-    ad_payment = bid.revised_budget.replace(",", "").strip()
-    amount = float(ad_payment)
-    bid.advance_payment = amount * (30 / 100)  # Calculate percentage
+    # Fix budget calculations
+    # ad_payment = bid.revised_budget.replace(",", "").strip()
+    # amount = float(ad_payment)
+    # bid.advance_payment = amount * (30 / 100)
 
     job = ProjectsDisplay.objects.filter(opportunityId=opportunity_id).first()
-    job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
-    job.cur_symbol = get_currency_symbol(job.currency)
-    context={'job':job, 'bid':bid}
 
-    return render(request, 'myadmin/singleYourProject.html', context)
+    if job:
+        job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
+        job.cur_symbol = get_currency_symbol(job.currency)
+    milestones = Milestones.objects.filter(bid_id=bid.projectQuoteId).all()
+    tasks = Tasks.objects.filter(taskBid_id=bid.projectQuoteId).all()
+    # print("Milestones", milestones)
+    context = {
+        'job': job,
+        'bid': bid,
+        'singleOgp': singleOgp,
+        'milestones': milestones,
+        'tasks': tasks
+    }
+    # print("Context", context)
+    # print(f"Date: {singleOgp.start_date}, {singleOgp.end_date}")
+
     
+<<<<<<< HEAD
+=======
 =======
 
 def singleYourProject(request):
@@ -537,6 +783,7 @@ def singleYourProject(request):
     # print(f"Date: {singleOgp.start_date}, {singleOgp.end_date}")
 
     
+>>>>>>> main
     return render(request, 'myadmin/singleYourProject.html', context)
 
 
@@ -688,7 +935,10 @@ def add_milestone(request):
 #             return JsonResponse({"success": False, "error": str(e)})
 
 #     return JsonResponse({"success": False, "error": "Invalid request method"})
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 
 
 
@@ -758,18 +1008,26 @@ def bidApproved(request):
             # Fetch the bid using bid_id
             bid = get_object_or_404(ProjectQuote, projectQuoteId=bid_id)  
 <<<<<<< HEAD
+            admin_margin = format_currency(admin_margin, bid.currency)
+=======
+<<<<<<< HEAD
             
 =======
             admin_margin = format_currency(admin_margin, bid.currency)
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
             # Update the admin margin and bid status
             bid.admin_margin = admin_margin
             bid.admin_bid_status = "approved"
             bid.revised_budget = add_and_format(bid.budget, bid.admin_margin, bid.currency)
 <<<<<<< HEAD
+            bid.advance_payment = calculate_percentage(bid.revised_budget, 30, bid.currency)
+=======
+<<<<<<< HEAD
 =======
             bid.advance_payment = calculate_percentage(bid.revised_budget, 30, bid.currency)
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
             bid.save()  # Save changes
 
             print(f"Updated bid {bid_id}: admin_margin={admin_margin}, bid_status=approved")
@@ -798,18 +1056,26 @@ def bidRejected(request):
             # Fetch the bid using bid_id
             bid = get_object_or_404(ProjectQuote, projectQuoteId=bid_id)  
 <<<<<<< HEAD
+            admin_margin = format_currency(admin_margin, bid.currency)
+=======
+<<<<<<< HEAD
             
 =======
             admin_margin = format_currency(admin_margin, bid.currency)
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
             # Update the admin margin and bid status
             bid.admin_margin = admin_margin
             bid.admin_bid_status = "rejected"
             bid.revised_budget = add_and_format(bid.budget, bid.admin_margin, job.currency)
 <<<<<<< HEAD
+            bid.advance_payment = calculate_percentage(bid.revised_budget, 30, bid.currency)
+=======
+<<<<<<< HEAD
 =======
             bid.advance_payment = calculate_percentage(bid.revised_budget, 30, bid.currency)
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
             bid.save()  # Save changes
 
             print(f"Updated bid {bid_id}: admin_margin={admin_margin}, bid_status=approved")
@@ -857,6 +1123,9 @@ def partnerLogos(request):
 
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
+>>>>>>> main
 
 def adminManagement(request):
     users = MyAdmin.objects.all().order_by('-created_at')
@@ -909,6 +1178,9 @@ def delete_admin(request):
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 def logout(request):
     return render(request, 'myadmin/ad_logout.html')

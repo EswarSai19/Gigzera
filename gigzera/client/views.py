@@ -4,10 +4,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, auth
 from django.contrib.auth.hashers import check_password, make_password
 <<<<<<< HEAD
+from django.http import HttpResponse, JsonResponse
+=======
+<<<<<<< HEAD
 from django.http import HttpResponse
 =======
 from django.http import HttpResponse, JsonResponse
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 from django.contrib import messages
 import json
 import os
@@ -15,12 +19,17 @@ import locale
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 <<<<<<< HEAD
+from db_schemas.models import Client, Tasks, ProjectsDisplay, Milestones, OngoingProjects, Contact, ProjectQuote, Freelancer, EmploymentHistory,Certificate, Skill
+from django.core.exceptions import ValidationError
+=======
+<<<<<<< HEAD
 from db_schemas.models import Client, ProjectsDisplay, OngoingProjects, Contact, ProjectQuote, Freelancer, EmploymentHistory,Certificate, Skill
 from django.core.exceptions import ValidationError
 from datetime import datetime
 =======
 from db_schemas.models import Client, Tasks, ProjectsDisplay, Milestones, OngoingProjects, Contact, ProjectQuote, Freelancer, EmploymentHistory,Certificate, Skill
 from django.core.exceptions import ValidationError
+>>>>>>> main
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
@@ -149,7 +158,10 @@ print(divide_dates("2024-01-01", "2024-02-20"))  # Example: 50 days
 # option = "2-4 Months"
 # end_date = calculate_end_date(start_date, option)
 # print(end_date)  # Output: 2025-04-19
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 
 # Create your views here.
 
@@ -169,10 +181,14 @@ def cl_contact(request):
 
     if request.method == 'POST':
 <<<<<<< HEAD
+        user_id = request.POST.get('user_id')
+=======
+<<<<<<< HEAD
         user_id = request.session.get('user_id')
 =======
         user_id = request.POST.get('user_id')
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
         if not user_id:
             return redirect('login')  # Redirect to login if session is missing
         name = request.POST.get('name')
@@ -198,10 +214,14 @@ def cl_contact(request):
         )
 
 <<<<<<< HEAD
+        messages.success(request, "Your concern has been submitted successfully!")
+=======
+<<<<<<< HEAD
         messages.success(request, "Your form has been submitted successfully!")
 =======
         messages.success(request, "Your concern has been submitted successfully!")
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
         return redirect('cl_index')  # Redirect to home page
 
     messages.error(request, "Invalid request!")
@@ -445,6 +465,20 @@ def cl_singleOgProject(request):
     job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
     job.cur_symbol = get_currency_symbol(job.currency)
 <<<<<<< HEAD
+
+    milestones = Milestones.objects.filter(bid_id=bid.projectQuoteId)
+    for milestone in milestones:
+        milestone.cur_symbol = get_currency_symbol(milestone.currency)
+        milestone.cl_status = milestone.status.lower()
+
+    tasks = Tasks.objects.filter(taskBid_id=bid.projectQuoteId)
+
+    context={'user':user, 'job':job, 'bid':bid, 'singleOgp':singleOgp, 'milestones':milestones, 'tasks':tasks}
+
+    return render(request, 'client/cl_singleOgProject.html', context)
+    
+=======
+<<<<<<< HEAD
     context={'user':user, 'job':job, 'bid':bid}
 
     return render(request, 'client/cl_singleOgProject.html', context)
@@ -462,6 +496,7 @@ def cl_singleOgProject(request):
 
     return render(request, 'client/cl_singleOgProject.html', context)
     
+>>>>>>> main
 def cl_updateProgress(request):
     ongp_id = request.POST.get('ongpId') or request.GET.get('ongpId')
     if not ongp_id:
@@ -546,23 +581,26 @@ def update_task(request):
     return JsonResponse({"success": False, "message": "Invalid request."}, status=400)
 
 
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 
 def cl_viewBids(request):
     user_id = request.session.get('user_id')
     if not user_id:
         return redirect('login')
-    user = Client.objects.get(userId=user_id)
+    user = Client.objects.filter(userId=user_id).first()
     user.initials = get_initials(user.name)
     print(f"here is the user: {user.initials}, {user.name}, {user.email}")
     bids = ProjectQuote.objects.all().order_by('-created_at')
 
     for bid in bids:
         job = ProjectsDisplay.objects.filter(opportunityId=bid.opportunityId).first()
-        user = Freelancer.objects.filter(userId=bid.freelancer_id).first()
+        fl_user = Freelancer.objects.filter(userId=bid.freelancer_id).first()
         bid.title = job.title if job else "No Title"  # Fixed variable name
         bid.cur_symbol = get_currency_symbol(job.currency if job else "USD")  # Ensure currency is handled properly
-        bid.user_experience = user.experience if user else "No Experience"
+        bid.user_experience = fl_user.experience if fl_user else "No Experience"
         
     context={'user':user,'bids': bids}
     return render(request, 'client/cl_viewBids.html', context)
@@ -594,7 +632,7 @@ def cl_singleViewBid(request):
     bid = ProjectQuote.objects.filter(projectQuoteId=bid_id).first()
     bid.cur_symbol = get_currency_symbol(bid.currency if bid else "USD")
     print("Job", bid)
-    context = {'job':job, 'cl_user':user, 'fl_user':fl_user, 'bid':bid}
+    context = {'job':job, 'user':user, 'fl_user':fl_user, 'bid':bid}
     return render(request, 'client/cl_singleViewBid.html', context)
 
 def profileView(request):
@@ -635,10 +673,15 @@ def cl_bidApproved(request):
     for bid in bids:
         job = ProjectsDisplay.objects.filter(opportunityId=bid.opportunityId).first()
 <<<<<<< HEAD
+        og_start_date = job.start_date
+        og_end_date = calculate_end_date(str(job.start_date), job.duration)
+=======
+<<<<<<< HEAD
 =======
         og_start_date = job.start_date
         og_end_date = calculate_end_date(str(job.start_date), job.duration)
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
         user = Freelancer.objects.filter(userId=bid.freelancer_id).first()
         bid.title = job.title if job else "No Title"  # Fixed variable name
         bid.cur_symbol = get_currency_symbol(job.currency if job else "USD")  # Ensure currency is handled properly
@@ -657,21 +700,32 @@ def cl_bidApproved(request):
 
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
+>>>>>>> main
             job = ProjectsDisplay.objects.filter(opportunityId=bid.opportunityId).first()
             og_start_date = job.start_date
             og_end_date = calculate_end_date(str(job.start_date), job.duration)
             ms_date1, ms_date2 = divide_dates(str(og_start_date), str(og_end_date))
             ms_amt1, ms_amt2 = divide_budget(bid.revised_budget, bid.advance_payment, job.currency, 2)
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
             # ONG recored creation:
             OngoingProjects.objects.create(
                 opportunityId = bid.opportunityId,
                 bidId = bid_id,
 <<<<<<< HEAD
+                start_date=og_start_date,
+                end_date=og_end_date,
+=======
+<<<<<<< HEAD
 =======
                 start_date=og_start_date,
                 end_date=og_end_date,
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
                 status = 'Bid Ongoing',
                 progress = '0',
                 admin_id = 'AD001',
@@ -680,11 +734,17 @@ def cl_bidApproved(request):
             )
 
 <<<<<<< HEAD
+            Milestones.objects.create(date=ms_date1, amount=ms_amt1, currency=job.currency, status="Pending", bid_id=bid_id)
+            Milestones.objects.create(date=ms_date2, amount=ms_amt2, currency=job.currency, status="Pending", bid_id=bid_id)
+
+=======
+<<<<<<< HEAD
 =======
             Milestones.objects.create(date=ms_date1, amount=ms_amt1, currency=job.currency, status="Pending", bid_id=bid_id)
             Milestones.objects.create(date=ms_date2, amount=ms_amt2, currency=job.currency, status="Pending", bid_id=bid_id)
 
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
             print(f"Updated bid {bid_id}: bid_status=approved")
             messages.success(request, "Bid was sent to freelancer successfully")
             return redirect('cl_viewBids')

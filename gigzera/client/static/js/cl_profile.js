@@ -61,18 +61,18 @@ function toggleProfileMenu() {
 }
 
 // Update profile from localStorage (sync with profile.html)
-function updateProfileHeader() {
-  const initials = localStorage.getItem("profileInitials") || "Guest";
-  const name = localStorage.getItem("profileName") || "Guest";
-  const email = localStorage.getItem("profileEmail") || "guest@example.com";
+// function updateProfileHeader() {
+//   const initials = localStorage.getItem("profileInitials") || "Guest";
+//   const name = localStorage.getItem("profileName") || "Guest";
+//   const email = localStorage.getItem("profileEmail") || "guest@example.com";
 
-  document.getElementById("profile-initials").textContent = initials;
-  document.getElementById("profile-name-dropdown").textContent = name;
-  document.getElementById("profile-email-dropdown").textContent = email;
-}
+//   document.getElementById("profile-initials").textContent = initials;
+//   document.getElementById("profile-name-dropdown").textContent = name;
+//   document.getElementById("profile-email-dropdown").textContent = email;
+// }
 
-// Call on page load
-document.addEventListener("DOMContentLoaded", updateProfileHeader);
+// // Call on page load
+// document.addEventListener("DOMContentLoaded", updateProfileHeader);
 
 // New part of the file
 const skillsInput = document.getElementById("skills-required");
@@ -81,9 +81,12 @@ const selectedSkillsContainer = document.getElementById("selected-skills");
 const hiddenSkillsInput = document.getElementById("skills-list"); // Hidden input
 const availableSkills = [
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   "Python",
 =======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "Java",
   "JavaScript",
   "C#",
@@ -157,11 +160,14 @@ const availableSkills = [
   "Azure DevOps",
   "GCP Deployment Manager",
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   "Python",
   "JavaScript",
   "SQL",
 =======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "Data Modeling",
   "Microservices",
   "Monolithic Architecture",
@@ -173,12 +179,16 @@ const availableSkills = [
   "Power BI",
   "Google Analytics",
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   "JIRA",
+>>>>>>> main
   "Confluence",
   "Rally",
   "Lucidchart",
-  "SQL",
   "Excel (Advanced)",
+<<<<<<< HEAD
+=======
   "Power BI",
   "Tableau",
 =======
@@ -187,6 +197,7 @@ const availableSkills = [
   "Lucidchart",
   "Excel (Advanced)",
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "BPMN",
   "Visio",
   "Bizagi",
@@ -196,10 +207,13 @@ const availableSkills = [
   "Sequence Diagrams",
   "Class Diagrams",
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   "Postman",
   "Selenium",
 =======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "Figma",
   "Adobe XD",
   "Axure RP",
@@ -217,10 +231,13 @@ const availableSkills = [
   "Zephyr",
   "HP ALM",
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   "Selenium",
   "Cypress",
 =======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "Playwright",
   "Appium",
   "Katalon Studio",
@@ -228,29 +245,32 @@ const availableSkills = [
   "LoadRunner",
   "Gatling",
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   "Postman",
 =======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "SoapUI",
   "Swagger",
   "OWASP ZAP",
   "Burp Suite",
   "Nessus",
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   "Git",
   "GitHub",
   "JIRA",
+>>>>>>> main
   "Bugzilla",
   "TestLink",
-  "Jenkins",
   "CircleCI",
   "Bamboo",
-  "Python",
-  "Java",
-  "JavaScript",
-  "Appium",
   "Espresso",
   "XCTest",
+<<<<<<< HEAD
+=======
   "SQL",
 =======
   "Bugzilla",
@@ -260,6 +280,7 @@ const availableSkills = [
   "Espresso",
   "XCTest",
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "Oracle DB",
   "AWS Device Farm",
   "Sauce Labs",
@@ -296,11 +317,15 @@ const availableSkills = [
   "Artifactory Engineer",
   "Artificial Intelligence (AI) / Machine Learning Engineer",
 <<<<<<< HEAD
+  "Artificial Intelligence Architect",
+=======
+<<<<<<< HEAD
   "Artificial intelligence / Machine Learning Engineer",
   "Artificial intelligence Architect",
 =======
   "Artificial Intelligence Architect",
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "Artificial Intelligence Engineer",
   "Artificial Intelligence Researcher",
   "ASP.NET Developer",
@@ -331,10 +356,18 @@ const availableSkills = [
   "Chief Operations Engineer",
   "Chrome Extension Developer",
 <<<<<<< HEAD
+  "Cloud Administrator",
+=======
+<<<<<<< HEAD
   "Cloud administrator",
+>>>>>>> main
   "Cloud Architect",
-  "Cloud automation engineer",
+  "Cloud Automation Engineer",
   "Cloud Computing Specialist",
+<<<<<<< HEAD
+  "Cloud Engineer",
+  "Cloud Network Engineer",
+=======
   "Cloud engineer",
   "Cloud network engineer",
 =======
@@ -345,6 +378,7 @@ const availableSkills = [
   "Cloud Engineer",
   "Cloud Network Engineer",
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "Cloud Security Engineer",
   "CNC Programmer",
   "CodeIgniter Developer",
@@ -382,10 +416,14 @@ const availableSkills = [
   "DevOps Architect",
   "DevOps Engineer",
 <<<<<<< HEAD
+  "DevOps Manager",
+=======
+<<<<<<< HEAD
   "Devops Manager",
 =======
   "DevOps Manager",
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "DevSecOps Architect",
   "DevSecOps Engineer",
   "Django Freelancer",
@@ -414,6 +452,12 @@ const availableSkills = [
   "Fortify Engineer",
   "Front End Web Developer",
 <<<<<<< HEAD
+  "Front End Designer",
+  "Full Stack Developer",
+  "Full Stack Java Developer",
+  "Full Stack Python Developer",
+=======
+<<<<<<< HEAD
   "Front end Desiner",
   "Full Stack Developer",
   "Full Stack JAVA Developer/Programmer/Engineer",
@@ -424,6 +468,7 @@ const availableSkills = [
   "Full Stack Java Developer",
   "Full Stack Python Developer",
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "Fusion 360 Specialist",
   "Game Developer",
   "GCP DevOps Engineer",
@@ -431,16 +476,26 @@ const availableSkills = [
   "Gerrit Engineer",
   "Git Engineer",
 <<<<<<< HEAD
+  "GitHub Engineer",
+=======
+<<<<<<< HEAD
   "Github Engineer",
 =======
   "GitHub Engineer",
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "GitLab Engineer",
   "Gradle Engineer",
   "Grafana Engineer",
   "Groovy Engineer",
   "Information Architect",
   "Information Security Analyst",
+<<<<<<< HEAD
+  "iOS Developer",
+  "Istio Engineer",
+  "IT Manager",
+  "JaCoCo Engineer",
+=======
 <<<<<<< HEAD
   "IOS Developer",
   "Istio Engineer",
@@ -452,6 +507,7 @@ const availableSkills = [
   "IT Manager",
   "JaCoCo Engineer",
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "Java Developer",
   "JavaScript Developer",
   "Jenkins Engineer",
@@ -459,11 +515,18 @@ const availableSkills = [
   "JIRA Engineer",
   "JUnit Engineer",
 <<<<<<< HEAD
+  "Kubernetes Administrator",
+=======
+<<<<<<< HEAD
   "kubernetes Administrator",
+>>>>>>> main
   "Kubernetes Engineer",
   "Kubernetes Operations Engineer",
-  "Machine learning Architect",
+  "Machine Learning Architect",
   "Machine Learning Engineer",
+<<<<<<< HEAD
+  "Microservices / API Lead Designer",
+=======
   "Micro services / API Lead Designer",
 =======
   "Kubernetes Administrator",
@@ -473,6 +536,7 @@ const availableSkills = [
   "Machine Learning Engineer",
   "Microservices / API Lead Designer",
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "Mobile Application Developer",
   "Mulesoft Developer",
   "Nagios Engineer",
@@ -492,16 +556,22 @@ const availableSkills = [
   "PHP Developer",
   "Powershell Engineer",
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   "Principle Engineer in Artificial Intelligence",
   "Principle Engineer in Big Data",
   "Principle Engineer in Data Analysis",
   "Principle Engineer in Machine Learning",
 =======
+>>>>>>> main
   "Principal Engineer in Artificial Intelligence",
   "Principal Engineer in Big Data",
   "Principal Engineer in Data Analysis",
   "Principal Engineer in Machine Learning",
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "Product Manager",
   "Production Support Engineer",
   "Programmer",
@@ -514,10 +584,14 @@ const availableSkills = [
   "React Developer",
   "Robotics Engineer",
 <<<<<<< HEAD
+  "Ruby on Rails Developer",
+=======
+<<<<<<< HEAD
   "Ruby on rails Developer",
 =======
   "Ruby on Rails Developer",
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "Salesforce Developer",
   "Search Engine Optimization",
   "Security Specialist",
@@ -531,12 +605,17 @@ const availableSkills = [
   "Senior DevSecOps Architect",
   "Senior DevSecOps Engineer",
 <<<<<<< HEAD
+  "Senior Site Reliability Engineer",
+  "SharePoint Developer",
+=======
+<<<<<<< HEAD
   "Senior Site reliability Engineer",
   "Sharepoint Developer",
 =======
   "Senior Site Reliability Engineer",
   "SharePoint Developer",
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "Site Reliability Engineer (Kubernetes – Docker)",
   "Software Engineer",
   "SonarQube Engineer",
@@ -552,11 +631,18 @@ const availableSkills = [
   "Terraform Engineer",
   "TFS Engineer",
 <<<<<<< HEAD
+  "Twistlock Engineer",
+=======
+<<<<<<< HEAD
   "Twistkock Engineer",
+>>>>>>> main
   "UDeploy Engineer",
-  "UI DESIGNER",
+  "UI Designer",
   "UI Developer",
   "Unity Developer",
+<<<<<<< HEAD
+  "UX Designer",
+=======
   "UX DESIGNER",
 =======
   "Twistlock Engineer",
@@ -566,6 +652,7 @@ const availableSkills = [
   "Unity Developer",
   "UX Designer",
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   "Vault Engineer",
   "Web Designer (UI/UX Designer)",
   "Web Developer",
@@ -735,6 +822,9 @@ function closeModal() {
 }
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
+>>>>>>> main
 
 document.addEventListener("DOMContentLoaded", function () {
   const budgetRanges = {
@@ -878,4 +968,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   updateBudgetRanges(); // Initialize with default selection
 });
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main

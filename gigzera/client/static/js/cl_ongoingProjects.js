@@ -64,6 +64,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const selectedSkillsContainer = document.getElementById("selected-skills");
   const availableSkills = [
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
     "JavaScript",
     "Python",
     "React",
@@ -72,10 +74,31 @@ document.addEventListener("DOMContentLoaded", function () {
     "Django",
     "HTML",
     "CSS",
+>>>>>>> main
     "Java",
+    "JavaScript",
+    "C#",
     "C++",
     "Ruby",
+    "PHP",
+    "Kotlin",
+    "Swift",
+    "HTML5",
+    "CSS3",
+    "React.js",
+    "Angular",
+    "Vue.js",
+    "SASS",
+    "Bootstrap",
+    "Node.js",
+    "Django",
+    "Flask",
+    "Spring Boot",
+    ".NET",
+    "Express.js",
     "SQL",
+<<<<<<< HEAD
+=======
     "TypeScript",
 =======
     "Java",
@@ -100,6 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
     ".NET",
     "Express.js",
     "SQL",
+>>>>>>> main
     "PostgreSQL",
     "MongoDB",
     "MySQL",
@@ -447,7 +471,10 @@ document.addEventListener("DOMContentLoaded", function () {
     "WordPress Developer",
     "XL Deploy Engineer",
     "Zabbix Engineer",
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   ];
   let selectedSkills = [];
 
@@ -1189,6 +1216,9 @@ function closeModal() {
 }
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
+>>>>>>> main
 
 document.addEventListener("DOMContentLoaded", function () {
   const budgetRanges = {
@@ -1332,4 +1362,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   updateBudgetRanges(); // Initialize with default selection
 });
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main

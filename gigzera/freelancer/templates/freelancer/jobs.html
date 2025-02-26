@@ -15,36 +15,69 @@
     <div class="filter-box">
       <i class="fa-solid fa-filter filter-icon"></i>
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
       <input type="text" id="job-filter" placeholder="Filter jobs..." class="filter-input" />
 =======
+>>>>>>> main
       <input
         type="text"
         id="job-filter"
         placeholder="Filter jobs..."
         class="filter-input"
       />
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     </div>
 
     <!-- Social Media Updates Section -->
     <div class="social-media-box">
       <h3>Social Media Updates</h3>
 <<<<<<< HEAD
+
+      <a
+        href="https://x.com/gigzera?t=6u9xg6cCXeWSBQHH1vP8Ig&s=08"
+        target="_blank"
+        class="social-update"
+      >
+=======
+<<<<<<< HEAD
       <div class="social-update">
+>>>>>>> main
         <i class="fa-brands fa-twitter icon"></i>
         <p>Latest job opportunities in #WebDevelopment...</p>
-      </div>
-      <div class="social-update">
+      </a>
+
+      <a
+        href="https://www.linkedin.com/company/gigzera/"
+        target="_blank"
+        class="social-update"
+      >
         <i class="fa-brands fa-linkedin icon"></i>
         <p>Join our tech community on LinkedIn...</p>
-      </div>
-      <div class="social-update">
+      </a>
+
+      <a
+        href="https://www.facebook.com/share/1A6ghPZxaC/?mibextid=wwXIfr"
+        target="_blank"
+        class="social-update"
+      >
         <i class="fa-brands fa-facebook icon"></i>
         <p>Join our tech community on Facebook...</p>
-      </div>
-      <div class="social-update">
+      </a>
+
+      <a
+        href="https://www.instagram.com/gigzera?igsh=MWNzZzhjcWcybjE3Ng=="
+        target="_blank"
+        class="social-update"
+      >
         <i class="fa-brands fa-instagram icon"></i>
         <p>Join our tech community on Instagram...</p>
+<<<<<<< HEAD
+      </a>
+=======
       </div>
 =======
 
@@ -84,6 +117,7 @@
         <p>Join our tech community on Instagram...</p>
       </a>
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     </div>
     <div class="announcement-box">
       <h1>Announcement</h1>
@@ -183,10 +217,14 @@
   <div
     id="quoteModal"
 <<<<<<< HEAD
+    class="hidden fixed inset-0 bg-blur bg-opacity-50 flex justify-center items-center z-50"
+=======
+<<<<<<< HEAD
     class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
 =======
     class="hidden fixed inset-0 bg-blur bg-opacity-50 flex justify-center items-center z-50"
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   >
     <div
       class="bg-white rounded-lg shadow-lg w-full max-w-2xl mx-auto p-10 relative"
@@ -216,6 +254,11 @@
         {% csrf_token %}
         <input type="hidden" id="quote_opportunityId" name="opportunity_id" />
 <<<<<<< HEAD
+        <!-- <input type="hidden" id="quote_title" name="title" />
+        <input type="hidden" id="quote_currency" name="currency" />
+        <input type="hidden" id="quote_cur_symbol" name="cur_symbol" /> -->
+=======
+<<<<<<< HEAD
         <input type="hidden" id="quote_title" name="title" />
         <input type="hidden" id="quote_currency" name="currency" />
         <input type="hidden" id="quote_cur_symbol" name="cur_symbol" />
@@ -224,10 +267,13 @@
         <input type="hidden" id="quote_currency" name="currency" />
         <input type="hidden" id="quote_cur_symbol" name="cur_symbol" /> -->
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
         <div class="mb-4">
           <label for="budget" class="block text-sm font-semibold text-gray-700">
             Budget <span class="text-red-500">*</span>
           </label>
+<<<<<<< HEAD
+=======
 <<<<<<< HEAD
           <input
             type="text"
@@ -238,6 +284,7 @@
             class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 =======
+>>>>>>> main
           <div class="flex items-center border rounded-md">
             <span
               class="px-3 py-2 text-gray-700 text-sm rounded-l-md"
@@ -253,7 +300,10 @@
               class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
         </div>
 
         <!-- Timeline Field -->
@@ -309,13 +359,19 @@
         <div class="job-cards">
           {% for job in jobs %}
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
           <div class="job-card border p-4 mb-4 rounded shadow" data-title="{{ job.title }}">
 =======
+>>>>>>> main
           <div
             class="job-card border p-4 mb-4 rounded shadow"
             data-title="{{ job.title }}"
           >
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
             <div class="job-title font-bold text-lg">
               {{ job.title }}
               <span class="job-id text-gray-500"
@@ -341,10 +397,14 @@
             <div class="job-actions mt-3">
               <button
 <<<<<<< HEAD
+                class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:text-white hover:bg-blue-600 cursor-pointer"
+=======
+<<<<<<< HEAD
                 class="text-blue-500 underline"
 =======
                 class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:text-white hover:bg-blue-600 cursor-pointer"
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
                 hx-post="{% url 'load_job_details' %}"
                 hx-vals='{"job_id": "{{ job.opportunityId }}"}'
                 hx-target="#tailwind-popup-content"
@@ -356,12 +416,17 @@
               </button>
               <button
 <<<<<<< HEAD
+                class="btn btn-primary provide-quote bg-blue-500 text-white px-4 py-2 rounded ml-2 cursor-pointer"
+                onclick="openModal('{{ job.opportunityId }}', '{{ job.cur_symbol }}', '{{ job.duration }}', '{{ job.budget }}')"
+=======
+<<<<<<< HEAD
                 class="btn btn-primary provide-quote bg-blue-500 text-white px-4 py-2 rounded ml-2"
                 onclick="openModal('{{ job.opportunityId }}')"
 =======
                 class="btn btn-primary provide-quote bg-blue-500 text-white px-4 py-2 rounded ml-2 cursor-pointer"
                 onclick="openModal('{{ job.opportunityId }}', '{{ job.cur_symbol }}', '{{ job.duration }}', '{{ job.budget }}')"
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
               >
                 Provide Quote
               </button>
@@ -377,10 +442,14 @@
   <div
     id="tailwind-overlay"
 <<<<<<< HEAD
+    class="fixed inset-0 bg-grey-50 bg-opacity-50 z-50 hidden"
+=======
+<<<<<<< HEAD
     class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
 =======
     class="fixed inset-0 bg-grey-50 bg-opacity-50 z-50 hidden"
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   >
     <div
       id="tailwind-popup"
@@ -407,6 +476,8 @@
       >
         <!-- Dynamic content coming from the job_details_partial page -->
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
         <div
           id="tailwind-popup-footer"
           class="absolute bottom-0 left-0 right-0 p-6 bg-white border-t"
@@ -420,6 +491,7 @@
         </div>
 =======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
       </div>
     </div>
   </div>
@@ -507,8 +579,12 @@
 <!-- JS -->
 {% block js %}
 <<<<<<< HEAD
+<script></script>
+=======
+<<<<<<< HEAD
 =======
 <script></script>
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 <script src="{% static 'js/fl_jobs.js' %}"></script>
 {% endblock %}

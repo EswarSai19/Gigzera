@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+<<<<<<< HEAD
+from dotenv import load_dotenv
+=======
+>>>>>>> main
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +30,11 @@ SECRET_KEY = 'django-insecure-8veuiojh=5^rhyx&2%d+3=mu(9+bskvpdiupx#c+h6f)7w#82%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+<<<<<<< HEAD
+ALLOWED_HOSTS = ['*']
+=======
 ALLOWED_HOSTS = ["3.108.215.117", "localhost", "127.0.0.1"]
+>>>>>>> main
 
 
 
@@ -45,6 +53,12 @@ INSTALLED_APPS = [
     'client',
     'db_schemas',
     'myadmin',
+<<<<<<< HEAD
+
+    # custom
+    'storages',
+=======
+>>>>>>> main
 ]
 
 MIDDLEWARE = [
@@ -147,5 +161,40 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+<<<<<<< HEAD
+
+
+# Load environment variables from .env
+load_dotenv()
+
+# Use AWS S3 in production, local storage in development
+USE_S3 = os.getenv("USE_S3", "False") == "True"
+
+if USE_S3:
+    print("Using AWS S3 storage")
+    AWS_DEFAULT_ACL = "public-read"
+    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+    AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
+    AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    AWS_S3_FILE_OVERWRITE = False
+    AWS_S3_OBJECT_PARAMETERS = {
+        "CacheControl": "max-age=86400",
+    }
+
+    AWS_LOCATION = ""  # Remove "media" if it’s causing duplication in the path
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+    # AWS_LOCATION = "media"
+    # MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
+else:
+    print("Using local storage")
+    MEDIA_URL = "/media/"
+    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+=======
 # Custom user model
 # AUTH_USER_MODEL = 'non_register.CustomUser'  # Replace 'your_app_name' with your actual app name
+>>>>>>> main

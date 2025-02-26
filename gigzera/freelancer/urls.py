@@ -18,11 +18,17 @@ urlpatterns = [
     path('singleProjectTracking/', views.singleProjectTracking, name='fl_singleProjectTracking'),
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
+>>>>>>> main
     path("add-task/", views.add_task, name="add_task"),
     path("delete_tasks/", views.delete_tasks, name="delete_tasks"),
     path('update-task/', views.update_task, name='update_task'),
     path('updateProgress/', views.fl_updateProgress, name='fl_updateProgress'),
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     path('submit_contact/', views.fl_contact, name='fl_contact'),
     path('edit_freelancer/', views.edit_freelancer, name='edit_freelancer'),
     path('delete/', views.delete_profile_pic, name='delete_profile_pic'),
@@ -37,5 +43,5 @@ urlpatterns = [
     path('add_skill/', views.add_skill, name='add_skill'),
     
 
-  
+   path('aws-profile/', views.aws_profile_view, name='aws_profile'),
 ]

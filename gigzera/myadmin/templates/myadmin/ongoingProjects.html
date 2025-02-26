@@ -34,6 +34,8 @@
   <div class="grid" id="projectGrid">
     <!-- E-Commerce Platform Card -->
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
     <div class="card">
       <div
         class="flex_"
@@ -79,25 +81,31 @@
         20% by introducing A/B testing and user feedback analysis.
       </div>
     </div>
+>>>>>>> main
 
-    <!-- Mobile App Redesign Card -->
+    {% for ogp in ongProjects %}
     <div class="card">
       <div
-        class="flex_"
+        class="flex"
         style="justify-content: space-between; align-items: center"
       >
-        <h2 class="project-name">Mobile App Redesign</h2>
-        <span class="badge badge-planning">Planning</span>
+        <h2 class="project-name">{{ogp.title}}</h2>
+        <span class="badge badge-active">{{ogp.status}}</span>
       </div>
-      <p class="project-id">ID: OPP-2025-002</p>
-      <p>
-        Redesigning the mobile app for improved user engagement and performance
-        optimization.
-      </p>
+      <p class="project-id">ID: {{ogp.opportunityId}}</p>
+      <p>{{ogp.short_description}}</p>
       <div class="progress-bar">
-        <div class="progress-percentage">30%</div>
-        <div class="progress-bar-inner" style="width: 30%"></div>
+        <div class="progress-percentage">{{ogp.progress}}%</div>
+        <div
+          class="progress-bar-inner"
+          data-progress="{{ ogp.progress }}"
+        ></div>
       </div>
+<<<<<<< HEAD
+      <small>Assigned to: {{ogp.name}}</small>
+      <div class="extra-info">{{ogp.full_description}}</div>
+      <div class="flex" style="justify-content: space-between">
+=======
       <small>Assigned to: John Doe</small>
       <div class="flex_" style="justify-content: space-between">
 =======
@@ -124,6 +132,7 @@
       <div class="extra-info">{{ogp.full_description}}</div>
       <div class="flex" style="justify-content: space-between">
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
         <a
           href="javascript:void(0);"
           class="read-more"
@@ -132,10 +141,14 @@
         >
         <a
 <<<<<<< HEAD
+          href="{% url 'ad_singleOngoingProject' %}?ongpId={{ogp.ongProjectId}}"
+=======
+<<<<<<< HEAD
           href="../html/NewAdminsingleprojectview.html"
 =======
           href="{% url 'ad_singleOngoingProject' %}?ongpId={{ogp.ongProjectId}}"
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
           class="btn btn-outline"
           style="
             text-decoration: none;
@@ -148,6 +161,10 @@
           >View Status</a
         >
       </div>
+<<<<<<< HEAD
+    </div>
+    {% endfor %}
+=======
 <<<<<<< HEAD
       <div class="extra-info">
         Focus on enhancing mobile app features including speed, layout, and
@@ -338,6 +355,7 @@
     </div>
     {% endfor %}
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 
     <!-- Project Cards End -->
   </div>
@@ -384,6 +402,9 @@
 {% block js %}
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
+>>>>>>> main
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     var progressElements =
@@ -395,6 +416,9 @@
     });
   });
 </script>
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 <script src="{% static 'js/ad_ongoingProjects.js' %}"></script>
 {% endblock %}

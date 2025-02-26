@@ -125,11 +125,16 @@ body {
     display: flex;
     justify-content: center;
 <<<<<<< HEAD
+    gap: 30px;
+    ;
+=======
+<<<<<<< HEAD
     gap: 60px;
 =======
     gap: 30px;
     ;
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     flex-wrap: nowrap;
     align-items: stretch;
     /* Ensures all cards are of equal height */
@@ -140,6 +145,11 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 <<<<<<< HEAD
+    padding: 15px;
+    text-align: left;
+    flex: 0 0 calc(28% - 10px);
+=======
+<<<<<<< HEAD
     padding: 25px;
     text-align: left;
     flex: 0 0 calc(33.33% - 20px);
@@ -148,6 +158,7 @@ body {
     text-align: left;
     flex: 0 0 calc(28% - 10px);
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     transition: background-color 0.3s ease, transform 0.2s ease;
     position: relative;
     display: flex;
@@ -603,10 +614,14 @@ body {
     background-color: #f9fafb;
     /* Light gray background for the whole section */
 <<<<<<< HEAD
+    background-image: url("https://d2m054rmna67sd.cloudfront.net/nru_fl_cl_home_technologies.jpeg");
+=======
+<<<<<<< HEAD
     background-image: url("https://cdn.yellowmessenger.com/svk5jhjCc65q1734366006572.jpeg");
 =======
     background-image: url("https://d2m054rmna67sd.cloudfront.net/nru_fl_cl_home_technologies.jpeg");
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     /* Background image */
     background-size: cover;
     /* Ensure the image covers the entire section */

@@ -113,10 +113,25 @@
       {% for user in users %}
       <div class="profile-card">
 <<<<<<< HEAD
+        {% if user.is_verified %}
+        <button class="more-options">
+          <i class="fa-solid fa-circle-check"></i>
+        </button>
+        {% else %}
+        <button class="more-options" disabled>
+          <i class="fa-solid fa-circle-check" style="opacity: 0"></i>
+        </button>
+        {% endif %}
+
+=======
+<<<<<<< HEAD
+>>>>>>> main
         <img
           src="https://cdn.yellowmessenger.com/Xmnn1dek6nzZ1735637434099.jpeg"
-          alt="{{user.name}}"
+          alt="{{ user.name }}"
         />
+<<<<<<< HEAD
+=======
         <h3>{{user.name}}</h3>
         <div class="id">ID: {{user.userId}}</div>
         <div class="company">{{user.designation}}</div>
@@ -136,11 +151,15 @@
           src="https://cdn.yellowmessenger.com/Xmnn1dek6nzZ1735637434099.jpeg"
           alt="{{ user.name }}"
         />
+>>>>>>> main
         <h3>{{ user.name }}</h3>
         <div class="id">ID: {{ user.userId }}</div>
         <div class="company">{{ user.designation }}</div>
         <div class="phone">{{ user.phone }}</div>
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
         <button class="view-profile" data-userid="{{ user.userId }}">
           View Profile
         </button>

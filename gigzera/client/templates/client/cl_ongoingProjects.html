@@ -54,14 +54,20 @@
         <div class="progress-bar">
           <div class="progress-percentage">{{ogp.progress}}%</div>
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
           <div class="progress-bar-inner w-{{ogp.progress}}%"></div>
 =======
+>>>>>>> main
           <!-- <div class="progress-bar-inner w-20%"></div> -->
           <div
             class="progress-bar-inner"
             data-progress="{{ ogp.progress }}"
           ></div>
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
         </div>
         <small>Assigned to: {{ogp.name}}</small>
         <div class="flex" style="justify-content: space-between">
@@ -629,6 +635,13 @@
 <!-- js -->
 {% block js %}
 <<<<<<< HEAD
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var progressElements =
+      document.getElementsByClassName("progress-bar-inner");
+
+=======
+<<<<<<< HEAD
 
 =======
 <script>
@@ -636,12 +649,16 @@
     var progressElements =
       document.getElementsByClassName("progress-bar-inner");
 
+>>>>>>> main
     Array.from(progressElements).forEach((bar) => {
       var progressValue = parseInt(bar.dataset.progress, 10) || 0; // Get progress safely
       bar.style.width = progressValue + "%"; // Set width dynamically
     });
   });
 </script>
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 <script src="{% static 'js/cl_ongoingProjects.js' %}"></script>
 {% endblock %}

@@ -11,11 +11,17 @@ def generate_client_id():
     return f"CL{str(uuid.uuid4().int)[:8]}"
 
 <<<<<<< HEAD
+def generate_task_id():
+    return f"TS{str(uuid.uuid4().int)[:3]}"
+
+=======
+<<<<<<< HEAD
 =======
 def generate_task_id():
     return f"TS{str(uuid.uuid4().int)[:3]}"
 
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 def generate_projectquote_id():
     return f"PQ{str(uuid.uuid4().int)[:5]}"
 
@@ -109,15 +115,26 @@ class Freelancer(models.Model):
         return self.name
 
 <<<<<<< HEAD
+
+
+=======
+<<<<<<< HEAD
 =======
 
 
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 class MyAdmin(models.Model):
     adminId = models.CharField(
         primary_key=True, max_length=12, default=generate_admin_id, editable=False
     )
     name = models.CharField(max_length=255)
+<<<<<<< HEAD
+    phone = models.CharField(max_length=15, blank=True, null=True)
+    email = models.EmailField(unique=True)
+    user_role = models.CharField(max_length=50, default='admin')  # Can be 'admin' or 'super'
+    password = models.CharField(max_length=128, blank=True)  # No default here
+=======
 <<<<<<< HEAD
     phone = models.CharField(max_length=15, unique=True)
     email = models.EmailField(unique=True)
@@ -129,10 +146,21 @@ class MyAdmin(models.Model):
     user_role = models.CharField(max_length=50, default='admin')  # Can be 'admin' or 'super'
     password = models.CharField(max_length=128, blank=True)  # No default here
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     created_at = models.DateTimeField(default=now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
+<<<<<<< HEAD
+        """Set default password based on user role before saving."""
+        if not self.password:  # Only set default if password is not provided
+            role_suffix = "admin" if self.user_role.lower() == "admin" else "super"
+            self.password = f"{self.adminId}_{role_suffix}"  # Default password format
+        
+        if not self.password.startswith("pbkdf2_sha256$"):  # Avoid re-hashing
+            self.password = make_password(self.password)
+        
+=======
 <<<<<<< HEAD
         """Hash the password before saving the freelancer."""
         if not self.password.startswith("pbkdf2_sha256$"):  # Avoid re-hashing
@@ -147,6 +175,7 @@ class MyAdmin(models.Model):
             self.password = make_password(self.password)
         
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
         super().save(*args, **kwargs)
 
     def check_password(self, raw_password):
@@ -279,9 +308,13 @@ class ProjectQuote(models.Model):
     currency = models.CharField(max_length=10, default="INR")
     revised_budget = models.CharField(max_length=50, default="0")
 <<<<<<< HEAD
+    advance_payment = models.CharField(max_length=50, default="0")
+=======
+<<<<<<< HEAD
 =======
     advance_payment = models.CharField(max_length=50, default="0")
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -298,10 +331,15 @@ class OngoingProjects(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     opportunityId = models.CharField(max_length=20)
 <<<<<<< HEAD
+    start_date = models.DateField()
+    end_date = models.DateField()
+=======
+<<<<<<< HEAD
 =======
     start_date = models.DateField()
     end_date = models.DateField()
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     bidId = models.CharField(max_length=20)
     status = models.CharField(max_length=30)
     progress = models.CharField(max_length=5, default='0')
@@ -310,6 +348,9 @@ class OngoingProjects(models.Model):
 
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
+>>>>>>> main
 
 class Milestones(models.Model):
     bid = models.ForeignKey(
@@ -347,4 +388,7 @@ class Tasks(models.Model):
     def __str__(self):
         return f"{self.title}, {self.status} ({self.isChecked} are the task details)"
 
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main

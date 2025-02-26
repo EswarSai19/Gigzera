@@ -7,20 +7,34 @@
 
 //code for skills input
 <<<<<<< HEAD
+//code for skills input
+=======
+<<<<<<< HEAD
+>>>>>>> main
 document.addEventListener("DOMContentLoaded", () => {
   const skillSuggestions = [
-    "JavaScript",
     "Python",
     "Java",
-    "HTML",
-    "CSS",
+    "JavaScript",
+    "C#",
     "C++",
-    "SQL",
-    "React",
-    "Node.js",
+    "Ruby",
+    "PHP",
+    "Kotlin",
+    "Swift",
+    "HTML5",
+    "CSS3",
+    "React.js",
     "Angular",
+    "Vue.js",
+    "SASS",
+    "Bootstrap",
+    "Node.js",
     "Django",
+    "Flask",
     "Spring Boot",
+<<<<<<< HEAD
+=======
 =======
 //code for skills input
 document.addEventListener("DOMContentLoaded", () => {
@@ -45,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "Django",
     "Flask",
     "Spring Boot",
+>>>>>>> main
     ".NET",
     "Express.js",
     "SQL",
@@ -395,7 +410,10 @@ document.addEventListener("DOMContentLoaded", () => {
     "WordPress Developer",
     "XL Deploy Engineer",
     "Zabbix Engineer",
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   ];
 
   const selectedSkills = new Set(); // Track selected skills globally
@@ -479,20 +497,27 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 //password validation
 <<<<<<< HEAD
+function toggleVisibility(passwordFieldId, toggleIconId) {
+  const passwordField = document.querySelector(`#${passwordFieldId}`);
+  const toggleIcon = document.querySelector(`#${toggleIconId}`);
+=======
+<<<<<<< HEAD
 const togglePassword = document.querySelector("#togglePassword");
 const passwordField = document.querySelector("#Password");
+>>>>>>> main
 
-// Check if password visibility was previously set in localStorage
-if (localStorage.getItem("passwordVisible") === "true") {
-  passwordField.type = "text"; // Show password if it was previously set to visible
-  togglePassword.classList.add("fa-eye-slash"); // Change icon to slash
+  toggleIcon.addEventListener("click", () => {
+    const isPasswordVisible = passwordField.type === "password";
+    passwordField.type = isPasswordVisible ? "text" : "password";
+    toggleIcon.classList.toggle("fa-eye-slash");
+  });
 }
 
-// togglePassword.addEventListener("click", () => {
-//   // Toggle password visibility
-//   const isPasswordVisible = passwordField.type === "password";
-//   passwordField.type = isPasswordVisible ? "text" : "password";
+toggleVisibility("password", "togglePassword");
+toggleVisibility("confirmPassword", "toggleConfirmPassword");
 
+<<<<<<< HEAD
+=======
 //   // Toggle eye icon
 //   togglePassword.classList.toggle("fa-eye-slash");
 
@@ -515,6 +540,7 @@ toggleVisibility("password", "togglePassword");
 toggleVisibility("confirmPassword", "toggleConfirmPassword");
 
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 // Script for phone number
 const countrySelect = document.getElementById("country-code");
 const phoneInput = document.getElementById("phone-number");
@@ -1238,6 +1264,8 @@ validateOtpButton.addEventListener("click", function () {
 
 // select the other company
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
 // function toggleCustomCompanyInput() {
 //   const selectElement = document.getElementById("company-select");
 //   const customInput = document.getElementById("custom-company-input");
@@ -1249,21 +1277,23 @@ validateOtpButton.addEventListener("click", function () {
 //   }
 // }
 
+>>>>>>> main
 function toggleCustomCompanyInput() {
-  let companySelect = document.getElementById("company-select");
-  let customCompanyInputDiv = document.getElementById("custom-company-input");
-  let customCompanyInput = document.getElementById("custom-company");
+  const selectElement = document.getElementById("company-select");
+  const customInput = document.getElementById("custom-company-input");
+  const companyInput = document.getElementById("custom-company");
 
-  if (companySelect.value === "custom") {
-    // Show custom input and add required attribute
-    customCompanyInputDiv.classList.remove("hidden");
-    customCompanyInput.setAttribute("required", "true");
+  if (selectElement.value === "custom") {
+    customInput.classList.remove("hidden");
+    companyInput.setAttribute("required", "required");
   } else {
-    // Hide custom input and remove required attribute
-    customCompanyInputDiv.classList.add("hidden");
-    customCompanyInput.removeAttribute("required");
+    customInput.classList.add("hidden");
+    companyInput.removeAttribute("required"); // Remove required when hidden
+    companyInput.value = ""; // Clear input
   }
 }
+<<<<<<< HEAD
+=======
 =======
 function toggleCustomCompanyInput() {
   const selectElement = document.getElementById("company-select");
@@ -1279,6 +1309,7 @@ function toggleCustomCompanyInput() {
     companyInput.value = ""; // Clear input
   }
 }
+>>>>>>> main
 
 function toggleOtherInput() {
   var designationSelect = document.getElementById("designation");
@@ -1307,4 +1338,7 @@ function toggleOtherInput() {
 //     event.preventDefault(); // Prevent form submission
 //     return;
 // }
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main

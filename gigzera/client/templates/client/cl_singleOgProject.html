@@ -25,16 +25,30 @@
     </ul>
     {% endfor %}
 <<<<<<< HEAD
+    <p>
+      <strong>Total Cost:</strong> {{job.cur_symbol}} {{bid.revised_budget}}
+    </p>
+    <p>
+      <strong>Advance Payment:</strong> {{job.cur_symbol}}
+      {{bid.advance_payment}}
+    </p>
+
+=======
+<<<<<<< HEAD
     <p><strong>Total Cost:</strong> {{bid.revised_budget}}</p>
     <p><strong>Advance Payment:</strong> $3,600</p>
+>>>>>>> main
     <p><strong>Milestone Payments:</strong></p>
     <ul>
+      {% for ms in milestones %}
       <li>
-        Feb 15, 2025: $4,200
-        <span class="status pending">
-          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Pending</span
-        >
+        {{ms.date}}: {{job.cur_symbol}} {{ms.amount}}
+        <span class="status_{{ms.cl_status}}"> {{ms.status}}</span>
       </li>
+<<<<<<< HEAD
+      {% endfor %}
+      <!-- <li>
+=======
       <li>
 =======
     <p>
@@ -55,10 +69,16 @@
       {% endfor %}
       <!-- <li>
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
         Mar 15, 2025: $4,200
         <span class="status pending">
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Pending</span
         >
+<<<<<<< HEAD
+      </li> -->
+    </ul>
+    <br />
+=======
 <<<<<<< HEAD
       </li>
     </ul>
@@ -68,20 +88,31 @@
     </ul>
     <br />
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     <div
       style="display: flex; align-items: center; justify-content: space-between"
     >
       <strong>Timeline:</strong>
 <<<<<<< HEAD
+      <!-- <button
+=======
+<<<<<<< HEAD
       <button
 =======
       <!-- <button
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
         class="change-request-button"
         onclick="openModal()"
         style="margin-left: auto"
       >
         Change Request
+<<<<<<< HEAD
+      </button> -->
+    </div>
+    <p>Start: {{job.start_date}}</p>
+    <p>End: {{singleOgp.end_date}}</p>
+=======
 <<<<<<< HEAD
       </button>
     </div>
@@ -93,6 +124,7 @@
     <p>Start: {{job.start_date}}</p>
     <p>End: {{singleOgp.end_date}}</p>
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   </div>
   <!-- Main Content -->
   <div class="project-header">
@@ -109,10 +141,14 @@
         <!-- Right Section: Percentage and Edit Icon -->
         <div class="progress-percentage">
 <<<<<<< HEAD
+          <strong id="progressPercentage">{{singleOgp.progress}}%</strong>
+=======
+<<<<<<< HEAD
           <strong id="progressPercentage">79%</strong>
 =======
           <strong id="progressPercentage">{{singleOgp.progress}}%</strong>
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
           <button
             id="editProgressIcon"
             class="edit-btn"
@@ -127,25 +163,183 @@
       <div class="progress-bar-container">
         <div class="progress-bar">
 <<<<<<< HEAD
+          <div
+            id="progressFill"
+            class="progress"
+            data-progress="{{ singleOgp.progress }}"
+          ></div>
+=======
+<<<<<<< HEAD
           <div id="progressFill" class="progress" style="width: 79%"></div>
+>>>>>>> main
         </div>
+        <!-- Project Status Text Below the Bar -->
+        <div class="project-status">Project Status : {{singleOgp.status}}</div>
       </div>
     </div>
-    <div id="progressEditForm" class="progress-edit hidden">
-      <input type="number" id="newProgress" min="0" max="100" value="79" />
-      <button onclick="updateProgress()">Update</button>
-    </div>
-
+    <form
+      id="updateProgress"
+      action="{% url 'cl_updateProgress' %}?ongpId={{singleOgp.ongProjectId}}"
+      method="POST"
+    >
+      {% csrf_token %}
+      <div id="progressEditForm" class="progress-edit hidden">
+        <input
+          type="number"
+          id="newProgress"
+          name="project_progress"
+          min="0"
+          max="100"
+          value="{{singleOgp.progress}}"
+        />
+        <button type="submit" onclick="updateProgress()">Update</button>
+      </div>
+    </form>
     <!-- Tasks -->
     <div class="tasks-box">
-      <div class="tasks-header">
-        <h3>Tasks</h3>
+      <!-- DELETE FORM (Wraps the delete button and checkboxes only) -->
+      <form id="deleteTaskForm" action="{% url 'delete_tasks' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="bid_id" value="{{singleOgp.bidId}}" />
+        <div class="tasks-header">
+          <h3>Tasks</h3>
+          <div>
+            <button
+              type="button"
+              class="add-task-btn"
+              id="addTaskBtn"
+              onclick="showTaskForm()"
+            >
+              + Add Task
+            </button>
+            <button
+              type="submit"
+              class="delete-selected-btn"
+              id="deleteSelectedBtn"
+            >
+              Delete Selected
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- TASK LIST (No Nested Forms) -->
+      <div class="task-list">
+        {% for task in tasks %}
+        <div class="task">
+          <!-- UPDATE FORM (Separate from Delete Form) -->
+          <form
+            method="POST"
+            action="{% url 'update_task' %}"
+            class="update-task-form"
+          >
+            {% csrf_token %}
+            <div class="task-row">
+              <input type="hidden" name="task_id" value="{{ task.taskId }}" />
+              <input
+                type="hidden"
+                name="title"
+                class="task-title-input"
+                value="{{ task.title }}"
+              />
+              <input
+                type="checkbox"
+                name="selected_tasks"
+                class="task-checkbox"
+                data-id="{{ task.taskId | default:'' }}"
+                value="{{ task.taskId | default:'' }}"
+                form="deleteTaskForm"
+              />
+
+              <label
+                class="task-title"
+                contenteditable="true"
+                onblur="updateHiddenInput(this)"
+              >
+                {{ task.title }}
+              </label>
+
+              <select
+                name="status"
+                class="task-status"
+                onchange="submitUpdateForm(this)"
+              >
+                <option {% if task.status == "Requirement Gathering" %}selected{% endif %}>Requirement Gathering</option>
+                <option {% if task.status == "Designing" %}selected{% endif %}>Designing</option>
+                <option {% if task.status == "Development" %}selected{% endif %}>Development</option>
+                <option {% if task.status == "Testing" %}selected{% endif %}>Testing</option>
+                <option {% if task.status == "UAT" %}selected{% endif %}>UAT</option>
+                <option {% if task.status == "Completed" %}selected{% endif %}>Completed</option>
+              </select>
+            </div>
+          </form>
+
+          <div class="task-comment">
+            <button
+              type="button"
+              onclick="openChatModal()"
+              class="comment-button"
+            >
+              Add Comment
+            </button>
+          </div>
+        </div>
+        {% empty %}
         <div>
-          <button class="add-task-btn" id="addTaskBtn">+ Add Task</button>
-          <button class="delete-selected-btn" id="deleteSelectedBtn">
-            Delete Selected
+          <h1>You have No tasks added</h1>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Add task -->
+  <!-- Task Form (Initially Hidden) -->
+  <div
+    id="taskFormPopup"
+    class="fixed inset-0 bg-grey-500 bg-opacity-70 flex items-center justify-center hidden"
+  >
+    >
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+      <h2 class="text-lg font-semibold mb-4">Add Task</h2>
+
+      <form id="addTaskForm" method="POST" action="{% url 'add_task' %}">
+        {% csrf_token %}
+        <input type="hidden" name="bid_id" value="{{singleOgp.bidId}}" />
+        <input
+          type="text"
+          name="title"
+          placeholder="New Task"
+          class="w-full px-3 py-2 border rounded mb-3"
+          required
+        />
+        <select name="status" class="w-full px-3 py-2 border rounded mb-3">
+          <option value="Requirement Gathering">Requirement Gathering</option>
+          <option value="Designing">Designing</option>
+          <option value="Development">Development</option>
+          <option value="Testing">Testing</option>
+          <option value="UAT">UAT</option>
+          <option value="Completed">Completed</option>
+        </select>
+
+        <div class="flex justify-between">
+          <button
+            type="button"
+            onclick="hideTaskForm()"
+            class="bg-gray-500 text-white px-4 py-2 rounded"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            Add Task
           </button>
         </div>
+<<<<<<< HEAD
+      </form>
+=======
       </div>
       <div class="task-list">
         <div class="task">
@@ -360,6 +554,7 @@
         </div>
       </form>
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
     </div>
   </div>
 
@@ -417,6 +612,9 @@
 
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
+>>>>>>> main
 <!-- Message Modal -->
 <div
   id="chatModal"
@@ -496,7 +694,10 @@
   </div>
 </div>
 
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 <!-- Job modal for post -->
 <div
   class="fixed inset-0 flex items-center justify-center z-50 hidden overflow-auto"

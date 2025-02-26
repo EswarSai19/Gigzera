@@ -37,15 +37,18 @@ body {
     padding-left: 20px;
 }
 
-.sidebar .status {
+.sidebar .status_pending {
     font-size: 15px;
     color: orange;
 }
 
+<<<<<<< HEAD
+=======
 .status pending {
     margin-left: 10px;
 }
 
+>>>>>>> main
 .sidebar .status_completed {
     font-size: 15px;
     color: green;
@@ -59,7 +62,6 @@ body {
 
 /* Main Content */
 .main-content {
-    width: 70%;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -350,6 +352,7 @@ select {
 .task-comment {
     margin-top: 10px;
 }
+
 
 textarea {
     width: 100%;

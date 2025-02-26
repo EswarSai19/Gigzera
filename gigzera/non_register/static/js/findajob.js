@@ -9,18 +9,32 @@
 document.addEventListener("DOMContentLoaded", () => {
   const skillSuggestions = [
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
     "JavaScript",
+>>>>>>> main
     "Python",
     "Java",
-    "HTML",
-    "CSS",
+    "JavaScript",
+    "C#",
     "C++",
-    "SQL",
-    "React",
-    "Node.js",
+    "Ruby",
+    "PHP",
+    "Kotlin",
+    "Swift",
+    "HTML5",
+    "CSS3",
+    "React.js",
     "Angular",
+    "Vue.js",
+    "SASS",
+    "Bootstrap",
+    "Node.js",
     "Django",
+    "Flask",
     "Spring Boot",
+<<<<<<< HEAD
+=======
 =======
     "Python",
     "Java",
@@ -42,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "Django",
     "Flask",
     "Spring Boot",
+>>>>>>> main
     ".NET",
     "Express.js",
     "SQL",
@@ -392,55 +407,67 @@ document.addEventListener("DOMContentLoaded", () => {
     "WordPress Developer",
     "XL Deploy Engineer",
     "Zabbix Engineer",
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
   ];
 
   const selectedSkills = new Set(); // Track selected skills globally
 
 <<<<<<< HEAD
+  function createAutocomplete(inputElement, suggestionsContainer) {
+    inputElement.addEventListener("focus", () => {
+      suggestionsContainer.innerHTML = ""; // Clear previous suggestions on focus
+    });
+=======
+<<<<<<< HEAD
   // function createAutocomplete(inputElement, suggestionsContainer) {
   //   inputElement.addEventListener("focus", () => {
   //     suggestionsContainer.innerHTML = ""; // Clear previous suggestions on focus
   //   });
+>>>>>>> main
 
-  //   inputElement.addEventListener("input", () => {
-  //     const query = inputElement.value.trim().toLowerCase();
-  //     if (query) {
-  //       suggestionsContainer.style.display = "block"; // Show suggestions when typing
+    inputElement.addEventListener("input", () => {
+      const query = inputElement.value.trim().toLowerCase();
+      if (query) {
+        suggestionsContainer.style.display = "block"; // Show suggestions when typing
 
-  //       // Filter suggestions based on input query and already selected skills
-  //       const filteredSuggestions = skillSuggestions.filter(
-  //         (skill) =>
-  //           skill.toLowerCase().includes(query) && !selectedSkills.has(skill)
-  //       );
+        // Filter suggestions based on input query and already selected skills
+        const filteredSuggestions = skillSuggestions.filter(
+          (skill) =>
+            skill.toLowerCase().includes(query) && !selectedSkills.has(skill)
+        );
 
-  //       suggestionsContainer.innerHTML = ""; // Clear existing suggestions
-  //       filteredSuggestions.forEach((suggestion) => {
-  //         const suggestionElement = document.createElement("div");
-  //         suggestionElement.classList.add(
-  //           "p-2",
-  //           "cursor-pointer",
-  //           "text-sm",
-  //           "text-left"
-  //         );
-  //         suggestionElement.textContent = suggestion;
+        suggestionsContainer.innerHTML = ""; // Clear existing suggestions
+        filteredSuggestions.forEach((suggestion) => {
+          const suggestionElement = document.createElement("div");
+          suggestionElement.classList.add(
+            "p-2",
+            "cursor-pointer",
+            "text-sm",
+            "text-left"
+          );
+          suggestionElement.textContent = suggestion;
 
-  //         suggestionElement.addEventListener("click", () => {
-  //           inputElement.value = suggestion; // Set the selected suggestion as input value
-  //           selectedSkills.add(suggestion); // Mark the skill as selected
-  //           suggestionsContainer.style.display = "none"; // Hide suggestions after selection
+          suggestionElement.addEventListener("click", () => {
+            inputElement.value = suggestion; // Set the selected suggestion as input value
+            selectedSkills.add(suggestion); // Mark the skill as selected
+            suggestionsContainer.style.display = "none"; // Hide suggestions after selection
 
-  //           // Re-enable suggestions for all other fields
-  //           updateAllInputs();
-  //         });
+            // Re-enable suggestions for all other fields
+            updateAllInputs();
+          });
 
-  //         suggestionsContainer.appendChild(suggestionElement);
-  //       });
-  //     } else {
-  //       suggestionsContainer.style.display = "none"; // Hide if input is empty
-  //     }
-  //   });
+          suggestionsContainer.appendChild(suggestionElement);
+        });
+      } else {
+        suggestionsContainer.style.display = "none"; // Hide if input is empty
+      }
+    });
 
+<<<<<<< HEAD
+=======
   //   inputElement.addEventListener("blur", () => {
   //     // Hide suggestions when input loses focus
   //     setTimeout(() => (suggestionsContainer.style.display = "none"), 200);
@@ -490,12 +517,16 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+>>>>>>> main
     inputElement.addEventListener("blur", () => {
       // Hide suggestions when input loses focus
       setTimeout(() => (suggestionsContainer.style.display = "none"), 200);
     });
   }
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 
   function updateAllInputs() {
     // Update all inputs by filtering out selected skills from their suggestions
@@ -513,6 +544,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Attach autocomplete to each skill input field
 <<<<<<< HEAD
+  createAutocomplete(
+    document.querySelector("#skill1"),
+    document.querySelector("#suggestions-container1")
+  );
+  createAutocomplete(
+    document.querySelector("#skill2"),
+    document.querySelector("#suggestions-container2")
+  );
+  createAutocomplete(
+    document.querySelector("#skill3"),
+    document.querySelector("#suggestions-container3")
+  );
+=======
+<<<<<<< HEAD
   // createAutocomplete(
   //   document.querySelector("#skill1"),
   //   document.querySelector("#suggestions-container1")
@@ -525,22 +570,25 @@ document.addEventListener("DOMContentLoaded", () => {
   //   document.querySelector("#skill3"),
   //   document.querySelector("#suggestions-container3")
   // );
+>>>>>>> main
 });
 //password validation
-const togglePassword = document.querySelector("#togglePassword");
-const passwordField = document.querySelector("#Password");
+// function toggleVisibility(passwordFieldId, toggleIconId) {
+//   const passwordField = document.querySelector(`#${passwordFieldId}`);
+//   const toggleIcon = document.querySelector(`#${toggleIconId}`);
 
-// Check if password visibility was previously set in localStorage
-if (localStorage.getItem("passwordVisible") === "true") {
-  passwordField.type = "text"; // Show password if it was previously set to visible
-  togglePassword.classList.add("fa-eye-slash"); // Change icon to slash
-}
+//   toggleIcon.addEventListener("click", () => {
+//     const isPasswordVisible = passwordField.type === "password";
+//     passwordField.type = isPasswordVisible ? "text" : "password";
+//     toggleIcon.classList.toggle("fa-eye-slash");
+//   });
+// }
 
-// togglePassword.addEventListener("click", () => {
-//   // Toggle password visibility
-//   const isPasswordVisible = passwordField.type === "password";
-//   passwordField.type = isPasswordVisible ? "text" : "password";
+// toggleVisibility("password", "togglePassword");
+// toggleVisibility("confirmPassword", "toggleConfirmPassword");
 
+<<<<<<< HEAD
+=======
 //   // Toggle eye icon
 //   togglePassword.classList.toggle("fa-eye-slash");
 
@@ -577,6 +625,7 @@ if (localStorage.getItem("passwordVisible") === "true") {
 // toggleVisibility("confirmPassword", "toggleConfirmPassword");
 
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
 // Script for phone number
 const countrySelect = document.getElementById("country-code");
 const phoneInput = document.getElementById("phone-number");
@@ -1300,16 +1349,26 @@ validateOtpButton.addEventListener("click", function () {
 
 // select the other company
 <<<<<<< HEAD
+// select the other company
+=======
+<<<<<<< HEAD
+>>>>>>> main
 function toggleCustomCompanyInput() {
   const selectElement = document.getElementById("company-select");
   const customInput = document.getElementById("custom-company-input");
+  const companyInput = document.getElementById("custom-company");
+
   if (selectElement.value === "custom") {
     customInput.classList.remove("hidden");
+    companyInput.setAttribute("required", "required");
   } else {
     customInput.classList.add("hidden");
-    document.getElementById("custom-company").value = ""; // Clear input
+    companyInput.removeAttribute("required"); // Remove required when hidden
+    companyInput.value = ""; // Clear input
   }
 }
+<<<<<<< HEAD
+=======
 =======
 // select the other company
 function toggleCustomCompanyInput() {
@@ -1326,6 +1385,7 @@ function toggleCustomCompanyInput() {
     companyInput.value = ""; // Clear input
   }
 }
+>>>>>>> main
 
 function toggleOtherInput() {
   var designationSelect = document.getElementById("designation");
@@ -1484,4 +1544,7 @@ document.addEventListener("DOMContentLoaded", () => {
   input.addEventListener("input", handleInput);
   input.addEventListener("keydown", handleBackspace);
 });
+<<<<<<< HEAD
+=======
 >>>>>>> 440389d889c488fe5f45c8f11cb30a4c54262362
+>>>>>>> main
