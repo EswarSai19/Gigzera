@@ -36,6 +36,12 @@
   cursor: pointer;
 }
 
+.nav a.active {
+  color: #3dd9d6;
+  font-weight: bold;
+  border-bottom: 2px solid #3dd9d6;
+}
+
 .nav a:hover {
   color: #3dd9d6;
 }
