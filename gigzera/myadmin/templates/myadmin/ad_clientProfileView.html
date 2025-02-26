@@ -1,0 +1,186 @@
+{% extends 'ad_base.html' %} {% load static %}
+<!-- title -->
+{% block title %}Dashboard{% endblock %}
+<!-- CSS -->
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/ad_clientProfileView.css' %}" />
+<link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
+{% endblock %}
+<!-- main content -->
+{% block content %}
+<div class="cntr flex-1 p-8">
+  <div class="flex justify-between items-center mb-8">
+    <button
+      class="bg-white px-4 py-2 rounded-lg shadow hover:shadow-md back-to-users"
+    >
+      <i class="fa-solid fa-arrow-left mr-2"></i>Back to Users
+    </button>
+    <div class="space-x-3">
+      {% if user.is_active %}
+      <button
+        id="banUser"
+        data-user-id="{{ user.userId }}"
+        class="bg-red-50 text-red-600 px-4 py-2 rounded-lg hover:bg-red-100 cursor-pointer ban-user"
+      >
+        <i class="fa-solid fa-ban mr-2"></i>Ban User
+      </button>
+      {% else %}
+      <button
+        id="unbanUser"
+        data-user-id="{{ user.userId }}"
+        class="bg-green-50 text-green-600 px-4 py-2 rounded-lg hover:bg-green-100 cursor-pointer unban-user"
+      >
+        <i class="fa-solid fa-check mr-2"></i>Unban User
+      </button>
+      {% endif %}
+      <!--  -->
+      {% if user.is_verified %}
+      <button
+        id="verifyUser"
+        data-user-id="{{ user.userId }}"
+        class="bg-green-50 text-green-600 px-4 py-2 rounded-lg hover:bg-green-100 cursor-pointer verify-user"
+      >
+        <i class="fa-solid fa-check-circle mr-2"></i>Verified
+      </button>
+      {% else %}
+      <button
+        id="verifyUser"
+        data-user-id="{{ user.userId }}"
+        class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 cursor-pointer verify-user"
+      >
+        <i class="fa-solid fa-check-circle mr-2"></i>Verify User
+      </button>
+      {% endif %}
+    </div>
+  </div>
+  <div class="max-w-3xl mx-auto">
+    <div class="bg-white p-8 rounded-xl shadow-sm mb-6">
+      <div class="text-center mb-8">
+        <img
+          src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg"
+          alt="Profile"
+          class="w-32 h-32 rounded-full mx-auto mb-4"
+        />
+        <h1 class="text-2xl font-bold">{{user.name}}</h1>
+        <p class="text-indigo-600 font-semibold mb-4">{{user.designation}}</p>
+        <div class="flex justify-between space-x-6">
+          <div class="flex items-center m2-2">
+            <i class="fa-solid fa-envelope text-gray-400 mr-2"></i>
+            <span class="text-gray-600">{{user.email}}</span>
+          </div>
+          <div class="flex items-center mr-2">
+            <i class="fa-solid fa-share-from-square text-gray-400 mr-2"></i>
+            <a
+              href="{{user.social_media}}"
+              class="text-indigo-600 hover:underline"
+              >{{user.social_media}}</a
+            >
+          </div>
+          <div class="flex items-center mr-2">
+            <i class="fa-solid fa-phone text-gray-400 mr-2"></i>
+            <span class="text-gray-600">{{user.phone}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-8">
+        <h2 class="text-xl font-bold mb-4">Company</h2>
+        <div
+          class="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+        >
+          <div class="flex items-center">
+            <i class="fa-solid fa-building text-indigo-600 text-xl mr-3"></i>
+            <div>
+              <h3 class="font-semibold">{{user.company}}</h3>
+            </div>
+          </div>
+          <!-- <span
+            class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm"
+            >Active</span
+          > -->
+        </div>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold mb-4">Projects</h2>
+        <div class="space-y-4">
+          {% for project in projects %}
+          <div class="border rounded-lg p-4 hover:bg-gray-50">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-semibold">{{project.title}}</h3>
+              <span
+                class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm"
+                >{{project.status}}</span
+              >
+            </div>
+            <p class="text-gray-600 text-sm mb-3">{{project.description}}</p>
+            <div class="flex items-center text-sm text-gray-500">
+              <i class="fa-regular fa-clock mr-2"></i>
+              <span>Start Date: {{project.start_date}}</span>
+            </div>
+          </div>
+          {% endfor %}
+          <!-- <div class="border rounded-lg p-4 hover:bg-gray-50">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-semibold">Mobile App Development</h3>
+              <span
+                class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm"
+                >Completed</span
+              >
+            </div>
+            <p class="text-gray-600 text-sm mb-3">
+              iOS and Android app development for customer loyalty program
+            </p>
+            <div class="flex items-center text-sm text-gray-500">
+              <i class="fa-regular fa-clock mr-2"></i>
+              <span>Completed: January 2025</span>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+<!-- js -->
+{% block js %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const backToUsers = document.getElementsByClassName("back-to-users");
+    const banUser = document.getElementsByClassName("ban-user");
+    const unbanUser = document.getElementsByClassName("unban-user");
+    const verifyUser = document.getElementsByClassName("verify-user");
+
+    // Add click event to all buttons with the class "findajob-btn"
+    Array.from(backToUsers).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (document.referrer) {
+          window.history.back(); // Go back to the previous page
+        } else {
+          window.location.href = "{% url 'ad_clients' %}"; // Default fallback
+        }
+      });
+    });
+
+    Array.from(banUser).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const userId = btn.getAttribute("data-user-id");
+        window.location.href = `{% url 'ban_user' %}?userId=${userId}`;
+      });
+    });
+
+    Array.from(unbanUser).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const userId = btn.getAttribute("data-user-id");
+        window.location.href = `{% url 'ban_user' %}?userId=${userId}`;
+      });
+    });
+
+    Array.from(verifyUser).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const userId = btn.getAttribute("data-user-id");
+        window.location.href = `{% url 'verify_user' %}?userId=${userId}`;
+      });
+    });
+  });
+</script>
+<script src="{% static 'js/ad_clientProfileView.js'}"></script>
+{% endblock %}
