@@ -164,9 +164,6 @@
 .table {
   display: table;
 }
-.h-0 {
-  height: calc(var(--spacing) * 0);
-}
 .h-6 {
   height: calc(var(--spacing) * 6);
 }

@@ -134,6 +134,16 @@ class MyAdmin(models.Model):
     def __str__(self):
         return self.name
 
+class PartnerLogos(models.Model):
+    admin_id = models.CharField(max_length=12)
+    logo_name = models.CharField(max_length=255, null=True, blank=True)
+    logo_url = models.ImageField()
+    created_at = models.DateTimeField(default=now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.admin_id} had added {self.logo_url}"
+
 
 class Skill(models.Model):
     freelancer = models.ForeignKey(
@@ -241,12 +251,28 @@ class ProjectStatusDetails(models.Model):
         return f"{self.status} ({self.progress} are the project details)"
 
 
+class JobsPageAdv(models.Model):
+    admin_id = models.CharField(blank=True, null=True)
+    section_name = models.CharField(blank=True, null=True)
+    media_type = models.CharField(blank=True, null=True)
+    media_name = models.CharField(blank=True, null=True)
+    media_url = models.URLField(blank=True, null=True)
+    redirect_link = models.URLField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Adv by {self.section_name} for {self.media_type}"
+
+
+
 class ProjectQuote(models.Model):
     projectQuoteId = models.CharField(
         primary_key=True, max_length=12, default=generate_projectquote_id, editable=False
     )
     freelancer = models.ForeignKey(Freelancer, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    admin = models.ForeignKey(MyAdmin, on_delete=models.CASCADE, default="AD001")
     opportunityId = models.CharField(max_length=20)
     budget = models.CharField(max_length=20)
     time_estimation = models.CharField(max_length=20)  # Days

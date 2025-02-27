@@ -1,17 +1,20 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, auth
 from django.contrib.auth.hashers import check_password, make_password
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.urls import reverse
-from django.http import JsonResponse
 import json
 import os
+import boto3
+import time
 import locale
+import re
+from urllib.parse import urlparse
 from itertools import chain
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from db_schemas.models import Contact, ProjectQuote, MyAdmin, Tasks, Client, Milestones, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
+from db_schemas.models import Contact, PartnerLogos, JobsPageAdv, ProjectQuote, MyAdmin, Tasks, Client, Milestones, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
 from django.core.exceptions import ValidationError
 from datetime import datetime
 
@@ -203,6 +206,7 @@ def ad_login(request):
             admin = MyAdmin.objects.filter(email=userid_or_email).first()
             if admin and check_password(password, admin.password):
                 request.session['user_id'] = admin.adminId
+                print("Session Data:", request.session.items())
                 print("I am inside the admin else condition")
                 return redirect('ad_dashboard')  # Redirect on success
         
@@ -246,10 +250,12 @@ def ad_logout(request):
     return redirect('ad_login')
 
 def dashboard(request):
+    admin_id = request.session.get('user_id')
+    print("I am getting the admin id as ", admin_id)
     freelancers = Freelancer.objects.all()
     clients = Client.objects.all()
     ongoingProjects = OngoingProjects.objects.all()
-    yourProjects = ProjectQuote.objects.filter(admin_bid_status='approved', client_bid_status='approved')
+    yourProjects = ProjectQuote.objects.filter(admin_bid_status='approved', client_bid_status='approved', admin_id=admin_id)
     bids = ProjectQuote.objects.all().order_by('-created_at')[:3]
     for bid in bids:
         job = ProjectsDisplay.objects.filter(opportunityId=bid.opportunityId).first()
@@ -443,7 +449,9 @@ def singleOngoingProject(request):
 
 
 def yourProjects(request):
-    ongProjects = OngoingProjects.objects.filter(admin_id="AD001").all()
+    admin_id = request.session.get("user_id")
+    print("I am getting adminID:", admin_id)
+    ongProjects = OngoingProjects.objects.filter(admin_id=admin_id).all()
     print("OG", ongProjects)
     for ogp in ongProjects:
         print(ogp.opportunityId,"OPP id")
@@ -632,36 +640,6 @@ def add_milestone(request):
     return JsonResponse({"success": False, "error": "Invalid request"})
 
 
-# def updateFinanceMilestones(request):
-#     ongp_id = request.POST.get("bidId") or request.GET.get("bidId")
-
-#     if request.method == "POST":
-#         consulting_charges = request.POST.get("consulting_charges", "0").strip()
-#         advance_payment = request.POST.get("advance_payment", "0").strip()
-
-#         print("Received details:", ongp_id, consulting_charges, advance_payment)
-
-#         try:
-#             project = get_object_or_404(ProjectQuote, projectQuoteId=ongp_id)
-
-#             # Update values
-#             project.admin_margin = format_currency(consulting_charges, project.currency)
-#             project.revised_budget = add_and_format(project.budget, consulting_charges, project.currency)
-#             project.advance_payment = format_currency(advance_payment, project.currency)
-            
-#             project.save()
-
-#             return JsonResponse({"success": True, "message": "Finance milestones updated successfully"})
-#             # return render(request, 'myadmin/singleYourProject.html', context)
-#         except ValueError:
-#             return JsonResponse({"success": False, "error": "Invalid numerical values"})
-#         except Exception as e:
-#             return JsonResponse({"success": False, "error": str(e)})
-
-#     return JsonResponse({"success": False, "error": "Invalid request method"})
-
-
-
 def userManagement(request):
     users = Freelancer.objects.all().order_by('-created_at')
     cl_users = Client.objects.all().order_by('-created_at')
@@ -712,6 +690,7 @@ def latestSinglePQ(request):
     return render(request, 'myadmin/latestSinglePQ.html', context)
 
 def bidApproved(request):
+    admin_id = request.session.get('user_id')
     bids = ProjectQuote.objects.all().order_by('-created_at')
     for bid in bids:
         job = ProjectsDisplay.objects.filter(opportunityId=bid.opportunityId).first()
@@ -730,6 +709,7 @@ def bidApproved(request):
             admin_margin = format_currency(admin_margin, bid.currency)
             # Update the admin margin and bid status
             bid.admin_margin = admin_margin
+            bid.admin_id = admin_id
             bid.admin_bid_status = "approved"
             bid.revised_budget = add_and_format(bid.budget, bid.admin_margin, bid.currency)
             bid.advance_payment = calculate_percentage(bid.revised_budget, 30, bid.currency)
@@ -763,6 +743,7 @@ def bidRejected(request):
             admin_margin = format_currency(admin_margin, bid.currency)
             # Update the admin margin and bid status
             bid.admin_margin = admin_margin
+            bid.admin_id = admin_id
             bid.admin_bid_status = "rejected"
             bid.revised_budget = add_and_format(bid.budget, bid.admin_margin, job.currency)
             bid.advance_payment = calculate_percentage(bid.revised_budget, 30, bid.currency)
@@ -802,14 +783,167 @@ def profileView(request):
     print("certificates", certificates )
     return render(request, 'myadmin/profileView.html', context)
 
-def jobPageAdv(request):
-    return render(request, 'myadmin/jobPageAdv.html')
 
 def jobPageImages(request):
     return render(request, 'myadmin/jobPageImages.html')
 
 def partnerLogos(request):
-    return render(request, 'myadmin/partnerLogos.html')
+    admin_id = request.session.get('user_id')
+    print("I am getting admin id as ", admin_id)
+    logos = PartnerLogos.objects.all()
+    context = {
+        'logos': logos
+    }
+    print(len(logos), "Length")
+    return render(request, 'myadmin/partnerLogos.html', context)
+
+
+def addPartnerLogo(request):
+    admin_id = request.session.get('user_id')
+    print("I am getting admin id as ", admin_id)
+    if request.method == "POST":
+        media_input = request.FILES.get('mediaInput')
+        if media_input:
+            media_url, file_name = upload_to_s3("partnerLogos", media_input)
+            print(media_url,file_name, "Media url")
+
+            PartnerLogos.objects.create(
+                admin_id = admin_id,
+                logo_name = file_name,
+                logo_url = media_url,
+            )
+
+            return redirect('ad_partnerLogos')
+        else:
+            print("Not getting media")
+    return redirect('ad_partnerLogos')
+
+
+def editPartnerLogo(request):
+    admin_id = request.session.get('user_id')
+    if request.method == "POST":
+        print(f"Raw logo_id: '{request.POST.get('logo_id')}'")  # Debugging line
+        logo_id = request.POST.get('logo_id').strip()  # Remove spaces or unwanted characters
+        print(f"Cleaned logo_id: '{logo_id}'")
+        try:
+            logo_id = int(logo_id)
+        except ValueError:
+            print("Invalid logo_id received:", logo_id)
+            return redirect('ad_partnerLogos')  # Handle error gracefully
+
+        obj = get_object_or_404(PartnerLogos, id=logo_id)
+
+        current_url = str(obj.logo_url)
+        edited_media_input = request.FILES.get('editedMediaInput')
+
+        if edited_media_input:
+            delete_if_uploaded(current_url)
+            media_url, file_name = upload_to_s3("partnerLogos", edited_media_input)
+
+            obj.logo_name = file_name  # Fix: Remove trailing commas
+            obj.logo_url = media_url
+            obj.admin_id = admin_id
+
+            obj.save()
+            print("Completed editing process")
+
+            return redirect('ad_partnerLogos')
+        else:
+            print("Media file is not uploaded correctly")
+
+    return redirect('ad_partnerLogos')
+
+
+def removePartnerLogo(request):
+    admin_id = request.session.get('user_id')
+    logo_id = request.GET.get('logoId')
+    print("I am getting admin id as ", admin_id, logo_id)
+    obj = get_object_or_404(PartnerLogos, id=logo_id)
+    resp = delete_if_uploaded(str(obj.logo_url))
+    print("delete Response", resp)
+    if request.method == "POST":
+        obj.delete()
+        return redirect('ad_partnerLogos')
+    return redirect('ad_partnerLogos')
+
+
+def upload_to_s3(folder_name, media):
+    """
+    Uploads an media to the specified S3 folder and returns the media URL.
+    Handles duplicate file names by appending a timestamp.
+    """
+    s3_client = boto3.client(
+        's3',
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        region_name=settings.AWS_S3_REGION_NAME
+    )
+
+    # Get the file extension
+    file_extension = os.path.splitext(media.name)[1]
+    base_filename = os.path.splitext(media.name)[0]
+    print("Names & Extensions:", file_extension, base_filename)
+    # Generate a unique file name to avoid duplicates
+    timestamp = int(time.time())  # Current Unix timestamp
+    unique_filename = f"{base_filename}_{timestamp}{file_extension}"
+
+    # Full path in S3
+    file_path = f"{folder_name}/{unique_filename}"
+
+    # Upload media to S3
+    s3_client.upload_fileobj(
+        media,
+        settings.AWS_STORAGE_BUCKET_NAME,
+        file_path,
+        ExtraArgs={'ContentType': media.content_type}
+    )
+
+    # Generate the S3 media URL
+    media_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{file_path}"
+    print(f"I just completed the upload media process with url: {media_url}")
+    return media_url, base_filename
+
+
+def delete_if_uploaded(url):
+    """
+    Deletes the file from S3 only if the filename contains a 10-digit number.
+    :param url: The full S3 file URL.
+    :return: A response message indicating success or failure.
+    """
+    print("I am inside the delete:", url)
+
+    # Extract the file path from the URL
+    parsed_url = urlparse(url)
+    file_path = parsed_url.path.lstrip('/')  # Remove leading '/'
+    
+    # Extract the filename from the path
+    filename = str(file_path.split('/')[-1]).strip()  # Ensure it's a clean string
+    print("Deleted file name:", repr(filename))  # Debugging print
+
+    # Check if the filename contains a 10-digit number
+    match = re.search(r'\d{10}', filename)
+    print("Regex Match:", match.group() if match else "No Match")  # Debugging print
+
+    if match:  
+        s3_client = boto3.client(
+            's3',
+            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+            region_name=settings.AWS_S3_REGION_NAME
+        )
+
+        try:
+            # Delete the file from S3
+            s3_client.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=file_path)
+            print(f"Successfully deleted {file_path}")
+            return {"success": True, "message": f"File '{file_path}' deleted successfully"}
+        except Exception as e:
+            print(f"Error during S3 deletion: {str(e)}")  # Debugging print
+            return {"success": False, "message": str(e)}
+
+    print("File name does not contain a 10-digit number, skipping deletion.")
+    return {"success": False, "message": "File name does not contain a 10-digit number, deletion skipped"}
+
 
 
 def adminManagement(request):
@@ -865,3 +999,58 @@ def delete_admin(request):
 
 def logout(request):
     return render(request, 'myadmin/ad_logout.html')
+
+
+# Jobs page advertisement
+def jobsPageAdv(request):
+    admin_id = request.session.get('user_id')
+    print("I am getting admin id as ", admin_id)
+    sec1 = JobsPageAdv.objects.filter(section_name="sec_1").all()
+    sec2 = JobsPageAdv.objects.filter(section_name="sec_2").all()
+    sec3 = JobsPageAdv.objects.filter(section_name="sec_3").all()
+    context = {
+        'sec1': sec1,
+        'sec2': sec2,
+        'sec3': sec3,
+    }
+    return render(request, 'myadmin/jobsPageAdv.html', context)
+
+def addJobsPageAdv(request):
+    admin_id = request.session.get('user_id')
+    section_name = request.GET.get('section')
+    print("I am getting admin id as ", admin_id, section_name)
+    if request.method == "POST":
+        media_input = request.FILES.get('mediaInput')
+        media_type = request.POST.get('mediaType')
+        redirect_link = request.POST.get('redirectLink').strip()
+        if media_input:
+            if section_name=="sec_1":
+                media_url, file_name = upload_to_s3("jobsPageAdvSec1", media_input)
+                print("details are coming as ",media_url,file_name,media_type, redirect_link, section_name )
+            elif section_name=="sec_2":
+                media_url, file_name = upload_to_s3("jobsPageAdvSec2", media_input)
+                print("details are coming as ",media_url,file_name,media_type, redirect_link, section_name )
+            elif section_name=="sec_3":
+                media_url, file_name = upload_to_s3("jobsPageAdvSec3", media_input)
+                print("details are coming as ",media_url,file_name,media_type, redirect_link, section_name )
+
+
+            JobsPageAdv.objects.create(
+                admin_id = admin_id,
+                section_name = section_name,
+                media_type = media_type,
+                media_url = media_url,
+                media_name=file_name,
+                redirect_link=redirect_link
+            )
+
+            return redirect('ad_jobsPageAdv')
+        else:
+            print("Not getting media")
+    return redirect('ad_jobsPageAdv')
+
+def editJobsPageAdv(request):
+    return redirect('ad_jobsPageAdv')
+
+def removeJobsPageAdv(request):
+    return redirect('ad_jobsPageAdv')
