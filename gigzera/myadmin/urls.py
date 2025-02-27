@@ -30,12 +30,23 @@ urlpatterns = [
     path('bidApproved/', views.bidApproved, name='ad_bidApproved'),
     path('bidRejected/', views.bidRejected, name='ad_bidRejected'),
     path('profileView/', views.profileView, name='ad_profileView'),
-    path('jobPageAdv/', views.jobPageAdv, name='ad_jobPageAdv'),
     path('jobPageImages/', views.jobPageImages, name='ad_jobPageImages'),
+    # Logos
     path('partnerLogos/', views.partnerLogos, name='ad_partnerLogos'),
+    path('addPartnerLogo/', views.addPartnerLogo, name='ad_addPartnerLogo'),
+    path('editPartnerLogo/', views.editPartnerLogo, name='ad_editPartnerLogo'),
+    path('removePartnerLogo/', views.removePartnerLogo, name='ad_removePartnerLogo'),
+    # Admin management
     path('adminManagement/', views.adminManagement, name='ad_adminManagement'),
     path('add_admin/', views.add_admin, name='ad_addAdmin'),
     path('edit_admin/', views.edit_admin, name='ad_editAdmin'),
     path('delete_admin/', views.delete_admin, name='ad_deleteAdmin'),
     path('logout/', views.logout, name='ad_logout'),
+
+    # Jobs page adv
+    path('jobsPageAdv/', views.jobsPageAdv, name='ad_jobsPageAdv'),
+    path('addJobsPageAdv/', views.addJobsPageAdv, name='ad_addJobsPageAdv'),
+    path('editJobsPageAdv/', views.editJobsPageAdv, name='ad_editJobsPageAdv'),
+    path('removeJobsPageAdv/', views.removeJobsPageAdv, name='ad_removeJobsPageAdv'),
+
 ]

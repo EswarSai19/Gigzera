@@ -722,7 +722,7 @@ def cl_bidApproved(request):
                 end_date=og_end_date,
                 status = 'Bid Ongoing',
                 progress = '0',
-                admin_id = 'AD001',
+                admin_id = bid.admin_id,
                 client_id = bid.client_id,
                 freelancer_id = bid.freelancer_id
             )

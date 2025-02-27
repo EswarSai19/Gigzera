@@ -1,9 +1,9 @@
 // Function to save advertisement in the respective section
 function saveAdvertisement(section) {
-  const mediaTypeElement = document.getElementById(`mediaType${section}`);
-  const mediaType = mediaTypeElement.value;
-  const redirectInput = document.getElementById(`redirectLink${section}`);
-  const redirectUrl = redirectInput ? redirectInput.value.trim() : "";
+  // const mediaTypeElement = document.getElementById(`mediaType${section}`);
+  // const mediaType = mediaTypeElement.value;
+  // const redirectInput = document.getElementById(`redirectLink${section}`);
+  // const redirectUrl = redirectInput ? redirectInput.value.trim() : "";
 
   const fileInput = document.getElementById(`fileInput${section}`);
   const file = fileInput.files[0];
@@ -13,45 +13,49 @@ function saveAdvertisement(section) {
     return;
   }
 
-  const tableBody = document.querySelector(
-    `#section${section} .ad-table tbody`
-  );
-  if (!tableBody) {
-    console.error(`Table body for section ${section} not found.`);
-    return;
-  }
+  // const tableBody = document.querySelector(
+  //   `#section${section} .ad-table tbody`
+  // );
+  // if (!tableBody) {
+  //   console.error(`Table body for section ${section} not found.`);
+  //   return;
+  // }
 
-  const serialNumber = tableBody.rows.length + 1;
-  const mediaTypeIcon =
-    mediaType === "Video"
-      ? '<i class="fas fa-video"></i>'
-      : '<i class="fas fa-image"></i>';
+  // const serialNumber = tableBody.rows.length + 1;
+  // const mediaTypeIcon =
+  //   mediaType === "Video"
+  //     ? '<i class="fas fa-video"></i>'
+  //     : '<i class="fas fa-image"></i>';
 
-  const newRow = document.createElement("tr");
-  newRow.innerHTML = `
-    <td>${serialNumber}.</td>
-    <td>${mediaTypeIcon} ${mediaType}</td>
-    <td>${file.name}</td>
-    <td>${redirectUrl || "No redirect link"}</td>
-    <td>
-      <button class="edit-button btn btn-secondary btn-sm" onclick="editRow(this)">
-        <i class="fas fa-edit"></i> Edit
-      </button>
-      <button class="delete-button btn btn-danger btn-sm" onclick="deleteRow(this)">
-        <i class="fas fa-trash-alt"></i> Delete
-      </button>
-    </td>
-  `;
+  // const newRow = document.createElement("tr");
+  // newRow.innerHTML = `
+  //   <td>${serialNumber}.</td>
+  //   <td>${mediaTypeIcon} ${mediaType}</td>
+  //   <td>${file.name}</td>
+  //   <td>${redirectUrl || "No redirect link"}</td>
+  //   <td>
+  //     <button class="edit-button btn btn-secondary btn-sm" onclick="editRow(this)">
+  //       <i class="fas fa-edit"></i> Edit
+  //     </button>
+  //     <button class="delete-button btn btn-danger btn-sm" onclick="deleteRow(this)">
+  //       <i class="fas fa-trash-alt"></i> Delete
+  //     </button>
+  //   </td>
+  // `;
 
-  tableBody.appendChild(newRow);
+  // tableBody.appendChild(newRow);
 
-  // Clear form
-  fileInput.value = "";
-  if (redirectInput) redirectInput.value = "";
-  updateFileNameDisplay(section, "No file selected");
+  // // Clear form
+  // fileInput.value = "";
+  // if (redirectInput) redirectInput.value = "";
+  // updateFileNameDisplay(section, "No file selected");
 
   // Close modal
   closeModal(`createAdModal${section}`);
+
+  // Submit the form
+  const form = document.getElementById(`form${section}`);
+  form.submit(); // <-- This ensures the form is actually sent to the backend
 
   alert("Advertisement added successfully!");
 }
@@ -87,6 +91,21 @@ function handleDragLeave(event) {
 }
 
 // Function to handle dropped files
+// function handleDrop(event, section) {
+//   event.preventDefault();
+//   const dragArea = event.currentTarget;
+//   dragArea.classList.remove("bg-gray-100");
+
+//   const fileInput = document.getElementById(`fileInput${section}`);
+//   const files = event.dataTransfer.files;
+
+//   if (files.length > 0) {
+//     fileInput.files = files;
+//     updateFileNameDisplay(section, files[0].name);
+//   }
+// }
+
+//
 function handleDrop(event, section) {
   event.preventDefault();
   const dragArea = event.currentTarget;
@@ -96,7 +115,12 @@ function handleDrop(event, section) {
   const files = event.dataTransfer.files;
 
   if (files.length > 0) {
-    fileInput.files = files;
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(files[0]); // Only one file is allowed per input
+
+    fileInput.files = dataTransfer.files; // Assign dropped file to input
+    fileInput.dispatchEvent(new Event("change")); // Manually trigger change event
+
     updateFileNameDisplay(section, files[0].name);
   }
 }
@@ -109,6 +133,7 @@ function handleFileSelect(event, section) {
 
   if (file) {
     const fileType = file.type;
+    document.getElementById(`fileName${section}`).textContent = file.name;
 
     if (
       (mediaType === "Image" && !fileType.startsWith("image/")) ||
