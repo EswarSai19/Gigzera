@@ -66,92 +66,43 @@
       <h1>Announcement</h1>
       <div class="ad-box lf-annc-box">
         <!-- Video 1 -->
+        {% if web_obj.media_type == "Image" %}
+
+        <img
+          src="{{web_obj.media_url}}"
+          alt="Advertisement"
+          class="w-full h-full object-cover"
+        />
+
+        {% else %}
         <div class="ad-video-container active">
           <video id="video1" autoplay muted>
-            <source
-              src="https://cdn.yellowmessenger.com/QnhdnAlDdVA01734691830688.mp4"
-              type="video/mp4"
-            />
+            <source src="{{web_obj.media_url}}" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
-        <div class="ad-video-container">
-          <video id="video2" muted>
-            <source
-              src="https://cdn.yellowmessenger.com/QnhdnAlDdVA01734691830688.mp4"
-              type="video/mp4"
-            />
-            <!-- Ensure the video URL is correct -->
-            Your browser does not support the video tag.
-          </video>
-        </div>
+        {% endif %}
       </div>
-      <p>This is a sample test for announcement</p>
+      <p>{{web_obj.anc_text}}</p>
       <br />
     </div>
     <section class="text-section-left">
-      <!-- <h1
-            style="
-              font-weight: bold;
-              color: black;
-              margin-bottom: 10px;
-              margin-top: -5px;
-            "
+      <div
+        class="relative w-full h-[180px] max-w-lg mx-auto overflow-hidden rounded-lg shadow-lg mt-8"
+      >
+        <div class="slider slider-4 relative w-full h-56">
+          {% for img in images %}
+          <div
+            class="slide slide-4 absolute w-full h-full opacity-0 transition-opacity duration-1000 cursor-pointer pointer-events-none"
           >
-            This is the sample text replication
-          </h1> -->
-      <!-- First Slide -->
-      <div class="slide-left">
-        <img
-          src="https://cdn.yellowmessenger.com/PSpMKlSDepdi1735210401540.png"
-          alt="City View"
-          class="city-image-left"
-        />
-      </div>
-
-      <!-- Second Slide -->
-      <div class="slide-left">
-        <img
-          src="https://cdn.yellowmessenger.com/awWcKeyMtYYX1735210522831.png"
-          alt="Boost Your Team"
-          class="city-image-left"
-        />
-      </div>
-
-      <!-- Third Slide -->
-      <div class="slide-left">
-        <img
-          src="https://cdn.yellowmessenger.com/WNC3rncek4B61735210555680.png"
-          alt="Post Your Jobs"
-          class="city-image-left"
-        />
-      </div>
-
-      <!-- Fourth Slide -->
-      <div class="slide-left">
-        <img
-          src="https://cdn.yellowmessenger.com/ePnzGFUzrasA1735210652173.png"
-          alt="Post Your Jobs"
-          class="city-image-left"
-        />
-      </div>
-
-      <!-- Fifth Slide -->
-      <div class="slide-left">
-        <img
-          src="https://cdn.yellowmessenger.com/tVydGqHwo3Le1735210676452.png"
-          alt="Post Your Jobs"
-          class="city-image-left"
-        />
-      </div>
-
-      <!-- Sixth Slide -->
-      <div class="slide-left">
-        <img
-          src="https://cdn.yellowmessenger.com/r6jrnKSConXC1735210701475.png"
-          alt="Post Your Jobs"
-          class="city-image-left"
-        />
+            <img
+              src="{{img.media_url}}"
+              alt="Advertisement"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          {% endfor %}
+        </div>
       </div>
     </section>
   </aside>
@@ -464,101 +415,96 @@
     </div>
   </section>
   <!-- View more: onclick="tailwindOpenModal()                     Provide quote: onclick="openModal()" -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const viewMoreBtn = document.getElementsByClassName("view-more");
-      const quoteBtn = document.getElementsByClassName("provide-quote");
-      // const learnMoreBtn = document.getElementsByClassName("learn_more_btn");
 
-      // Add click event to all buttons with the class "postajob-btn"
-      Array.from(viewMoreBtn).forEach((btn) => {
-        btn.addEventListener("click", () => {
-          window.location.href = "{% url 'signup' %}";
-        });
-      });
-
-      // Add click event to all buttons with the class "findajob-btn"
-      Array.from(quoteBtn).forEach((btn) => {
-        btn.addEventListener("click", () => {
-          window.location.href = "{% url 'signup' %}";
-        });
-      });
-    });
-  </script>
   <!-- Right Section -->
   <aside class="right-section">
     <!-- First Ad Box: Two Videos -->
-    <div class="ad-box">
-      <div class="ad-slideshow">
-        <!-- Video 1 -->
-        <div class="ad-video-container active">
-          <video id="video1" autoplay muted>
-            <source
-              src="https://cdn.yellowmessenger.com/QnhdnAlDdVA01734691830688.mp4"
-              type="video/mp4"
-            />
-          </video>
+    <div
+      class="relative h-[180px] w-full max-w-lg mx-auto overflow-hidden rounded-lg shadow-lg mt-8"
+    >
+      <div class="slider slider-1 relative w-full h-56">
+        {% for adv in sec1 %} {% if adv.media_type == "Image" %}
+        <div
+          class="slide slide-1 absolute w-full h-full opacity-0 transition-opacity duration-1000 cursor-pointer pointer-events-none"
+          data-url="{{adv.redirect_link}}"
+        >
+          <img
+            src="{{adv.media_url}}"
+            alt="Advertisement"
+            class="w-full h-full object-cover"
+          />
         </div>
-        <div class="ad-video-container">
-          <video id="video2" autoplay muted>
-            <source
-              src="https://cdn.yellowmessenger.com/mV64DYgpzy811734694758683.mp4"
-              type="video/mp4"
-            />
-            <!-- Ensure the video URL is correct -->
+        {% elif adv.media_type == "Video" %}
+        <div
+          class="slide slide-1 absolute w-full h-full opacity-0 transition-opacity duration-1000 cursor-pointer pointer-events-none"
+          data-url="{{adv.redirect_link}}"
+        >
+          <video class="w-full h-full object-cover" autoplay muted loop>
+            <source src="{{adv.media_url}}" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
+        {% endif %} {% endfor %}
       </div>
     </div>
 
     <!-- Second Ad Box with Image Slideshow -->
-    <a href="https://www.intellectdivi.com/" target="_blank">
-      <div class="ad-box">
-        <div class="ad-slideshow">
-          <div class="ad-image-container">
-            <img
-              src="https://cdn.yellowmessenger.com/OGJDayjMR4n81734681557269.jpeg"
-              alt="Recruitment Advertisement"
-            />
-          </div>
-          <div class="ad-image-container">
-            <img
-              src="https://cdn.yellowmessenger.com/eRzOfCc5uSsT1734681543395.jpg"
-              alt="Recruitment Advertisement"
-            />
-          </div>
-          <div class="ad-image-container">
-            <img
-              src="https://cdn.yellowmessenger.com/kfrb0QFTEeqN1734681632235.png"
-              alt="Recruitment Advertisement"
-            />
-          </div>
+    <div
+      class="relative h-[180px] w-full max-w-lg mx-auto overflow-hidden rounded-lg shadow-lg mt-8"
+    >
+      <div class="slider slider-2 relative w-full h-56">
+        {% for adv in sec2 %} {% if adv.media_type == "Image" %}
+        <div
+          class="slide slide-2 absolute w-full h-full opacity-0 transition-opacity duration-1000 cursor-pointer pointer-events-none"
+          data-url="{{adv.redirect_link}}"
+        >
+          <img
+            src="{{adv.media_url}}"
+            alt="Advertisement"
+            class="w-full h-full object-cover"
+          />
         </div>
+        {% elif adv.media_type == "Video" %}
+        <div
+          class="slide slide-2 absolute w-full h-full opacity-0 transition-opacity duration-1000 cursor-pointer pointer-events-none"
+          data-url="{{adv.redirect_link}}"
+        >
+          <video class="w-full h-full object-cover" autoplay muted loop>
+            <source src="{{adv.media_url}}" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        {% endif %} {% endfor %}
       </div>
-    </a>
+    </div>
 
     <!-- Third Ad Box with Image Slideshow -->
-    <div class="ad-box">
-      <div class="ad-slideshow">
-        <div class="ad-image-container active">
+    <div
+      class="relative h-[180px] w-full max-w-lg mx-auto overflow-hidden rounded-lg shadow-lg mt-8"
+    >
+      <div class="slider slider-3 relative w-full h-56">
+        {% for adv in sec3 %} {% if adv.media_type == "Image" %}
+        <div
+          class="slide slide-3 absolute w-full h-full opacity-0 transition-opacity duration-1000 cursor-pointer pointer-events-none"
+          data-url="{{adv.redirect_link}}"
+        >
           <img
-            src="https://cdn.yellowmessenger.com/ocAAFbuz3O7V1734681661220.jpeg"
-            alt="Job Training Advertisement"
+            src="{{adv.media_url}}"
+            alt="Advertisement"
+            class="w-full h-full object-cover"
           />
         </div>
-        <div class="ad-image-container">
-          <img
-            src="https://cdn.yellowmessenger.com/92ZENQocsyCi1734681673376.jpg"
-            alt="Job Training Advertisement"
-          />
+        {% elif adv.media_type == "Video" %}
+        <div
+          class="slide slide-3 absolute w-full h-full opacity-0 transition-opacity duration-1000 cursor-pointer pointer-events-none"
+          data-url="{{adv.redirect_link}}"
+        >
+          <video class="w-full h-full object-cover" autoplay muted loop>
+            <source src="{{adv.media_url}}" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
-        <div class="ad-image-container">
-          <img
-            src="https://cdn.yellowmessenger.com/wtJ0zcKfJzFW1734681690293.jpeg"
-            alt="Job Training Advertisement"
-          />
-        </div>
+        {% endif %} {% endfor %}
       </div>
     </div>
   </aside>
@@ -567,5 +513,119 @@
 
 <!-- JS -->
 {% block js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Create a function to initialize a slider
+    function initializeSlider(sliderNumber) {
+      const slides = document.querySelectorAll(`.slide-${sliderNumber}`);
+      if (slides.length === 0) {
+        console.log(`No slides found for slider-${sliderNumber}`);
+        return;
+      }
+
+      let currentIndex = 0;
+      let autoAdvanceTimer = null;
+
+      function showSlide(index) {
+        // Clear any existing timer
+        if (autoAdvanceTimer) {
+          clearTimeout(autoAdvanceTimer);
+          autoAdvanceTimer = null;
+        }
+
+        slides.forEach((slide, i) => {
+          if (i === index) {
+            slide.classList.add("opacity-100");
+            slide.classList.remove("opacity-0", "pointer-events-none");
+
+            // Check if this slide has a video
+            const video = slide.querySelector("video");
+            if (video) {
+              // Remove loop attribute if it exists
+              video.removeAttribute("loop");
+
+              // Reset video to beginning
+              video.currentTime = 0;
+
+              // Play the video and set up the ended event
+              video
+                .play()
+                .then(() => {
+                  // Make sure onended is set after play starts
+                  video.onended = function () {
+                    nextSlide();
+                  };
+                })
+                .catch((err) => {
+                  console.error("Video playback error:", err);
+                  // If video fails to play, use fallback timer
+                  autoAdvanceTimer = setTimeout(nextSlide, 5000);
+                });
+            } else {
+              // For non-video slides, use the timer
+              autoAdvanceTimer = setTimeout(nextSlide, 5000);
+            }
+          } else {
+            slide.classList.remove("opacity-100");
+            slide.classList.add("opacity-0", "pointer-events-none");
+
+            // Pause any videos in hidden slides
+            const video = slide.querySelector("video");
+            if (video) {
+              video.pause();
+              // Remove any existing onended handlers
+              video.onended = null;
+            }
+          }
+        });
+      }
+
+      function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        showSlide(currentIndex);
+      }
+
+      // Add click event listeners to open links in new tabs
+      slides.forEach((slide) => {
+        slide.addEventListener("click", function () {
+          const url = this.getAttribute("data-url");
+          if (url) {
+            window.open(url, "_blank");
+          }
+        });
+      });
+
+      showSlide(currentIndex);
+    }
+
+    // Initialize all your sliders
+    initializeSlider(1); // For sec1
+    initializeSlider(2); // For sec2
+    initializeSlider(3); // For sec2
+    initializeSlider(4); // For sec2
+    // Add more as needed
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const viewMoreBtn = document.getElementsByClassName("view-more");
+    const quoteBtn = document.getElementsByClassName("provide-quote");
+    // const learnMoreBtn = document.getElementsByClassName("learn_more_btn");
+
+    // Add click event to all buttons with the class "postajob-btn"
+    Array.from(viewMoreBtn).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        window.location.href = "{% url 'signup' %}";
+      });
+    });
+
+    // Add click event to all buttons with the class "findajob-btn"
+    Array.from(quoteBtn).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        window.location.href = "{% url 'signup' %}";
+      });
+    });
+  });
+</script>
 <script src="{% static 'js/jobs.js' %}"></script>
 {% endblock %}

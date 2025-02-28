@@ -7,7 +7,7 @@ from django.contrib import messages
 import json
 import re
 from django.utils.timezone import now
-from db_schemas.models import Contact, Client, ProjectsDisplay, Freelancer, Skill, Certificate
+from db_schemas.models import Contact, JobsPageImages, WebAnnouncement, JobsPageAdv, Client, ProjectsDisplay, Freelancer, Skill, Certificate
 # from .forms import ContactForm
 
 def index(request):
@@ -21,8 +21,22 @@ def jobs(request):
     jobs = ProjectsDisplay.objects.all().order_by('-created_at')
     for job in jobs:
         job.skills_list = [skill.strip().title() for skill in job.skills_required.split(',')]
-    context = {'jobs': jobs}
-    print("Jobs: ", jobs)
+
+    sec1 = JobsPageAdv.objects.filter(section_name="sec_1").all()
+    sec2 = JobsPageAdv.objects.filter(section_name="sec_2").all()
+    sec3 = JobsPageAdv.objects.filter(section_name="sec_3").all()
+    web_obj = WebAnnouncement.objects.all().order_by('-created_at').first()
+    images = JobsPageImages.objects.all()
+    print(len(images), "Images length")
+    print("WEB Image", web_obj)
+    context = {
+        'jobs': jobs, 
+        'sec1': sec1,
+        'sec2': sec2,
+        'sec3': sec3,
+        'web_obj':web_obj,
+        'images':images,
+    } 
     return render(request, 'non_register/jobs.html', context)
 
 def aboutus(request):

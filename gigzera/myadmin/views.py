@@ -14,7 +14,7 @@ from urllib.parse import urlparse
 from itertools import chain
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from db_schemas.models import Contact, PartnerLogos, JobsPageAdv, ProjectQuote, MyAdmin, Tasks, Client, Milestones, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
+from db_schemas.models import Contact, PartnerLogos, JobsPageImages, WebAnnouncement, JobsPageAdv, ProjectQuote, MyAdmin, Tasks, Client, Milestones, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
 from django.core.exceptions import ValidationError
 from datetime import datetime
 
@@ -200,7 +200,11 @@ def ad_login(request):
             if admin and check_password(password, admin.password):
                 request.session['user_id'] = admin.adminId
                 print("I am inside the admin if condition")
-                return redirect('ad_dashboard')  # Redirect on success
+                if admin.user_role == "Admin":
+                    return redirect('ad_dashboard')  # Redirect on success
+                else:
+                    return redirect('sup_ad_dashboard')  # Redirect on success
+
         
         elif '@' in userid_or_email:
             admin = MyAdmin.objects.filter(email=userid_or_email).first()
@@ -208,7 +212,10 @@ def ad_login(request):
                 request.session['user_id'] = admin.adminId
                 print("Session Data:", request.session.items())
                 print("I am inside the admin else condition")
-                return redirect('ad_dashboard')  # Redirect on success
+                if admin.user_role == "Admin":
+                    return redirect('ad_dashboard')  # Redirect on success
+                else:
+                    return redirect('sup_ad_dashboard')  # Redirect on success
         
         print("Error: Invalid credentials")
         messages.error(request, 'Invalid credentials')
@@ -272,6 +279,31 @@ def dashboard(request):
     }
     print(context)
     return render(request, 'myadmin/dashboard.html', context)
+
+def superAdminDashboard(request):
+    admin_id = request.session.get('user_id')
+    print("I am getting the admin id as ", admin_id)
+    freelancers = Freelancer.objects.all()
+    clients = Client.objects.all()
+    ongoingProjects = OngoingProjects.objects.all()
+    yourProjects = ProjectQuote.objects.filter(admin_bid_status='approved', client_bid_status='approved', admin_id=admin_id)
+    bids = ProjectQuote.objects.all().order_by('-created_at')[:3]
+    for bid in bids:
+        job = ProjectsDisplay.objects.filter(opportunityId=bid.opportunityId).first()
+        user = Freelancer.objects.filter(userId=bid.freelancer_id).first()
+        bid.title = job.title if job else "No Title"  # Fixed variable name
+        bid.username = user.name
+        bid.imgUrl = user.profilePic
+    context = {
+        'no_of_freelancers': format_currency(len(freelancers), "INR"),
+        'no_of_clients': format_currency(len(clients), "INR"),
+        'no_of_ogp': format_currency(len(ongoingProjects), "INR"),
+        'no_of_yp': format_currency(len(yourProjects), "INR"),
+        'bids': bids
+    }
+    print(context)
+    return render(request, 'myadmin/superAdminDashboard.html', context)
+
 
 
 def freelancers(request, filter_type=None):
@@ -435,12 +467,14 @@ def singleOngoingProject(request):
     formatted_start_date = singleOgp.start_date.strftime("%Y-%m-%d") if singleOgp.start_date else ""
     formatted_end_date = singleOgp.end_date.strftime("%Y-%m-%d") if singleOgp.end_date else ""
 
+    tasks = Tasks.objects.filter(taskBid_id=bid.projectQuoteId).all()
     context = {
         'job': job, 
         'bid': bid, 
         'singleOgp': singleOgp,
-        'formatted_start_date': formatted_start_date,  # ✅ Correct Format
-        'formatted_end_date': formatted_end_date       # ✅ Correct Format
+        'formatted_start_date': formatted_start_date,  
+        'formatted_end_date': formatted_end_date,     
+        'tasks': tasks
     }
     
 
@@ -517,6 +551,51 @@ def singleYourProject(request):
 
     
     return render(request, 'myadmin/singleYourProject.html', context)
+
+
+# Super admin ongoing projects
+def saSingleOGProject(request):
+    ongp_id = request.GET.get('ongpId') or request.POST.get('ongpId')
+    print("Here is the ID:", ongp_id)
+
+    singleOgp = OngoingProjects.objects.filter(ongProjectId=ongp_id).first()
+
+    if not singleOgp:
+        messages.error(request, "No project found with the given ID.")
+        return redirect('ad_yourProjects')  # Redirect safely
+
+    opportunity_id = singleOgp.opportunityId
+    bid = ProjectQuote.objects.filter(projectQuoteId=singleOgp.bidId).first()
+
+    if not bid:
+        messages.error(request, "No bid found for this project.")
+        return redirect('ad_yourProjects')  # Redirect safely
+
+    # Fix budget calculations
+    # ad_payment = bid.revised_budget.replace(",", "").strip()
+    # amount = float(ad_payment)
+    # bid.advance_payment = amount * (30 / 100)
+
+    job = ProjectsDisplay.objects.filter(opportunityId=opportunity_id).first()
+
+    if job:
+        job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
+        job.cur_symbol = get_currency_symbol(job.currency)
+    milestones = Milestones.objects.filter(bid_id=bid.projectQuoteId).all()
+    tasks = Tasks.objects.filter(taskBid_id=bid.projectQuoteId).all()
+    # print("Milestones", milestones)
+    context = {
+        'job': job,
+        'bid': bid,
+        'singleOgp': singleOgp,
+        'milestones': milestones,
+        'tasks': tasks
+    }
+    # print("Context", context)
+    # print(f"Date: {singleOgp.start_date}, {singleOgp.end_date}")
+
+    
+    return render(request, 'myadmin/saSingleOGProject.html', context)
 
 
 def updateProgressStatus(request):
@@ -784,8 +863,50 @@ def profileView(request):
     return render(request, 'myadmin/profileView.html', context)
 
 
-def jobPageImages(request):
-    return render(request, 'myadmin/jobPageImages.html')
+def jobsPageImages(request):
+    admin_id = request.session.get('user_id')
+    print("I am getting admin id as ", admin_id)
+    images = JobsPageImages.objects.all()
+    context = {
+        'images': images
+    }
+    return render(request, 'myadmin/jobsPageImages.html', context)
+
+def addJobsPageImages(request):
+    admin_id = request.session.get('user_id')
+    print("I am getting admin id as ", admin_id)
+    if request.method == "POST":
+        media_input = request.FILES.get('mediaInput')
+        if media_input:
+            media_url, file_name = upload_to_s3("jobsPageImages", media_input)
+            print(media_url,file_name, "Media url")
+
+            JobsPageImages.objects.create(
+                admin_id = admin_id,
+                media_name = file_name,
+                media_url = media_url,
+                media_type = "Image",
+            )
+
+            return redirect('ad_jobsPageImages')
+        else:
+            print("Not getting media")
+    return redirect('ad_jobsPageImages')
+
+
+def removeJobsPageImages(request):
+    admin_id = request.session.get('user_id')
+    img_id = request.GET.get('imgId')
+    print("I am getting admin id as ", admin_id, img_id)
+    obj = get_object_or_404(JobsPageImages, id=img_id)
+    resp = delete_if_uploaded(str(obj.media_url))
+    print("delete Response", resp)
+    if request.method == "POST":
+        obj.delete()
+        return redirect('ad_jobsPageImages')
+    return redirect('ad_jobsPageImages')
+
+
 
 def partnerLogos(request):
     admin_id = request.session.get('user_id')
@@ -1053,4 +1174,38 @@ def editJobsPageAdv(request):
     return redirect('ad_jobsPageAdv')
 
 def removeJobsPageAdv(request):
+    admin_id = request.session.get('user_id')
+    adv_id = request.GET.get('advId')
+    print("I am getting admin id as ", admin_id, adv_id)
+    obj = get_object_or_404(JobsPageAdv, id=adv_id)
+    resp = delete_if_uploaded(str(obj.media_url))
+    print("delete Response", resp)
+    if request.method == "POST":
+        obj.delete()
+        return redirect('ad_jobsPageAdv')
     return redirect('ad_jobsPageAdv')
+
+
+# Web page announcement
+def webAnnounce(request):
+    admin_id = request.session.get('user_id')
+
+    if request.method == 'POST':
+        media_type = request.POST.get('mediaType')
+        media_input = request.FILES.get('mediaInput')
+        anc_text = request.POST.get('ancText')
+
+        if media_input:
+            media_url, file_name = upload_to_s3("webAnnounce", media_input)
+
+            WebAnnouncement.objects.create(
+                    admin_id = admin_id,
+                    media_type = media_type,
+                    media_url = media_url,
+                    media_name=file_name,
+                    anc_text=anc_text
+            )
+            return redirect('sup_ad_dashboard')
+        else:
+            print("Not getting media")
+    return redirect('sup_ad_dashboard')

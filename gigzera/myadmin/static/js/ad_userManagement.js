@@ -193,97 +193,153 @@
 // }
 
 // Function to render users
-function renderUsers() {
-  const usersGrid = document.getElementById("usersGrid");
-  if (usersGrid) {
-    usersGrid.innerHTML = users.map((user) => createUserCard(user)).join("");
-  } else {
-    console.error("Users grid element not found");
-  }
-}
 
-// Pagination functionality
-let currentPage = 1;
-const usersPerPage = 9;
-const totalPages = Math.ceil(users.length / usersPerPage);
+// function renderUsers() {
+//   const usersGrid = document.getElementById("usersGrid");
+//   if (usersGrid) {
+//     usersGrid.innerHTML = users.map((user) => createUserCard(user)).join("");
+//   } else {
+//     console.error("Users grid element not found");
+//   }
+// }
 
-// Get users for current page
-function getUsersForPage(page) {
-  const start = (page - 1) * usersPerPage;
-  const end = start + usersPerPage;
-  return users.slice(start, end);
-}
+// // Pagination functionality
+// let currentPage = 1;
+// const usersPerPage = 9;
+// const totalPages = Math.ceil(users.length / usersPerPage);
 
-// Update page content
-function updatePage(page) {
-  const pageUsers = getUsersForPage(page);
-  const usersGrid = document.getElementById("usersGrid");
-  usersGrid.innerHTML = pageUsers.map((user) => createUserCard(user)).join("");
+// // Get users for current page
+// function getUsersForPage(page) {
+//   const start = (page - 1) * usersPerPage;
+//   const end = start + usersPerPage;
+//   return users.slice(start, end);
+// }
 
-  document.querySelectorAll(".page-btn").forEach((btn) => {
-    btn.classList.remove("active");
-    if (btn.textContent == page) {
-      btn.classList.add("active");
+// // Update page content
+// function updatePage(page) {
+//   const pageUsers = getUsersForPage(page);
+//   const usersGrid = document.getElementById("usersGrid");
+//   usersGrid.innerHTML = pageUsers.map((user) => createUserCard(user)).join("");
+
+//   document.querySelectorAll(".page-btn").forEach((btn) => {
+//     btn.classList.remove("active");
+//     if (btn.textContent == page) {
+//       btn.classList.add("active");
+//     }
+//   });
+
+//   addViewProfileEventListeners();
+// }
+
+// // Add event listeners for the "View Profile" button
+// // function addViewProfileEventListeners() {
+// //   document.querySelectorAll(".view-profile-btn").forEach((button) => {
+// //     button.addEventListener("click", (e) => {
+// //       e.preventDefault();
+// //       const userType = button.getAttribute("data-type");
+// //       const userName = button.getAttribute("data-name");
+
+// //       if (userType === "freelancer") {
+// //         window.location.href = `../html/Design CR Admin Freelancer view.html`;
+// //       } else if (userType === "client") {
+// //         window.location.href = `../html/Design CR Admin recruiter view.html`;
+// //       }
+// //     });
+// //   });
+// // }
+
+// // Initialize the page
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   updatePage(1);
+
+//   document.querySelectorAll(".page-btn").forEach((button) => {
+//     button.addEventListener("click", (e) => {
+//       const page = parseInt(e.target.textContent);
+//       currentPage = page;
+//       updatePage(page);
+//     });
+//   });
+
+//   document.querySelector(".prev-btn").addEventListener("click", () => {
+//     if (currentPage > 1) {
+//       currentPage--;
+//       updatePage(currentPage);
+//     }
+//   });
+
+//   document.querySelector(".next-btn").addEventListener("click", () => {
+//     if (currentPage < totalPages) {
+//       currentPage++;
+//       updatePage(currentPage);
+//     }
+//   });
+
+//   addViewProfileEventListeners();
+// });
+
+// // Error handling for images
+// document.addEventListener(
+//   "error",
+//   (e) => {
+//     if (e.target.tagName.toLowerCase() === "img") {
+//       e.target.src =
+//         "https://cdn.yellowmessenger.com/Xmnn1dek6nzZ1735637434099.jpeg";
+//     }
+//   },
+//   true
+// );
+
+// New js for filterization:
+
+document.addEventListener("DOMContentLoaded", function () {
+  const filterButton = document.getElementById("filterToggle");
+  const filterOptions = document.getElementById("filterOptions");
+  const userCards = document.querySelectorAll(".user-card");
+
+  // Toggle filter options visibility
+  filterButton.addEventListener("click", function () {
+    if (
+      filterOptions.style.display === "none" ||
+      filterOptions.style.display === ""
+    ) {
+      // Get button position & width
+      const rect = filterButton.getBoundingClientRect();
+      filterOptions.style.position = "absolute";
+      filterOptions.style.left = `${rect.left}px`;
+      filterOptions.style.top = `${rect.bottom + window.scrollY}px`;
+      filterOptions.style.width = `${rect.width}px`; // Match width of button
+      filterOptions.style.display = "block";
+    } else {
+      filterOptions.style.display = "none";
     }
   });
 
-  addViewProfileEventListeners();
-}
+  // Apply filter when a button is clicked
+  document.querySelectorAll(".filter-option").forEach((button) => {
+    button.addEventListener("click", function () {
+      const selectedRole = this.getAttribute("data-role");
 
-// Add event listeners for the "View Profile" button
-// function addViewProfileEventListeners() {
-//   document.querySelectorAll(".view-profile-btn").forEach((button) => {
-//     button.addEventListener("click", (e) => {
-//       e.preventDefault();
-//       const userType = button.getAttribute("data-type");
-//       const userName = button.getAttribute("data-name");
+      userCards.forEach((card) => {
+        if (selectedRole === "all" || card.classList.contains(selectedRole)) {
+          card.style.display = "";
+        } else {
+          card.style.display = "none";
+        }
+      });
 
-//       if (userType === "freelancer") {
-//         window.location.href = `../html/Design CR Admin Freelancer view.html`;
-//       } else if (userType === "client") {
-//         window.location.href = `../html/Design CR Admin recruiter view.html`;
-//       }
-//     });
-//   });
-// }
-
-// Initialize the page
-document.addEventListener("DOMContentLoaded", () => {
-  updatePage(1);
-
-  document.querySelectorAll(".page-btn").forEach((button) => {
-    button.addEventListener("click", (e) => {
-      const page = parseInt(e.target.textContent);
-      currentPage = page;
-      updatePage(page);
+      // Hide the filter options after selection
+      filterOptions.style.display = "none";
     });
   });
 
-  document.querySelector(".prev-btn").addEventListener("click", () => {
-    if (currentPage > 1) {
-      currentPage--;
-      updatePage(currentPage);
+  // Hide filter options when clicking outside
+  document.addEventListener("click", function (event) {
+    if (
+      !filterButton.contains(event.target) &&
+      !filterOptions.contains(event.target)
+    ) {
+      filterOptions.style.display = "none";
     }
   });
-
-  document.querySelector(".next-btn").addEventListener("click", () => {
-    if (currentPage < totalPages) {
-      currentPage++;
-      updatePage(currentPage);
-    }
-  });
-
-  addViewProfileEventListeners();
 });
-
-// Error handling for images
-document.addEventListener(
-  "error",
-  (e) => {
-    if (e.target.tagName.toLowerCase() === "img") {
-      e.target.src =
-        "https://cdn.yellowmessenger.com/Xmnn1dek6nzZ1735637434099.jpeg";
-    }
-  },
-  true
-);

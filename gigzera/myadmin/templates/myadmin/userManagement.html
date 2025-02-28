@@ -11,9 +11,20 @@
 <div class="cntr">
   <!-- Main Content -->
   <!-- <main class="main-content"> -->
-  <div class="header">
+  <!-- <div class="header">
     <h1>User Management</h1>
     <button class="filter-btn"><span class="icon">▼</span> Filter</button>
+  </div> -->
+  <div class="header">
+    <h1>User Management</h1>
+    <button class="filter-btn" id="filterToggle">
+      <span class="icon">▼</span> Filter
+    </button>
+    <div id="filterOptions" class="filter-options" style="display: none">
+      <button class="filter-option" data-role="all">All</button>
+      <button class="filter-option" data-role="client">Clients</button>
+      <button class="filter-option" data-role="freelancer">Freelancers</button>
+    </div>
   </div>
 
   <!-- This div is important for the JavaScript to work -->

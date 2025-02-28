@@ -10,7 +10,7 @@ import locale
 import boto3
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from db_schemas.models import Contact, ProjectQuote, Tasks, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
+from db_schemas.models import Contact, ProjectQuote, JobsPageImages, WebAnnouncement, JobsPageAdv, Tasks, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
 from django.core.exceptions import ValidationError
 from datetime import datetime
 # from django.contrib.auth.decorators import login_required
@@ -128,7 +128,23 @@ def jobs(request):
     for job in jobs:
         job.skills_list = [skill.strip().title() for skill in job.skills_required.split(',')]
         job.cur_symbol = get_currency_symbol(job.currency)
-    context = {'jobs': jobs, 'user': user}    
+    
+    sec1 = JobsPageAdv.objects.filter(section_name="sec_1").all()
+    sec2 = JobsPageAdv.objects.filter(section_name="sec_2").all()
+    sec3 = JobsPageAdv.objects.filter(section_name="sec_3").all()
+    web_obj = WebAnnouncement.objects.all().order_by('-created_at').first()
+    images = JobsPageImages.objects.all()
+    print(len(images), "Images length")
+    print("WEB Image", web_obj)
+    context = {
+        'jobs': jobs, 
+        'user': user,
+        'sec1': sec1,
+        'sec2': sec2,
+        'sec3': sec3,
+        'web_obj':web_obj,
+        'images':images,
+    }    
     return render(request, 'freelancer/jobs.html', context)
 
 def aboutus(request):

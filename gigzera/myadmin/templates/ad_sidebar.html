@@ -14,7 +14,7 @@
   </div> -->
   <nav class="p-4 space-y-2">
     <a
-      href="{% url 'ad_dashboard' %}"
+      href="{% if user_role == 'Super Admin' %}{% url 'sup_ad_dashboard' %}{% else %}{% url 'ad_dashboard' %}{% endif %}"
       class="menu-item flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg"
     >
       <i class="fas fa-tachometer-alt mr-3"></i> Dashboard
@@ -62,7 +62,7 @@
       <i class="fas fa-bullseye mr-3"></i> Jobs Page Advertisement
     </a>
     <a
-      href="{% url 'ad_jobPageImages' %}"
+      href="{% url 'ad_jobsPageImages' %}"
       class="menu-item flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg"
     >
       <i class="fas fa-images mr-3"></i> Jobs Page Images
@@ -73,12 +73,21 @@
     >
       <i class="fas fa-handshake mr-3"></i> Partner Company Logos
     </a>
+
+    {% if user_role == "Super Admin" %}
     <a
       href="{% url 'ad_adminManagement' %}"
       class="menu-item flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg"
     >
       <i class="fas fa-user mr-3"></i> Admin Management
     </a>
+    {% endif %}
+    <!-- <a
+      href="{% url 'ad_adminManagement' %}"
+      class="menu-item flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+    >
+      <i class="fas fa-user mr-3"></i> Admin Management
+    </a> -->
     <a
       href="{% url 'ad_logout' %}"
       class="menu-item flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg"

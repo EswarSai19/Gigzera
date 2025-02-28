@@ -62,7 +62,7 @@
           >Read More...</a
         >
         <a
-          href="{% url 'ad_singleOngoingProject' %}?ongpId={{ogp.ongProjectId}}"
+          href="{% if user_role == 'Super Admin' %}{% url 'sup_ad_singleOGProject' %}?ongpId={{ogp.ongProjectId}}{% else %}{% url 'ad_singleOngoingProject' %}?ongpId={{ogp.ongProjectId}}{% endif %}"
           class="btn btn-outline"
           style="
             text-decoration: none;

@@ -36,33 +36,91 @@ window.addEventListener("load", () => {
 
 // Start the slideshow when the page is loaded
 window.onload = function () {
-  // Start the first video
-  videos[0].play();
+  const videos = document.querySelectorAll("video");
+
+  // Start the first video only if a video exists
+  if (videos.length > 0) {
+    videos[0].play();
+  }
 
   // Start the image slideshow
   startImageSlideshow();
 };
 
 // Function to start the image slideshow for ad-boxes
+// function startImageSlideshow() {
+//   const adBoxes = document.querySelectorAll(".ad-box .ad-slideshow");
+
+//   adBoxes.forEach((adBox) => {
+//     // Skip the video box (first box)
+//     if (adBox.querySelector(".ad-video-container")) return;
+
+//     const images = adBox.querySelectorAll(".ad-image-container");
+//     let activeIndex = 0;
+
+//     // Set the first image to active initially
+//     images[activeIndex].classList.add("active");
+
+//     // Change the active image every 3 seconds (5000 milliseconds)
+//     setInterval(() => {
+//       images[activeIndex].classList.remove("active"); // Hide the current image
+//       activeIndex = (activeIndex + 1) % images.length; // Move to the next image (circular)
+//       images[activeIndex].classList.add("active"); // Show the next image
+//     }, 5000); // 3 seconds interval
+//   });
+// }
+
+// New
+// function startImageSlideshow() {
+//   const adBoxes = document.querySelectorAll(".ad-box .ad-slideshow");
+
+//   adBoxes.forEach((adBox) => {
+//     const images = adBox.querySelectorAll(".ad-image-container");
+
+//     if (images.length === 0) return; // If no images, skip
+
+//     let activeIndex = 0;
+//     images[activeIndex].classList.add("active");
+
+//     setInterval(() => {
+//       images[activeIndex].classList.remove("active"); // Hide current image
+//       activeIndex = (activeIndex + 1) % images.length; // Move to next image
+//       images[activeIndex].classList.add("active"); // Show next image
+
+//       // ** Dynamically update the href based on the active image **
+//       const activeImageContainer = images[activeIndex];
+//       const linkElement = activeImageContainer.querySelector("a");
+
+//       if (linkElement) {
+//         // ✅ Ensure the <a> tag exists before using .href
+//         const newLink = linkElement.href;
+
+//         // Find the currently active <a> tag and update its href
+//         const adLink = adBox.querySelector(".ad-link");
+//         if (adLink) {
+//           adLink.href = newLink;
+//         }
+//       }
+//     }, 5000); // Change every 5 seconds
+//   });
+// }
+
 function startImageSlideshow() {
   const adBoxes = document.querySelectorAll(".ad-box .ad-slideshow");
 
   adBoxes.forEach((adBox) => {
-    // Skip the video box (first box)
-    if (adBox.querySelector(".ad-video-container")) return;
-
     const images = adBox.querySelectorAll(".ad-image-container");
-    let activeIndex = 0;
 
-    // Set the first image to active initially
+    if (images.length === 0) return; // Skip if no images
+
+    let activeIndex = 0;
     images[activeIndex].classList.add("active");
 
-    // Change the active image every 3 seconds (3000 milliseconds)
     setInterval(() => {
-      images[activeIndex].classList.remove("active"); // Hide the current image
-      activeIndex = (activeIndex + 1) % images.length; // Move to the next image (circular)
-      images[activeIndex].classList.add("active"); // Show the next image
-    }, 3000); // 3 seconds interval
+      images[activeIndex].classList.remove("active"); // Hide current image
+      activeIndex = (activeIndex + 1) % images.length; // Move to next image
+      images[activeIndex].classList.add("active"); // Show next image
+    }, 5000); // Change every 5 seconds
   });
 }
 
