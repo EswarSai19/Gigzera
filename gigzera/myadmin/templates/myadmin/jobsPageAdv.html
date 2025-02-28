@@ -34,7 +34,13 @@
         {% for adv in sec1 %}
         <tr>
           <td>{{forloop.counter}}.</td>
-          <td><i class="far fa-image"></i> {{adv.media_type}}</td>
+          <td>
+            {% if adv.media_type == "Image" %}
+            <i class="far fa-image"></i>
+            {% else %}
+            <i class="fa-solid fa-video"></i>
+            {% endif %} {{ adv.media_type }}
+          </td>
           <td>{{adv.media_name}}</td>
           <td>{{adv.redirect_link}}</td>
           <td>
@@ -44,12 +50,15 @@
             >
               <i class="fas fa-edit"></i> Edit
             </button>
-            <button
-              class="delete-button btn btn-danger btn-sm"
-              onclick="deleteRow(this)"
+            <form
+              action="{% url 'ad_removeJobsPageAdv' %}?advId={{adv.id}}"
+              method="POST"
             >
-              <i class="fas fa-trash-alt"></i> Delete
-            </button>
+              {% csrf_token %}
+              <button type="submit" class="delete-button btn btn-danger btn-sm">
+                <i class="fas fa-trash-alt"></i> Delete
+              </button>
+            </form>
           </td>
         </tr>
         {% endfor %}
@@ -82,7 +91,13 @@
         {% for adv in sec2 %}
         <tr>
           <td>{{forloop.counter}}.</td>
-          <td><i class="far fa-image"></i> {{adv.media_type}}</td>
+          <td>
+            {% if adv.media_type == "Image" %}
+            <i class="far fa-image"></i>
+            {% else %}
+            <i class="fa-solid fa-video"></i>
+            {% endif %} {{ adv.media_type }}
+          </td>
           <td>{{adv.media_name}}</td>
           <td>{{adv.redirect_link}}</td>
           <td>
@@ -92,12 +107,15 @@
             >
               <i class="fas fa-edit"></i> Edit
             </button>
-            <button
-              class="delete-button btn btn-danger btn-sm"
-              onclick="deleteRow(this)"
+            <form
+              action="{% url 'ad_removeJobsPageAdv' %}?advId={{adv.id}}"
+              method="POST"
             >
-              <i class="fas fa-trash-alt"></i> Delete
-            </button>
+              {% csrf_token %}
+              <button type="submit" class="delete-button btn btn-danger btn-sm">
+                <i class="fas fa-trash-alt"></i> Delete
+              </button>
+            </form>
           </td>
         </tr>
         {% endfor %}
@@ -130,7 +148,13 @@
         {% for adv in sec3 %}
         <tr>
           <td>{{forloop.counter}}.</td>
-          <td><i class="far fa-image"></i> {{adv.media_type}}</td>
+          <td>
+            {% if adv.media_type == "Image" %}
+            <i class="far fa-image"></i>
+            {% else %}
+            <i class="fa-solid fa-video"></i>
+            {% endif %} {{ adv.media_type }}
+          </td>
           <td>{{adv.media_name}}</td>
           <td>{{adv.redirect_link}}</td>
           <td>
@@ -140,12 +164,15 @@
             >
               <i class="fas fa-edit"></i> Edit
             </button>
-            <button
-              class="delete-button btn btn-danger btn-sm"
-              onclick="deleteRow(this)"
+            <form
+              action="{% url 'ad_removeJobsPageAdv' %}?advId={{adv.id}}"
+              method="POST"
             >
-              <i class="fas fa-trash-alt"></i> Delete
-            </button>
+              {% csrf_token %}
+              <button type="submit" class="delete-button btn btn-danger btn-sm">
+                <i class="fas fa-trash-alt"></i> Delete
+              </button>
+            </form>
           </td>
         </tr>
         {% endfor %}
@@ -328,7 +355,7 @@
 <!-- Modal Code for Section 2 -->
 <div
   id="createAdModal2"
-  class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden"
+  class="fixed inset-0 backdrop-blur-sm bg-white-100 bg-opacity-50 flex items-center justify-center hidden"
 >
   <div class="bg-white rounded-lg shadow-lg w-[500px] p-6">
     <div class="flex justify-between items-center border-b">
@@ -340,14 +367,21 @@
         &times;
       </button>
     </div>
-    <div class="py-4">
-      <form id="form2">
+    <form
+      id="form2"
+      action="{% url 'ad_addJobsPageAdv' %}?section=sec_2"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      {% csrf_token %}
+      <div class="py-4">
         <div class="mb-3">
           <label for="mediaType2" class="block font-medium mb-2"
             >Media Type</label
           >
           <select
             id="mediaType2"
+            name="mediaType"
             class="w-full border rounded p-2"
             onchange="updateFileType(2)"
           >
@@ -377,6 +411,7 @@
             <input
               type="file"
               id="fileInput2"
+              name="mediaInput"
               class="hidden"
               onchange="handleFileSelect(event, 2)"
               accept="image/*,video/*"
@@ -390,33 +425,36 @@
           <input
             type="url"
             id="redirectLink2"
+            name="redirectLink"
             class="w-full border rounded p-2"
             placeholder="Enter the Redirect URL"
           />
         </div>
-      </form>
-    </div>
-    <div class="flex justify-end gap-2 border-t pt-3">
-      <button
-        class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
-        onclick="closeModal('createAdModal2')"
-      >
-        Close
-      </button>
-      <button
-        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        onclick="saveAdvertisement(2)"
-      >
-        Save Advertisement
-      </button>
-    </div>
+      </div>
+      <div class="flex justify-end gap-2 border-t pt-3">
+        <button
+          type="button"
+          class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+          onclick="closeModal('createAdModal2')"
+        >
+          Close
+        </button>
+        <button
+          type="submit"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          onclick="saveAdvertisement(2)"
+        >
+          Save Advertisement
+        </button>
+      </div>
+    </form>
   </div>
 </div>
 
 <!-- Modal Code for Section 3 -->
 <div
   id="createAdModal3"
-  class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden"
+  class="fixed inset-0 backdrop-blur-sm bg-white-100 bg-opacity-50 flex items-center justify-center hidden"
 >
   <div class="bg-white rounded-lg shadow-lg w-[500px] p-6">
     <div class="flex justify-between items-center border-b">
@@ -428,14 +466,21 @@
         &times;
       </button>
     </div>
-    <div class="py-4">
-      <form id="form3">
+    <form
+      id="form3"
+      action="{% url 'ad_addJobsPageAdv' %}?section=sec_3"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      {% csrf_token %}
+      <div class="py-4">
         <div class="mb-3">
           <label for="mediaType3" class="block font-medium mb-2"
             >Media Type</label
           >
           <select
             id="mediaType3"
+            name="mediaType"
             class="w-full border rounded p-2"
             onchange="updateFileType(3)"
           >
@@ -465,6 +510,7 @@
             <input
               type="file"
               id="fileInput3"
+              name="mediaInput"
               class="hidden"
               onchange="handleFileSelect(event, 3)"
               accept="image/*,video/*"
@@ -478,26 +524,27 @@
           <input
             type="url"
             id="redirectLink3"
+            name="redirectLink"
             class="w-full border rounded p-2"
             placeholder="Enter the Redirect URL"
           />
         </div>
-      </form>
-    </div>
-    <div class="flex justify-end gap-2 border-t pt-3">
-      <button
-        class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
-        onclick="closeModal('createAdModal3')"
-      >
-        Close
-      </button>
-      <button
-        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        onclick="saveAdvertisement(3)"
-      >
-        Save Advertisement
-      </button>
-    </div>
+      </div>
+      <div class="flex justify-end gap-2 border-t pt-3">
+        <button
+          class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+          onclick="closeModal('createAdModal3')"
+        >
+          Close
+        </button>
+        <button
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          onclick="saveAdvertisement(3)"
+        >
+          Save Advertisement
+        </button>
+      </div>
+    </form>
   </div>
 </div>
 {% endblock %}

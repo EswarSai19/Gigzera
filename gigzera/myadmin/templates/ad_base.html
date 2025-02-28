@@ -46,7 +46,7 @@
     <!-- Modal for finanacial -->
     <div
       id="financialModal"
-      class="fixed inset-0 hidden flex items-center justify-center bg-gray-900 bg-opacity-50"
+      class="fixed inset-0 hidden flex items-center justify-center backdrop-blur-sm bg-white-100 bg-opacity-50"
     >
       <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-8">
         <!-- Modal Header -->
@@ -97,7 +97,7 @@
     <!-- Modal structure for Broadcast Message -->
     <div
       id="broadcastModal"
-      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden"
+      class="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-white-100 bg-opacity-50 hidden"
     >
       <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
         <div class="flex justify-between items-center mb-4">
@@ -160,7 +160,7 @@
     <!-- Email Modal -->
     <div
       id="emailModal"
-      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden"
+      class="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-white-100 bg-opacity-50 hidden"
     >
       <div class="bg-white rounded-lg shadow-lg max-w-sm w-full p-6">
         <form id="emailForm">
@@ -199,7 +199,7 @@
     <!-- WhatsApp Modal -->
     <div
       id="whatsappModal"
-      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden"
+      class="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-white-100 bg-opacity-50 hidden"
     >
       <div class="bg-white rounded-lg shadow-lg max-w-sm w-full p-6">
         <form id="whatsappForm">
@@ -238,7 +238,7 @@
     <!-- SMS Modal -->
     <div
       id="smsModal"
-      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden"
+      class="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-white-100 bg-opacity-50 hidden"
     >
       <div class="bg-white rounded-lg shadow-lg max-w-sm w-full p-6">
         <form id="smsForm">
@@ -274,10 +274,147 @@
       </div>
     </div>
 
+    <!-- Model for Web announcement -->
+    <div
+      id="webannouncementmodal"
+      class="fixed inset-0 flex items-center justify-center bg-white-100 backdrop-blur-sm bg-opacity-50 hidden"
+    >
+      <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
+        <div class="flex justify-between items-center border-b pb-3">
+          <h2 class="text-xl font-bold text-center flex-grow">
+            Create Announcement
+          </h2>
+          <button
+            onclick="closeModalweb()"
+            class="text-gray-500 hover:text-gray-700 text-4xl"
+          >
+            &times;
+          </button>
+        </div>
+
+        <form
+          id="announcement-form"
+          method="POST"
+          action="{% url 'ad_webAnnounce' %}"
+          enctype="multipart/form-data"
+          class="mt-4"
+        >
+          {% csrf_token %}
+          <div class="mb-4">
+            <label for="media-type" class="block font-medium">Media Type</label>
+            <select
+              id="media-type"
+              name="mediaType"
+              class="w-full border rounded p-2"
+              required
+            >
+              <option value="" disabled selected>Select Media Type</option>
+              <option value="Image">Image</option>
+              <option value="Video">Video</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label class="block font-medium">Upload Media</label>
+            <div
+              id="uploadArea"
+              class="border-2 border-dashed border-blue-500 rounded p-4 text-center cursor-pointer bg-gray-100 hover:bg-gray-200"
+            >
+              <p class="mb-2">
+                Drag & Drop files here or
+                <button
+                  type="button"
+                  class="text-blue-500 underline"
+                  onclick="triggerFileInput()"
+                >
+                  click to select
+                </button>
+              </p>
+              <input
+                type="file"
+                id="fileInput"
+                name="mediaInput"
+                class="hidden"
+                onchange="handleFileSelect(event)"
+                required
+              />
+              <p id="fileName" class="text-gray-500">No file selected</p>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="announcement-text" class="block font-medium"
+              >Announcement Text</label
+            >
+            <textarea
+              id="announcement-text"
+              name="ancText"
+              name="announcement-text"
+              class="w-full border rounded p-2"
+              placeholder="Enter your announcement text less than 150 chars"
+              required
+            ></textarea>
+          </div>
+
+          <!-- <div class="mb-4">
+            <label for="duration" class="block font-medium">Duration</label>
+            <select
+              id="duration"
+              name="duration"
+              class="w-full border rounded p-2"
+              required
+            >
+              <option value="" disabled selected>Select Duration</option>
+              <option value="1-hour">1 Hour</option>
+              <option value="2-hours">2 Hours</option>
+              <option value="4-hours">4 Hours</option>
+              <option value="8-hours">8 Hours</option>
+              <option value="12-hours">12 Hours</option>
+              <option value="24-hours">24 Hours</option>
+              <option value="7-Days">7 Days</option>
+              <option value="15-Days">15 Days</option>
+              <option value="30-Days">30 Days</option>
+              <option value="60-Days">60 Days</option>
+              <option value="90-Days">90 Days</option>
+            </select>
+          </div> -->
+
+          <div class="flex justify-center gap-4">
+            <button
+              type="submit"
+              class="bg-blue-500 text-white py-2 px-4 rounded w-1/2"
+            >
+              Submit
+            </button>
+            <button
+              type="button"
+              onclick="closeModalweb()"
+              class="bg-gray-500 text-white py-2 px-4 rounded w-1/2"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+
+        <div id="success-message-container" class="hidden mt-3">
+          <p class="bg-green-100 text-green-700 p-2 rounded">
+            Submitted the message!
+          </p>
+        </div>
+
+        <div class="text-center text-sm text-gray-500 mt-3">
+          <p>
+            The announcement will be live on the website untill the next
+            announcement is published.
+          </p>
+        </div>
+      </div>
+    </div>
+
     <!-- Modal Structure and style for Repots download -->
     <div
       id="reportsDownloadModal"
-      class="fixed inset-0 hidden flex items-center justify-center bg-gray-900 bg-opacity-50"
+      class="fixed inset-0 hidden flex items-center justify-center backdrop-blur-sm bg-white-100 bg-opacity-50"
     >
       <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
         <!-- Modal Header -->

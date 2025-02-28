@@ -264,6 +264,29 @@ class JobsPageAdv(models.Model):
     def __str__(self):
         return f"Adv by {self.section_name} for {self.media_type}"
 
+class WebAnnouncement(models.Model):
+    admin_id = models.CharField(blank=True, null=True)
+    media_type = models.CharField(blank=True, null=True)
+    media_name = models.CharField(blank=True, null=True)
+    media_url = models.URLField(blank=True, null=True)
+    anc_text = models.CharField(max_length=225, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Adv by {self.admin_id} for {self.media_type}"
+
+
+class JobsPageImages(models.Model):
+    admin_id = models.CharField(blank=True, null=True)
+    media_type = models.CharField(blank=True, null=True)
+    media_name = models.CharField(blank=True, null=True)
+    media_url = models.URLField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Adv by {self.admin_id} for {self.media_type}"
 
 
 class ProjectQuote(models.Model):
