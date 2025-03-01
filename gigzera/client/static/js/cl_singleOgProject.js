@@ -723,37 +723,250 @@ function addEditFunctionality(task) {
 //   .forEach((task) => addEditFunctionality(task));
 
 // Open the message modal when clicking 'Add Comment'
-function openChatModal() {
-  document.getElementById("chatModal").classList.remove("hidden");
-}
+// function openChatModal(taskId) {
+//   console.log("Taskid", taskId);
+//   document.getElementById("msgTaskId").value = taskId;
+//   document.getElementById("chatModal").classList.remove("hidden");
+// }
+
+// function openChatModal(taskId) {
+//   document.getElementById("msgtaskId").value = taskId;
+//   document.getElementById("chatModal").classList.remove("hidden");
+// }
 
 // Close the message modal
+// function closeChatModal() {
+//   document.getElementById("chatModal").classList.add("hidden");
+// }
+
+// Send a new message and display it in the message area
+// function sendNewMessage() {
+//   const input = document.getElementById("newMessageInput");
+//   const container = document.getElementById("messageArea");
+
+//   if (input.value.trim()) {
+//     const messageDiv = document.createElement("div");
+//     messageDiv.className = "message-box outgoing mb-3";
+//     messageDiv.innerHTML = `
+//       <img src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg" alt="User Avatar" class="avatar-img">
+//           <div class="message-content-box">
+//               <p>${input.value}</p>
+//               <span class="time-stamp">just now</span>
+//           </div>
+//       `;
+//     container.appendChild(messageDiv);
+//     input.value = "";
+//     container.scrollTop = container.scrollHeight;
+//   }
+// }
+
+// javascript for message box
+
+// function sendNewMessage(event) {
+//   event.preventDefault(); // Prevent form from submitting
+
+//   const input = document.getElementById("newMessageInput");
+//   const container = document.getElementById("messageArea");
+
+//   if (input.value.trim()) {
+//     const messageDiv = document.createElement("div");
+//     messageDiv.className = "message-box outgoing mb-3";
+//     messageDiv.innerHTML = `
+//       <img src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg" alt="User Avatar" class="avatar-img">
+//           <div class="message-content-box">
+//               <p>${input.value}</p>
+//               <span class="time-stamp">just now</span>
+//           </div>
+//       `;
+//     container.appendChild(messageDiv);
+//     container.scrollTop = container.scrollHeight;
+
+//     // Submit form manually via AJAX
+//     sendMessageToServer(input.value);
+
+//     // Clear input field
+//     input.value = "";
+//   }
+// }
+
+// function sendMessageToServer(message) {
+//   console.log("I am coming bro", message);
+//   const msgTaskId = document.getElementById("msgTaskId").value;
+
+//   // Get CSRF token from the cookie instead of the DOM
+//   function getCookie(name) {
+//     const value = `; ${document.cookie}`;
+//     const parts = value.split(`; ${name}=`);
+//     if (parts.length === 2) return parts.pop().split(";").shift();
+//   }
+
+//   const csrftoken = getCookie("csrftoken");
+//   const url = document.getElementById("messageForm").getAttribute("data-url");
+
+//   fetch(url, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/x-www-form-urlencoded",
+//       "X-CSRFToken": csrftoken,
+//     },
+//     body: `user_message=${encodeURIComponent(
+//       message
+//     )}&msgTaskId=${encodeURIComponent(msgTaskId)}`,
+//   })
+//     .then((response) => response.json())
+//     .then((data) => {
+//       console.log("Message sent successfully:", data);
+//     })
+//     .catch((error) => {
+//       console.error("Error sending message:", error);
+//     });
+// }
+
+// Function to open chat modal and load existing messages
+
+// Function to open chat modal and load existing messages
+// Function to open chat modal and load existing messages
+function openChatModal(taskId) {
+  console.log("Taskid", taskId);
+  document.getElementById("msgTaskId").value = taskId;
+  document.getElementById("chatModal").classList.remove("hidden");
+
+  // Clear previous messages
+  const messageArea = document.getElementById("messageArea");
+  messageArea.innerHTML = "";
+
+  // Fetch existing messages for this task
+  fetch(`/client/get-comments/?taskId=${encodeURIComponent(taskId)}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        // Convert comments object to array for sorting
+        const messagesArray = Object.keys(data.comments).map((key) => {
+          // Extract timestamp from the key (assuming format: userID_timestamp)
+          const timestamp = parseInt(key.split("_")[1]);
+          const userId = key.split("_")[0];
+          return {
+            key: key,
+            userId: userId,
+            timestamp: timestamp,
+            message: data.comments[key].message,
+            time: data.comments[key].time,
+          };
+        });
+
+        // Sort messages by timestamp (chronological order)
+        messagesArray.sort((a, b) => a.timestamp - b.timestamp);
+
+        // Render each message in the chat
+        messagesArray.forEach((messageObj) => {
+          // Check if the message is from a client (starts with CL)
+          const isClientMessage = messageObj.userId.startsWith("CL");
+          addMessageToUI(messageObj.message, messageObj.time, isClientMessage);
+        });
+
+        // Scroll to bottom of message area
+        messageArea.scrollTop = messageArea.scrollHeight;
+      } else {
+        console.error("Error loading comments:", data.error);
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching comments:", error);
+    });
+}
+
+// Function to send a new message
+function sendNewMessage(event) {
+  event.preventDefault();
+
+  const messageInput = document.getElementById("newMessageInput");
+  const messageText = messageInput.value.trim();
+  const taskId = document.getElementById("msgTaskId").value;
+
+  if (messageText) {
+    // Add message to UI immediately (optimistic UI update)
+    // Since this is the client interface, all sent messages are client messages
+    addMessageToUI(messageText, "Sending...", true);
+
+    // Send to server
+    const form = document.getElementById("messageForm");
+    const url = form.getAttribute("data-url");
+
+    // Get CSRF token
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(";").shift();
+    }
+    const csrftoken = getCookie("csrftoken");
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": csrftoken,
+      },
+      body: `user_message=${encodeURIComponent(
+        messageText
+      )}&msgTaskId=${encodeURIComponent(taskId)}`,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("Message sent successfully:", data);
+
+          // Update the "Sending..." text with the actual time
+          const messages = document.querySelectorAll(".message-box");
+          const lastMessage = messages[messages.length - 1];
+          const timeSpan = lastMessage.querySelector(".time-stamp");
+          timeSpan.textContent = data.messageTime;
+        } else {
+          console.error("Error sending message:", data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error sending message:", error);
+      });
+
+    // Clear input field
+    messageInput.value = "";
+
+    // Focus back on input field for next message
+    messageInput.focus();
+  }
+}
+
+// Function to add a message to the UI
+function addMessageToUI(messageText, timeStamp, isClientMessage) {
+  const messageArea = document.getElementById("messageArea");
+
+  const messageBox = document.createElement("div");
+  // If it's a client message, make it appear on the right side
+  messageBox.className = isClientMessage
+    ? "message-box outgoing mb-3"
+    : "message-box incoming mb-3";
+
+  messageBox.innerHTML = `
+    <img
+      src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
+      alt="User Avatar"
+      class="avatar-img"
+    />
+    <div class="message-content-box">
+      <p>${messageText}</p>
+      <span class="time-stamp">${timeStamp}</span>
+    </div>
+  `;
+
+  messageArea.appendChild(messageBox);
+  messageArea.scrollTop = messageArea.scrollHeight;
+}
+
+// Function to close the chat modal
 function closeChatModal() {
   document.getElementById("chatModal").classList.add("hidden");
 }
 
-// Send a new message and display it in the message area
-function sendNewMessage() {
-  const input = document.getElementById("newMessageInput");
-  const container = document.getElementById("messageArea");
-
-  if (input.value.trim()) {
-    const messageDiv = document.createElement("div");
-    messageDiv.className = "message-box outgoing mb-3";
-    messageDiv.innerHTML = `  
-      <img src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg" alt="User Avatar" class="avatar-img"> 
-          <div class="message-content-box">
-              <p>${input.value}</p>  
-              <span class="time-stamp">just now</span>  
-          </div>
-      `;
-    container.appendChild(messageDiv);
-    input.value = "";
-    container.scrollTop = container.scrollHeight;
-  }
-}
-
-// javascript for message box
 function sendMessage() {
   const input = document.getElementById("messageInput");
   const container = document.getElementById("messagesContainer");

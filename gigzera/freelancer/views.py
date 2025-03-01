@@ -8,11 +8,18 @@ import os
 import time
 import locale
 import boto3
+from django.utils import timezone
+from urllib.parse import urlparse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from db_schemas.models import Contact, ProjectQuote, JobsPageImages, WebAnnouncement, JobsPageAdv, Tasks, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
 from django.core.exceptions import ValidationError
 from datetime import datetime
+from django.views.decorators.csrf import csrf_exempt
+
+
+
+
 # from django.contrib.auth.decorators import login_required
 
 # To get initial of the username
@@ -951,4 +958,81 @@ def aws_profile_view(request):
         return JsonResponse({'image_url': image_url})
 
     return render(request, 'freelancer/test_profile_aws.html')
+
+# chat model
+@csrf_exempt
+def fl_sendMessage(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
+    
+    user = Freelancer.objects.get(userId=user_id)
+    user.initials = get_initials(user.name)
+    
+    if request.method == 'POST':
+        user_message = request.POST.get('user_message')
+        task_id = request.POST.get('msgTaskId')
+        task = Tasks.objects.filter(taskId=task_id).first()
+        
+        if not task:
+            return JsonResponse({"success": False, "error": "Task not found"})
+            
+        ongp_obj = OngoingProjects.objects.filter(bidId=task.taskBid_id).first()
+        print(f"tasks are: {task}, {ongp_obj.ongProjectId}")
+        print(user_message, task_id)
+        
+        # Get current time in 12-hour format (e.g., 02:05 PM)
+        current_time = timezone.now().strftime("%I:%M %p")
+        
+        # Create message key using client ID and timestamp
+        # Make sure the user_id is used as-is to preserve the CL prefix
+        message_key = f"{user_id}_{int(timezone.now().timestamp())}"
+        
+        # Prepare message data
+        message_data = {
+            "message": user_message,
+            "time": current_time
+        }
+        
+        # Get existing comments or initialize as empty dict if None
+        comments = task.comments if task.comments else {}
+        
+        # Add new message
+        comments[message_key] = message_data
+        
+        # Save updated comments back to task
+        task.comments = comments
+        task.save()
+        
+        return JsonResponse({
+            "success": True, 
+            "message": "Message saved successfully",
+            "messageKey": message_key,
+            "messageTime": current_time
+        })
+    
+    return JsonResponse({"success": False, "error": "Invalid request method"})      
+
+
+def get_task_comments(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return JsonResponse({"success": False, "error": "Not logged in"})
+    
+    task_id = request.GET.get('taskId')
+    if not task_id:
+        return JsonResponse({"success": False, "error": "No task ID provided"})
+    
+    task = Tasks.objects.filter(taskId=task_id).first()
+    if not task:
+        return JsonResponse({"success": False, "error": "Task not found"})
+    
+    # Get comments or return empty dict if None
+    comments = task.comments if task.comments else {}
+    
+    return JsonResponse({
+        "success": True,
+        "comments": comments
+    })
+
 

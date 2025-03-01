@@ -156,12 +156,12 @@
                 class="task-status"
                 onchange="submitUpdateForm(this)"
               >
-                <option {% if task.status == "Requirement Gathering" %}selected{% endif %}>Requirement Gathering</option>
+                <!-- <option {% if task.status == "Requirement Gathering" %}selected{% endif %}>Requirement Gathering</option>
                 <option {% if task.status == "Designing" %}selected{% endif %}>Designing</option>
                 <option {% if task.status == "Development" %}selected{% endif %}>Development</option>
                 <option {% if task.status == "Testing" %}selected{% endif %}>Testing</option>
                 <option {% if task.status == "UAT" %}selected{% endif %}>UAT</option>
-                <option {% if task.status == "Completed" %}selected{% endif %}>Completed</option>
+                <option {% if task.status == "Completed" %}selected{% endif %}>Completed</option> -->
               </select>
             </div>
           </form>
@@ -169,7 +169,7 @@
           <div class="task-comment">
             <button
               type="button"
-              onclick="openChatModal()"
+              onclick="openChatModal('{{task.taskId}}')"
               class="comment-button"
             >
               Add Comment
@@ -185,7 +185,7 @@
     </div>
   </div>
 
-    <!-- Add task -->
+  <!-- Add task -->
   <!-- Task Form (Initially Hidden) -->
   <div
     id="taskFormPopup"
@@ -230,85 +230,6 @@
           </button>
         </div>
       </form>
-    </div>
-  </div>
-  
-  <!-- Message Modal -->
-  <div
-    id="chatModal"
-    class="fixed inset-0 flex items-center justify-center hidden bg-black bg-opacity-50"
-  >
-    <div
-      class="modal-container bg-white p-8 rounded-lg shadow-lg w-[500px] h-[600px] max-w-full flex flex-col justify-between"
-    >
-      <div class="modal-header">
-        <h2 class="text-xl font-semibold mb-4">Add Comments</h2>
-        <!-- <span class="user-status">Online</span> -->
-        <button
-          onclick="closeChatModal()"
-          class="text-gray-500 hover:text-gray-700 text-3xl"
-        >
-          &times;
-        </button>
-      </div>
-
-      <!-- Message Display Area -->
-      <div
-        id="messageArea"
-        class="flex-grow overflow-y-auto mb-4 border p-4 rounded bg-gray-100"
-      >
-        <!-- Messages will be added dynamically here -->
-        <div class="message-box incoming mb-3">
-          <img
-            src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
-            alt="User Avatar"
-            class="avatar-img"
-          />
-          <div class="message-content-box">
-            <p>Can you share the latest wireframes?</p>
-            <span class="time-stamp">10:30 AM</span>
-          </div>
-        </div>
-        <div class="message-box outgoing mb-3">
-          <img
-            src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
-            alt="User Avatar"
-            class="avatar-img"
-          />
-          <div class="message-content-box">
-            <p>I'll share them by end of day.</p>
-            <span class="time-stamp">10:32 AM</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Input Field for New Message -->
-      <div class="input-section">
-        <input
-          type="text"
-          placeholder="Type your message..."
-          id="newMessageInput"
-          class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button
-          onclick="sendNewMessage()"
-          class="send-message-btn px-5 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M22 2L11 13"></path>
-            <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
-          </svg>
-        </button>
-      </div>
     </div>
   </div>
 
@@ -363,6 +284,97 @@
     </div>
   </div>
 </div>
+
+<!-- Message Modal -->
+<div
+  id="chatModal"
+  class="fixed inset-0 flex items-center justify-center hidden bg-white-100 backdrop-blur-sm bg-opacity-50"
+>
+  <div
+    class="modal-container bg-white p-8 rounded-lg shadow-lg w-[450px] h-[550px] max-w-full flex flex-col justify-between"
+  >
+    <div class="modal-header">
+      <h2 class="text-xl font-semibold mb-4">Add Comments</h2>
+      <!-- <span class="user-status">Online</span> -->
+      <button
+        onclick="closeChatModal()"
+        class="text-gray-500 hover:text-gray-700 text-3xl"
+      >
+        &times;
+      </button>
+    </div>
+
+    <!-- Message Display Area -->
+    <div
+      id="messageArea"
+      class="flex-grow overflow-y-auto mb-4 border p-4 rounded bg-gray-100"
+    >
+      <!-- Messages will be added dynamically here -->
+      <div class="message-box incoming mb-3">
+        <img
+          src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
+          alt="User Avatar"
+          class="avatar-img"
+        />
+        <div class="message-content-box">
+          <p>Can you share the latest wireframes?</p>
+          <span class="time-stamp">10:30 AM</span>
+        </div>
+      </div>
+      <div class="message-box outgoing mb-3">
+        <img
+          src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
+          alt="User Avatar"
+          class="avatar-img"
+        />
+        <div class="message-content-box">
+          <p>I'll share them by end of day.</p>
+          <span class="time-stamp">10:32 AM</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Field for New Message -->
+    <form
+      id="messageForm"
+      action="{% url 'fl_sendMessage' %}"
+      method="POST"
+      data-url="{% url 'fl_sendMessage' %}"
+    >
+      {% csrf_token %}
+      <input type="hidden" name="msgTaskId" id="msgTaskId" />
+      <div class="input-section">
+        <input
+          type="text"
+          placeholder="Type your message..."
+          name="user_message"
+          id="newMessageInput"
+          class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          onclick="sendNewMessage(event)"
+          type="button"
+          class="send-message-btn px-5 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M22 2L11 13"></path>
+            <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+          </svg>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 {% endblock %}
 <!-- JS -->
 {% block js %}

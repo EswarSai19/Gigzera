@@ -64,5 +64,9 @@ urlpatterns = [
     # web announcement
     path('webAnnounce/', views.webAnnounce, name='ad_webAnnounce'),
 
+     # Messages
+    path('sendMessage/', views.ad_sendMessage, name='ad_sendMessage'),
+    path('get-comments/', views.get_task_comments, name='get_task_comments'),
+
 
 ]

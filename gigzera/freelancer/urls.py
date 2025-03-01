@@ -34,5 +34,10 @@ urlpatterns = [
     path('add_skill/', views.add_skill, name='add_skill'),
     path('aws-profile/', views.aws_profile_view, name='aws_profile'),
 
+    # Chat messages
+    # Messages
+    path('sendMessage/', views.fl_sendMessage, name='fl_sendMessage'),
+    path('get-comments/', views.get_task_comments, name='get_task_comments'),
+
   
 ]
