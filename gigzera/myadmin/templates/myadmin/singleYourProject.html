@@ -32,6 +32,7 @@
 
       <h3>Tasks</h3>
       {% for task in tasks %}
+      <p>title{{task.title}}</p>
       <div class="task-box">
         <div class="task-header">
           <span class="task-title">{{task.title}}</span>
@@ -45,7 +46,10 @@
           </div>
         </div>
         <div class="task-input">
-          <button onclick="openChatModal()" class="comment-button">
+          <button
+            onclick="openChatModal('{{task.taskId}}')"
+            class="comment-button"
+          >
             Add Comment
           </button>
         </div>
@@ -57,44 +61,16 @@
         </div>
       </div>
       {% endfor %}
-      <!-- <div class="task-box">
-        <div class="task-header">
-          <span class="task-title">Design System Setup</span>
-          <span class="status completed">Completed</span>
-        </div>
-        <div class="task-comments">
-          <p><strong>Comments (1)</strong></p>
-          <div class="comment">
-            <img src="user-avatar.png" alt="User Avatar" class="avatar">
-            <p>Design system documentation complete.</p>
-          </div>
-        </div>
-        <div class="task-input">
-          <button onclick="openChatModal()" class="comment-button">
-            Add Comment
-          </button>
-        </div>
-      </div> -->
-
-      <!-- <div class="task-box">
-        <div class="task-header">
-          <span class="task-title">Responsive Testing</span>
-          <span class="status pending">Pending</span>
-        </div>
-        <div class="task-input">
-          <button onclick="openChatModal()" class="comment-button">
-            Add Comment
-          </button>
-        </div>
-      </div> -->
     </div>
   </div>
+
+  <!-- Message Modal -->
   <div
     id="chatModal"
-    class="fixed inset-0 flex items-center justify-center hidden bg-black bg-opacity-60 z-50"
+    class="fixed inset-0 flex items-center justify-center hidden bg-white-100 backdrop-blur-sm bg-opacity-50"
   >
     <div
-      class="modal-container bg-white p-8 rounded-lg shadow-lg w-[500px] h-[600px] max-w-full flex flex-col justify-between"
+      class="modal-container bg-white p-8 rounded-lg shadow-lg w-[450px] h-[550px] max-w-full flex flex-col justify-between"
     >
       <div class="modal-header">
         <h2 class="text-xl font-semibold mb-4">Add Comments</h2>
@@ -138,32 +114,43 @@
       </div>
 
       <!-- Input Field for New Message -->
-      <div class="input-section">
-        <input
-          type="text"
-          placeholder="Type your message..."
-          id="newMessageInput"
-          class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button
-          onclick="sendNewMessage()"
-          class="send-message-btn px-5 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+      <form
+        id="messageForm"
+        action="{% url 'ad_sendMessage' %}"
+        method="POST"
+        data-url="{% url 'ad_sendMessage' %}"
+      >
+        {% csrf_token %}
+        <input type="hidden" name="msgTaskId" id="msgTaskId" />
+        <div class="input-section">
+          <input
+            type="text"
+            placeholder="Type your message..."
+            name="user_message"
+            id="newMessageInput"
+            class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            onclick="sendNewMessage(event)"
+            type="button"
+            class="send-message-btn px-5 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
           >
-            <path d="M22 2L11 13"></path>
-            <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
-          </svg>
-        </button>
-      </div>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M22 2L11 13"></path>
+              <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+            </svg>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -213,11 +200,11 @@
               class="status-dropdown"
               disabled
             >
-              <option value="Bid Ongoing" {% if singleOgp.status == "Bid Ongoing" %}selected{% endif %}>Bid Ongoing</option>
+              <!-- <option value="Bid Ongoing" {% if singleOgp.status == "Bid Ongoing" %}selected{% endif %}>Bid Ongoing</option>
               <option value="Planning" {% if singleOgp.status == "Planning" %}selected{% endif %}>Planning</option>
               <option value="In Progress" {% if singleOgp.status == "In Progress" %}selected{% endif %}>In Progress</option>
               <option value="On Hold" {% if singleOgp.status == "On Hold" %}selected{% endif %}>On Hold</option>
-              <option value="Completed" {% if singleOgp.status == "Completed" %}selected{% endif %}>Completed</option>
+              <option value="Completed" {% if singleOgp.status == "Completed" %}selected{% endif %}>Completed</option> -->
             </select>
           </div>
         </div>
@@ -433,8 +420,8 @@
               </td>
               <td>
                 <select name="{{ms.id}}_status" disabled>
-                  <option value="Pending" {% if ms.status == "Pending" %}selected{% endif %}>Pending</option>
-                  <option value="Completed" {% if ms.status == "Completed" %}selected{% endif %}>Completed</option>
+                  <!-- <option value="Pending" {% if ms.status == "Pending" %}selected{% endif %}>Pending</option>
+                  <option value="Completed" {% if ms.status == "Completed" %}selected{% endif %}>Completed</option> -->
                 </select>
               </td>
               <td>

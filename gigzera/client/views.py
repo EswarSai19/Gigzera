@@ -3,7 +3,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, auth
 from django.contrib.auth.hashers import check_password, make_password
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib import messages
 import json
 import os
@@ -11,13 +11,17 @@ import boto3
 import time
 import locale
 import re
+from django.utils import timezone
 from urllib.parse import urlparse
+from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from db_schemas.models import Client, Tasks, ProjectsDisplay, Milestones, OngoingProjects, Contact, ProjectQuote, Freelancer, EmploymentHistory,Certificate, Skill
 from django.core.exceptions import ValidationError
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+
+
 
 
 
@@ -774,4 +778,112 @@ def cl_bidRejected(request):
             messages.error(request, f"Error updating bid {bid_id}: {str(e)}")
     return render(request, 'client/cl_viewBids.html', context)
 
+
+@csrf_exempt
+def cl_sendMessage(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
+    
+    user = Client.objects.get(userId=user_id)
+    user.initials = get_initials(user.name)
+    
+    if request.method == 'POST':
+        user_message = request.POST.get('user_message')
+        task_id = request.POST.get('msgTaskId')
+        task = Tasks.objects.filter(taskId=task_id).first()
+        
+        if not task:
+            return JsonResponse({"success": False, "error": "Task not found"})
+            
+        ongp_obj = OngoingProjects.objects.filter(bidId=task.taskBid_id).first()
+        print(f"tasks are: {task}, {ongp_obj.ongProjectId}")
+        print(user_message, task_id)
+        
+        # Get current time in 12-hour format (e.g., 02:05 PM)
+        current_time = timezone.now().strftime("%I:%M %p")
+        
+        # Create message key using client ID and timestamp
+        # Make sure the user_id is used as-is to preserve the CL prefix
+        message_key = f"{user_id}_{int(timezone.now().timestamp())}"
+        
+        # Prepare message data
+        message_data = {
+            "message": user_message,
+            "time": current_time
+        }
+        
+        # Get existing comments or initialize as empty dict if None
+        comments = task.comments if task.comments else {}
+        
+        # Add new message
+        comments[message_key] = message_data
+        
+        # Save updated comments back to task
+        task.comments = comments
+        task.save()
+        
+        return JsonResponse({
+            "success": True, 
+            "message": "Message saved successfully",
+            "messageKey": message_key,
+            "messageTime": current_time
+        })
+    
+    return JsonResponse({"success": False, "error": "Invalid request method"})      
+
+
+def get_task_comments(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return JsonResponse({"success": False, "error": "Not logged in"})
+    
+    task_id = request.GET.get('taskId')
+    if not task_id:
+        return JsonResponse({"success": False, "error": "No task ID provided"})
+    
+    task = Tasks.objects.filter(taskId=task_id).first()
+    if not task:
+        return JsonResponse({"success": False, "error": "Task not found"})
+    
+    # Get comments or return empty dict if None
+    comments = task.comments if task.comments else {}
+    
+    return JsonResponse({
+        "success": True,
+        "comments": comments
+    })
+
+
+
+# Sending messages
+# def cl_sendMessage(request):
+#     if request.method == "POST":
+#         user_id = request.session.get("user_id")
+#         if not user_id:
+#             return JsonResponse({"status": "error", "message": "User not logged in"}, status=401)
+
+#         user = Client.objects.get(userId=user_id)
+#         user_message = request.POST.get("user_message")
+#         task_id = request.POST.get("taskId")
+        
+#         # Fetch the task
+#         task = Tasks.objects.filter(taskId=task_id).first()
+#         if not task:
+#             return JsonResponse({"status": "error", "message": "Task not found"}, status=404)
+
+#         # Store the message in the AWS RDS JSON column
+#         existing_messages = json.loads(task.messages) if task.messages else []
+#         new_message = {
+#             "user": user.name,
+#             "message": user_message,
+#             "timestamp": timezone.now().strftime("%Y-%m-%d %H:%M:%S"),
+#         }
+#         existing_messages.append(new_message)
+#         task.messages = json.dumps(existing_messages)
+#         task.save()
+
+#         return JsonResponse({"status": "success", "message": "Message saved"})
+    
+#     return JsonResponse({"status": "error", "message": "Invalid request"}, status=400)
 

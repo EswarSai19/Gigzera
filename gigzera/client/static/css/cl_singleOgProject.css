@@ -1000,3 +1000,51 @@ textarea:focus {
     color: #0c0c0c;
     /* Optional: Change color on hover */
 }
+
+
+
+/* New styles of message model */
+/* Chat modal specific styles */
+/* #chatModal .message-box {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+#chatModal .message-box.incoming {
+    justify-content: flex-start;
+}
+
+#chatModal .message-box.outgoing {
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+}
+
+#chatModal .avatar-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin: 0 8px;
+}
+
+#chatModal .message-content-box {
+    max-width: 70%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+}
+
+#chatModal .message-box.outgoing .message-content-box {
+    background-color: #1e88e5;
+    color: white;
+}
+
+#chatModal .time-stamp {
+    display: block;
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 4px;
+}
+
+#chatModal .message-box.outgoing .time-stamp {
+    color: #e1f5fe;
+} */

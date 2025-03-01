@@ -10,6 +10,8 @@ import boto3
 import time
 import locale
 import re
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 from urllib.parse import urlparse
 from itertools import chain
 from django.conf import settings
@@ -537,7 +539,9 @@ def singleYourProject(request):
         job.deliverables_list = [line.strip() for line in job.deliverables.split("\n")]
         job.cur_symbol = get_currency_symbol(job.currency)
     milestones = Milestones.objects.filter(bid_id=bid.projectQuoteId).all()
-    tasks = Tasks.objects.filter(taskBid_id=bid.projectQuoteId).all()
+    print("project id is ", bid.projectQuoteId)
+    tasks = Tasks.objects.filter(taskBid_id=bid.projectQuoteId)
+    print("Tasks", tasks, len(tasks))
     # print("Milestones", milestones)
     context = {
         'job': job,
@@ -1209,3 +1213,81 @@ def webAnnounce(request):
         else:
             print("Not getting media")
     return redirect('sup_ad_dashboard')
+
+
+
+
+@csrf_exempt
+def ad_sendMessage(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
+    
+    user = MyAdmin.objects.get(adminId=user_id)
+    
+    if request.method == 'POST':
+        user_message = request.POST.get('user_message')
+        task_id = request.POST.get('msgTaskId')
+        task = Tasks.objects.filter(taskId=task_id).first()
+        
+        if not task:
+            return JsonResponse({"success": False, "error": "Task not found"})
+            
+        ongp_obj = OngoingProjects.objects.filter(bidId=task.taskBid_id).first()
+        print(f"tasks are: {task}, {ongp_obj.ongProjectId}")
+        print(user_message, task_id)
+        
+        # Get current time in 12-hour format (e.g., 02:05 PM)
+        current_time = timezone.now().strftime("%I:%M %p")
+        
+        # Create message key using client ID and timestamp
+        # Make sure the user_id is used as-is to preserve the CL prefix
+        message_key = f"{user_id}_{int(timezone.now().timestamp())}"
+        
+        # Prepare message data
+        message_data = {
+            "message": user_message,
+            "time": current_time
+        }
+        
+        # Get existing comments or initialize as empty dict if None
+        comments = task.comments if task.comments else {}
+        
+        # Add new message
+        comments[message_key] = message_data
+        
+        # Save updated comments back to task
+        task.comments = comments
+        task.save()
+        
+        return JsonResponse({
+            "success": True, 
+            "message": "Message saved successfully",
+            "messageKey": message_key,
+            "messageTime": current_time
+        })
+    
+    return JsonResponse({"success": False, "error": "Invalid request method"})      
+
+
+def get_task_comments(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return JsonResponse({"success": False, "error": "Not logged in"})
+    
+    task_id = request.GET.get('taskId')
+    if not task_id:
+        return JsonResponse({"success": False, "error": "No task ID provided"})
+    
+    task = Tasks.objects.filter(taskId=task_id).first()
+    if not task:
+        return JsonResponse({"success": False, "error": "Task not found"})
+    
+    # Get comments or return empty dict if None
+    comments = task.comments if task.comments else {}
+    
+    return JsonResponse({
+        "success": True,
+        "comments": comments
+    })
+

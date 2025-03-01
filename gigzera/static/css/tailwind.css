@@ -203,6 +203,12 @@
 .h-\[400px\] {
   height: 400px;
 }
+.h-\[500px\] {
+  height: 500px;
+}
+.h-\[550px\] {
+  height: 550px;
+}
 .h-\[600px\] {
   height: 600px;
 }
@@ -275,11 +281,11 @@
 .w-\[130px\] {
   width: 130px;
 }
-.w-\[300px\] {
-  width: 300px;
+.w-\[400px\] {
+  width: 400px;
 }
-.w-\[350px\] {
-  width: 350px;
+.w-\[450px\] {
+  width: 450px;
 }
 .w-\[500px\] {
   width: 500px;
@@ -311,9 +317,6 @@
 .min-w-\[120px\] {
   min-width: 120px;
 }
-.min-w-full {
-  min-width: 100%;
-}
 .flex-1 {
   flex: 1;
 }
@@ -325,14 +328,6 @@
 }
 .border-collapse {
   border-collapse: collapse;
-}
-.border-separate {
-  border-collapse: separate;
-}
-.border-spacing-0 {
-  --tw-border-spacing-x: calc(var(--spacing) * 0);
-  --tw-border-spacing-y: calc(var(--spacing) * 0);
-  border-spacing: var(--tw-border-spacing-x) var(--tw-border-spacing-y);
 }
 .transform {
   transform: var(--tw-rotate-x) var(--tw-rotate-y) var(--tw-rotate-z) var(--tw-skew-x) var(--tw-skew-y);
@@ -390,9 +385,6 @@
 }
 .gap-4 {
   gap: calc(var(--spacing) * 4);
-}
-.gap-5 {
-  gap: calc(var(--spacing) * 5);
 }
 .gap-6 {
   gap: calc(var(--spacing) * 6);
@@ -580,9 +572,6 @@
 }
 .bg-gray-500 {
   background-color: var(--color-gray-500);
-}
-.bg-gray-900 {
-  background-color: var(--color-gray-900);
 }
 .bg-green-50 {
   background-color: var(--color-green-50);
@@ -893,9 +882,6 @@
 }
 .uppercase {
   text-transform: uppercase;
-}
-.italic {
-  font-style: italic;
 }
 .underline {
   text-decoration-line: underline;
@@ -1226,11 +1212,6 @@
     outline-style: none;
   }
 }
-.md\:w-1\/2 {
-  @media (width >= 48rem) {
-    width: calc(1/2 * 100%);
-  }
-}
 .md\:grid-cols-2 {
   @media (width >= 48rem) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1244,11 +1225,6 @@
 .md\:grid-cols-4 {
   @media (width >= 48rem) {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-.md\:flex-row {
-  @media (width >= 48rem) {
-    flex-direction: row;
   }
 }
 .lg\:flex {
@@ -1790,16 +1766,6 @@
   }
 }
 @layer utilities;
-@property --tw-border-spacing-x {
-  syntax: "<length>";
-  inherits: false;
-  initial-value: 0;
-}
-@property --tw-border-spacing-y {
-  syntax: "<length>";
-  inherits: false;
-  initial-value: 0;
-}
 @property --tw-rotate-x {
   syntax: "*";
   inherits: false;

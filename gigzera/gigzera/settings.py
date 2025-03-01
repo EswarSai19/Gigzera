@@ -81,7 +81,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'gigzera.wsgi.application'
-
+CSRF_COOKIE_HTTPONLY = False
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
