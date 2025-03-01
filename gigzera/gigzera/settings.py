@@ -175,20 +175,35 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # AWS_LOCATION = "media"
 # MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
 
+import boto3
+
+def get_ssm_parameter(param_name, default=None):
+    try:
+        ssm = boto3.client('ssm', region_name="ap-south-1")
+        response = ssm.get_parameter(Name=f"/myapp/{param_name}", WithDecryption=True)
+        return response['Parameter']['Value']
+    except Exception as e:
+        print(f"Warning: {e}")
+        return default
+
+
+
 
 # Load environment variables from .env
 load_dotenv()
 
 # Use AWS S3 in production, local storage in development
-USE_S3 = os.getenv("USE_S3", "False") == "True"
+# USE_S3 = os.getenv("USE_S3", "False") == "True"
+USE_S3 = True
 
 if USE_S3:
     print("Using AWS S3 storage")
     AWS_DEFAULT_ACL = "public-read"
-    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-    AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
-    AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+    
+    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID") or get_ssm_parameter("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY") or get_ssm_parameter("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME") or get_ssm_parameter("AWS_STORAGE_BUCKET_NAME")
+    AWS_S3_REGION_NAME = "ap-south-1"
 
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
     AWS_S3_FILE_OVERWRITE = False
