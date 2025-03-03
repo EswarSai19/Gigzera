@@ -64,6 +64,31 @@ def clean_number(value, currency_code):
     except ValueError:
         raise ValueError(f"Invalid number format: {value}")
 
+# def format_currency(amount, currency_code):
+#     """Formats the number according to the given currency locale."""
+#     try:
+#         locale_code = currency_locales.get(currency_code, "en_US.UTF-8")
+#         try:
+#             locale.setlocale(locale.LC_ALL, locale_code)
+#         except locale.Error:
+#             print(f"Warning: Locale '{locale_code}' not found. Using default.")
+
+#         amount = clean_number(amount, currency_code)  # Clean number before conversion
+
+#         if amount.is_integer():
+#             formatted_amount = locale.format_string("%d", int(amount), grouping=True)
+#         else:
+#             formatted_amount = locale.format_string("%.2f", amount, grouping=True)
+
+#         # ✅ **Force decimal separator to be '.' (dot) instead of ',' (comma)**
+#         if currency_code in ["EUR", "CHF"]:
+#             formatted_amount = formatted_amount.replace(",", ".")
+
+#         return formatted_amount
+#     except ValueError:
+#         return "Invalid amount"
+
+
 def format_currency(amount, currency_code):
     """Formats the number according to the given currency locale."""
     try:
@@ -73,20 +98,17 @@ def format_currency(amount, currency_code):
         except locale.Error:
             print(f"Warning: Locale '{locale_code}' not found. Using default.")
 
-        amount = clean_number(amount, currency_code)  # Clean number before conversion
+        amount = clean_number(amount, currency_code)
 
-        if amount.is_integer():
-            formatted_amount = locale.format_string("%d", int(amount), grouping=True)
+        if isinstance(amount, int):
+            formatted_amount = locale.format_string("%d", amount, grouping=True)
         else:
             formatted_amount = locale.format_string("%.2f", amount, grouping=True)
-
-        # ✅ **Force decimal separator to be '.' (dot) instead of ',' (comma)**
-        if currency_code in ["EUR", "CHF"]:
-            formatted_amount = formatted_amount.replace(",", ".")
 
         return formatted_amount
     except ValueError:
         return "Invalid amount"
+
 
 # print(format_currency("200000", "USD"))  # Output: 2,000.00
 # print(format_currency("2000", "INR"))  # Output: 2,000.00
