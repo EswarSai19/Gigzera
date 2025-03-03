@@ -197,7 +197,7 @@ load_dotenv()
 USE_S3 = True
 
 if USE_S3:
-    print("Using AWS S3 storage")
+    print("Using AWS S3 storage-->")
     AWS_DEFAULT_ACL = "public-read"
     
     AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID") or get_ssm_parameter("AWS_ACCESS_KEY_ID")

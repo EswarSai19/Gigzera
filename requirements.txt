@@ -1,14 +1,17 @@
-asgiref==3.8.1
-certifi==2025.1.31
-distlib==0.3.9
-Django==5.1.6
-filelock==3.17.0
-packaging==24.2
-pillow==11.1.0
-pipenv==2024.4.1
-platformdirs==4.3.6
-psycopg2-binary==2.9.10
-setuptools==75.8.0
-sqlparse==0.5.3
-tzdata==2025.1
-virtualenv==20.29.2
+-i https://pypi.org/simple
+asgiref==3.8.1; python_version >= '3.8'
+boto3==1.37.4; python_version >= '3.8'
+botocore==1.37.4; python_version >= '3.8'
+django==5.1.6; python_version >= '3.10'
+django-storages==1.14.5; python_version >= '3.7'
+dotenv==0.9.9
+jmespath==1.0.1; python_version >= '3.7'
+pillow==11.1.0; python_version >= '3.9'
+psycopg2-binary==2.9.10; python_version >= '3.8'
+python-dateutil==2.9.0.post0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'
+python-dotenv==1.0.1; python_version >= '3.8'
+s3transfer==0.11.3; python_version >= '3.8'
+six==1.17.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'
+sqlparse==0.5.3; python_version >= '3.8'
+tzdata==2025.1; python_version >= '2'
+urllib3==2.3.0; python_version >= '3.9'
