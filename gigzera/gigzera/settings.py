@@ -83,20 +83,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'gigzera.wsgi.application'
 CSRF_COOKIE_HTTPONLY = False
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sampleDB',
-        'USER': 'postgres',
-        'PASSWORD': 'mysuperpass',
-        'HOST': 'demo-postgre.ctigc0i0wbqn.ap-south-1.rds.amazonaws.com',
-        'PORT': '5432',
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -154,27 +140,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 
-
-
-
-
-
-
-# AWS_ACCESS_KEY_ID = 'AKIAW5BDQ2NAQPRYNQQX'
-# AWS_SECRET_ACCESS_KEY = '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'
-# AWS_S3_REGION_NAME = 'ap-south-1'
-# AWS_STORAGE_BUCKET_NAME = 'eswar-s3-bkt'
-
-# AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-# AWS_S3_FILE_OVERWRITE = False
-# AWS_DEFAULT_ACL = None
-# AWS_S3_OBJECT_PARAMETERS = {
-#     "CacheControl": "max-age=86400",
-# }
-# DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-# AWS_LOCATION = "media"
-# MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
-
 import boto3
 
 def get_ssm_parameter(param_name, default=None):
@@ -185,6 +150,34 @@ def get_ssm_parameter(param_name, default=None):
     except Exception as e:
         print(f"Warning: {e}")
         return default
+
+
+# Database
+# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'sampleDB',
+        'USER': 'postgres',
+        'PASSWORD': 'mysuperpass',
+        'HOST': 'demo-postgre.ctigc0i0wbqn.ap-south-1.rds.amazonaws.com',
+        'PORT': '5432',
+    }
+}
+
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'gigzera',
+#         'USER': 'gigzera',
+#         'PASSWORD': 'GigzeraPass',
+#         'HOST': 'gigzera-rds.cbouq000srap.ap-south-1.rds.amazonaws.com',
+#         'PORT': '5432',
+#     }
+# }
 
 
 
