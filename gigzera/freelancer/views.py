@@ -134,7 +134,7 @@ def index(request):
     if not user_id:
         return redirect('login')  # Redirect to login if session is missing
     user = Freelancer.objects.get(userId=user_id)
-    print(user.name, "Name")
+    # print(user.name, "Name")
     jobs = ProjectsDisplay.objects.all().order_by('-created_at')[0:3]
     for job in jobs:
         job.skills_list = [skill.strip().title() for skill in job.skills_required.split(',')]
@@ -828,7 +828,7 @@ def singleProjectTracking(request):
     # Sorting the messages based on the timestamp extracted from the key
     sorted_msg_comments = dict(sorted(
         msg_comments.items(), key=lambda item: int(item[0].split("_")[1])
-    ))
+    )) if msg_comments else {}
 
     context={'user':user, 'job':job, 'bid':bid, 'singleOgp':singleOgp, 'msg_comments':sorted_msg_comments, 'tasks':tasks}
 
