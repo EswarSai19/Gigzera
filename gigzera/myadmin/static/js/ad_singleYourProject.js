@@ -37,29 +37,29 @@ function updateProgress() {
 }
 
 // javascript for message box
-function sendMessage() {
-  const input = document.getElementById("messageInput");
-  const container = document.getElementById("messagesContainer");
+// function sendMessage() {
+//   const input = document.getElementById("messageInput");
+//   const container = document.getElementById("messagesContainer");
 
-  if (input.value.trim()) {
-    const messageDiv = document.createElement("div");
-    messageDiv.className = "message sent";
-    messageDiv.innerHTML = `  
-        <img
-              src="  https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
-              alt="User Avatar"
-              class="user-avatar"
-            /> 
-            <div class="message-content">
-                <p>${input.value}</p>  
-                <span class="message-time">just now</span>  
-            </div>
-        `;
-    container.appendChild(messageDiv);
-    input.value = "";
-    container.scrollTop = container.scrollHeight;
-  }
-}
+//   if (input.value.trim()) {
+//     const messageDiv = document.createElement("div");
+//     messageDiv.className = "message sent";
+//     messageDiv.innerHTML = `
+//         <img
+//               src="  https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
+//               alt="User Avatar"
+//               class="user-avatar"
+//             />
+//             <div class="message-content">
+//                 <p>${input.value}</p>
+//                 <span class="message-time">just now</span>
+//             </div>
+//         `;
+//     container.appendChild(messageDiv);
+//     input.value = "";
+//     container.scrollTop = container.scrollHeight;
+//   }
+// }
 
 // JavaScript for Timeline and Finance Sections
 // Toggle Edit for Timeline Section
@@ -372,6 +372,109 @@ function addMessageToUI(messageText, timeStamp, isClientMessage) {
 function closeChatModal() {
   document.getElementById("chatModal").classList.add("hidden");
 }
+
+// send Message
+function sendMessage(event) {
+  event.preventDefault();
+
+  const messageInput = document.getElementById("chatMessageInput");
+  const messageText = messageInput.value.trim();
+  const msgId = document.getElementById("chatMsgId").value;
+  console.log("i am getting message id as ", msgId);
+
+  if (messageText) {
+    // Add message to UI immediately (optimistic UI update)
+    addMessageToMsgUI(messageText, "Sending...", true);
+
+    // Get form and URL
+    const form = document.getElementById("chatMessageForm");
+    const url = form.getAttribute("data-url");
+
+    // Get CSRF token
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(";").shift();
+    }
+    const csrftoken = getCookie("csrftoken");
+    console.log(url, "Here is the url");
+    // Send request
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": csrftoken,
+      },
+      body: `user_message=${encodeURIComponent(
+        messageText
+      )}&msgId=${encodeURIComponent(msgId)}`,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("Message sent successfully:", data);
+
+          // Update "Sending..." text with actual time
+          const messages = document.querySelectorAll(".message-box");
+          const lastMessage = messages[messages.length - 1];
+          const timeSpan = lastMessage.querySelector(".time-stamp");
+          timeSpan.textContent = data.messageTime;
+          location.reload();
+        } else {
+          console.error("Error sending message:", data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error sending message:", error);
+      });
+
+    // Clear input field and refocus
+
+    messageInput.value = "";
+    messageInput.focus();
+  }
+}
+
+function addMessageToMsgUI(messageText, timeStamp, isClientMessage) {
+  const messageArea = document.getElementById("messagesContainer");
+
+  const messageBox = document.createElement("div");
+  // If it's a client message, make it appear on the right side
+  messageBox.className = isClientMessage ? "message sent" : "message received";
+
+  messageBox.innerHTML = `
+    <div class="message-content-box">
+      <p>${messageText}</p>
+      <span class="time-stamp">${timeStamp}</span>
+    </div>
+    <img
+      src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
+      alt="User Avatar"
+      class="avatar-img"
+    />
+  `;
+
+  messageArea.appendChild(messageBox);
+  messageArea.scrollTop = messageArea.scrollHeight;
+}
+
+document
+  .getElementById("chatMessageInput")
+  .addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevents new line in the input
+      document.querySelector(".chat-send-btn").click(event); // Triggers the button click
+    }
+  });
+
+document
+  .getElementById("newMessageInput")
+  .addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevents new line in the input
+      document.querySelector(".send-message-btn").click(event); // Triggers the button click
+    }
+  });
 
 //  New script part for adding the functionality of the updating progress and status
 document.addEventListener("DOMContentLoaded", function () {

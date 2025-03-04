@@ -519,8 +519,13 @@ def cl_singleOgProject(request):
         milestone.cl_status = milestone.status.lower()
 
     tasks = Tasks.objects.filter(taskBid_id=bid.projectQuoteId)
+    msg_comments = singleOgp.msg_comments
+    # Sorting the messages based on the timestamp extracted from the key
+    sorted_msg_comments = dict(sorted(
+        msg_comments.items(), key=lambda item: int(item[0].split("_")[1])
+    ))
 
-    context={'user':user, 'job':job, 'bid':bid, 'singleOgp':singleOgp, 'milestones':milestones, 'tasks':tasks}
+    context={'user':user, 'job':job, 'bid':bid, 'singleOgp':singleOgp, 'msg_comments':sorted_msg_comments, 'milestones':milestones, 'tasks':tasks}
 
     return render(request, 'client/cl_singleOgProject.html', context)
     
@@ -855,6 +860,60 @@ def get_task_comments(request):
     })
 
 
+
+@csrf_exempt
+def cl_sendMsgMessage(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
+    
+    user = Client.objects.get(userId=user_id)
+    user.initials = get_initials(user.name)
+    
+    if request.method == 'POST':
+        print(" i am inside the post method of sendMsgMessage")
+        user_message = request.POST.get('user_message')
+        ongp_id = request.POST.get('msgId')
+        msg = OngoingProjects.objects.filter(ongProjectId=ongp_id).first()
+        
+        if not msg:
+            return JsonResponse({"success": False, "error": "msg not found"})
+            
+        # ongp_obj = OngoingProjects.objects.filter(bidId=task.taskBid_id).first()
+        # print(f"tasks are: {task}, {ongp_obj.ongProjectId}")
+        # print(user_message, ongp_id)
+        
+        # Get current time in 12-hour format (e.g., 02:05 PM)
+        current_time = timezone.now().strftime("%I:%M %p")
+        
+        # Create message key using client ID and timestamp
+        # Make sure the user_id is used as-is to preserve the CL prefix
+        message_key = f"{user_id}_{int(timezone.now().timestamp())}"
+        
+        # Prepare message data
+        message_data = {
+            "message": user_message,
+            "time": current_time
+        }
+        
+        # Get existing comments or initialize as empty dict if None
+        comments = msg.msg_comments if msg.msg_comments else {}
+        
+        # Add new message
+        comments[message_key] = message_data
+        
+        # Save updated comments back to msg
+        msg.msg_comments = comments
+        msg.save()
+        
+        return JsonResponse({
+            "success": True, 
+            "message": "Message saved successfully",
+            "messageKey": message_key,
+            "messageTime": current_time
+        })
+    
+    return JsonResponse({"success": False, "error": "Invalid request method"})      
 
 # Sending messages
 # def cl_sendMessage(request):

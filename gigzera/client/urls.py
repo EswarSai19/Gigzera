@@ -24,6 +24,7 @@ urlpatterns = [
     path('bidRejected/', views.cl_bidRejected, name='cl_bidRejected'),
     # Messages
     path('sendMessage/', views.cl_sendMessage, name='cl_sendMessage'),
+    path('sendMsgMessage/', views.cl_sendMsgMessage, name='cl_sendMsgMessage'),
     path('get-comments/', views.get_task_comments, name='get_task_comments'),
   
 ]

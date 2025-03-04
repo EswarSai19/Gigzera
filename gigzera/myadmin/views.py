@@ -470,13 +470,17 @@ def singleOngoingProject(request):
     formatted_end_date = singleOgp.end_date.strftime("%Y-%m-%d") if singleOgp.end_date else ""
 
     tasks = Tasks.objects.filter(taskBid_id=bid.projectQuoteId).all()
+    milestones = Milestones.objects.filter(bid_id=bid.projectQuoteId).all()
+    msg_comments = singleOgp.msg_comments
     context = {
         'job': job, 
         'bid': bid, 
         'singleOgp': singleOgp,
         'formatted_start_date': formatted_start_date,  
         'formatted_end_date': formatted_end_date,     
-        'tasks': tasks
+        'tasks': tasks,
+        'milestones':milestones,
+        'msg_comments':msg_comments
     }
     
 
@@ -542,13 +546,20 @@ def singleYourProject(request):
     print("project id is ", bid.projectQuoteId)
     tasks = Tasks.objects.filter(taskBid_id=bid.projectQuoteId)
     print("Tasks", tasks, len(tasks))
+
+    msg_comments = singleOgp.msg_comments
+    # Sorting the messages based on the timestamp extracted from the key
+    sorted_msg_comments = dict(sorted(
+        msg_comments.items(), key=lambda item: int(item[0].split("_")[1])
+    ))
     # print("Milestones", milestones)
     context = {
         'job': job,
         'bid': bid,
         'singleOgp': singleOgp,
         'milestones': milestones,
-        'tasks': tasks
+        'tasks': tasks,
+        'msg_comments':sorted_msg_comments
     }
     # print("Context", context)
     # print(f"Date: {singleOgp.start_date}, {singleOgp.end_date}")
@@ -588,12 +599,19 @@ def saSingleOGProject(request):
     milestones = Milestones.objects.filter(bid_id=bid.projectQuoteId).all()
     tasks = Tasks.objects.filter(taskBid_id=bid.projectQuoteId).all()
     # print("Milestones", milestones)
+    msg_comments = singleOgp.msg_comments
+    # Sorting the messages based on the timestamp extracted from the key
+    sorted_msg_comments = dict(sorted(
+        msg_comments.items(), key=lambda item: int(item[0].split("_")[1])
+    ))
+    # print("Milestones", milestones)
     context = {
         'job': job,
         'bid': bid,
         'singleOgp': singleOgp,
         'milestones': milestones,
-        'tasks': tasks
+        'tasks': tasks,
+        'msg_comments':sorted_msg_comments
     }
     # print("Context", context)
     # print(f"Date: {singleOgp.start_date}, {singleOgp.end_date}")
@@ -1290,4 +1308,58 @@ def get_task_comments(request):
         "success": True,
         "comments": comments
     })
+
+
+@csrf_exempt
+def ad_sendMsgMessage(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
+    
+    user = MyAdmin.objects.get(adminId=user_id)
+    
+    if request.method == 'POST':
+        print(" i am inside the post method of sendMsgMessage")
+        user_message = request.POST.get('user_message')
+        ongp_id = request.POST.get('msgId')
+        msg = OngoingProjects.objects.filter(ongProjectId=ongp_id).first()
+        
+        if not msg:
+            return JsonResponse({"success": False, "error": "msg not found"})
+            
+        # ongp_obj = OngoingProjects.objects.filter(bidId=task.taskBid_id).first()
+        # print(f"tasks are: {task}, {ongp_obj.ongProjectId}")
+        # print(user_message, ongp_id)
+        
+        # Get current time in 12-hour format (e.g., 02:05 PM)
+        current_time = timezone.now().strftime("%I:%M %p")
+        
+        # Create message key using client ID and timestamp
+        # Make sure the user_id is used as-is to preserve the CL prefix
+        message_key = f"{user_id}_{int(timezone.now().timestamp())}"
+        
+        # Prepare message data
+        message_data = {
+            "message": user_message,
+            "time": current_time
+        }
+        
+        # Get existing comments or initialize as empty dict if None
+        comments = msg.msg_comments if msg.msg_comments else {}
+        
+        # Add new message
+        comments[message_key] = message_data
+        
+        # Save updated comments back to msg
+        msg.msg_comments = comments
+        msg.save()
+        
+        return JsonResponse({
+            "success": True, 
+            "message": "Message saved successfully",
+            "messageKey": message_key,
+            "messageTime": current_time
+        })
+    
+    return JsonResponse({"success": False, "error": "Invalid request method"})      
 
