@@ -523,7 +523,7 @@ def cl_singleOgProject(request):
     # Sorting the messages based on the timestamp extracted from the key
     sorted_msg_comments = dict(sorted(
         msg_comments.items(), key=lambda item: int(item[0].split("_")[1])
-    ))
+    )) if msg_comments else {}
 
     context={'user':user, 'job':job, 'bid':bid, 'singleOgp':singleOgp, 'msg_comments':sorted_msg_comments, 'milestones':milestones, 'tasks':tasks}
 

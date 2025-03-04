@@ -548,11 +548,13 @@ def singleYourProject(request):
     print("Tasks", tasks, len(tasks))
 
     msg_comments = singleOgp.msg_comments
-    # Sorting the messages based on the timestamp extracted from the key
+
+    # Sorting only if there are messages
     sorted_msg_comments = dict(sorted(
         msg_comments.items(), key=lambda item: int(item[0].split("_")[1])
-    ))
+    )) if msg_comments else {}  # If empty, return an empty dictionary
     # print("Milestones", milestones)
+
     context = {
         'job': job,
         'bid': bid,
@@ -603,7 +605,8 @@ def saSingleOGProject(request):
     # Sorting the messages based on the timestamp extracted from the key
     sorted_msg_comments = dict(sorted(
         msg_comments.items(), key=lambda item: int(item[0].split("_")[1])
-    ))
+    )) if msg_comments else {}
+
     # print("Milestones", milestones)
     context = {
         'job': job,
