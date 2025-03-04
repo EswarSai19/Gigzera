@@ -121,6 +121,11 @@ def submit_contact(request):
     return redirect(request.META.get('HTTP_REFERER', 'contact'))
 
 
+
+
+
+
+
 # Freelancer form
 def submit_freelancer(request):
     if request.method == "POST":
@@ -137,7 +142,13 @@ def submit_freelancer(request):
         social_media = request.POST.get("social_media")
         print("Certificates", certifications)
         
-                # Assign the non-empty value
+        if experience:
+            match = re.search(r"\d+(\.\d+)?", experience)  # Extract number (including decimals)
+            experience_value = float(match.group()) if match else 0.0  # Convert to float or default to 0.0
+        else:
+            experience_value = 0.0
+
+        # Assign the non-empty value
         designation = otherdesignation if otherdesignation else designation
         
         # Collect skills and experiences
@@ -183,7 +194,7 @@ def submit_freelancer(request):
                     designation=designation,
                     education=education,
                     certifications=certifications,
-                    experience=experience,
+                    experience=experience_value,
                     skills=skills,
                     social_media=social_media,
                     password=password1,
