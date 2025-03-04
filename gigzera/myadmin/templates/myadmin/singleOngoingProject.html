@@ -42,9 +42,9 @@
           </div>
         </div>
         <div class="task-input">
-          <button onclick="openChatModal()" class="comment-button">
+          <!-- <button onclick="openChatModal()" class="comment-button">
             Add Comment
-          </button>
+          </button> -->
         </div>
       </div>
       {% empty %}
@@ -272,36 +272,58 @@
         </div>
         <!-- <h4><strong>Milestone Payments</strong></h4> -->
         <table class="edit-table" id="milestoneTable">
-          <tr>
-            <td><input type="date" disabled /></td>
-            <td>
-              <div class="input-wrapper">
-                <span class="dollar-sign">$</span>
-                <input type="number" placeholder="Amount" disabled />
-              </div>
-            </td>
-            <td>
-              <select disabled>
-                <option value="Pending">Pending</option>
-                <option value="Completed">Completed</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td><input type="date" disabled /></td>
-            <td>
-              <div class="input-wrapper">
-                <span class="dollar-sign">$</span>
-                <input type="number" placeholder="Amount" disabled />
-              </div>
-            </td>
-            <td>
-              <select disabled>
-                <option value="Pending">Pending</option>
-                <option value="Completed">Completed</option>
-              </select>
-            </td>
-          </tr>
+          {% for ms in milestones %}
+            <tr>
+              <td>
+                <input
+                  type="hidden"
+                  name="{{ms.id}}_delete"
+                  class="delete-marker"
+                  value="0"
+                />
+              </td>
+              <td>
+                <input
+                  type="date"
+                  name="{{ms.id}}_date"
+                  class="mile_stone_input"
+                  value="{{ ms.date | date:'Y-m-d' }}"
+                  disabled
+                />
+              </td>
+              <td>
+                <div class="input-wrapper">
+                  <span class="dollar-sign">{{job.cur_symbol}}</span>
+                  <input
+                    type="text"
+                    name="{{ms.id}}_amount"
+                    class="mile_stone_input"
+                    placeholder="Amount"
+                    value="{{ms.amount}}"
+                    disabled
+                  />
+                </div>
+              </td>
+              <td>
+                <select name="{{ms.id}}_status" disabled>
+                  <option value="Pending" {% if ms.status == "Pending" %}selected{% endif %}>Pending</option>
+                  <option value="Completed" {% if ms.status == "Completed" %}selected{% endif %}>Completed</option>
+                </select>
+              </td>
+              <td>
+                <i
+                  class="fa-solid fa-trash delete-milestone disabled-milestone"
+                  data-id="{{ ms.id }}"
+                  style="
+                    cursor: pointer;
+                    color: red;
+                    pointer-events: none;
+                    opacity: 0.5;
+                  "
+                ></i>
+              </td>
+            </tr>
+            {% endfor %}
         </table>
       </div>
     </div>
@@ -315,30 +337,39 @@
       <span class="online-status">Online</span>
     </div>
     <div class="messages-container" id="messagesContainer">
-      <div class="message received">
-        <img
-          src="  https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
-          alt="User Avatar"
-          class="user-avatar"
-        />
-        <div class="message-content">
-          <p>Can you share the latest wireframes?</p>
-          <span class="message-time">10:30 AM</span>
-        </div>
-      </div>
+      {% for key, msg in msg_comments.items %} {% if "AD" in key %}
+      <!-- Sent Message -->
       <div class="message sent">
+        <div
+          class="message-content bg-blue-500 text-white p-2 rounded-lg max-w-xs"
+        >
+          <p>{{ msg.message }}</p>
+          <span class="message-time text-xs text-gray-200">{{ msg.time }}</span>
+        </div>
         <img
-          src="  https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
+          src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
           alt="User Avatar"
-          class="user-avatar"
+          class="user-avatar w-8 h-8 rounded-full"
         />
-        <div class="message-content">
-          <p>I'll share them by end of day.</p>
-          <span class="message-time">10:32 AM</span>
+      </div>
+      {% else %}
+      <!-- Received Message -->
+      <div class="message received flex items-center gap-2">
+        <img
+          src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
+          alt="User Avatar"
+          class="user-avatar w-8 h-8 rounded-full"
+        />
+        <div
+          class="message-content bg-gray-200 text-black p-2 rounded-lg max-w-xs"
+        >
+          <p>{{ msg.message }}</p>
+          <span class="message-time text-xs text-gray-600">{{ msg.time }}</span>
         </div>
       </div>
+      {% endif %} {% endfor %}
     </div>
-    <div class="message-input">
+    <!-- <div class="message-input">
       <input type="text" placeholder="Type your message..." id="messageInput" />
       <button onclick="sendMessage()">
         <svg
@@ -355,7 +386,7 @@
           <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
         </svg>
       </button>
-    </div>
+    </div> -->
   </div>
 </div>
 {% endblock %}

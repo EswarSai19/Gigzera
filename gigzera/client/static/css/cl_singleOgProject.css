@@ -531,10 +531,10 @@ textarea:focus {
 }
 
 #messagesContainer {
-    max-height: 400px;
+    max-height: 70vh;
     /* Reduced height slightly */
     overflow-y: auto;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     padding-right: 5px;
     scrollbar-width: thin;
     scrollbar-color: #ccc transparent;
@@ -597,10 +597,9 @@ textarea:focus {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-top: auto;
 }
 
-.message-input input {
+.message-input .input {
     flex: 1;
     padding: 10px;
     border: 1px solid #ddd;
@@ -608,7 +607,7 @@ textarea:focus {
     font-size: 14px;
 }
 
-.message-input input:focus {
+.message-input .input:focus {
     border-color: #007bff;
     outline: none;
 }

@@ -188,12 +188,12 @@
                 class="task-status"
                 onchange="submitUpdateForm(this)"
               >
-                <option {% if task.status == "Requirement Gathering" %}selected{% endif %}>Requirement Gathering</option>
+                <!-- <option {% if task.status == "Requirement Gathering" %}selected{% endif %}>Requirement Gathering</option>
                 <option {% if task.status == "Designing" %}selected{% endif %}>Designing</option>
                 <option {% if task.status == "Development" %}selected{% endif %}>Development</option>
                 <option {% if task.status == "Testing" %}selected{% endif %}>Testing</option>
                 <option {% if task.status == "UAT" %}selected{% endif %}>UAT</option>
-                <option {% if task.status == "Completed" %}selected{% endif %}>Completed</option>
+                <option {% if task.status == "Completed" %}selected{% endif %}>Completed</option> -->
               </select>
             </div>
           </form>
@@ -273,18 +273,39 @@
       <span class="online-status">Online</span>
     </div>
     <div class="messages-container" id="messagesContainer">
-      <div class="message received">
+      {% for key, msg in msg_comments.items %} {% if "CL" in key %}
+      <!-- Sent Message -->
+      <div class="message sent">
+        <div
+          class="message-content bg-blue-500 text-white p-2 rounded-lg max-w-xs"
+        >
+          <p>{{ msg.message }}</p>
+          <span class="message-time text-xs text-gray-200">{{ msg.time }}</span>
+        </div>
         <img
           src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
           alt="User Avatar"
-          class="user-avatar"
+          class="user-avatar w-8 h-8 rounded-full"
         />
-        <div class="message-content">
-          <p>Can you share the latest wireframes?</p>
-          <span class="message-time">10:30 AM</span>
+      </div>
+      {% else %}
+      <!-- Received Message -->
+      <div class="message received flex items-center gap-2">
+        <img
+          src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
+          alt="User Avatar"
+          class="user-avatar w-8 h-8 rounded-full"
+        />
+        <div
+          class="message-content bg-gray-200 text-black p-2 rounded-lg max-w-xs"
+        >
+          <p>{{ msg.message }}</p>
+          <span class="message-time text-xs text-gray-600">{{ msg.time }}</span>
         </div>
       </div>
-      <div class="message sent">
+      {% endif %} {% endfor %}
+
+      <!-- <div class="message sent">
         <div class="message-content">
           <p>I'll share them by end of day.</p>
           <span class="message-time">10:32 AM</span>
@@ -294,30 +315,55 @@
           alt="User Avatar"
           class="user-avatar"
         />
-      </div>
+      </div> -->
     </div>
-    <div class="message-input">
-      <input type="text" placeholder="Type your message..." id="messageInput" />
-      <button onclick="sendMessage()">
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+    <div class="message-input bg-white p-2 border-t border-gray-300">
+      <form
+        id="chatMessageForm"
+        action="{% url 'cl_sendMsgMessage' %}"
+        method="POST"
+        data-url="{% url 'cl_sendMsgMessage' %}"
+        class="chat-form flex items-center gap-2"
+      >
+        {% csrf_token %}
+        <input
+          type="hidden"
+          name="msgId"
+          id="chatMsgId"
+          value="{{singleOgp.ongProjectId}}"
+        />
+        <input
+          type="text"
+          placeholder="Type your message..."
+          id="chatMessageInput"
+          class="flex-1 p-2 text-sm w-[40%] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+        <button
+          type="button"
+          class="chat-send-btn p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 focus:outline-none transition"
+          onclick="sendMessage(event)"
         >
-          <path d="M22 2L11 13"></path>
-          <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
-        </svg>
-      </button>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="w-5 h-5"
+          >
+            <path d="M22 2L11 13"></path>
+            <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+          </svg>
+        </button>
+      </form>
     </div>
   </div>
 </div>
 
-<!-- Message Modal -->
+<!-- Message Modal for comments -->
 <div
   id="chatModal"
   class="fixed inset-0 flex items-center justify-center hidden bg-white-100 backdrop-blur-sm bg-opacity-50"

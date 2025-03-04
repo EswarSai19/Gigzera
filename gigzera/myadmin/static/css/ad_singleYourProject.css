@@ -158,7 +158,7 @@ body {
 
 /* Main Content */
 .main-content {
-    width: 40%;
+    width: 45%;
     height: 900px;
     padding: 20px;
     background-color: #fff;
@@ -559,7 +559,7 @@ body {
 /* Messages Section */
 /* Styles for the messages container */
 .messages {
-    width: 30%;
+    width: 25%;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -589,7 +589,7 @@ body {
 }
 
 #messagesContainer {
-    max-height: 280px;
+    max-height: 70vh;
     /* Reduced height slightly */
     /* overflow-y: auto; */
     margin-bottom: 10px;
@@ -616,6 +616,10 @@ body {
 }
 
 .message.sent {
+    justify-content: flex-end;
+}
+
+.message.received {
     justify-content: flex-start;
 }
 

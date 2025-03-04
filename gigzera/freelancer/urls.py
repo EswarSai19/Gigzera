@@ -39,5 +39,7 @@ urlpatterns = [
     path('sendMessage/', views.fl_sendMessage, name='fl_sendMessage'),
     path('get-comments/', views.get_task_comments, name='get_task_comments'),
 
+    path('sendMsgMessage/', views.fl_sendMsgMessage, name='fl_sendMsgMessage'),
+
   
 ]

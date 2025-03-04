@@ -295,7 +295,7 @@ class ProjectQuote(models.Model):
     )
     freelancer = models.ForeignKey(Freelancer, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    admin = models.ForeignKey(MyAdmin, on_delete=models.CASCADE, default="AD001")
+    admin_id = models.CharField(max_length=10, null=True, blank=True)
     opportunityId = models.CharField(max_length=20)
     budget = models.CharField(max_length=20)
     time_estimation = models.CharField(max_length=20)  # Days
@@ -326,6 +326,7 @@ class OngoingProjects(models.Model):
     bidId = models.CharField(max_length=20)
     status = models.CharField(max_length=30)
     progress = models.CharField(max_length=5, default='0')
+    msg_comments = models.JSONField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
