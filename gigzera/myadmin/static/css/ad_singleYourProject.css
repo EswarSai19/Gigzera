@@ -591,7 +591,7 @@ body {
 #messagesContainer {
     max-height: 70vh;
     /* Reduced height slightly */
-    /* overflow-y: auto; */
+    overflow-y: auto;
     margin-bottom: 10px;
     padding-right: 5px;
     scrollbar-width: thin;
