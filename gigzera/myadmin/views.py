@@ -623,6 +623,8 @@ def saSingleOGProject(request):
     return render(request, 'myadmin/saSingleOGProject.html', context)
 
 
+
+
 def updateProgressStatus(request):
     ongp_id = request.POST.get('ongpId') or request.GET.get('ongpId')
     print("ID", ongp_id)
@@ -1366,3 +1368,22 @@ def ad_sendMsgMessage(request):
     
     return JsonResponse({"success": False, "error": "Invalid request method"})      
 
+# latest messages pull
+def get_latest_messages(request):
+    ongp_id = request.GET.get('ongpId')
+    if not ongp_id:
+        return JsonResponse({'error': 'Missing ongpId'}, status=400)
+
+    singleOgp = OngoingProjects.objects.filter(ongProjectId=ongp_id).first()
+    if not singleOgp:
+        return JsonResponse({'error': 'Project not found'}, status=404)
+
+    # Fetch and sort messages
+    msg_comments = singleOgp.msg_comments or {}
+    sorted_msg_comments = dict(sorted(
+        msg_comments.items(), key=lambda item: int(item[0].split("_")[1])
+    ))
+
+    return JsonResponse({'messages': sorted_msg_comments})
+
+    

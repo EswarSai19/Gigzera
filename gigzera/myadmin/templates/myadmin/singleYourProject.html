@@ -505,29 +505,25 @@
       <span class="online-status">Online</span>
     </div>
     <div class="messages-container" id="messagesContainer">
-      {% for key, msg in msg_comments.items %} {% if "AD" in key %}
-      <!-- Sent Message -->
-      <div class="message sent">
+      {% for key, msg in msg_comments.items %} {% if "AD" in key %}  
+      <div class="message sent flex items-center gap-2">
         <div
           class="message-content bg-blue-500 text-white p-2 rounded-lg max-w-xs"
         >
           <p>{{ msg.message }}</p>
           <span class="message-time text-xs text-gray-200">{{ msg.time }}</span>
         </div>
-        <img
-          src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
-          alt="User Avatar"
-          class="user-avatar w-8 h-8 rounded-full"
-        />
+        
+        <!-- <div class="w-12 h-12 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm font-bold">
+          <span id="profile-initials">{{ key|slice:"2" }}</span>
+        </div> -->
       </div>
-      {% else %}
-      <!-- Received Message -->
+      {% else %}  
       <div class="message received flex items-center gap-2">
-        <img
-          src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
-          alt="User Avatar"
-          class="user-avatar w-8 h-8 rounded-full"
-        />
+        
+        <div class="w-12 h-12 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm font-bold">
+          <span id="profile-initials">{{ key|slice:"2" }}</span>
+        </div>
         <div
           class="message-content bg-gray-200 text-black p-2 rounded-lg max-w-xs"
         >
@@ -536,18 +532,6 @@
         </div>
       </div>
       {% endif %} {% endfor %}
-
-      <!-- <div class="message sent">
-        <div class="message-content">
-          <p>I'll share them by end of day.</p>
-          <span class="message-time">10:32 AM</span>
-        </div>
-        <img
-          src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
-          alt="User Avatar"
-          class="user-avatar"
-        />
-      </div> -->
     </div>
     <div class="message-input bg-white p-2 border-t border-gray-300">
       <form

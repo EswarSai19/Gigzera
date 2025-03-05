@@ -262,11 +262,9 @@ function addMessageToUI(messageText, timeStamp, isClientMessage) {
     : "message-box incoming mb-3";
 
   messageBox.innerHTML = `
-    <img
-      src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
-      alt="User Avatar"
-      class="avatar-img"
-    />
+    <div class="w-12 h-12 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm font-bold">
+      <span id="profile-initials">FL</span>
+    </div>
     <div class="message-content-box">
       <p>${messageText}</p>
       <span class="time-stamp">${timeStamp}</span>
@@ -276,6 +274,12 @@ function addMessageToUI(messageText, timeStamp, isClientMessage) {
   messageArea.appendChild(messageBox);
   messageArea.scrollTop = messageArea.scrollHeight;
 }
+
+// scroll to bottom
+document.addEventListener("DOMContentLoaded", function () {
+  var messagesContainer = document.getElementById("messagesContainer");
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+});
 
 // Function to close the chat modal
 function closeChatModal() {
@@ -353,7 +357,8 @@ function sendMessage(event) {
           const lastMessage = messages[messages.length - 1];
           const timeSpan = lastMessage.querySelector(".time-stamp");
           timeSpan.textContent = data.messageTime;
-          location.reload();
+          // location.reload();
+          fetchLatestMessages();
         } else {
           console.error("Error sending message:", data.error);
         }
@@ -381,17 +386,64 @@ function addMessageToMsgUI(messageText, timeStamp, isClientMessage) {
       <p>${messageText}</p>
       <span class="time-stamp">${timeStamp}</span>
     </div>
-    <img
-      src="https://cdn.yellowmessenger.com/cMvNTJMdqlfz1734610513305.jpeg"
-      alt="User Avatar"
-      class="avatar-img"
-    />
   `;
 
   messageArea.appendChild(messageBox);
   messageArea.scrollTop = messageArea.scrollHeight;
 }
 
+// latest messages
+function fetchLatestMessages() {
+  const ongpId = new URLSearchParams(window.location.search).get("ongpId");
+  if (!ongpId) return;
+
+  fetch(`/freelancer/get-latest-messages/?ongpId=${ongpId}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.error) {
+        console.error("Error:", data.error);
+        return;
+      }
+
+      const messagesContainer = document.getElementById("messagesContainer");
+      messagesContainer.innerHTML = ""; // Clear old messages
+
+      Object.entries(data.messages).forEach(([key, msg]) => {
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("message", "flex", "items-center", "gap-2");
+
+        if (key.startsWith("FL")) {
+          messageDiv.classList.add("sent");
+          messageDiv.innerHTML = `
+            <div class="message-content bg-blue-500 text-white p-2 rounded-lg max-w-xs">
+                <p>${msg.message}</p>
+                <span class="message-time text-xs text-gray-200">${msg.time}</span>
+            </div>
+        `;
+        } else {
+          messageDiv.classList.add("received");
+          const senderInitials = key.substring(0, 2); // Get first two letters dynamically
+          messageDiv.innerHTML = `
+            <div class="w-20 h-20 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm font-bold">
+                <span id="profile-initials">${senderInitials}</span>
+            </div>
+            <div class="message-content bg-gray-200 text-black p-2 rounded-lg max-w-xs">
+                <p>${msg.message}</p>
+                <span class="message-time text-xs text-gray-600">${msg.time}</span>
+            </div>
+        `;
+        }
+        messagesContainer.appendChild(messageDiv);
+      });
+
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    })
+    .catch((error) => console.error("Fetch error:", error));
+}
+// setInterval(fetchLatestMessages, 5000);
+document.addEventListener("DOMContentLoaded", fetchLatestMessages);
+
+//
 document
   .getElementById("chatMessageInput")
   .addEventListener("keydown", function (event) {
@@ -401,6 +453,7 @@ document
     }
   });
 
+//
 document
   .getElementById("newMessageInput")
   .addEventListener("keydown", function (event) {

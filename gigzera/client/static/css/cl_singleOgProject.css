@@ -534,7 +534,7 @@ textarea:focus {
     max-height: 70vh;
     /* Reduced height slightly */
     overflow-y: auto;
-    /* margin-bottom: 10px; */
+    margin-bottom: 10px;
     padding-right: 5px;
     scrollbar-width: thin;
     scrollbar-color: #ccc transparent;
@@ -559,6 +559,10 @@ textarea:focus {
 
 .message.sent {
     justify-content: flex-end;
+}
+
+.message.received {
+    justify-content: flex-start;
 }
 
 .message img {

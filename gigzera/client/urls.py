@@ -25,6 +25,7 @@ urlpatterns = [
     # Messages
     path('sendMessage/', views.cl_sendMessage, name='cl_sendMessage'),
     path('sendMsgMessage/', views.cl_sendMsgMessage, name='cl_sendMsgMessage'),
+
     path('get-comments/', views.get_task_comments, name='get_task_comments'),
-  
+    path("get-latest-messages/", views.get_latest_messages, name="get_latest_messages"),
 ]
