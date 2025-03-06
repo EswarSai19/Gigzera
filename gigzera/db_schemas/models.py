@@ -237,18 +237,18 @@ class ProjectsDisplay(models.Model):
         return f"Title: {self.title} with ID {self.opportunityId}"
 
 
-class ProjectStatusDetails(models.Model):
-    freelancer = models.ForeignKey(Freelancer, on_delete=models.CASCADE, related_name='project_status_set')
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    admin = models.CharField(max_length=20, default='AD001')
-    opportunity_id = models.CharField(max_length=15)
-    status = models.CharField(max_length=20, default='Not Started')
-    progress = models.CharField(default='0')
-    created_at = models.DateTimeField(default=now)
-    updated_at = models.DateTimeField(auto_now=True)
+# class ProjectStatusDetails(models.Model):
+#     freelancer = models.ForeignKey(Freelancer, on_delete=models.CASCADE, related_name='project_status_set')
+#     client = models.ForeignKey(Client, on_delete=models.CASCADE)
+#     admin = models.CharField(max_length=20, default='AD001')
+#     opportunity_id = models.CharField(max_length=15)
+#     status = models.CharField(max_length=20, default='Not Started')
+#     progress = models.CharField(default='0')
+#     created_at = models.DateTimeField(default=now)
+#     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f"{self.status} ({self.progress} are the project details)"
+#     def __str__(self):
+#         return f"{self.status} ({self.progress} are the project details)"
 
 
 class JobsPageAdv(models.Model):
