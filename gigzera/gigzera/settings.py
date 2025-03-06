@@ -158,35 +158,35 @@ def get_ssm_parameter(param_name, default=None):
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'sampleDB',
+#         'USER': 'postgres',
+#         'PASSWORD': 'mysuperpass',
+#         'HOST': 'demo-postgre.ctigc0i0wbqn.ap-south-1.rds.amazonaws.com',
+#         'PORT': '5432',
+#     }
+# }
+
+# Load environment variables from .env
+load_dotenv()
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sampleDB',
-        'USER': 'postgres',
-        'PASSWORD': 'mysuperpass',
-        'HOST': 'demo-postgre.ctigc0i0wbqn.ap-south-1.rds.amazonaws.com',
+        'NAME': 'gigzera',
+        'USER': os.getenv("DB_USER") or get_ssm_parameter("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASSWORD") or get_ssm_parameter("DB_PASSWORD"),
+        'HOST': os.getenv("DB_HOST") or get_ssm_parameter("DB_HOST"),
         'PORT': '5432',
     }
 }
 
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'gigzera',
-#         'USER': get_ssm_parameter("DB_USER"),
-#         'PASSWORD': get_ssm_parameter("DB_PASSWORD"),
-#         'HOST': get_ssm_parameter("DB_HOST"),
-#         'PORT': '5432',
-#     }
-# }
 
 
-
-
-# Load environment variables from .env
-load_dotenv()
 
 # Use AWS S3 in production, local storage in development
 # USE_S3 = os.getenv("USE_S3", "False") == "True"

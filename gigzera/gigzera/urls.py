@@ -27,7 +27,7 @@ urlpatterns = [
     path('myadmin/', include('myadmin.urls')),
 
     # Mobile view urls
-    path('', include('non_register_mb.urls')),
+    path('mobile/', include('non_register_mb.urls')),
 
 
 ]

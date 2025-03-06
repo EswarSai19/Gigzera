@@ -16,7 +16,7 @@ from urllib.parse import urlparse
 from itertools import chain
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from db_schemas.models import Contact, PartnerLogos, JobsPageImages, WebAnnouncement, JobsPageAdv, ProjectQuote, MyAdmin, Tasks, Client, Milestones, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
+from db_schemas.models import Contact, PartnerLogos, JobsPageImages, WebAnnouncement, JobsPageAdv, ProjectQuote, MyAdmin, Tasks, Client, Milestones, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay  # Create a model for storing quotes
 from django.core.exceptions import ValidationError
 from datetime import datetime
 

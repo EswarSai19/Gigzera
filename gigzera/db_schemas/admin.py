@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Contact, Client, ProjectsDisplay, Freelancer, Skill, Certificate, EmploymentHistory, ProjectStatusDetails
+from .models import Contact, Client, ProjectsDisplay, Freelancer, Skill, Certificate, EmploymentHistory
 # Register your models here.
 
 @admin.register(Contact)
@@ -12,10 +12,10 @@ class ClientAdmin(admin.ModelAdmin):
     list_display = ('userId', 'name', 'email', 'phone', 'user_role', 'country', 'company', 'designation' )
     search_fields = ('name', 'email', 'userId', 'phone', 'company')
 
-@admin.register(ProjectStatusDetails)
-class ProjectStatusDetailsAdmin(admin.ModelAdmin):
-    list_display = ('opportunity_id', 'freelancer_id', 'status', 'progress')
-    search_fields = ('opportunity_id', 'freelancer_id', 'status', 'progress')
+# @admin.register(ProjectStatusDetails)
+# class ProjectStatusDetailsAdmin(admin.ModelAdmin):
+#     list_display = ('opportunity_id', 'freelancer_id', 'status', 'progress')
+#     search_fields = ('opportunity_id', 'freelancer_id', 'status', 'progress')
 
 @admin.register(ProjectsDisplay)
 class ProjectsDisplayAdmin(admin.ModelAdmin):

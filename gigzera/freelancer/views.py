@@ -12,7 +12,7 @@ from django.utils import timezone
 from urllib.parse import urlparse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from db_schemas.models import Contact, ProjectQuote, JobsPageImages, WebAnnouncement, JobsPageAdv, Tasks, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay, ProjectStatusDetails  # Create a model for storing quotes
+from db_schemas.models import Contact, ProjectQuote, JobsPageImages, WebAnnouncement, JobsPageAdv, Tasks, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay  # Create a model for storing quotes
 from django.core.exceptions import ValidationError
 from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
