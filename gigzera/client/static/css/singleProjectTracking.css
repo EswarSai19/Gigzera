@@ -389,7 +389,7 @@ textarea:focus {
 }
 
 #messagesContainer {
-    max-height: 280px;
+    max-height: 70vh;
     /* Reduced height slightly */
     overflow-y: auto;
     margin-bottom: 10px;

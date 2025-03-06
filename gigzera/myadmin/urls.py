@@ -69,6 +69,7 @@ urlpatterns = [
     path('get-comments/', views.get_task_comments, name='get_task_comments'),
 
     path('sendMsgMessage/', views.ad_sendMsgMessage, name='ad_sendMsgMessage'),
+     path("get-latest-messages/", views.get_latest_messages, name="get_latest_messages"),
 
 
 ]

@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'db_schemas',
     'myadmin',
 
+    # mobile apps
+    'non_register_mb',
+
     # custom
     'storages',
 ]
@@ -171,9 +174,9 @@ DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'gigzera',
-#         'USER': 'gigzera',
-#         'PASSWORD': 'GigzeraPass',
-#         'HOST': 'gigzera-rds.cbouq000srap.ap-south-1.rds.amazonaws.com',
+#         'USER': get_ssm_parameter("DB_USER"),
+#         'PASSWORD': get_ssm_parameter("DB_PASSWORD"),
+#         'HOST': get_ssm_parameter("DB_HOST"),
 #         'PORT': '5432',
 #     }
 # }

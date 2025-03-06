@@ -25,6 +25,11 @@ urlpatterns = [
     path('freelancer/', include('freelancer.urls')),
     path('client/', include('client.urls')),
     path('myadmin/', include('myadmin.urls')),
+
+    # Mobile view urls
+    path('', include('non_register_mb.urls')),
+
+
 ]
 
 

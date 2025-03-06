@@ -158,7 +158,7 @@ body {
 
 /* Main Content */
 .main-content {
-    width: 45%;
+    width: 40%;
     height: 900px;
     padding: 20px;
     background-color: #fff;
@@ -559,7 +559,7 @@ body {
 /* Messages Section */
 /* Styles for the messages container */
 .messages {
-    width: 25%;
+    width: 30%;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;

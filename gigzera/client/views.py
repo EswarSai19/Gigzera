@@ -663,6 +663,26 @@ def cl_singleViewBid(request):
     context = {'job':job, 'user':user, 'fl_user':fl_user, 'bid':bid}
     return render(request, 'client/cl_singleViewBid.html', context)
 
+
+def get_latest_messages(request):
+    ongp_id = request.GET.get('ongpId')
+    if not ongp_id:
+        return JsonResponse({'error': 'Missing ongpId'}, status=400)
+
+    singleOgp = OngoingProjects.objects.filter(ongProjectId=ongp_id).first()
+    if not singleOgp:
+        return JsonResponse({'error': 'Project not found'}, status=404)
+
+    # Fetch and sort messages
+    msg_comments = singleOgp.msg_comments or {}
+    sorted_msg_comments = dict(sorted(
+        msg_comments.items(), key=lambda item: int(item[0].split("_")[1])
+    ))
+
+    return JsonResponse({'messages': sorted_msg_comments})
+
+
+
 def profileView(request):
     user_id = request.GET.get('userId')
     bid_id = request.GET.get('bidId')

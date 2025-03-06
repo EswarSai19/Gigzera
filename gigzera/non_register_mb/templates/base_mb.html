@@ -20,7 +20,8 @@
   </head>
   <body class="bg-gray-50">
     <!-- Include Navbar -->
-    {% include 'navbar.html' %} {% if messages %} {% for message in messages %}
+    {% include 'navbar_mb.html' %} {% if messages %} {% for message in messages
+    %}
     <div
       id="alert-banner"
       class="alert-banner text-white text-center p-4 rounded-lg shadow-lg flex justify-between items-center {% if message.tags and 'success' in message.tags.split %} bg-green-600 {% elif 'error' in message.tags %} bg-red-600 {% elif 'warning' in message.tags %} bg-yellow-600 {% else %} bg-blue-600 {% endif %}"
@@ -42,7 +43,7 @@
     </main>
 
     <!-- Include Footer -->
-    {% include 'footer.html' %}
+    {% include 'footer_mb.html' %}
     <!-- JS -->
     <script>
       // toggle bars
