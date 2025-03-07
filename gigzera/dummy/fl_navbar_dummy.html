@@ -1,0 +1,172 @@
+<!-- New test -->
+<div
+  class="w-full bg-white/95 backdrop-blur-sm shadow-sm z-10 !top-0 font-arial font-sans"
+>
+  <div class="container mx-auto px-4 py-4">
+    <div class="flex items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center gap-12">
+        <a href="{% url 'fl_index' %}">
+          <img
+            class="w-[130px] h-[50px] cursor-pointer"
+            src="https://d2m054rmna67sd.cloudfront.net/header_logo.png"
+            alt="Gigzera Logo"
+          />
+        </a>
+        <!-- Desktop Search Bar -->
+        <div class="hidden lg:flex relative w-96">
+          <input
+            type="text"
+            placeholder="Search jobs by skills or category..."
+            class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500"
+          />
+          <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex items-center gap-8">
+        <a
+          href="{% url 'fl_index' %}"
+          class="nav-item text-gray-600 hover:text-blue-600 cursor-pointer"
+          >Home</a
+        >
+        <a
+          href="{% url 'fl_jobs' %}"
+          class="nav-item text-gray-600 hover:text-blue-600 cursor-pointer"
+          >Jobs</a
+        >
+        <a
+          href="{% url 'fl_aboutus' %}"
+          class="nav-item text-gray-600 hover:text-blue-600 cursor-pointer"
+          >About Us</a
+        >
+        <a
+          id="contactBtn"
+          class="text-gray-600 hover:text-blue-600 cursor-pointer"
+          >Contact Us</a
+        >
+        <a
+          href="{% url 'fl_industries' %}"
+          class="nav-item text-gray-600 hover:text-blue-600 cursor-pointer"
+          >Industries</a
+        >
+
+        <!-- Profile Dropdown -->
+        <div class="relative profile-dropdown">
+          <div
+            class="flex items-center cursor-pointer profile-trigger"
+            id="profile-trigger"
+          >
+            <div
+              class="w-9 h-9 bg-blue-600 text-white flex justify-center items-center rounded-full text-lg font-bold"
+            >
+              {{ user.initials }}
+            </div>
+            <i class="fa fa-caret-down text-gray-600"></i>
+          </div>
+
+          <!-- Profile Menu -->
+          <div
+            class="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-lg hidden profile-menu"
+            id="profile-menu"
+          >
+            <p class="px-4 py-2 text-gray-600 font-semibold">{{ user.name }}</p>
+            <p class="px-4 py-2 text-gray-500 text-sm">{{ user.email }}</p>
+            <hr />
+            <a
+              href="{% url 'fl_profile' %}"
+              class="block px-4 py-2 text-gray-600 hover:bg-gray-100"
+              >Profile</a
+            >
+            <hr />
+            <a
+              href="{% url 'logout' %}"
+              class="block px-4 py-2 text-red-600 hover:bg-gray-100"
+              >Logout</a
+            >
+          </div>
+        </div>
+      </nav>
+
+      <!-- Mobile Menu Toggle -->
+      <button id="menuToggle" class="lg:hidden text-gray-600">
+        <i class="fa-solid fa-bars text-2xl"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Menu (Hidden by Default) -->
+    <div
+      id="navMenu"
+      class="hidden flex lg:hidden flex-col items-center gap-4 py-4 px-4 fixed top-20 left-0 bg-white w-full shadow-md z-[1001]"
+    >
+      <!-- Mobile Search Bar -->
+      <div class="relative w-full">
+        <input
+          type="text"
+          placeholder="Search jobs by skills or category..."
+          class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 mb-2 z-[1001]"
+        />
+        <i
+          class="fa-solid fa-search absolute left-3 top-3 text-gray-400 z-[1001]"
+        ></i>
+      </div>
+
+      <a
+        href="{% url 'fl_index' %}"
+        class="block text-gray-600 hover:text-blue-600 mb-2"
+        >Home</a
+      >
+      <a
+        href="{% url 'fl_jobs' %}"
+        class="block text-gray-600 hover:text-blue-600 mb-2"
+        >Jobs</a
+      >
+      <a
+        href="{% url 'fl_aboutus' %}"
+        class="block text-gray-600 hover:text-blue-600 mb-2"
+        >About Us</a
+      >
+      <a
+        id="contactBtnMobile"
+        class="block text-gray-600 hover:text-blue-600 mb-2"
+        >Contact Us</a
+      >
+      <a
+        href="{% url 'fl_industries' %}"
+        class="block text-gray-600 hover:text-blue-600 mb-2"
+        >Industries</a
+      >
+
+      <!-- Mobile Profile Section -->
+      <div class="text-center bg-gray-100 p-3 rounded-lg w-full">
+        <!-- <p class="font-semibold text-gray-700">{{ user.name }}</p>
+        <p class="text-gray-500 text-sm">{{ user.email }}</p> -->
+        <!-- <hr class="my-2" /> -->
+        <a
+          href="{% url 'fl_profile' %}"
+          class="block text-blue-600 hover:underline"
+          >Profile</a
+        >
+        <a
+          href="{% url 'logout' %}"
+          class="block text-red-600 hover:underline mt-2"
+          >Logout</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript for Toggle Menu & Profile Dropdown -->
+<script>
+  document.getElementById("menuToggle").addEventListener("click", function () {
+    document.getElementById("navMenu").classList.toggle("hidden");
+  });
+
+  document
+    .getElementById("profile-trigger")
+    .addEventListener("click", function () {
+      document.getElementById("profile-menu").classList.toggle("hidden");
+    });
+</script>

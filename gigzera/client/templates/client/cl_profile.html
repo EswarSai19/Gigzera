@@ -247,6 +247,7 @@
                         class="w-full p-2 border border-gray-300 rounded-md"
                         required
                       >
+                        <option value="INR">INR</option>
                         <option value="USD">USD</option>
                         <option value="EUR">EUR</option>
                         <option value="JPY">JPY</option>
@@ -255,7 +256,6 @@
                         <option value="AUD">AUD</option>
                         <option value="CAD">CAD</option>
                         <option value="CHF">CHF</option>
-                        <option value="INR">INR</option>
                         <option value="NZD">NZD</option>
                       </select>
                     </div>
@@ -302,6 +302,7 @@
                       type="date"
                       id="start-date"
                       name="start_date"
+                      value="{{ current_date }}"
                       placeholder="Select start date"
                       style="
                         width: 100%;
@@ -339,7 +340,7 @@
                       required
                     >
                       <option value="" disabled selected>
-                        Select estimated months
+                        Estimated months
                       </option>
                       <option value="Less than 1 Month">
                         Less than 1 Month
@@ -407,6 +408,9 @@
                       name="time_zone"
                       required
                     >
+                      <option value="IST - (UTC+05:30)">
+                        IST - (UTC+05:30)
+                      </option>
                       <option value="BIT - (UTC−12:00)">
                         BIT - (UTC−12:00)
                       </option>
@@ -478,9 +482,6 @@
                       </option>
                       <option value="YEKT - (UTC+05:00)">
                         YEKT - (UTC+05:00)
-                      </option>
-                      <option value="IST - (UTC+05:30)">
-                        IST - (UTC+05:30)
                       </option>
                       <option value="OMST - (UTC+06:00)">
                         OMST - (UTC+06:00)

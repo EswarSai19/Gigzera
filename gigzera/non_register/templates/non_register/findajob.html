@@ -25,7 +25,7 @@
 {% endfor %} {% endif %}
 <main class="main-content">
   <!-- Image Section -->
-  <div class="signup-image">
+  <div class="signup-image hide-on-mobile">
     <img
       src="https://d2m054rmna67sd.cloudfront.net/nru_Freelancer_Form.webp"
       alt="Signup Illustration"
@@ -35,6 +35,12 @@
   <!-- Signup Form Section -->
   <div class="signup-container">
     <h1>Create Your Gigzera Account</h1>
+    <div class="signup-image hidden md:block">
+      <img
+        src="https://d2m054rmna67sd.cloudfront.net/nru_FL_MobileUI.png"
+        alt="Signup Illustration"
+      />
+    </div>
     <form
       method="POST"
       action="{% url 'submit_freelancer' %}"

@@ -234,3 +234,141 @@ body {
 .action-button:hover {
     background-color: #0059b3;
 }
+
+/* meida for mobile */
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+
+    /* Main Content Layout */
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        gap: 0;
+        align-items: center;
+    }
+
+    /* Top Image Container */
+    .signup-image {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .hide-on-mobile {
+        display: none;
+    }
+
+    .signup-image img {
+        width: 100%;
+        height: 200px;
+        /* Fixed height */
+        /* object-fit: cover; Cover to ensure full width */
+        object-position: center;
+    }
+
+    /* Signup Container Styling */
+    .signup-container {
+        width: 100%;
+        max-width: 100%;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 0;
+        /* Remove border radius to make it flush */
+        box-shadow: none;
+        margin-top: -20px;
+        /* Overlap with image slightly */
+    }
+
+    /* Rest of the CSS remains the same as your previous submission */
+    /* OTP Button Specific Styling */
+    .send_otp_btn,
+    .validate_otp_btn {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    /* Checkbox Container Modifications */
+    .checkbox-container {
+        margin-bottom: 20px;
+    }
+
+    .checkbox-container .checkbox-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        gap: 10px;
+    }
+
+    .checkbox-container .checkbox-item input[type="checkbox"] {
+        margin: 0;
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+    }
+
+    .checkbox-container .checkbox-item label {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        line-height: 1.4;
+        margin: 0;
+    }
+
+    .checkbox-container .checkbox-item a {
+        color: #007bff;
+        text-decoration: none;
+        margin-left: 5px;
+    }
+
+    /* Ensure single-line layout */
+    .checkbox-combined {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .checkbox-combined .checkbox-item {
+        display: flex;
+        align-items: center;
+        margin: 0;
+    }
+
+    /* Input and Select Styling */
+    .input-wrapper,
+    .select-wrapper {
+        margin-bottom: 15px;
+    }
+
+    .input-wrapper input,
+    .select-wrapper select {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    /* Submit Button */
+    .submit-button {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+
+    /* Labels */
+    .signup-container label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+
+    .required-label::after {
+        content: " *";
+        color: red;
+        font-weight: bold;
+    }
+}

@@ -1,0 +1,131 @@
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+
+    /* Hero Section */
+    #hero {
+        margin-top: -130px;
+        ;
+        padding: 10px;
+        /* Adjust overall padding for smaller screens */
+        height: auto;
+        /* Allow the section to adjust height naturally */
+        text-align: center;
+        /* Center align text for better readability */
+    }
+
+    #hero h1 {
+        font-size: 2.15rem;
+        /* Slightly reduce heading size */
+        text-align: center;
+        margin-bottom: 2.0rem;
+        margin-top: -30px;
+    }
+
+    #hero p {
+        font-size: 1rem;
+        /* Ensure paragraph text remains legible */
+        text-align: justify;
+        /* Optional: Better readability on mobile */
+        margin-bottom: 1rem;
+        /* Add spacing between paragraphs */
+        line-height: 1.5;
+    }
+
+    /* Features Section */
+    #features .grid {
+        grid-template-columns: 1fr;
+        /* Single column for mobile */
+        gap: 22px;
+        /* Reduce spacing between items */
+
+    }
+
+    #features .grid .box {
+        border-radius: 12px;
+        /* Set the border-radius for each box */
+        overflow: hidden;
+        /* Ensure the content stays within the rounded borders */
+        border: 1px solid #e0e0e0;
+        /* Light blackish border color */
+        padding: 16px;
+        /* Padding inside each box */
+        margin-top: 0;
+        /* Remove top margin */
+        margin-bottom: 0;
+        /* Remove bottom margin */
+    }
+
+
+    /* Technology Highlights Section */
+    #tech-highlights .grid {
+        grid-template-columns: 1fr;
+        /* Single column for mobile */
+        gap: 16px;
+        /* Reduce spacing between items */
+    }
+
+    #tech-highlights h2 {
+        margin-top: -20px;
+        /* Slightly smaller titles */
+    }
+
+    #tech-highlights h3 {
+        font-size: 1.5rem;
+        /* Slightly smaller titles */
+    }
+
+    #tech-highlights p {
+        font-size: 1rem;
+    }
+
+    /* Team Section */
+    #team .grid {
+        grid-template-columns: 1fr;
+        /* Single column for mobile */
+        gap: 20px;
+        /* Reduce spacing between cards */
+        margin-top: -30px;
+    }
+
+    #team h2 {
+        margin-top: -50px;
+        /* Adjust this value to move it closer to the top */
+    }
+
+    #team .text-center {
+        padding: 20px;
+
+    }
+
+    #team img {
+        width: 100px;
+        /* Resize images for mobile */
+        height: 100px;
+    }
+
+    #team h3 {
+        font-size: 1.15rem;
+    }
+
+    #team p {
+        font-size: 1rem;
+    }
+
+    /* Container Adjustments */
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* General Spacing Adjustments */
+    main {
+        padding-top: 4rem;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .rounded-xl {
+        border-radius: 0.5rem;
+    }
+}

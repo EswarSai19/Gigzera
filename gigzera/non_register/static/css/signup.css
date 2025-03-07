@@ -423,3 +423,9 @@ h1 {
         /* Stack on smaller screens */
     }
 }
+
+@media (max-width: 640px) {
+    #role-client {
+        z-index: -1 !important;
+    }
+}

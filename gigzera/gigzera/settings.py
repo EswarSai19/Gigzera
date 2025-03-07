@@ -162,7 +162,7 @@ def get_ssm_parameter(param_name, default=None):
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'sampleDB',
 #         'USER': 'postgres',
-#         'PASSWORD': 'mysuperpass',
+#         'PASSWORD': '********',
 #         'HOST': 'demo-postgre.ctigc0i0wbqn.ap-south-1.rds.amazonaws.com',
 #         'PORT': '5432',
 #     }

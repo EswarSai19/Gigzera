@@ -115,3 +115,69 @@ textarea {
 }
 
 /* contact us Popup css completed */
+
+/* Media queries for mobile */
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+    #popupOverlay {
+        display: none;
+        /* Ensure overlay is hidden by default */
+    }
+
+    #popupPanel {
+        width: calc(100% - 25px);
+        right: -400px;
+        /* Ensure it's off-screen by default */
+    }
+
+    .popup-header h2 {
+        font-size: 16px;
+        /* Adjust header font size */
+    }
+
+    .form-input {
+        font-size: 14px;
+        /* Adjust input font size */
+    }
+
+    .send-button {
+        font-size: 14px;
+        /* Adjust button font size */
+        padding: 8px;
+        /* Adjust padding */
+    }
+
+    .popup-image {
+        max-width: 90%;
+        /* Ensure image fits within smaller screens */
+    }
+
+    .address {
+        font-size: 12px;
+        /* Adjust font size for address */
+        padding: 0 10px;
+        /* Add horizontal padding */
+    }
+
+    .search-bar-container {
+        width: 100%;
+        /* Full width */
+        margin: 0 auto;
+        /* Center align */
+        padding: 0 10px;
+        /* Add padding */
+        margin-top: 1.5rem;
+    }
+
+    .search-bar-container input {
+        width: 100%;
+        /* Full width */
+        padding-left: 2.75rem;
+        /* Adjust padding for mobile */
+    }
+
+    .search-bar-container i {
+        left: 2rem;
+        /* Adjust icon position */
+    }
+
+}

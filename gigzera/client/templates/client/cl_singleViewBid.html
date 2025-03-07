@@ -38,7 +38,7 @@
   <form
     id="budget-form2"
     method="POST"
-    action="{% url 'cl_bidRejected' %}bidId={{bid.projectQuoteId}}"
+    action="{% url 'cl_bidRejected' %}?bidId={{bid.projectQuoteId}}"
   >
     {% csrf_token %}
     <input type="hidden" name="adminMargin" id="adminMargin-hidden" />
@@ -79,7 +79,7 @@
     <div class="card bidder-profile">
       <h2>Bidder Profile</h2>
       <p><strong>User ID:</strong> {{fl_user.userId}}</p>
-      <p><strong>Name:</strong> {{fl_user.name}}</p>
+      <p><strong>Name:</strong> *******</p>
       {% if fl_user.is_verified %}
       <button class="more-options view-profile">
         <i class="fa-solid fa-circle-check"></i> Verified
