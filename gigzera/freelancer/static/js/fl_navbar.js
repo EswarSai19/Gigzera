@@ -1,3 +1,40 @@
+document.addEventListener("DOMContentLoaded", function () {
+  const menuToggle = document.getElementById("menuToggle");
+  const navMenu = document.getElementById("navMenu");
+
+  menuToggle.addEventListener("click", function () {
+    navMenu.classList.toggle("active");
+  });
+});
+
+// js part
+// document.addEventListener("DOMContentLoaded", function () {
+//   const menuToggle = document.getElementById("menuToggle");
+//   const navMenu = document.getElementById("navMenu");
+//   const profileTrigger = document.getElementById("profile-trigger");
+//   const profileMenu = document.getElementById("profile-menu");
+
+//   // Toggle Mobile Menu
+//   menuToggle.addEventListener("click", function () {
+//     navMenu.classList.toggle("active");
+//   });
+
+//   // Toggle Profile Dropdown
+//   profileTrigger.addEventListener("click", function () {
+//     profileMenu.classList.toggle("hidden");
+//   });
+
+//   // Close menu when clicking outside
+//   document.addEventListener("click", function (event) {
+//     if (
+//       !profileTrigger.contains(event.target) &&
+//       !profileMenu.contains(event.target)
+//     ) {
+//       profileMenu.classList.add("hidden");
+//     }
+//   });
+// });
+
 // pop up js code for contact us
 document.addEventListener("DOMContentLoaded", function () {
   const contactBtn = document.getElementById("contactBtn");

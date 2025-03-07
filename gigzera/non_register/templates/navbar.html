@@ -13,12 +13,12 @@
           />
         </a>
         <div class="hidden lg:flex relative w-96">
-          <input
+          <!-- <input
             type="text"
             placeholder="Search jobs by skills or category..."
             class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500"
           />
-          <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i>
+          <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i> -->
         </div>
       </div>
       <nav class="hidden lg:flex items-center gap-8">
@@ -67,30 +67,35 @@
       </button>
     </div>
     <!-- Mobile Menu (Hidden by Default) -->
-    <div id="navMenu" class="hidden flex-col lg:hidden mt-4 space-y-4">
+    <div
+      id="navMenu"
+      class="hidden flex lg:hidden flex-col items-center gap-4 py-4 px-4 fixed top-20 left-0 bg-white w-full shadow-md z-[1001]"
+    >
       <!-- Mobile Search Bar -->
       <div class="relative w-full">
         <input
           type="text"
           placeholder="Search jobs by skills or category..."
-          class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 mb-2"
+          class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 mb-2 z-[1001]"
         />
-        <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i>
+        <i
+          class="fa-solid fa-search absolute left-3 top-3 text-gray-400 z-[1001]"
+        ></i>
       </div>
 
       <a
         href="{% url 'index' %}"
-        class="block text-gray-600 hover:text-blue-600 mb-2"
+        class="block text-gray-600 hover:text-blue-600 mb-2 z-[1001]"
         >Home</a
       >
       <a
         href="{% url 'jobs' %}"
-        class="block text-gray-600 hover:text-blue-600 mb-2"
+        class="block text-gray-600 hover:text-blue-600 mb-2 z-[1001]"
         >Jobs</a
       >
       <a
         href="{% url 'aboutus' %}"
-        class="block text-gray-600 hover:text-blue-600 mb-2"
+        class="block text-gray-600 hover:text-blue-600 mb-2 z-[1001]"
         >About Us</a
       >
       <a id="contactBtn4" class="block text-gray-600 hover:text-blue-600 mb-2"
@@ -98,7 +103,7 @@
       >
       <a
         href="{% url 'industries' %}"
-        class="block text-gray-600 hover:text-blue-600 mb-2"
+        class="block text-gray-600 hover:text-blue-600 mb-2 z-[1001]"
         >Industries</a
       >
 
@@ -248,12 +253,7 @@
   // Loop through each item and highlight the active link
   navItems.forEach((item) => {
     if (item.getAttribute("href") === currentPath) {
-      item.classList.add(
-        "text-blue-600",
-        "underline",
-        "decoration-blue-600",
-        "font-bold"
-      );
+      item.classList.add("text-blue-500", "underline", "decoration-blue-500");
       item.classList.remove("text-gray-600");
     }
   });

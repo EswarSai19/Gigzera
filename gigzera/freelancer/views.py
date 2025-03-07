@@ -7,6 +7,7 @@ import json
 import os
 import time
 import locale
+import re
 import boto3
 from django.utils import timezone
 from urllib.parse import urlparse
@@ -672,7 +673,6 @@ def upload_to_s3(folder_name, image):
     return image_url
 
 
-
 def delete_profile_pic(request):
     user_id = request.session.get('user_id')
     if not user_id:
@@ -706,6 +706,7 @@ def submit_quote(request):
         budget = request.POST.get("budget")
         comments = request.POST.get("comments")
         time_estimation = request.POST.get("time_estimation")
+        time_estimation = format_time_estimation(time_estimation)
         freelancer_id = request.session.get('user_id')  # Ensure it's stored in session
         if not freelancer_id:
             messages.error(request, "Freelancer session expired. Please log in again.")
@@ -749,6 +750,21 @@ def submit_quote(request):
         return redirect("fl_jobs")
 
     return redirect("fl_jobs")
+
+
+def format_time_estimation(time_estimation):
+    time_estimation = time_estimation.strip()
+    
+    # If only digits are given, assume months
+    if time_estimation.isdigit():
+        return f"{time_estimation} month" if time_estimation == "1" else f"{time_estimation} months"
+    
+    return time_estimation
+
+# Example test cases
+# examples = ["5", "1", "5 days", "3 weeks", "1 month", "7 mnts"]
+# for example in examples:
+#     print(format_time_estimation(example))
 
 
 def jobs_test(request):

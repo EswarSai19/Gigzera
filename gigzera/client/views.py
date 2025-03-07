@@ -11,6 +11,7 @@ import boto3
 import time
 import locale
 import re
+from django.utils.timezone import now
 from django.utils import timezone
 from urllib.parse import urlparse
 from django.views.decorators.csrf import csrf_exempt
@@ -241,7 +242,7 @@ def cl_profile(request):
     user = Client.objects.get(userId=user_id)
     user.initials = get_initials(user.name)
     print("users details:", user, user_id, user.initials)
-    context={'user':user}
+    context={'user':user, 'current_date': now().strftime('%Y-%m-%d')}
 
     if request.method=="POST":
         title=request.POST.get('title')
@@ -299,7 +300,7 @@ def cl_postajob(request):
         return redirect('login')
     user = Client.objects.get(userId=user_id)
     user.initials = get_initials(user.name)
-    context={'user':user}
+    context={'user':user, 'current_date': now().strftime('%Y-%m-%d')}
 
     if request.method=="POST":
         title=request.POST.get('title')
@@ -702,6 +703,7 @@ def profileView(request):
         'bid_id':bid_id,
         'opportunity_id':opportunity_id,
         'user_id':user_id,
+        'current_date': now().strftime('%Y-%m-%d')
     }
     print("User id is", user_id )
     print("skills", skills )
@@ -775,6 +777,7 @@ def cl_bidRejected(request):
     user = Client.objects.get(userId=user_id)
     user.initials = get_initials(user.name)
     print(f"here is the user: {user.initials}, {user.name}, {user.email}")
+    print("I am in bid rejected")
     bids = ProjectQuote.objects.all().order_by('-created_at')
     for bid in bids:
         job = ProjectsDisplay.objects.filter(opportunityId=bid.opportunityId).first()
@@ -795,7 +798,7 @@ def cl_bidRejected(request):
             bid.save()  # Save changes
 
             print(f"Updated bid {bid_id}: bid_status=rejected")
-            messages.success(request, "Bid was sent to freelancer successfully")
+            messages.success(request, "Bid was rejected successfully")
             return redirect('cl_viewBids')
 
         except Exception as e:
