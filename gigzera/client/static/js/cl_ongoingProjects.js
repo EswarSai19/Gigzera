@@ -500,11 +500,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// Redirect to another page after job post submission
-function submitJobPost() {
-  window.location.href = "/Recuters/html/recruiterProjectTrackingMultiple.html";
-}
-
 // Project Progress Functionality
 function toggleProgressEdit() {
   document.getElementById("progressEditForm").classList.toggle("hidden");
@@ -527,61 +522,61 @@ function updateProgress() {
 }
 
 // Initialize progress bar
-document.getElementById("progressFill").style.width = "75%";
+// document.getElementById("progressFill").style.width = "75%";
 
-// Task Status Update
-function updateTaskStatus(select) {
-  const task = select.closest(".task");
-  if (select.value === "Completed") {
-    task.classList.add("completed");
-  } else {
-    task.classList.remove("completed");
-  }
-}
+// // Task Status Update
+// function updateTaskStatus(select) {
+//   const task = select.closest(".task");
+//   if (select.value === "Completed") {
+//     task.classList.add("completed");
+//   } else {
+//     task.classList.remove("completed");
+//   }
+// }
 
-// Function to add a new task
-function addTask() {
-  const taskList = document.getElementById("taskList");
-  const newTaskHTML = `  
-            <div class="task">  
-                <input type="checkbox" class="task-checkbox">  
-                <p>New Task</p>  
-                <select onchange="updateTaskStatus(this)">  
-                    <option>In Progress</option>  
-                    <option>Completed</option>  
-                </select>  
-                <textarea class="comment" placeholder="Add a comment..."></textarea>  
-            </div>  
-        `;
-  taskList.insertAdjacentHTML("beforeend", newTaskHTML);
-}
+// // Function to add a new task
+// function addTask() {
+//   const taskList = document.getElementById("taskList");
+//   const newTaskHTML = `
+//             <div class="task">
+//                 <input type="checkbox" class="task-checkbox">
+//                 <p>New Task</p>
+//                 <select onchange="updateTaskStatus(this)">
+//                     <option>In Progress</option>
+//                     <option>Completed</option>
+//                 </select>
+//                 <textarea class="comment" placeholder="Add a comment..."></textarea>
+//             </div>
+//         `;
+//   taskList.insertAdjacentHTML("beforeend", newTaskHTML);
+// }
 
-// Function to delete selected tasks
-function deleteTasks() {
-  const checkboxes = document.querySelectorAll(".task-checkbox:checked");
-  checkboxes.forEach((checkbox) => {
-    const task = checkbox.closest(".task");
-    task.remove();
-  });
-}
+// // Function to delete selected tasks
+// function deleteTasks() {
+//   const checkboxes = document.querySelectorAll(".task-checkbox:checked");
+//   checkboxes.forEach((checkbox) => {
+//     const task = checkbox.closest(".task");
+//     task.remove();
+//   });
+// }
 
-// Message Functionality
-function sendMessage() {
-  const input = document.getElementById("messageInput");
-  const container = document.getElementById("messagesContainer");
+// // Message Functionality
+// function sendMessage() {
+//   const input = document.getElementById("messageInput");
+//   const container = document.getElementById("messagesContainer");
 
-  if (input.value.trim()) {
-    const messageDiv = document.createElement("div");
-    messageDiv.className = "message";
-    messageDiv.innerHTML = `   
-                <p><strong>You:</strong> ${input.value}</p>  
-                <span class="message-time">just now</span>  
-            `;
-    container.appendChild(messageDiv);
-    input.value = "";
-    container.scrollTop = container.scrollHeight;
-  }
-}
+//   if (input.value.trim()) {
+//     const messageDiv = document.createElement("div");
+//     messageDiv.className = "message";
+//     messageDiv.innerHTML = `
+//                 <p><strong>You:</strong> ${input.value}</p>
+//                 <span class="message-time">just now</span>
+//             `;
+//     container.appendChild(messageDiv);
+//     input.value = "";
+//     container.scrollTop = container.scrollHeight;
+//   }
+// }
 
 // Enter key to send message
 document
@@ -592,24 +587,24 @@ document
     }
   });
 
-// Change Request Popup Functions
-function openChangeRequestPopup() {
-  document.getElementById("changeRequestPopup").classList.remove("hidden");
-}
+// // Change Request Popup Functions
+// function openChangeRequestPopup() {
+//   document.getElementById("changeRequestPopup").classList.remove("hidden");
+// }
 
-function closeChangeRequestPopup() {
-  document.getElementById("changeRequestPopup").classList.add("hidden");
-}
+// function closeChangeRequestPopup() {
+//   document.getElementById("changeRequestPopup").classList.add("hidden");
+// }
 
-function submitChangeRequest() {
-  const changeRequest = document.getElementById("changeRequestInput").value;
-  if (changeRequest.trim()) {
-    alert("Change request submitted: " + changeRequest);
-    closeChangeRequestPopup();
-  } else {
-    alert("Please enter a change request.");
-  }
-}
+// function submitChangeRequest() {
+//   const changeRequest = document.getElementById("changeRequestInput").value;
+//   if (changeRequest.trim()) {
+//     alert("Change request submitted: " + changeRequest);
+//     closeChangeRequestPopup();
+//   } else {
+//     alert("Please enter a change request.");
+//   }
+// }
 
 // New file functions for the modal
 // New part of the file
@@ -618,7 +613,6 @@ const suggestionsList = document.getElementById("suggestions-list");
 const selectedSkillsContainer = document.getElementById("selected-skills");
 const hiddenSkillsInput = document.getElementById("skills-list"); // Hidden input
 const availableSkills = [
-  "Python",
   "Java",
   "JavaScript",
   "C#",
@@ -691,9 +685,6 @@ const availableSkills = [
   "AWS CloudFormation",
   "Azure DevOps",
   "GCP Deployment Manager",
-  "Python",
-  "JavaScript",
-  "SQL",
   "Data Modeling",
   "Microservices",
   "Monolithic Architecture",
@@ -704,14 +695,10 @@ const availableSkills = [
   "Tableau",
   "Power BI",
   "Google Analytics",
-  "JIRA",
   "Confluence",
   "Rally",
   "Lucidchart",
-  "SQL",
   "Excel (Advanced)",
-  "Power BI",
-  "Tableau",
   "BPMN",
   "Visio",
   "Bizagi",
@@ -720,8 +707,6 @@ const availableSkills = [
   "Use Case Diagrams",
   "Sequence Diagrams",
   "Class Diagrams",
-  "Postman",
-  "Selenium",
   "Figma",
   "Adobe XD",
   "Axure RP",
@@ -738,35 +723,23 @@ const availableSkills = [
   "TestRail",
   "Zephyr",
   "HP ALM",
-  "Selenium",
-  "Cypress",
   "Playwright",
   "Appium",
   "Katalon Studio",
   "JMeter",
   "LoadRunner",
   "Gatling",
-  "Postman",
   "SoapUI",
   "Swagger",
   "OWASP ZAP",
   "Burp Suite",
   "Nessus",
-  "Git",
-  "GitHub",
-  "JIRA",
   "Bugzilla",
   "TestLink",
-  "Jenkins",
   "CircleCI",
   "Bamboo",
-  "Python",
-  "Java",
-  "JavaScript",
-  "Appium",
   "Espresso",
   "XCTest",
-  "SQL",
   "Oracle DB",
   "AWS Device Farm",
   "Sauce Labs",
@@ -802,8 +775,7 @@ const availableSkills = [
   "Arduino Programmer",
   "Artifactory Engineer",
   "Artificial Intelligence (AI) / Machine Learning Engineer",
-  "Artificial intelligence / Machine Learning Engineer",
-  "Artificial intelligence Architect",
+  "Artificial Intelligence Architect",
   "Artificial Intelligence Engineer",
   "Artificial Intelligence Researcher",
   "ASP.NET Developer",
@@ -833,12 +805,12 @@ const availableSkills = [
   "Chief Architect Specialist",
   "Chief Operations Engineer",
   "Chrome Extension Developer",
-  "Cloud administrator",
+  "Cloud Administrator",
   "Cloud Architect",
-  "Cloud automation engineer",
+  "Cloud Automation Engineer",
   "Cloud Computing Specialist",
-  "Cloud engineer",
-  "Cloud network engineer",
+  "Cloud Engineer",
+  "Cloud Network Engineer",
   "Cloud Security Engineer",
   "CNC Programmer",
   "CodeIgniter Developer",
@@ -875,7 +847,7 @@ const availableSkills = [
   "Delphi Developer",
   "DevOps Architect",
   "DevOps Engineer",
-  "Devops Manager",
+  "DevOps Manager",
   "DevSecOps Architect",
   "DevSecOps Engineer",
   "Django Freelancer",
@@ -903,39 +875,39 @@ const availableSkills = [
   "Flutter Developer",
   "Fortify Engineer",
   "Front End Web Developer",
-  "Front end Desiner",
+  "Front End Designer",
   "Full Stack Developer",
-  "Full Stack JAVA Developer/Programmer/Engineer",
-  "Full Stack Python Developer/Programmer/Engineer",
+  "Full Stack Java Developer",
+  "Full Stack Python Developer",
   "Fusion 360 Specialist",
   "Game Developer",
   "GCP DevOps Engineer",
   "Gerrit Administrator",
   "Gerrit Engineer",
   "Git Engineer",
-  "Github Engineer",
+  "GitHub Engineer",
   "GitLab Engineer",
   "Gradle Engineer",
   "Grafana Engineer",
   "Groovy Engineer",
   "Information Architect",
   "Information Security Analyst",
-  "IOS Developer",
+  "iOS Developer",
   "Istio Engineer",
   "IT Manager",
-  "JaCoCO Engineer",
+  "JaCoCo Engineer",
   "Java Developer",
   "JavaScript Developer",
   "Jenkins Engineer",
   "Jira Administrator",
   "JIRA Engineer",
   "JUnit Engineer",
-  "kubernetes Administrator",
+  "Kubernetes Administrator",
   "Kubernetes Engineer",
   "Kubernetes Operations Engineer",
-  "Machine learning Architect",
+  "Machine Learning Architect",
   "Machine Learning Engineer",
-  "Micro services / API Lead Designer",
+  "Microservices / API Lead Designer",
   "Mobile Application Developer",
   "Mulesoft Developer",
   "Nagios Engineer",
@@ -954,10 +926,10 @@ const availableSkills = [
   "Packer Engineer",
   "PHP Developer",
   "Powershell Engineer",
-  "Principle Engineer in Artificial Intelligence",
-  "Principle Engineer in Big Data",
-  "Principle Engineer in Data Analysis",
-  "Principle Engineer in Machine Learning",
+  "Principal Engineer in Artificial Intelligence",
+  "Principal Engineer in Big Data",
+  "Principal Engineer in Data Analysis",
+  "Principal Engineer in Machine Learning",
   "Product Manager",
   "Production Support Engineer",
   "Programmer",
@@ -969,7 +941,7 @@ const availableSkills = [
   "QA Engineer",
   "React Developer",
   "Robotics Engineer",
-  "Ruby on rails Developer",
+  "Ruby on Rails Developer",
   "Salesforce Developer",
   "Search Engine Optimization",
   "Security Specialist",
@@ -982,8 +954,8 @@ const availableSkills = [
   "Senior DevOps Engineer",
   "Senior DevSecOps Architect",
   "Senior DevSecOps Engineer",
-  "Senior Site reliability Engineer",
-  "Sharepoint Developer",
+  "Senior Site Reliability Engineer",
+  "SharePoint Developer",
   "Site Reliability Engineer (Kubernetes – Docker)",
   "Software Engineer",
   "SonarQube Engineer",
@@ -998,12 +970,12 @@ const availableSkills = [
   "Technical Lead",
   "Terraform Engineer",
   "TFS Engineer",
-  "Twistkock Engineer",
+  "Twistlock Engineer",
   "UDeploy Engineer",
-  "UI DESIGNER",
+  "UI Designer",
   "UI Developer",
   "Unity Developer",
-  "UX DESIGNER",
+  "UX Designer",
   "Vault Engineer",
   "Web Designer (UI/UX Designer)",
   "Web Developer",
@@ -1129,7 +1101,6 @@ function closeForm() {
   formContainer.style.display = "none"; // Hide the form when close is clicked
 }
 
-// Hide suggestions when clicking outside
 document.addEventListener("click", (e) => {
   if (!document.getElementById("skills-container").contains(e.target)) {
     suggestionsList.style.display = "none";
@@ -1172,6 +1143,7 @@ function closeModal() {
   document.getElementById("exampleModal").classList.add("hidden");
 }
 
+// new one from post a job
 document.addEventListener("DOMContentLoaded", function () {
   const budgetRanges = {
     USD: [

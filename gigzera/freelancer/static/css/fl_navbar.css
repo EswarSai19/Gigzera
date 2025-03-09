@@ -3,9 +3,8 @@
   justify-content: space-between;
   align-items: center;
   background-color: #f4f4f4;
-  padding: 20px 60px;
+  padding: 15px 60px;
   border-bottom: 1px solid #ddd;
-
 }
 
 /* .nav-links a {
@@ -263,4 +262,219 @@ textarea {
   margin-bottom: 20px;
 }
 
-/* contact us Popup css completed */
+.actions {
+  display: flex;
+  flex-direction: row;
+  /* Side by side on desktop */
+  gap: 10px;
+  /* Space between buttons */
+  margin-left: auto;
+  /* Center the container */
+  margin-right: auto;
+  /* Center the container */
+}
+
+/* Profile button styling */
+.profile-btn {
+  padding: 0.5rem 1rem;
+  text-align: center;
+  color: #1e40af !important;
+  border: 1px solid #1e40af;
+  border-radius: 0.5rem;
+  text-decoration: none;
+}
+
+.profile-btn:hover {
+  color: white !important;
+  background-color: #1e3a8a;
+}
+
+/* Logout button styling */
+.logout-btn {
+  display: block;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  color: white !important;
+  background-color: #dc2626;
+  /* Red color */
+  border: 1px solid #dc2626;
+  border-radius: 0.5rem;
+  text-decoration: none;
+}
+
+.logout-btn:hover {
+  background-color: #b91c1c;
+}
+
+.menu {
+  display: none;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+
+  #popupOverlay {
+    display: none;
+    /* Ensure overlay is hidden by default */
+  }
+
+  #popupPanel {
+    width: calc(100% - 25px);
+    right: -400px;
+    /* Ensure it's off-screen by default */
+  }
+
+  .popup-header h2 {
+    font-size: 16px;
+    /* Adjust header font size */
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .form-input {
+    font-size: 14px;
+    /* Adjust input font size */
+  }
+
+  .send-button {
+    font-size: 14px;
+    /* Adjust button font size */
+    padding: 8px;
+    /* Adjust padding */
+  }
+
+  .popup-image {
+    max-width: 90%;
+    /* Ensure image fits within smaller screens */
+  }
+
+  .address {
+    font-size: 12px;
+    /* Adjust font size for address */
+    padding: 0 10px;
+    /* Add horizontal padding */
+  }
+
+  .search-bar-container {
+    width: 100%;
+    /* Full width */
+    margin: 0 auto;
+    /* Center align */
+    padding: 0 10px;
+    /* Add padding */
+    margin-top: 1.5rem;
+  }
+
+  .search-bar-container input {
+    width: 100%;
+    /* Full width */
+    padding-left: 2.75rem;
+    /* Adjust padding for mobile */
+  }
+
+  .search-bar-container i {
+    left: 2rem;
+    /* Adjust icon position */
+  }
+
+  .menu {
+    display: none;
+    position: absolute;
+    top: 4.6rem;
+    /* 20px converted to rem assuming base 16px */
+    left: 0;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000 !important;
+    padding: 1rem;
+    /* display: flex; */
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .menu.active {
+    display: flex;
+  }
+
+  .menu a {
+    margin: 0;
+    padding: 10px 15px;
+    text-align: left;
+    /* Align text to the left */
+    width: 100%;
+    /* Make the links fill the container */
+  }
+
+  .menu a:last-child {
+    border-bottom: none;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 95%;
+  }
+
+  .profile-btn,
+  .logout-btn {
+    width: 90%;
+    /* Make buttons take up 90% of the screen width */
+    text-align: center !important;
+    font-size: 16px;
+    /* Adjust font size for mobile */
+    padding: 0.75rem;
+    /* Adjust padding */
+  }
+
+  .profile-btn {
+    color: #1e40af !important;
+    /* Dark blue color */
+    background-color: transparent;
+    /* Transparent background */
+    border: 1px solid #1e40af;
+    /* Dark blue border */
+  }
+
+  .profile-btn:hover {
+    background-color: #1e3a8a;
+    /* Darker blue on hover */
+    color: white !important;
+  }
+
+
+  .logout-btn {
+    color: white !important;
+    background-color: #dc2626;
+    /* Red color */
+    border: 1px solid #dc2626;
+    /* Border matching the background */
+    margin-bottom: 20px !important;
+  }
+
+  .logout-btn:hover {
+    background-color: #b91c1c;
+    /* Darker red on hover */
+  }
+
+  .menu .mobile-search {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    /* Make the search bar fill the container */
+    padding: 0 15px;
+    margin-top: 10px;
+  }
+
+  .menu .mobile-search input {
+    width: 100%;
+    /* Make the input field fill the container */
+  }
+
+  .menu .mobile-search i {
+    left: 25px;
+  }
+}

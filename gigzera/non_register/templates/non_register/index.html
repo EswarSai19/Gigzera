@@ -34,11 +34,10 @@
 </section>
 
 <!-- Featured Jobs Section -->
-<section class="featured-jobs">
+<!-- <section class="featured-jobs">
   <div class="ctnr">
     <h1 class="featured-jobs-heading">Featured Jobs</h1>
     <div class="job-cards">
-      <!-- Job Card 1 -->
       {% for job in jobs %}
       <div class="job-card">
         <div class="job-header">
@@ -67,6 +66,39 @@
         </div>
       </div>
       {% endfor %}
+    </div>
+  </div>
+</section> -->
+<section class="featured-jobs">
+  <div class="ctnr">
+    <h1 class="featured-jobs-heading">Featured Jobs</h1>
+    <div class="job-cards-wrapper">
+      <div class="job-cards">
+        {% for job in jobs %}
+        <div class="job-card">
+          <div class="job-header">
+            <div class="job-title">
+              {{job.title}}
+              <span class="job-id">(Opp ID: {{job.opportunityId}})</span>
+            </div>
+          </div>
+          <div class="job-duration-salary">
+            <span class="duration">⏳ {{job.duration}}</span>
+            <span class="salary">💳 {{job.cur_symbol}} {{job.budget}}</span>
+          </div>
+          <p class="job-description">{{job.description | truncatewords:20}}</p>
+          <div class="job-tags">
+            {% for tag in job.skills_list %}
+            <span class="tag">{{tag}}</span>
+            {% endfor %}
+          </div>
+          <div class="job-actions">
+            <a href="{% url 'signup' %}" class="view-more">View More</a>
+            <a href="{% url 'signup' %}" class="provide-quote">Provide Quote</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
     </div>
   </div>
 </section>
@@ -333,27 +365,14 @@
   </section>
   <!-- Trusted by Leading Companies Section -->
   <section class="trusted-companies">
+    <h2>Trusted by Leading Companies</h2>
     <div class="ctnr">
-      <h2>Trusted by Leading Companies</h2>
       <br />
+      {% for logo in logos %}
       <div class="company-logos">
-        <img
-          src="https://cdn.yellowmessenger.com/YFmJllL3KQUw1734508230376.png"
-          alt="Company 1 Logo"
-        />
-        <img
-          src="https://cdn.yellowmessenger.com/0ZQiMPmwmDMk1734508199342.jpg"
-          alt="Company 2 Logo"
-        />
-        <img
-          src="https://cdn.yellowmessenger.com/kUkyNR7s50n51734508252859.png"
-          alt="Company 3 Logo"
-        />
-        <img
-          src="https://cdn.yellowmessenger.com/tizQzciFLosG1734508268818.jpeg"
-          alt="Company 4 Logo"
-        />
+        <img src="{{logo.logo_url}}" alt="{{logo.logo_name}}" />
       </div>
+      {% endfor %}
     </div>
   </section>
 </section>

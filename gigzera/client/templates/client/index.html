@@ -297,24 +297,11 @@
     <div class="ctnr">
       <h2>Trusted by Leading Companies</h2>
       <br />
+      {% for logo in logos %}
       <div class="company-logos">
-        <img
-          src="https://cdn.yellowmessenger.com/YFmJllL3KQUw1734508230376.png"
-          alt="Company 1 Logo"
-        />
-        <img
-          src="https://cdn.yellowmessenger.com/0ZQiMPmwmDMk1734508199342.jpg"
-          alt="Company 2 Logo"
-        />
-        <img
-          src="https://cdn.yellowmessenger.com/kUkyNR7s50n51734508252859.png"
-          alt="Company 3 Logo"
-        />
-        <img
-          src="https://cdn.yellowmessenger.com/tizQzciFLosG1734508268818.jpeg"
-          alt="Company 4 Logo"
-        />
+        <img src="{{logo.logo_url}}" alt="{{logo.logo_name}}" />
       </div>
+      {% endfor %}
     </div>
   </section>
 </section>

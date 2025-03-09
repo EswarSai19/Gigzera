@@ -1,17 +1,23 @@
+/* Mobile View Adjustments */
 @media only screen and (min-width: 320px) and (max-width: 768px) {
 
     /* Hero Section */
     #hero {
-        margin-top: -120px;
         padding: 10px;
+        /* Adjust overall padding for smaller screens */
         height: auto;
+        /* Allow the section to adjust height naturally */
         text-align: center;
+        /* Center align text for better readability */
+        margin-top: -130px;
     }
 
     #hero h1 {
         font-size: 2.15rem;
+        /* Slightly reduce heading size */
         text-align: center;
-        margin-bottom: 2.0rem;
+        line-height: 1.2;
+
     }
 
     #hero p {

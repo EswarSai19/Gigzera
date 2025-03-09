@@ -142,9 +142,9 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.content .card h3 {
+.content .card h1 {
     margin: 40px 0 10px;
-    font-size: 22px;
+    font-size: 24px;
     color: #333;
     font-weight: bold;
 }
@@ -334,4 +334,122 @@ body {
 .get-started-btn:hover {
     color: #0c0c0c;
     /* Optional: Change color on hover */
+}
+
+/* Media Queries for Mobile */
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+
+    /* Media Queries for Mobile */
+    /* Center modal content on mobile */
+    .modal-dialog {
+        width: 95%;
+        margin: 0;
+        padding: 10px 10px;
+    }
+
+    .modal-content {
+        padding: 10px;
+    }
+
+    .modal-body {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+
+
+    body {
+        font-size: 14px;
+        /* Adjust base font size */
+        padding: 10px;
+    }
+
+    /* Text Section */
+    .text-overlay {
+        top: 10%;
+        /* Adjust position vertically */
+        left: 50%;
+        /* Center horizontally */
+        transform: translate(-50%, -10%);
+        font-size: 14px;
+        /* Adjust font size */
+    }
+
+    .text-overlay i {
+        font-size: 50px;
+        /* Smaller icon size */
+    }
+
+    .get-started-heading {
+        font-size: 20px;
+        /* Adjust heading size */
+    }
+
+    .get-started-description {
+        font-size: 24px;
+        /* Adjust description size */
+    }
+
+    .city-image {
+        width: 100%;
+        /* Slightly wider for smaller screens */
+        height: auto;
+
+    }
+
+    /* Slide Container */
+    .text-section {
+        width: 100%;
+        /* margin-top: 10px; */
+        padding: 11px;
+        height: 190px;
+    }
+
+    .slide {
+        max-width: 100%;
+        /* Ensures full width */
+    }
+
+    /* Content Section */
+    .content {
+        flex-direction: column;
+        padding: 20px;
+        /* Reduce padding */
+        margin-right: 10px;
+        margin-left: -5px;
+
+    }
+
+    .content .card {
+        width: 100%;
+        margin-bottom: 20px;
+        padding: 20px;
+    }
+
+
+    .content .card h3 {
+        font-size: 18px;
+        /* Adjust heading size */
+    }
+
+    .content .card p {
+        font-size: 14px;
+        /* Adjust paragraph font size */
+    }
+
+    .content .card a {
+        font-size: 14px;
+        /* Adjust link font size */
+    }
+
+    .content .card i {
+        top: 10px;
+        /* Adjust icon position */
+        left: 10px;
+        /* Adjust icon alignment */
+        font-size: 24px;
+        /* Reduce icon size */
+        padding: 9px;
+        /* Adjust padding */
+    }
 }

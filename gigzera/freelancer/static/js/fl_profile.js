@@ -677,21 +677,24 @@ function saveSkills() {
   let allValid = true;
 
   skillExperiencePairs.forEach((pair) => {
-    const experienceInput = pair.querySelector(".experience-box input");
-    const errorText = pair.querySelector(".error-text");
+    const experienceBox = pair.querySelector(".experience-box"); // Select the container
+    const experienceInput = experienceBox.querySelector("input");
+    let errorText = experienceBox.querySelector(".error-text"); // Look inside experience-box
 
     if (experienceInput.value.trim() === "") {
       experienceInput.style.border = "1px solid red";
+
       if (!errorText) {
-        const error = document.createElement("div");
-        error.className = "error-text";
-        error.textContent = "Please fill out this field.";
-        pair.appendChild(error);
+        errorText = document.createElement("div");
+        errorText.className = "error-text";
+        errorText.textContent = "Please fill out this field.";
+        experienceBox.appendChild(errorText); // Append inside the same div
       }
+
       allValid = false;
     } else {
       experienceInput.style.border = "1px solid #ccc";
-      if (errorText) errorText.remove();
+      if (errorText) errorText.remove(); // Remove error if input is valid
     }
   });
 

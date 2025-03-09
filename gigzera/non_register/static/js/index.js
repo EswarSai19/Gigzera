@@ -77,6 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
     popupPanel.style.right = "0"; // Slide in sidebar
   };
   contactBtn2.onclick = function () {
+    console.log("brn2 clicked");
     popupOverlay.style.display = "block"; // Show overlay
     popupPanel.style.right = "0"; // Slide in sidebar
   };

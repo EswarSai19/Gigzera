@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="{% static 'css/cl_footer.css' %}" />
     <link
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0-beta3/css/all.min.css"
     />
     <link
@@ -40,13 +44,15 @@
     {% endfor %} {% endif %}
 
     <!-- Page Content -->
-    <main class="min-h-screen">{% block content %}{% endblock %}</main>
+    <main class="sm:min-h-screen min-h-0">
+      {% block content %}{% endblock %}
+    </main>
 
     <!-- Include Footer -->
     {% include 'cl_footer.html' %}
     <!-- JS -->
     <script>
-      // Profile toggle function
+      // profile trigger
       document.addEventListener("DOMContentLoaded", function () {
         document
           .getElementById("profile-trigger")
@@ -57,6 +63,15 @@
           menu.style.display =
             menu.style.display === "block" ? "none" : "block";
         }
+      });
+      // menu toggle
+      document.addEventListener("DOMContentLoaded", function () {
+        const menuToggle = document.getElementById("menuToggle");
+        const navMenu = document.getElementById("navMenu");
+
+        menuToggle.addEventListener("click", function () {
+          navMenu.classList.toggle("active");
+        });
       });
 
       // contact Sidebar toggle function

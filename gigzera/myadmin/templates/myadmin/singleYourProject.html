@@ -305,11 +305,12 @@
                 <div class="input-wrapper">
                   <span class="dollar-sign">{{job.cur_symbol}}</span>
                   <input
-                    type="text"
+                    type="number"
+                    step="0.01"
                     id="laborCost"
                     class="laborCost"
                     name="labor_cost"
-                    value="{{bid.budget}}"
+                    value="{{bid.int_budget}}"
                     disabled
                   />
                 </div>
@@ -321,11 +322,12 @@
                 <div class="input-wrapper">
                   <span class="dollar-sign">{{job.cur_symbol}}</span>
                   <input
-                    type="text"
+                    type="number"
+                    step="0.01"
                     name="consulting_charges"
                     id="consultingCharges"
                     class="consultingCharges"
-                    value="{{bid.admin_margin}}"
+                    value="{{bid.flt_admin_margin}}"
                     disabled
                   />
                 </div>
@@ -347,11 +349,12 @@
                 <div class="input-wrapper">
                   <span class="dollar-sign">{{job.cur_symbol}}</span>
                   <input
-                    type="text"
+                    type="number"
+                    step="0.01"
                     id="advancePayment"
                     name="advance_payment"
                     class="advancePayment"
-                    value="{{bid.advance_payment}}"
+                    value="{{bid.flt_advance_payment}}"
                     disabled
                   />
                 </div>
@@ -408,7 +411,8 @@
                 <div class="input-wrapper">
                   <span class="dollar-sign">{{job.cur_symbol}}</span>
                   <input
-                    type="text"
+                    type="number"
+                    step="0.01"
                     name="{{ms.id}}_amount"
                     class="mile_stone_input"
                     placeholder="Amount"
@@ -462,7 +466,8 @@
           required
         />
         <input
-          type="text"
+          type="number"
+          step="0.01"
           id="amount"
           name="ad_ms_amount"
           class="w-full px-3 py-2 border rounded mb-3"

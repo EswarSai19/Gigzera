@@ -585,7 +585,7 @@ body {
     padding: 50px 0;
     background-color: #f9fafb;
     /* Light gray background for the whole section */
-    background-image: url("https: //d2m054rmna67sd.cloudfront.net/nru_fl_cl_home_technologies.jpeg");
+    background-image: url("https://d2m054rmna67sd.cloudfront.net/nru_fl_cl_home_technologies.jpeg");
     /* Background image */
     background-size: cover;
     /* Ensure the image covers the entire section */
@@ -894,10 +894,295 @@ body {
     /* Slight enlargement on hover */
 }
 
-/* Media query for smaller screens */
-@media (max-width: 768px) {
-    .trusted-companies .company-logos img {
-        max-width: 100px;
-        /* Further reduce logo size on smaller screens */
+.menu {
+    display: none;
+}
+
+/* New one */
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+    .hero {
+        padding: 20px 0;
     }
+
+    .hero-ctnr {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+        padding: 15px;
+    }
+
+    .hero-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .hero-text h1 {
+        font-size: 28px;
+        margin-top: -30px;
+    }
+
+    .hero-text p {
+        font-size: 16px;
+    }
+
+    .hero-actions {
+        display: flex;
+        flex-direction: row;
+        /* Arrange buttons side by side */
+        justify-content: center;
+        /* Center align buttons */
+        gap: 10px;
+    }
+
+    .btn-primary,
+    .btn-outline {
+        width: auto;
+        /* Allow buttons to take size based on content */
+        min-width: 120px;
+        /* Set a minimum width for better visibility */
+        padding: 10px 15px;
+        /* Reduce padding for smaller size */
+        font-size: 14px;
+        /* Adjust font size */
+    }
+
+    .hero-image img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .slideshow-container {
+        position: relative;
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+    }
+
+    .slide {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+
+    .slide img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .text-overlay {
+        position: absolute;
+        bottom: 8px;
+        left: 8px;
+        max-width: 80%;
+        text-align: left;
+        z-index: 10;
+        /* Ensures text is above the image */
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        /* Space between elements */
+        padding-bottom: 10px;
+        /* Prevents button from touching next section */
+        margin-top: -20px;
+    }
+
+    .text-overlay h1 {
+        font-size: 18px !important;
+        font-weight: bold;
+        margin-bottom: 2px;
+    }
+
+    .text-overlay p {
+        font-size: 16px !important;
+        margin-bottom: 4px;
+        margin-top: -18px;
+    }
+
+    /* Ensuring button is at the bottom left */
+    .learn-more {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        padding: 6px 12px;
+        font-size: 12px;
+        width: fit-content;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        margin-bottom: 15px;
+        z-index: 99;
+    }
+
+    .learn-more:hover {
+        background-color: #0056b3;
+    }
+
+    /* Center the navigation bar at the bottom */
+    .navigation {
+        position: absolute;
+        top: 75%;
+        /* Move the arrows further down */
+        width: 100%;
+        display: flex;
+        left: 50%;
+        /* margin-left: 100px; */
+        align-items: center;
+        bottom: 20px;
+        z-index: 10;
+        /* Ensure arrows are above other content */
+    }
+
+    .arrow {
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 11;
+        /* Ensure arrows are clickable on mobile */
+    }
+
+    .counter {
+        font-size: 18px;
+        color: white;
+        z-index: 10;
+        /* Ensure counter is visible */
+    }
+
+    .stats .ctnr {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 boxes per row */
+        gap: 15px;
+        /* Space between boxes */
+        justify-content: center;
+    }
+
+    .stat {
+        width: 100%;
+        min-width: 150px;
+        height: 180px;
+        /* Fixed height for all boxes */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .city-view {
+        padding-top: 40px;
+        /* Reduce top padding for better spacing */
+    }
+
+    .city-image {
+        width: 100% !important;
+        /* Ensure it fits within the screen */
+        height: 40vh;
+        display: block;
+    }
+
+    .contact-us-btn {
+        top: 35px;
+        /* Adjust button position */
+        right: 10px;
+        /* Move closer to the edge */
+        padding: 8px 16px;
+        /* Reduce button size */
+        font-size: 12px;
+    }
+
+    .city-view .text-overlay {
+        position: absolute;
+        top: 20%;
+        /* Moved text upward from 50% to 40% */
+        left: 5%;
+        transform: translateY(-50%);
+        overflow: hidden;
+        /* Hide text outside the container */
+    }
+
+    .city-view .get-started-heading {
+        font-size: 14px;
+        margin-top: 25px;
+    }
+
+    .city-view .get-started-description {
+        font-size: 16px;
+        line-height: 1.5;
+        margin-top: -1px;
+    }
+
+    .technology .ctnr {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .technology .custom-heading {
+        width: 100%;
+        /* Ensures heading takes full width */
+        margin-bottom: 10px;
+        /* Adds space below heading */
+        font-size: 24px;
+        margin-top: -10px;
+    }
+
+    .technology .scroll-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        /* 3 columns per row */
+        gap: 10px;
+        padding: 15px;
+        width: 100%;
+        /* Ensures full width */
+    }
+
+    .technology .box {
+        width: 100%;
+        /* Ensures grid items fit within the container */
+        height: 120px;
+        font-size: 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .technology .box i {
+        font-size: 28px;
+        /* Reduce icon size for better fit */
+    }
+
+    .technology .box span {
+        font-size: 14px;
+    }
+
+    .trusted-companies .ctnr {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .trusted-companies h2 {
+        font-size: 24px;
+    }
+
+    .trusted-companies .company-logos {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .trusted-companies .company-logos img {
+        max-width: 80px;
+        /* Reduce logo size for mobile */
+        height: auto;
+    }
+
 }

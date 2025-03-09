@@ -318,7 +318,8 @@
                 <div class="input-wrapper">
                   <span class="dollar-sign">{{job.cur_symbol}}</span>
                   <input
-                    type="text"
+                    type="number"
+                    step="0.0001"
                     id="laborCost"
                     class="laborCost"
                     name="labor_cost"
@@ -334,7 +335,8 @@
                 <div class="input-wrapper">
                   <span class="dollar-sign">{{job.cur_symbol}}</span>
                   <input
-                    type="text"
+                    type="number"
+                    step="0.0001"
                     name="consulting_charges"
                     id="consultingCharges"
                     class="consultingCharges"
@@ -360,7 +362,8 @@
                 <div class="input-wrapper">
                   <span class="dollar-sign">{{job.cur_symbol}}</span>
                   <input
-                    type="text"
+                    type="number"
+                    step="0.0001"
                     id="advancePayment"
                     name="advance_payment"
                     class="advancePayment"
@@ -422,7 +425,8 @@
                 <div class="input-wrapper">
                   <span class="dollar-sign">{{job.cur_symbol}}</span>
                   <input
-                    type="text"
+                    type="number"
+                    step="0.0001"
                     name="{{ms.id}}_amount"
                     class="mile_stone_input"
                     placeholder="Amount"
@@ -476,7 +480,8 @@
           required
         />
         <input
-          type="text"
+          type="number"
+          step="0.0001"
           id="amount"
           name="ad_ms_amount"
           class="w-full px-3 py-2 border rounded mb-3"

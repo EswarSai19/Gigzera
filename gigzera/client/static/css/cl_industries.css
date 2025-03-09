@@ -127,3 +127,44 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 } */
+
+/* mobiel ui styles */
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+
+    /* Adjust grid layout to show 2 boxes per row */
+    .industries-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 20px;
+        /* margin-top: -50%; */
+    }
+
+    /* Adjust card size for mobile */
+    .card-inner {
+        width: 150px;
+        height: 200px;
+    }
+
+    .card-front h3,
+    .card-back h3 {
+        font-size: 16px;
+    }
+
+    .card-front p,
+    .card-back p {
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    .card-back {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 10px;
+        /* Add some padding for better spacing */
+        height: 100%;
+        box-sizing: border-box;
+    }
+}

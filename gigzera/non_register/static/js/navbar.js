@@ -31,16 +31,35 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 });
 
-// document.addEventListener("DOMContentLoaded", function () {
-//   const navLinks = document.querySelectorAll(".nav-link"); // Select all nav links
-//   const currentPath = window.location.pathname.split("/").pop(); // Get current page name
+// color Active for navbar
+document.addEventListener("DOMContentLoaded", function () {
+  const navLinks = document.querySelectorAll(".nav a:not(.profile-dropdown a)"); // Exclude profile dropdown links
+  const currentPath = window.location.pathname; // Get the current page path
 
-//   navLinks.forEach((link) => {
-//     if (
-//       link.getAttribute("href") &&
-//       link.getAttribute("href").includes(currentPath)
-//     ) {
-//       link.classList.add("active"); // Add the active class if the link matches the current page
-//     }
-//   });
-// });
+  // Function to remove active class from all links
+  function removeActiveClass() {
+    navLinks.forEach((nav) => nav.classList.remove("active"));
+  }
+
+  // Apply active class based on current page URL
+  navLinks.forEach((link) => {
+    if (link.pathname === currentPath) {
+      link.classList.add("active");
+    }
+
+    // Click event for dynamic class switching
+    link.addEventListener("click", function () {
+      removeActiveClass();
+      this.classList.add("active");
+    });
+  });
+
+  // Handle "Contact Us" button separately (if needed)
+  const contactBtn = document.getElementById("contactBtn");
+  if (contactBtn) {
+    contactBtn.addEventListener("click", function () {
+      removeActiveClass();
+      contactBtn.classList.add("active");
+    });
+  }
+});

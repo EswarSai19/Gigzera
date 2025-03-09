@@ -514,7 +514,7 @@ body {
 }
 
 /* Milestone Payments Table */
-#milestoneTable input[type="text"],
+#milestoneTable input[type="number"],
 #milestoneTable input[type="date"],
 #milestoneTable select {
     width: calc(100% - 24px);

@@ -12,7 +12,116 @@
   <!-- Left section -->
   <aside class="left-section">
     <!-- Filter Jobs Section -->
-    <div class="filter-box">
+    <div id="hamburger-icon-left" class="hamburger-icon-left hide1">
+      <i class="fa-solid fa-forward"></i>
+    </div>
+
+    <!-- Popup Section -->
+    <section id="social-media-updates-left" class="popup-left hide1">
+      <div class="popup-content-left">
+        <button id="close-popup-btn-left" class="close-popup-btn-left">
+          &times;
+        </button>
+
+        <!-- Filter Box inside the popup -->
+        <div class="filter-box">
+          <i class="fa-solid fa-filter filter-icon"></i>
+          <input
+            type="text"
+            id="job-filter"
+            placeholder="Filter jobs..."
+            class="filter-input"
+          />
+        </div>
+        <div class="social-media-box">
+          <h3>Social Media Updates</h3>
+
+          <a
+            href="https://x.com/gigzera?t=6u9xg6cCXeWSBQHH1vP8Ig&s=08"
+            target="_blank"
+            class="social-update"
+          >
+            <i class="fa-brands fa-twitter icon"></i>
+            <p>Latest job opportunities in #WebDevelopment...</p>
+          </a>
+
+          <a
+            href="https://www.linkedin.com/company/gigzera/"
+            target="_blank"
+            class="social-update"
+          >
+            <i class="fa-brands fa-linkedin icon"></i>
+            <p>Join our tech community on LinkedIn...</p>
+          </a>
+
+          <a
+            href="https://www.facebook.com/share/1A6ghPZxaC/?mibextid=wwXIfr"
+            target="_blank"
+            class="social-update"
+          >
+            <i class="fa-brands fa-facebook icon"></i>
+            <p>Join our tech community on Facebook...</p>
+          </a>
+
+          <a
+            href="https://www.instagram.com/gigzera?igsh=MWNzZzhjcWcybjE3Ng=="
+            target="_blank"
+            class="social-update"
+          >
+            <i class="fa-brands fa-instagram icon"></i>
+            <p>Join our tech community on Instagram...</p>
+          </a>
+        </div>
+        <!-- Announcement Video Section -->
+        <div class="announcement-box">
+          <h1>Announcement</h1>
+          <div class="ad-box lf-annc-box">
+            <!-- Video 1 -->
+            {% if web_obj.media_type == "Image" %}
+
+            <img
+              src="{{web_obj.media_url}}"
+              alt="Advertisement"
+              class="w-full h-full object-cover"
+            />
+
+            {% else %}
+            <div class="ad-video-container active">
+              <video id="video1" autoplay muted>
+                <source src="{{web_obj.media_url}}" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            {% endif %}
+          </div>
+          <p>{{web_obj.anc_text}}</p>
+          <br />
+        </div>
+
+        <!-- Image Section (Slideshow) -->
+        <section class="text-section-left">
+          <div
+            class="relative w-full h-[180px] max-w-lg mx-auto overflow-hidden rounded-lg shadow-lg mt-8"
+          >
+            <div class="slider slider-5 relative w-full h-56">
+              {% for img in images %}
+              <div
+                class="slide slide-5 absolute w-full h-full opacity-0 transition-opacity duration-1000 cursor-pointer pointer-events-none"
+              >
+                <img
+                  src="{{img.media_url}}"
+                  alt="Advertisement"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <div class="filter-box hide-on-mobile">
       <i class="fa-solid fa-filter filter-icon"></i>
       <input
         type="text"
@@ -23,7 +132,7 @@
     </div>
 
     <!-- Social Media Updates Section -->
-    <div class="social-media-box">
+    <div class="social-media-box hide-on-mobile">
       <h3>Social Media Updates</h3>
 
       <a
@@ -62,8 +171,7 @@
         <p>Join our tech community on Instagram...</p>
       </a>
     </div>
-    <!-- Web announcement -->
-    <div class="announcement-box">
+    <div class="announcement-box hide-on-mobile">
       <h1>Announcement</h1>
       <div class="ad-box lf-annc-box">
         <!-- Video 1 -->
@@ -87,7 +195,7 @@
       <p>{{web_obj.anc_text}}</p>
       <br />
     </div>
-    <section class="text-section-left">
+    <section class="text-section-left hide-on-mobile">
       <div
         class="relative w-full h-[180px] max-w-lg mx-auto overflow-hidden rounded-lg shadow-lg mt-8"
       >
@@ -154,7 +262,8 @@
               >{{job.cur_symbol}}</span
             >
             <input
-              type="text"
+              type="number"
+              step="0.000000001"
               id="budget"
               name="budget"
               placeholder="Budget: Estimation to complete the project"
@@ -174,10 +283,11 @@
             <span class="text-red-500">*</span>
           </label>
           <input
-            type="text"
+            type="number"
+            step="0.001"
             id="timeline"
             name="time_estimation"
-            placeholder="E.g., 3 Months"
+            placeholder="E.g., 3"
             required
             class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -211,7 +321,7 @@
   </div>
 
   <!-- Not a fretured jobs -->
-  <div class="flex">
+  <!-- <div class="flex">
     <section class="featured-jobs">
       <div class="ctnr">
         <div class="job-cards">
@@ -266,7 +376,88 @@
         </div>
       </div>
     </section>
-  </div>
+  </div> -->
+
+  <!-- New featured jobs -->
+  <section class="featured-jobs">
+    <div class="ctnr">
+      <div class="job-cards">
+        <!--  -->
+        {% for job in jobs %}
+        <!-- Job Card -->
+        <div class="job-card" data-title="{{ job.title }}">
+          <div class="job-title">
+            {{ job.title }}
+            <span class="job-id">(Opp ID: {{ job.opportunityId }})</span>
+          </div>
+          <div class="job-duration-salary">
+            <span class="duration">⏳ {{ job.duration }}</span>
+            <span class="salary">💳 {{ job.budget }}</span>
+          </div>
+          <p class="job-description">{{ job.description }}</p>
+          <div class="job-tags">
+            {% for tag in job.skills_list %}
+            <span class="tag">{{ tag }}</span>
+            {% endfor %}
+          </div>
+          <div class="job-actions mt-3">
+            <button
+              class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:text-white hover:bg-blue-600 cursor-pointer"
+              hx-post="{% url 'load_job_details' %}"
+              hx-vals='{"job_id": "{{ job.opportunityId }}"}'
+              hx-target="#tailwind-popup-content"
+              hx-swap="innerHTML"
+              hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+              onclick="tailwindOpenModal()"
+            >
+              View More
+            </button>
+            <button
+              class="btn btn-primary provide-quote bg-blue-500 text-white px-4 py-2 rounded ml-2 cursor-pointer"
+              onclick="openModal('{{ job.opportunityId }}', '{{ job.cur_symbol }}', '{{ job.duration }}', '{{ job.budget }}')"
+            >
+              Provide Quote
+            </button>
+          </div>
+        </div>
+
+        {% if job.show_ad %}
+        <div
+          class="relative h-[180px] w-full max-w-lg mx-auto overflow-hidden rounded-lg shadow-lg mt-8"
+        >
+          <div class="slider slider-{{job.slider_class}} relative w-full h-56">
+            {% for adv in job.ad_section %} {% if adv.media_type == "Image" %}
+            <div
+              class="slide slide-{{job.slider_class}} absolute w-full h-full opacity-0 transition-opacity duration-1000 cursor-pointer pointer-events-none"
+              data-url="{{ adv.redirect_link }}"
+            >
+              <img
+                src="{{ adv.media_url }}"
+                alt="Advertisement"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            {% elif adv.media_type == "Video" %}
+            <div
+              class="slide slide-{{job.slider_class}} absolute w-full h-full opacity-0 transition-opacity duration-1000 cursor-pointer pointer-events-none"
+              data-url="{{ adv.redirect_link }}"
+            >
+              <video class="w-full h-full object-cover" autoplay muted loop>
+                <source src="{{ adv.media_url }}" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            {% endif %} {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <!--  -->
+        {% endfor %}
+        <!--  -->
+      </div>
+    </div>
+  </section>
 
   <!-- Toggle right offcanvas of view more button  -->
   <div
@@ -302,7 +493,7 @@
   </div>
 
   <!-- Right Section -->
-  <aside class="right-section">
+  <aside class="right-section hide-on-mobile">
     <!-- First Ad Box: Two Videos -->
     <div
       class="relative h-[180px] w-full max-w-lg mx-auto overflow-hidden rounded-lg shadow-lg mt-8"
@@ -488,6 +679,10 @@
     initializeSlider(2); // For sec2
     initializeSlider(3); // For sec2
     initializeSlider(4); // For sec2
+    initializeSlider(5); // For sec2
+    initializeSlider(6); // For sec2
+    initializeSlider(7); // For sec2
+    initializeSlider(8); // For sec2
     // Add more as needed
   });
 </script>

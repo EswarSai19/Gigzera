@@ -310,7 +310,8 @@ body {
 .error-text {
     color: red;
     font-size: 14px;
-    /* margin-top: 5px; */
+    margin-top: 5px;
+    display: block;
 }
 
 /* Skill box styling */
@@ -953,4 +954,545 @@ textarea {
 .save-btn {
     background-color: #007bff;
     color: #fff;
+}
+
+/* mobile styles */
+/* Mobile View Styles */
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+
+    /* Modal Container */
+    #addCertificateModal .bg-white {
+        width: 90%;
+        /* Make modal container 90% of the viewport width */
+        max-width: 100%;
+        /* No max-width on mobile */
+        margin: 0 auto;
+        /* Center horizontally */
+        border-radius: 0.375rem;
+        /* Rounded corners */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        /* Add some shadow */
+        overflow-y: auto;
+        /* Allow scrolling */
+        max-height: 100vh;
+        margin-top: 80px;
+        margin-bottom: 40px;
+        /* Make sure it doesn't overflow vertically */
+    }
+
+    /* Header */
+    #addCertificateModal h5 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #007bff;
+        text-align: center;
+        margin: 0;
+        width: 100%;
+        /* Ensure it takes up full width */
+        display: flex;
+        justify-content: center;
+        /* Center the text */
+        align-items: center;
+    }
+
+    /* Body */
+    #addCertificateModal .p-6 {
+        padding: 16px;
+    }
+
+    .file-upload-cert {
+        margin-bottom: 24px;
+    }
+
+    /* File Upload Area */
+    #file-upload-container {
+        border: 2px dashed #e5e7eb;
+        padding: 24px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    /* Red Border for File Input */
+    #file-upload-container.border-red-500 {
+        border-color: #f87171 !important;
+    }
+
+    .upload-icon-cert {
+        font-size: 2rem;
+        color: #4b5563;
+        /* Dark grey color */
+    }
+
+    #file-input-cert {
+        display: none;
+    }
+
+    .uploaded-file-cert {
+        display: flex;
+        justify-content: space-between;
+        background-color: #f3f4f6;
+        /* Light grey background */
+        padding: 12px;
+        border-radius: 8px;
+        margin-top: 16px;
+    }
+
+    .file-icon-cert {
+        font-size: 1.25rem;
+    }
+
+    .remove-cert {
+        cursor: pointer;
+        color: #f87171;
+        /* Red color */
+        font-size: 1.25rem;
+    }
+
+    /* Form Fields */
+    .certification-form input[type="text"],
+    .certification-form input[type="date"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        /* Light grey border */
+        border-radius: 8px;
+        margin-bottom: 12px;
+        font-size: 1rem;
+        color: #374151;
+        /* Dark grey text */
+    }
+
+    .certification-form label {
+        display: block;
+        font-size: 0.875rem;
+        margin-bottom: 4px;
+        color: #374151;
+    }
+
+    .certification-form .text-red-500 {
+        color: red;
+    }
+
+    /* Modal Footer */
+    #addCertificateModal .p-4 {
+        padding: 16px;
+        background-color: #f3f4f6;
+        /* Light grey background */
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    #addCertificateModal button,
+    #addCertificateModal2 button {
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+
+    #addCertificateModal button:hover,
+    #addCertificateModal2 button:hover {
+        opacity: 0.8;
+    }
+
+    /* Cancel Button */
+    #addCertificateModal .bg-gray-300 {
+        background-color: #e5e7eb;
+        color: #374151;
+        margin-right: 8px;
+    }
+
+    /* Save Button */
+    #save-button {
+        background-color: #007bff;
+        color: white;
+    }
+
+
+    #workHistoryModal .bg-white {
+        width: 100%;
+        max-width: 100%;
+        padding: 16px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    /* Adjust modal header text size */
+    #workHistoryModal h5 {
+        font-size: 1.25rem;
+        /* Smaller font size */
+    }
+
+    /* Make inputs and text areas full width */
+    #workHistoryModal input,
+    #workHistoryModal textarea {
+        font-size: 0.90rem;
+    }
+
+    /* Reduce margin on form fields */
+    #workHistoryModal .mb-4 {
+        margin-bottom: 12px;
+    }
+
+    /* Adjust footer buttons to fit mobile */
+
+    #workHistoryModal .flex button {
+        width: 100%;
+        /* Make buttons take full width */
+        padding: 12px;
+    }
+
+
+
+    .main-container {
+        flex-direction: column;
+        /* Stack sections vertically */
+    }
+
+    .left-container {
+        order: 2;
+        /* Move left section second */
+        margin-right: 0;
+    }
+
+    .title_heading {
+        display: flex;
+        justify-content: space-between;
+        /* Space between title and button */
+        align-items: center;
+        /* Vertically center the items */
+        margin-bottom: 20px;
+        /* Space below the heading */
+        margin-top: 20px;
+    }
+
+    .title_heading h1 {
+        font-size: 18px;
+        /* Adjust font size */
+        margin: 0;
+        /* Remove margin to align properly with the button */
+    }
+
+    .project-tracking-btn {
+        display: flex;
+        /* Use flexbox to align icon and text horizontally */
+        align-items: center;
+        /* Vertically center the icon and text */
+        font-size: 15px;
+        text-align: left;
+        /* Align text to the left */
+        margin-left: 60px;
+        /* Add space between the title and the button */
+    }
+
+    .project-tracking-btn i {
+        margin-right: 1px;
+        /* Space between the icon and text */
+        text-align: flex-start;
+    }
+
+
+    .section {
+        padding: 10px;
+        /* Add padding to the section for better spacing */
+        margin-bottom: 20px;
+        /* Space out sections */
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 18px;
+        /* Adjust header font size */
+    }
+
+    .small-btn-summary {
+        background: transparent;
+        border: none;
+        font-size: 18px;
+    }
+
+    .editable-box-summary {
+        margin-top: 10px;
+        /* Add space between the header and content */
+    }
+
+    #summary-text {
+        font-size: 14px;
+        /* Adjust font size for readability */
+    }
+
+    #summary-input {
+        width: 100%;
+        /* Make textarea full width */
+        font-size: 14px;
+        /* Ensure font size is appropriate */
+        padding: 8px;
+        /* Add padding for better usability */
+    }
+
+    #save-summary {
+        width: 100%;
+        /* Make save button full width */
+        margin-top: 15px;
+        /* Add space between textarea and button */
+        padding: 8px;
+        font-size: 14px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+
+    .edit-btn-container-summary {
+        display: none;
+        /* Hide extra button container */
+    }
+
+    .section {
+        padding: 10px;
+        /* Add padding to the section for better spacing */
+    }
+
+    .skills-header {
+        display: flex;
+        flex-direction: row;
+        /* Align the header items in a row */
+        justify-content: space-between;
+        /* Space between the title and button */
+        align-items: center;
+        /* Vertically align items */
+        font-size: 16px;
+        /* Adjust font size for mobile */
+    }
+
+    .skills-header h2 {
+        margin: 0;
+        /* Remove default margin */
+    }
+
+    .edit-icon {
+        font-size: 18px;
+        /* Adjust icon size */
+        cursor: pointer;
+    }
+
+    .save-button-skills {
+        font-size: 14px;
+        /* Smaller button size */
+        display: inline-block;
+        /* Allow button to be displayed next to icon */
+    }
+
+    .editable-box {
+        margin-top: 10px;
+        /* Add space between the header and content */
+    }
+
+    /* Mobile View Adjustments */
+    /* Search bar for skills */
+    .skills-search {
+        display: flex;
+        flex-direction: row;
+        /* Keep elements in a row */
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 8px;
+        position: relative;
+        width: 100%;
+    }
+
+    /* Input field for typing skills */
+    .skills-search input[type="text"],
+    .skills-search input[type="number"] {
+        padding: 8px;
+        border: 1px solid #555;
+        border-radius: 4px;
+        height: 38px;
+        outline: none;
+        background-color: #fff;
+        color: black;
+        width: 35%;
+        /* Adjust width to fit in a row */
+        min-width: 100px;
+        margin-right: 5px;
+        /* Small gap between inputs */
+    }
+
+    /* Placeholder styling */
+    .skills-search input[type="text"]::placeholder,
+    .skills-search input[type="number"]::placeholder {
+        color: #333;
+        font-size: 14px;
+    }
+
+    /* Add a skill button styles */
+    .add-skill-button {
+        background-color: #003d7a;
+        color: white;
+        border: none;
+        padding: 10px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s;
+        width: auto;
+        /* Keep button width flexible */
+        white-space: nowrap;
+        /* Prevent button text from wrapping */
+    }
+
+    .add-skill-button:hover {
+        background-color: #1565c0;
+    }
+
+    /* Disabled input styling */
+    .skills-search input[disabled] {
+        background-color: #e0e0e0;
+        color: #9e9e9e;
+        cursor: not-allowed;
+    }
+
+
+    /* .skills-list {
+        gap: 12px;
+    } */
+
+    .skill-experience-pair {
+        border: 1px solid green;
+        display: flex;
+        flex-direction: row;
+        /* Stack skill box and experience input vertically */
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Each skill box */
+    .skill-box {
+        font-size: 14px;
+        /* Adjust font size for better readability */
+        padding: 6px 12px;
+        /* Adjust padding */
+    }
+
+    .delete-skill {
+        font-size: 14px;
+        /* Increase font size of delete icon */
+    }
+
+    .experience-box {
+        width: 40%;
+        /* Make the experience input field full-width */
+    }
+
+    .experience-box input {
+        font-size: 14px;
+        /* Adjust input font size */
+    }
+
+    .error-text {
+        font-size: 12px;
+        /* Make the font size smaller */
+        margin-top: 5px;
+    }
+
+    /* Section Header (Certifications and Employment History) */
+    .section-cert-emp h2 {
+        font-size: 18px;
+        /* Reduce font size */
+        margin-bottom: 10px;
+    }
+
+    /* Add Button */
+    .add-btn {
+        font-size: 14px;
+        /* Reduce font size for mobile */
+        padding: 6px 12px;
+        /* Adjust padding for mobile */
+    }
+
+    /* Box Container */
+    .box-container {
+        padding: 10px 0;
+        /* Adjust padding for mobile */
+    }
+
+    /* Box Content */
+    .box .content h3 {
+        font-size: 16px;
+        /* Adjust font size */
+    }
+
+    .box .content p {
+        font-size: 14px;
+        /* Adjust font size */
+        margin-bottom: 10px;
+    }
+
+    /* Actions (Edit and Delete Buttons) */
+    .actions {
+        display: flex;
+        flex-direction: row;
+        /* Align buttons to the left */
+        margin-left: 0;
+        /* Remove any additional left margin */
+        margin-right: 0;
+        /* Remove any additional right margin */
+        padding: 0;
+        /* Remove padding */
+        align-items: center
+    }
+
+    .edit-btn,
+    .delete-btn {
+        font-size: 14px;
+        /* Adjust font size for mobile */
+        padding: 5px 8px;
+        /* Adjust padding for mobile */
+        margin: 0;
+        /* Ensure no margin that would push buttons down or cause extra space */
+        margin-left: 50px;
+        display: inline-flex;
+
+    }
+
+
+    .edit-btn {
+        color: #003d7a;
+        /* Edit button color */
+    }
+
+    .delete-btn {
+        color: red;
+        /* Delete button color */
+    }
+
+    .edit-btn:hover {
+        color: #007bff;
+        /* Hover effect */
+    }
+
+    .delete-btn:hover {
+        color: #ff4d4d;
+        /* Hover effect */
+    }
+
+    .right-container {
+        order: 1;
+        /* Move right section first */
+    }
+
+    .profile-details h3 {
+        font-size: 20px;
+    }
+
+    .profile-details p {
+        font-size: 16px;
+    }
+
+    .profile-contact p {
+        font-size: 14px;
+        /* Adjust font size for better readability */
+    }
+
 }

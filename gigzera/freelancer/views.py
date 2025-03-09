@@ -8,12 +8,13 @@ import os
 import time
 import locale
 import re
+import random
 import boto3
 from django.utils import timezone
 from urllib.parse import urlparse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from db_schemas.models import Contact, ProjectQuote, JobsPageImages, WebAnnouncement, JobsPageAdv, Tasks, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay  # Create a model for storing quotes
+from db_schemas.models import Contact, ProjectQuote, PartnerLogos, JobsPageImages, WebAnnouncement, JobsPageAdv, Tasks, Freelancer, OngoingProjects, EmploymentHistory, Certificate, Skill, ProjectsDisplay  # Create a model for storing quotes
 from django.core.exceptions import ValidationError
 from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
@@ -140,9 +141,11 @@ def index(request):
     for job in jobs:
         job.skills_list = [skill.strip().title() for skill in job.skills_required.split(',')]
         job.cur_symbol = get_currency_symbol(job.currency)
+        
     user.initials = get_initials(user.name)
     print(user.initials)
-    context = {'jobs': jobs, 'user': user}
+    logos = PartnerLogos.objects.all()
+    context = {'jobs': jobs, 'user': user, 'logos':logos}
     return render(request, 'freelancer/index.html', context)
 
 
@@ -154,11 +157,10 @@ def jobs(request):
         return redirect('login')  # Redirect to login if session is missing
     user = Freelancer.objects.get(userId=user_id)
     user.initials = get_initials(user.name)
+    is_mobile = 'Mobi' in request.META.get('HTTP_USER_AGENT', '')
+
     jobs = ProjectsDisplay.objects.all().order_by('-created_at')
-    for job in jobs:
-        job.skills_list = [skill.strip().title() for skill in job.skills_required.split(',')]
-        job.cur_symbol = get_currency_symbol(job.currency)
-    
+
     sec1 = JobsPageAdv.objects.filter(section_name="sec_1").all()
     sec2 = JobsPageAdv.objects.filter(section_name="sec_2").all()
     sec3 = JobsPageAdv.objects.filter(section_name="sec_3").all()
@@ -166,6 +168,27 @@ def jobs(request):
     images = JobsPageImages.objects.all()
     print(len(images), "Images length")
     print("WEB Image", web_obj)
+    print(f"MOBI: {is_mobile}")
+     # Add a flag for mobile ad placement
+        
+
+    ad_positions = set(random.sample(range(min(10, len(jobs))), 3))  # Pick 3 unique positions
+    ad_sections = [sec1, sec2, sec3]  # List of available ad sections
+    print("Boy scott",ad_positions, ad_sections)
+    slider_counter = 6
+    for i, job in enumerate(jobs):
+        job.skills_list = [skill.strip().title() for skill in job.skills_required.split(',')]
+        job.cur_symbol = get_currency_symbol(job.currency)
+
+        # Show ad only if in the selected positions
+        job.show_ad = is_mobile and i in ad_positions
+
+        if job.show_ad:
+            section_index = (i // 3) % len(ad_sections)  # Cycles through [0, 1, 2]
+            job.ad_section = ad_sections[section_index]  
+            job.slider_class = f"{slider_counter}"
+            slider_counter+=1
+
     context = {
         'jobs': jobs, 
         'user': user,
@@ -174,6 +197,7 @@ def jobs(request):
         'sec3': sec3,
         'web_obj':web_obj,
         'images':images,
+        'is_mobile': is_mobile,
     }    
     return render(request, 'freelancer/jobs.html', context)
 
@@ -731,15 +755,17 @@ def submit_quote(request):
         # Debugging prints
         print(f"User ID from session: {freelancer_id}")
         print(f"Saving quote for {opportunityId} by {freelancer}")
-        formated_budget = format_currency(budget, job.currency)
-        admin_margin = calculate_percentage(budget, 30, job.currency)
-        print(f"Budget: {formated_budget} {job.currency}")
+        # formated_budget = format_currency(budget, job.currency)
+        # admin_margin = calculate_percentage(budget, 30, job.currency)
+        admin_margin = 0.30 * int(budget)
+        admin_margin = str(admin_margin)
+        print(f"Budget: {job.currency}")
         # Store in DB
         ProjectQuote.objects.create(
             freelancer_id=freelancer.userId,  # Use ForeignKey if applicable
             opportunityId=opportunityId,
             currency=job.currency,
-            budget=formated_budget,
+            budget=budget,
             admin_margin=admin_margin,
             time_estimation=time_estimation,
             comments=comments,

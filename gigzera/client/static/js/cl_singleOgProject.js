@@ -1363,3 +1363,55 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 });
+
+// For mobile styles
+// for mobile
+document.addEventListener("DOMContentLoaded", function () {
+  const leftNavButton = document.querySelector(
+    ".nav-buttons button:first-child"
+  );
+  const rightNavButton = document.querySelector(
+    ".nav-buttons button:last-child"
+  );
+  const sidebar = document.querySelector(".sidebar");
+  const messages = document.querySelector(".messages");
+
+  function isMobileView() {
+    return window.innerWidth <= 768; // Adjust breakpoint as needed
+  }
+
+  leftNavButton.addEventListener("click", function () {
+    if (isMobileView()) {
+      sidebar.classList.toggle("show-sidebar");
+    }
+  });
+
+  rightNavButton.addEventListener("click", function () {
+    if (isMobileView()) {
+      messages.classList.toggle("show-messages");
+    }
+  });
+
+  // Close sidebar and messages when clicking outside
+  document.addEventListener("click", function (event) {
+    if (isMobileView()) {
+      if (
+        !sidebar.contains(event.target) &&
+        !leftNavButton.contains(event.target)
+      ) {
+        sidebar.classList.remove("show-sidebar");
+      }
+      if (
+        !messages.contains(event.target) &&
+        !rightNavButton.contains(event.target)
+      ) {
+        messages.classList.remove("show-messages");
+      }
+    }
+  });
+});
+
+function closePopup() {
+  document.querySelector(".sidebar").classList.remove("show-sidebar");
+  document.querySelector(".messages").classList.remove("show-messages");
+}

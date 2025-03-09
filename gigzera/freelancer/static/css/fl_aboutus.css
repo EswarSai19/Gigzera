@@ -1,8 +1,10 @@
+/* Mobile View Adjustments */
 @media only screen and (min-width: 320px) and (max-width: 768px) {
 
+    /* Mobile View Adjustments */
     /* Hero Section */
+
     #hero {
-        margin-top: -120px;
         padding: 10px;
         height: auto;
         text-align: center;
@@ -12,6 +14,7 @@
         font-size: 2.15rem;
         text-align: center;
         margin-bottom: 2.0rem;
+        /* margin-top: -20px; */
     }
 
     #hero p {
@@ -102,24 +105,5 @@
 
     #team p {
         font-size: 1rem;
-    }
-
-    /* Container Adjustments */
-    .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-
-    /* General Spacing Adjustments */
-    main {
-        padding-top: 4rem;
-    }
-
-    .text-center {
-        text-align: center;
-    }
-
-    .rounded-xl {
-        border-radius: 0.5rem;
     }
 }

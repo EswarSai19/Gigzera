@@ -106,14 +106,9 @@
         <p>
           <strong>Consulting Charges:</strong>
           <button id="proposed-budget" class="budget-button">
-            {{bid.cur_symbol}} {{bid.admin_margin}}
+            {{bid.cur_symbol}} {{bid.basic_revised_budget}}
           </button>
-          <input
-            type="hidden"
-            name="adminMargin"
-            id="adminMargin"
-            value="500"
-          />
+          <input type="hidden" name="adminMargin" id="adminMargin" />
           <button id="edit-button" class="edit-button">
             <i class="fa-solid fa-pen-to-square edit-icon"></i>
           </button>
@@ -128,7 +123,12 @@
   <!-- Form that will be submitted for approval-->
   <form id="budget-form" method="POST" action="{% url 'ad_bidApproved' %}">
     {% csrf_token %}
-    <input type="hidden" name="adminMargin" id="adminMargin-hidden" />
+    <input
+      type="hidden"
+      name="adminMargin"
+      id="adminMargin-hidden"
+      value="{{bid.basic_revised_budget}}"
+    />
     <input
       type="hidden"
       name="bidId"
@@ -139,7 +139,12 @@
   <!-- Form that will be submitted for approval-->
   <form id="budget-form2" method="POST" action="{% url 'ad_bidRejected' %}">
     {% csrf_token %}
-    <input type="hidden" name="adminMargin" id="adminMargin-hidden" />
+    <input
+      type="hidden"
+      name="adminMargin"
+      id="adminMargin-hidden"
+      value="{{bid.basic_revised_budget}}"
+    />
     <input
       type="hidden"
       name="bidId"
@@ -187,7 +192,8 @@
 
         // Create an input field for editing
         const budgetInput = document.createElement("input");
-        budgetInput.type = "text";
+        budgetInput.type = "number";
+        budgetInput.step = "0.00001";
         budgetInput.name = "adminMargin";
         budgetInput.value = proposedBudget.textContent
           .trim()
@@ -227,12 +233,14 @@
       approveBtn.addEventListener("click", () => {
         hiddenFormInput.value = adminMarginInput.value; // Sync latest budget value
         hiddenBidId.value = `{{bid.projectQuoteId}}`;
+        console.log("Her is my amount:", hiddenFormInput, hiddenBidId);
         form.submit();
       });
 
       rejectBtn.addEventListener("click", () => {
         hiddenFormInput.value = adminMarginInput.value; // Sync latest budget value
         hiddenBidId.value = `{{bid.projectQuoteId}}`;
+        console.log("Her is my amount:", hiddenFormInput, hiddenBidId);
         form2.submit();
       });
     });

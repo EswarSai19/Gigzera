@@ -1,131 +1,81 @@
 {% load static %}
-<div
-  class="w-full bg-white/95 backdrop-blur-sm shadow-sm z-[-1] !top-0 font-arial font-sans"
->
-  <div class="container mx-auto px-4 py-4">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center gap-12">
-        <a href="{% url 'index' %}">
-          <img
-            class="w-[130px] h-[50px] cursor-pointer"
-            src="https://cdn.yellowmessenger.com/XzSBlvSXqsrB1735194961367.png"
-            alt="Gigzera Logo"
-          />
-        </a>
-        <div class="hidden lg:flex relative w-96">
-          <!-- <input
-            type="text"
-            placeholder="Search jobs by skills or category..."
-            class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500"
-          />
-          <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i> -->
-        </div>
-      </div>
-      <nav class="hidden lg:flex items-center gap-8">
-        <a
-          href="{% url 'index' %}"
-          class="nav-item text-gray-600 hover:text-blue-600 cursor-pointer"
-          >Home</a
-        >
-        <a
-          href="{% url 'jobs' %}"
-          class="nav-item text-gray-600 hover:text-blue-600 cursor-pointer"
-          >Jobs</a
-        >
-        <a
-          href="{% url 'aboutus' %}"
-          class="nav-item text-gray-600 hover:text-blue-600 cursor-pointer"
-          >About Us</a
-        >
-        <a
-          id="contactBtn"
-          class="text-gray-600 hover:text-blue-600 cursor-pointer"
-          >Contact Us</a
-        >
-        <a
-          href="{% url 'industries' %}"
-          class="nav-item text-gray-600 hover:text-blue-600 cursor-pointer"
-          >Industries</a
-        >
-        <div class="flex gap-4">
-          <a
-            href="{% url 'login' %}"
-            class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:text-white hover:bg-blue-600 cursor-pointer"
-            >Login</a
-          >
-          <a
-            href="{% url 'signup' %}"
-            class="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 cursor-pointer"
-            >Sign Up</a
-          >
-        </div>
-      </nav>
-
-      <!-- hidden toggle menu -->
-      <button id="menuToggle" class="lg:hidden text-gray-600">
-        <i class="fa-solid fa-bars text-2xl"></i>
-      </button>
-    </div>
-    <!-- Mobile Menu (Hidden by Default) -->
-    <div
-      id="navMenu"
-      class="hidden flex lg:hidden flex-col items-center gap-4 py-4 px-4 fixed top-20 left-0 bg-white w-full shadow-md z-[1001]"
-    >
-      <!-- Mobile Search Bar -->
-      <div class="relative w-full">
-        <input
-          type="text"
-          placeholder="Search jobs by skills or category..."
-          class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 mb-2 z-[1001]"
-        />
-        <i
-          class="fa-solid fa-search absolute left-3 top-3 text-gray-400 z-[1001]"
-        ></i>
-      </div>
-
-      <a
-        href="{% url 'index' %}"
-        class="block text-gray-600 hover:text-blue-600 mb-2 z-[1001]"
-        >Home</a
-      >
-      <a
-        href="{% url 'jobs' %}"
-        class="block text-gray-600 hover:text-blue-600 mb-2 z-[1001]"
-        >Jobs</a
-      >
-      <a
-        href="{% url 'aboutus' %}"
-        class="block text-gray-600 hover:text-blue-600 mb-2 z-[1001]"
-        >About Us</a
-      >
-      <a id="contactBtn4" class="block text-gray-600 hover:text-blue-600 mb-2"
-        >Contact Us</a
-      >
-      <a
-        href="{% url 'industries' %}"
-        class="block text-gray-600 hover:text-blue-600 mb-2 z-[1001]"
-        >Industries</a
-      >
-
-      <!-- Ensure spacing between login and sign-up buttons -->
-      <div class="flex flex-col space-y-2">
-        <a
-          href="{% url 'login' %}"
-          class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg text-center hover:text-white hover:bg-blue-600 mb-3"
-        >
-          Login
-        </a>
-        <a
-          href="{% url 'signup' %}"
-          class="px-4 py-2 text-white bg-blue-600 rounded-lg text-center hover:bg-blue-700 mb-2"
-        >
-          Sign Up
-        </a>
-      </div>
-    </div>
-    <!--  -->
+<header class="header">
+  <div class="logo">
+    <a href="{% url 'index' %}">
+      <img
+        class="w-[130px] h-[50px] cursor-pointer"
+        src="https://d2m054rmna67sd.cloudfront.net/header_logo.png"
+        alt="Gigzera Logo"
+      />
+    </a>
   </div>
-</div>
+  <nav class="nav">
+    <a class="nav-item" href="{% url 'index' %}">Home</a>
+    <a class="nav-item" href="{% url 'jobs' %}">Jobs</a>
+    <a class="nav-item" href="{% url 'aboutus' %}">About Us</a>
+    <a class="nav-item" id="contactBtn">Contact Us</a>
+    <a class="nav-item" href="{% url 'industries' %}">Industries</a>
+    <div class="flex gap-2">
+      <a href="{% url 'login' %}" class="auth-button login-button">Login</a>
+      <a href="{% url 'signup' %}" class="auth-button signup-button">Sign Up</a>
+    </div>
+  </nav>
+  <!-- Mobile Menu Button -->
+  <button
+    id="menuToggle"
+    class="lg:hidden text-gray-600 absolute top-8 right-8"
+  >
+    <i class="fa-solid fa-bars text-2xl"></i>
+  </button>
+
+  <!-- Mobile Menu (Hidden by Default) -->
+  <div id="navMenu" class="menu">
+    <a
+      href="{% url 'index' %}"
+      class="nav-item block text-gray-600 hover:text-blue-600"
+      >Home</a
+    >
+    <a
+      href="{% url 'jobs' %}"
+      class="nav-item block text-gray-600 hover:text-blue-600"
+      >Jobs</a
+    >
+    <a
+      href="{% url 'aboutus' %}"
+      class="nav-item block text-gray-600 hover:text-blue-600"
+      >About Us</a
+    >
+    <a
+      id="contactBtn4"
+      class="nav-item block text-gray-600 hover:text-blue-600 mb-2"
+      >Contact Us</a
+    >
+    <a
+      href="{% url 'industries' %}"
+      class="nav-item block text-gray-600 hover:text-blue-600"
+      >Industries</a
+    >
+
+    <!-- Ensure spacing between login and sign-up buttons -->
+    <div class="actions">
+      <a href="{% url 'login' %}" class="auth-button login-button"> Login </a>
+      <a href="{% url 'signup' %}" class="auth-button signup-button">
+        Signup
+      </a>
+    </div>
+  </div>
+</header>
+<!-- JavaScript for Toggle Menu & Profile Dropdown -->
+
+<!-- This is a serach bar in nav bar for futrure reference -->
+<!-- <div class="hidden lg:flex relative w-96">
+    <input
+      type="text"
+      placeholder="Search jobs by skills or category..."
+      class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500"
+    />
+    <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i>
+  </div> -->
 
 <!-- Popup Overlay -->
 <div id="popupOverlay"></div>
@@ -141,17 +91,20 @@
   <form id="help-form" method="post" action="{% url 'submit_contact' %}">
     {% csrf_token %}
     <div>
-      <label>Name <span class="text-red-500">*</span></label>
+      <input type="hidden" name="user_id" value="{{ user.userId }}" />
+      <label class="required">Name <span class="text-red-500">*</span></label>
       <input
         type="text"
-        class="form-input"
         name="name"
+        class="form-input"
         placeholder="Enter your name"
         required
       />
     </div>
     <div>
-      <label>Phone Number <span class="text-red-500">*</span></label>
+      <label class="required"
+        >Phone Number <span class="text-red-500">*</span></label
+      >
       <input
         type="number"
         class="form-input"
@@ -161,7 +114,7 @@
       />
     </div>
     <div>
-      <label>Email <span class="text-red-500">*</span></label>
+      <label class="required">Email <span class="text-red-500">*</span></label>
       <input
         type="email"
         class="form-input"
@@ -171,7 +124,7 @@
       />
     </div>
     <div>
-      <label>Reason <span class="text-red-500">*</span></label>
+      <label class="required">Reason <span class="text-red-500">*</span></label>
       <select class="form-input" name="reason" required>
         <option value="">Select a reason</option>
         <option value="Unable to find suitable jobs">
@@ -202,7 +155,9 @@
       </select>
     </div>
     <div>
-      <label>Description <span class="text-red-500">*</span></label>
+      <label class="required"
+        >Description <span class="text-red-500">*</span></label
+      >
       <textarea
         rows="4"
         class="form-input"
@@ -227,21 +182,7 @@
     </p>
   </div>
 </div>
-<!-- {% if messages %}
-<ul class="messages">
-  {% for message in messages %}
-  <li class="alert alert-{{ message.tags }}">{{ message }}</li>
-  {% endfor %}
-</ul>
-<script>
-  const messages = document.querySelectorAll(".messages li");
-  if (messages.length) {
-    alert(messages[0].textContent.trim());
-  }
-</script>
-{% endif %} -->
 
-<!-- JS -->
 {% block js %}
 <script>
   // Get current path

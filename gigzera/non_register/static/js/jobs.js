@@ -5,6 +5,7 @@ const videos = document.querySelectorAll("video");
 
 // Function to show the next video after the current one ends
 function showNextVideo() {
+  if (videoContainers.length === 0 || videos.length === 0) return;
   // Hide current video
   videoContainers[currentVideoIndex].classList.remove("active");
 
@@ -28,6 +29,7 @@ videos.forEach((video, index) => {
 
 // Ensure the videos are loaded and ready to play
 window.addEventListener("load", () => {
+  if (videos.length === 0) return;
   // Preload videos
   videos.forEach((video) => {
     video.load();
@@ -137,16 +139,33 @@ setInterval(() => {
 const filterInput = document.getElementById("job-filter");
 const jobCards = document.querySelectorAll(".job-card");
 
-filterInput.addEventListener("input", function() {
+filterInput.addEventListener("input", function () {
   const filterValue = filterInput.value.toLowerCase();
 
-  jobCards.forEach(card => {
+  jobCards.forEach((card) => {
     const jobTitle = card.getAttribute("data-title").toLowerCase();
-    
+
     if (jobTitle.includes(filterValue)) {
       card.style.display = "block"; // Show the job card
     } else {
       card.style.display = "none"; // Hide the job card
     }
   });
+});
+
+// new code for jobs mobile
+// popup for bar button
+// Get elements
+const hamburgerIconLeft = document.getElementById("hamburger-icon-left");
+const closePopupBtnLeft = document.getElementById("close-popup-btn-left");
+const popupLeft = document.getElementById("social-media-updates-left");
+
+// Toggle the popup visibility when the hamburger icon is clicked
+hamburgerIconLeft.addEventListener("click", () => {
+  popupLeft.classList.toggle("open");
+});
+
+// Close the popup when the close button is clicked
+closePopupBtnLeft.addEventListener("click", () => {
+  popupLeft.classList.remove("open");
 });

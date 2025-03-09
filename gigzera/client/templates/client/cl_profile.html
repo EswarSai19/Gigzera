@@ -62,7 +62,9 @@
         id="edit-form"
       >
         {% csrf_token %}
+        <label>Upload New Image:</label>
         <input type="file" id="edit-image" name="profilePic" accept="image/*" />
+        <label>Edit Name:</label>
         <input
           type="text"
           id="edit-name"
@@ -70,6 +72,7 @@
           placeholder="Name"
           value="{{user.name}}"
         />
+        <label>Edit Job Title:</label>
         <input
           type="text"
           name="designation"
@@ -77,6 +80,7 @@
           placeholder="Title"
           value="{{user.designation}}"
         />
+        <label>Edit Email:</label>
         <input
           type="email"
           name="email"
@@ -84,6 +88,7 @@
           placeholder="Email"
           value="{{user.email}}"
         />
+        <label>Edit Phone:</label>
         <input
           type="text"
           name="phone"
@@ -91,6 +96,7 @@
           placeholder="Phone"
           value="{{user.phone}}"
         />
+        <label>Edit Professional Profile:</label>
         <input
           type="url"
           name="social_media"
@@ -98,6 +104,7 @@
           value="{{user.social_media}}"
           placeholder="LinkedIn Profile"
         />
+        <label>Edit Company Name:</label>
         <input
           type="text"
           id="edit-company"
@@ -142,7 +149,7 @@
 
       <!-- Modal structure -->
       <div
-        class="fixed inset-0 flex items-center justify-center z-50 hidden overflow-auto"
+        class="fixed inset-0 bg-white-100 backdrop-blur-sm bg-opacity-50 flex items-center justify-center z-50 hidden overflow-auto"
         id="exampleModal"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
