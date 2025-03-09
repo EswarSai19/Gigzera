@@ -17,7 +17,7 @@ from urllib.parse import urlparse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
-from db_schemas.models import Client, Tasks, ProjectsDisplay, Milestones, OngoingProjects, Contact, ProjectQuote, Freelancer, EmploymentHistory,Certificate, Skill
+from db_schemas.models import Client, PartnerLogos, Tasks, ProjectsDisplay, Milestones, OngoingProjects, Contact, ProjectQuote, Freelancer, EmploymentHistory,Certificate, Skill
 from django.core.exceptions import ValidationError
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
@@ -137,11 +137,12 @@ def divide_budget(revised_budget, advance_payment, currency, no_of_parts):
     part_amount = remaining_budget / no_of_parts
 
     # Format and return results
-    return [format_currency(part_amount, currency) for _ in range(no_of_parts)]
+    # return [format_currency(part_amount, currency) for _ in range(no_of_parts)]
+    return [part_amount for _ in range(no_of_parts)]
 
 # Example usage
 print(divide_dates("2024-01-01", "2024-02-20"))  # Example: 50 days
-
+# print(divide_budget('14600.0', '3300.8', "INR", 2))
 
 
 # Example usage:
@@ -214,7 +215,9 @@ def cl_index(request):
         return redirect('login')
     user = Client.objects.get(userId=user_id)
     user.initials = get_initials(user.name)
-    return render(request, 'client/index.html', {'user': user})
+    logos = PartnerLogos.objects.all()
+    print(len(logos), "the length of logos")
+    return render(request, 'client/index.html', {'user': user, 'logos':logos})
 
 
 def cl_aboutus(request):
@@ -241,7 +244,7 @@ def cl_profile(request):
         return redirect('login')
     user = Client.objects.get(userId=user_id)
     user.initials = get_initials(user.name)
-    print("users details:", user, user_id, user.initials)
+    print("users details cl_profile:", user, user_id, user.initials)
     context={'user':user, 'current_date': now().strftime('%Y-%m-%d')}
 
     if request.method=="POST":
@@ -250,6 +253,7 @@ def cl_profile(request):
         budget=request.POST.get('budget')
         duration=request.POST.get('duration')
         currency=request.POST.get('currency')
+        deliverables=request.POST.get('deliverables')
         description=request.POST.get('description')
         start_date=request.POST.get('start_date')
         requirements=request.POST.get('requirements')
@@ -257,11 +261,12 @@ def cl_profile(request):
         time_zone=request.POST.get('time_zone')
         skills = request.POST.get("skills_list", "")  # Comma-separated string
         print(f"Selected Skills: {skills}") 
+        print(f" t-{title}, pt-{project_type}, b-{budget}, d-{duration}, c-{currency}, des-{description}, sd-{start_date}, req-{requirements}, cha-{challenges}, tz-{time_zone}, sk-{skills}")
 
         if not all([title, project_type, budget, duration, currency, description, start_date, requirements, challenges, time_zone, skills]):
             messages.error(request, "Please fill out all fields!")
             return redirect('cl_postajob')  # Redirect to home page
-
+        print("this is the testing user_id", user_id)
         # Create and save the contact object
         ProjectsDisplay.objects.create(
             title=title, 
@@ -270,19 +275,20 @@ def cl_profile(request):
             duration=duration, 
             currency=currency, 
             description=description, 
-            start_date=start_date, 
+            start_date=start_date,
+            deliverables=deliverables,
             requirements=requirements, 
             challenges=challenges, 
             time_zone=time_zone, 
             skills_required=skills,
-            client_id=user_id,
+            client_id=user_id
         )
 
-        messages.success(request, "Your job has been submitted successfully!")
-        return redirect('cl_profile')  # Redirect to home page
+        messages.success(request, "Your form has been submitted successfully!")
+        return redirect('cl_postajob')  # Redirect to home page
 
         print(f"title: {title}\nproject_type: {project_type}\nbudget: {budget}\nduration: {duration}\ncurrency: {currency}\ndescription: {description}\nstart_date: {start_date}\nrequirements: {requirements}\ntime_zone: {time_zone}\nchallenges: {challenges}\n")
-    print("I am here")
+
     return render(request, 'client/cl_profile.html', context)
 
 def cl_test(request):
@@ -370,10 +376,13 @@ def edit_profile(request):
 
         # Handle file upload for profilePic
         profile_pic = request.FILES.get('profilePic')
-        
-        response = delete_if_uploaded(current_img_url)
-        print("Response", response)
-        image_url = upload_to_s3("clients", profile_pic)
+
+        if profile_pic:
+            response = delete_if_uploaded(current_img_url)
+            print("Response", response)
+            image_url = upload_to_s3("clients", profile_pic)
+            client.profilePic = image_url
+
 
         print(name, email, phone, designation, social_media, company, profile_pic)
         # Update the client instance
@@ -383,7 +392,6 @@ def edit_profile(request):
         client.designation = designation
         client.social_media = social_media
         client.company = company
-        client.profilePic = image_url
 
         # Save the updated client object
         client.save()
@@ -495,7 +503,7 @@ def cl_ongoingProjects(request):
         ogp.title = job.title if job else ""
         ogp.name = fl_user.name if fl_user else ""
 
-    context={'user':user, 'ongProjects':ongProjects}
+    context={'user':user, 'ongProjects':ongProjects, 'current_date': now().strftime('%Y-%m-%d')}
     return render(request, 'client/cl_ongoingProjects.html', context)
 
 def cl_singleOgProject(request):
@@ -758,8 +766,8 @@ def cl_bidApproved(request):
                 freelancer_id = bid.freelancer_id
             )
 
-            Milestones.objects.create(date=ms_date1, amount=ms_amt1, currency=job.currency, status="Pending", bid_id=bid_id)
-            Milestones.objects.create(date=ms_date2, amount=ms_amt2, currency=job.currency, status="Pending", bid_id=bid_id)
+            Milestones.objects.create(date=ms_date1, amount=str(ms_amt1), currency=job.currency, status="Pending", bid_id=bid_id)
+            Milestones.objects.create(date=ms_date2, amount=str(ms_amt2), currency=job.currency, status="Pending", bid_id=bid_id)
 
             print(f"Updated bid {bid_id}: bid_status=approved")
             messages.success(request, "Bid was sent to freelancer successfully")

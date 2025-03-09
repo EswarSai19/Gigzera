@@ -487,3 +487,357 @@ main {
     object-fit: cover;
     /* Make sure images cover the container */
 }
+
+/* From here */
+.hide1 {
+    display: none;
+}
+
+/* Media queries for mobile phone */
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+    #quoteModal {
+        padding: 20px;
+    }
+
+    #quoteModal .bg-white {
+        width: 100%;
+        max-width: 95%;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    #quoteModal .absolute.top-4.right-4 {
+        top: 10px;
+        right: 10px;
+    }
+
+    #quoteModal .text-2xl {
+        font-size: 1.5rem;
+    }
+
+    #quoteModal h1 {
+        font-size: 1.25rem;
+    }
+
+    #quoteModal p {
+        font-size: 0.875rem;
+    }
+
+    #quoteModal input,
+    #quoteModal textarea {
+        font-size: 0.875rem;
+        padding: 8px;
+    }
+
+
+    #quoteModal button[type="submit"] {
+        font-size: 1rem;
+        padding: 10px;
+    }
+
+    #tailwind-popup {
+        width: 90%;
+        height: 100%;
+        right: 0;
+        top: 0;
+        border-radius: 0;
+        padding: 20px;
+        box-sizing: border-box;
+        overflow-y: auto;
+    }
+
+    #tailwind-popup-header {
+        padding: 10px;
+        margin-top: 0;
+    }
+
+    #tailwind-popup-content {
+        padding: 10px;
+        height: calc(100vh - 150px);
+        overflow-y: auto;
+    }
+
+    #tailwind-popup-footer {
+        padding: 10px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: white;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    /* Adjust text sizes and spacing for mobile */
+    #tailwind-popup-header span {
+        font-size: 1.2rem;
+    }
+
+    #tailwind-popup-content h1 {
+        font-size: 1.1rem;
+    }
+
+    #tailwind-popup-content h2 {
+        font-size: 1rem;
+    }
+
+    #tailwind-popup-content ul li {
+        font-size: 0.9rem;
+    }
+
+    .bg-blue-100 {
+        font-size: 0.85rem;
+        padding: 1px 1px;
+        border-radius: 9999px;
+    }
+
+    /* Stack items vertically */
+    .flex.items-center.mt-2.space-x-4 {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        align-items: flex-start;
+    }
+
+    /* Stack "Start Date" and "Project Type" vertically without gap */
+    .flex.items-center.space-x-4.text-gray-600 {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        /* Remove gap */
+        align-items: flex-start;
+        margin-top: -20px;
+    }
+
+    /* Ensure icons are aligned with text */
+    .flex.items-center i {
+        margin-right: 8px;
+    }
+
+    .flex.items-center.text-gray-600 {
+        text-align: left;
+        margin-left: 0;
+    }
+
+    .flex.items-center.space-x-4.text-gray-600 div:last-child {
+        align-self: flex-start;
+        margin-left: 0;
+    }
+
+    /* Ensure that the text is left-aligned */
+    .text-gray-600,
+    .text-blue-600 {
+        text-align: left;
+    }
+}
+
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+    .popup-left {
+        display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 390px;
+        height: 100%;
+        background-color: #f9f9f9;
+        border-radius: 8px 0 0 8px;
+        box-shadow: -4px 0px 10px rgba(0, 0, 0, 0.1);
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        z-index: 100;
+    }
+
+    .popup-left.open {
+        display: block;
+        transform: translateX(0);
+    }
+
+    .popup-content-left {
+        padding: 20px;
+        overflow-y: auto;
+        height: 100%;
+    }
+
+    .close-popup-btn-left {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        margin-bottom: 20px;
+        font-size: 2rem;
+        color: #333;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+
+    .slide-left.active {
+        display: block;
+    }
+
+    /* Hamburger Icon Styling */
+    .hamburger-icon-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    .bar {
+        width: 100%;
+        height: 4px;
+        background-color: #333;
+        border-radius: 2px;
+    }
+
+    .hide-on-mobile {
+        display: none !important;
+    }
+
+    main {
+        flex-direction: column;
+        /* Stack sections vertically */
+        padding: 10px;
+        /* Adjust padding */
+    }
+
+    .left-section,
+    .right-section {
+        width: 100%;
+        /* Full width for both sections */
+        margin: 10px 0;
+        padding: 0 10px;
+    }
+
+
+    /* Social Media Box */
+    .social-media-box {
+        padding: 10px;
+    }
+
+    .social-media-box h3 {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .social-update {
+        padding: 6px 10px;
+    }
+
+    /* Featured Jobs */
+    .featured-jobs {
+        padding: 10px;
+        margin-bottom: -30px;
+    }
+
+    .job-cards {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .job-card {
+        background: #f8f9fa;
+        border: 1px solid #e1e1e1;
+        border-radius: 8px;
+        padding: 12px;
+        margin: 8px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .job-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 6px;
+    }
+
+    .job-duration-salary {
+        margin: 8px 0;
+        font-size: 1rem;
+    }
+
+    .job-description {
+        margin: 6px 0;
+        font-size: 0.9rem;
+    }
+
+    .job-tags {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 6px 0;
+    }
+
+    .tag {
+        background-color: #e0e7ff;
+        color: #1e3a8a;
+        padding: 6px 12px;
+        border-radius: 20px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        font-size: 0.8rem;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .tag:hover {
+        background-color: #3b82f6;
+        color: white;
+    }
+
+    .job-actions {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .view-more,
+    .provide-quote {
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+        text-align: center;
+        margin: auto;
+    }
+
+    .view-more {
+        background-color: white;
+        border: 1px solid #3b82f6;
+        color: #3b82f6;
+    }
+
+    .view-more:hover {
+        background-color: #e0e7ff;
+    }
+
+    .provide-quote {
+        background-color: #3b82f6;
+        color: white;
+    }
+
+    .provide-quote:hover {
+        background-color: #2563eb;
+    }
+
+    /* Ad Slideshow */
+    .ad-slideshow {
+        height: 200px;
+    }
+
+    .ad-box {
+        padding: 8px;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .mobile-ad {
+        display: block !important;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-ad {
+        display: none !important;
+    }
+}

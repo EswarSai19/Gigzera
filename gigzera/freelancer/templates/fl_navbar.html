@@ -9,14 +9,6 @@
       />
     </a>
   </div>
-  <div class="hidden lg:flex relative w-96">
-    <!-- <input
-      type="text"
-      placeholder="Search jobs by skills or category..."
-      class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500"
-    />
-    <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i> -->
-  </div>
   <nav class="nav">
     <a class="nav-item" href="{% url 'fl_index' %}">Home</a>
     <a class="nav-item" href="{% url 'fl_jobs' %}">Jobs</a>
@@ -40,7 +32,71 @@
       </div>
     </div>
   </nav>
+  <!-- Mobile Menu Button -->
+  <button
+    id="menuToggle"
+    class="lg:hidden text-gray-600 absolute top-8 right-8"
+  >
+    <i class="fa-solid fa-bars text-2xl"></i>
+  </button>
+
+  <!-- Mobile Menu (Hidden by Default) -->
+  <div id="navMenu" class="menu">
+    <a
+      href="{% url 'fl_index' %}"
+      class="nav-item block text-gray-600 hover:text-blue-600"
+      >Home</a
+    >
+    <a
+      href="{% url 'fl_jobs' %}"
+      class="nav-item block text-gray-600 hover:text-blue-600"
+      >Jobs</a
+    >
+    <a
+      href="{% url 'fl_aboutus' %}"
+      class="nav-item block text-gray-600 hover:text-blue-600"
+      >About Us</a
+    >
+    <a
+      id="contactBtn4"
+      class="nav-item block text-gray-600 hover:text-blue-600 mb-2"
+      >Contact Us</a
+    >
+    <a
+      href="{% url 'fl_industries' %}"
+      class="nav-item block text-gray-600 hover:text-blue-600"
+      >Industries</a
+    >
+
+    <!-- Ensure spacing between login and sign-up buttons -->
+    <div class="actions">
+      <a href="{% url 'fl_profile' %}" class="profile-btn"> Profile </a>
+      <a href="{% url 'logout' %}" class="logout-btn"> Logout </a>
+    </div>
+  </div>
 </header>
+<!-- JavaScript for Toggle Menu & Profile Dropdown -->
+<script>
+  document.getElementById("menuToggle").addEventListener("click", function () {
+    document.getElementById("navMenu").classList.toggle("hidden");
+  });
+
+  document
+    .getElementById("profile-trigger")
+    .addEventListener("click", function () {
+      document.getElementById("profile-menu").classList.toggle("hidden");
+    });
+</script>
+
+<!-- This is a serach bar in nav bar for futrure reference -->
+<!-- <div class="hidden lg:flex relative w-96">
+    <input
+      type="text"
+      placeholder="Search jobs by skills or category..."
+      class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500"
+    />
+    <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i>
+  </div> -->
 
 <!-- Popup Overlay -->
 <div id="popupOverlay"></div>
@@ -149,5 +205,20 @@
 </div>
 
 {% block js %}
+<script>
+  // Get current path
+  let currentPath = window.location.pathname;
+
+  // Select all navigation items
+  let navItems = document.querySelectorAll(".nav-item");
+
+  // Loop through each item and highlight the active link
+  navItems.forEach((item) => {
+    if (item.getAttribute("href") === currentPath) {
+      item.classList.add("text-blue-500", "underline", "decoration-blue-500");
+      item.classList.remove("text-gray-600");
+    }
+  });
+</script>
 <script src="{% static 'js/fl_navbar.js' %}"></script>
 {% endblock %}

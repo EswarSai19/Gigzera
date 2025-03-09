@@ -6,21 +6,36 @@ from django.core.exceptions import ValidationError
 from django.contrib import messages
 import json
 import re
+import random
 from django.utils.timezone import now
-from db_schemas.models import Contact, JobsPageImages, WebAnnouncement, JobsPageAdv, Client, ProjectsDisplay, Freelancer, Skill, Certificate
+from db_schemas.models import Contact, PartnerLogos, JobsPageImages, WebAnnouncement, JobsPageAdv, Client, ProjectsDisplay, Freelancer, Skill, Certificate
 # from .forms import ContactForm
 
+
+currency_symbols = {
+    "USD": "$", "EUR": "€", "JPY": "¥", "GBP": "£", "CNY": "¥", 
+    "AUD": "A$", "CAD": "C$", "CHF": "CHF", "INR": "₹", "NZD": "NZ$"
+}
+def get_currency_symbol(currency_code):
+    return currency_symbols.get(currency_code, "-")
+
+# Index
 def index(request):
     jobs = ProjectsDisplay.objects.all().order_by('-created_at')[0:3]
+    
     for job in jobs:
         job.skills_list = [skill.strip().title() for skill in job.skills_required.split(',')]
-    context = {'jobs': jobs}
+        job.cur_symbol = get_currency_symbol(job.currency)
+    logos = PartnerLogos.objects.all()
+    print(len(logos), "the length of logos")
+    context = {'jobs': jobs, 'logos':logos}
     return render(request, 'non_register/index.html', context)
 
 def jobs(request):
+
+    is_mobile = 'Mobi' in request.META.get('HTTP_USER_AGENT', '')
+
     jobs = ProjectsDisplay.objects.all().order_by('-created_at')
-    for job in jobs:
-        job.skills_list = [skill.strip().title() for skill in job.skills_required.split(',')]
 
     sec1 = JobsPageAdv.objects.filter(section_name="sec_1").all()
     sec2 = JobsPageAdv.objects.filter(section_name="sec_2").all()
@@ -29,6 +44,32 @@ def jobs(request):
     images = JobsPageImages.objects.all()
     print(len(images), "Images length")
     print("WEB Image", web_obj)
+    print(f"MOBI: {is_mobile}")
+     # Add a flag for mobile ad placement
+        
+
+    ad_positions = set(random.sample(range(min(10, len(jobs))), 3))  # Pick 3 unique positions
+    ad_sections = [sec1, sec2, sec3]  # List of available ad sections
+    print("Boy scott",ad_positions, ad_sections)
+    slider_counter = 6
+    for i, job in enumerate(jobs):
+        job.skills_list = [skill.strip().title() for skill in job.skills_required.split(',')]
+
+        # Show ad only if in the selected positions
+        job.show_ad = is_mobile and i in ad_positions
+
+        if job.show_ad:
+            section_index = (i // 3) % len(ad_sections)  # Cycles through [0, 1, 2]
+            job.ad_section = ad_sections[section_index]  
+            job.slider_class = f"{slider_counter}"
+            slider_counter+=1
+            
+        # Assign an ad section only if the job has an ad and within section range
+        # if job.show_ad and len(ad_sections) > len(ad_positions):  
+        #     job.ad_section = ad_sections.pop(0)  # Pick the first available section
+        # elif job.show_ad:
+        #     job.ad_section = ad_sections[i % len(ad_sections)]  # Cycle through sections if needed
+
     context = {
         'jobs': jobs, 
         'sec1': sec1,
@@ -36,6 +77,7 @@ def jobs(request):
         'sec3': sec3,
         'web_obj':web_obj,
         'images':images,
+        'is_mobile': is_mobile,
     } 
     return render(request, 'non_register/jobs.html', context)
 

@@ -1051,3 +1051,230 @@ textarea:focus {
 #chatModal .message-box.outgoing .time-stamp {
     color: #e1f5fe;
 } */
+
+.nav-buttons {
+    display: none;
+}
+
+.close-btn {
+    display: none !important;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+    .cntr {
+        flex-direction: column;
+        justify-content: center;
+        padding: 0;
+        gap: 10px;
+    }
+
+    .nav-buttons {
+        justify-content: space-between;
+        display: flex;
+        margin-top: 15px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .close-btn:hover {
+        background-color: #f0f0f0;
+    }
+
+    .sidebar,
+    .messages {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 95%;
+        height: 100%;
+        background: white;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        border-radius: 10px;
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+        visibility: hidden;
+        transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+        z-index: 1000;
+        overflow-y: auto;
+        /* Scroll if content is too long */
+    }
+
+    /* When active, bring to center */
+    .show-sidebar,
+    .show-messages {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    .messages-header {
+        margin-top: 20px;
+    }
+
+    .input-section {
+        margin-top: 40px;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .main-content {
+        width: 100%;
+    }
+
+    .messages {
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .main-content {
+        padding: 15px;
+        border-radius: 6px;
+    }
+
+    .project-header {
+        width: 100%;
+        /* Full width for small screens */
+        font-size: 16px;
+        padding: 15px;
+        margin-bottom: 25px;
+    }
+
+    .progress-header-container {
+        padding: 15px;
+        flex-direction: column;
+        margin-bottom: 15px;
+    }
+
+    /* .progress-header-container-row {
+    flex-direction: column;
+    align-items: flex-start;
+} */
+
+    .progress-meta {
+        margin-bottom: 20px;
+    }
+
+    .progress-percentage {
+        margin-bottom: 15px;
+    }
+
+    .progress-bar-container {
+        margin-top: 10px;
+    }
+
+    .progress-bar {
+        height: 6px;
+    }
+
+    .progress-edit {
+        flex-direction: row;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .progress-edit input {
+        width: 100%;
+        padding: 6px;
+    }
+
+    .progress-edit button {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .tasks-box {
+        padding: 15px;
+        margin-top: 15px;
+    }
+
+    .tasks-header {
+        flex-direction: row;
+        gap: 10px;
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+
+    .tasks-header div {
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .add-task-btn,
+    .delete-selected-btn {
+        padding: 6px 12px;
+        font-size: 10px;
+        width: 70px;
+        text-align: center;
+    }
+
+    #taskFormPopup {
+        align-items: center;
+        /* Move popup slightly up */
+        padding-top: 10vh;
+        /* Give some spacing from top */
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Darker overlay for better visibility */
+    }
+
+    #taskFormPopup .bg-white {
+        width: 90%;
+        /* Make the popup take more space on small screens */
+        max-width: 380px;
+        /* Ensure it doesn’t become too wide */
+        padding: 16px;
+        /* Reduce padding to save space */
+    }
+
+    #taskFormPopup h2 {
+        font-size: 18px;
+        /* Adjust title size */
+        text-align: center;
+    }
+
+    #taskFormPopup input,
+    #taskFormPopup select {
+        width: 100%;
+        /* Full width for better usability */
+        font-size: 14px;
+    }
+
+    #taskFormPopup .flex {
+        flex-direction: row;
+        /* Stack buttons in mobile */
+        gap: 8px;
+        /* Add spacing between buttons */
+    }
+
+    #taskFormPopup button {
+        width: 100%;
+        /* Full width buttons */
+        text-align: center;
+        padding: 10px;
+    }
+}

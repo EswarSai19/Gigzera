@@ -3,6 +3,7 @@
 {% block title %}About Us{% endblock %}
 <!--  -->
 {% block css %}
+<link rel="stylesheet" href="{% static 'css/fl_aboutus.css' %}" />
 <link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
 {% endblock %}
 <!--  -->
@@ -11,9 +12,10 @@
   <section id="hero" class="h-[800px] bg-gradient-to-br from-gray-500 to-white">
     <div class="container mx-auto px-4 py-20">
       <div class="flex flex-col items-center text-left">
-        <h1 class="text-5xl font-bold mb-6 mt-6">
+        <h1 class="heading text-5xl font-bold mb-6 mt-8">
           Gigzera: A Technology-Driven GigWorks Platform
         </h1>
+
         <p class="text-grey-600 text-lg">
           In the modern workforce, the traditional employment model is
           undergoing a transformation, largely driven by technological

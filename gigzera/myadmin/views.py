@@ -455,7 +455,9 @@ def singleOngoingProject(request):
     singleOgp = OngoingProjects.objects.filter(ongProjectId=ongp_id).first()
     opportunity_id = singleOgp.opportunityId
     bid = ProjectQuote.objects.filter(projectQuoteId=singleOgp.bidId).first()
-
+    bid.int_budget = float(bid.budget)
+    bid.flt_admin_margin = float(bid.admin_margin)
+    bid.flt_advance_payment = float(bid.advance_payment)
 
     ad_payment = bid.revised_budget.replace(",", "").strip()
     amount = float(ad_payment)
@@ -527,7 +529,9 @@ def singleYourProject(request):
 
     opportunity_id = singleOgp.opportunityId
     bid = ProjectQuote.objects.filter(projectQuoteId=singleOgp.bidId).first()
-
+    bid.int_budget = float(bid.budget)
+    bid.flt_admin_margin = float(bid.admin_margin)
+    bid.flt_advance_payment = float(bid.advance_payment)
     if not bid:
         messages.error(request, "No bid found for this project.")
         return redirect('ad_yourProjects')  # Redirect safely
@@ -583,6 +587,9 @@ def saSingleOGProject(request):
 
     opportunity_id = singleOgp.opportunityId
     bid = ProjectQuote.objects.filter(projectQuoteId=singleOgp.bidId).first()
+    bid.int_budget = float(bid.budget)
+    bid.flt_admin_margin = float(bid.admin_margin)
+    bid.flt_advance_payment = float(bid.advance_payment)
 
     if not bid:
         messages.error(request, "No bid found for this project.")
@@ -677,17 +684,23 @@ def updateFinanceMilestones(request):
 
         try:
             project = get_object_or_404(ProjectQuote, projectQuoteId=bid_id)
-            project.admin_margin = format_currency(consulting_charges, project.currency)
-            project.revised_budget = add_and_format(project.budget, project.admin_margin, project.currency)
-            project.advance_payment = format_currency(advance_payment, project.currency)
+            project.admin_margin = str(consulting_charges)
+            project.revised_budget = str(float(project.budget) + float(consulting_charges))
+            project.advance_payment = str(0.30 * float(project.revised_budget))  # Fixed advance_payment
             project.save()
 
+            # Calculate total milestone amount
+            total_milestone_amount = float(project.revised_budget) - float(project.advance_payment)
+
             milestones = Milestones.objects.filter(bid_id=bid_id)
+            milestone_sum = 0.0  # Track total milestone amount entered
+
             for milestone in milestones:
                 delete_flag = request.POST.get(f"{milestone.id}_delete")
                 if delete_flag == "1":
                     milestone.delete()
                     continue  # Skip updating this milestone
+
                 milestone_date = request.POST.get(f"{milestone.id}_date")
                 milestone_amount = request.POST.get(f"{milestone.id}_amount")
                 milestone_status = request.POST.get(f"{milestone.id}_status")
@@ -695,15 +708,25 @@ def updateFinanceMilestones(request):
                 if milestone_date:
                     milestone.date = milestone_date
                 if milestone_amount:
-                    milestone.amount = milestone_amount
+                    milestone.amount = float(milestone_amount)  # Convert to float
+                    milestone_sum += milestone.amount  # Add to sum
                 if milestone_status:
                     milestone.status = milestone_status
                 
                 milestone.save()
 
+            # Validate milestone amounts
+            # if round(milestone_sum, 2) != round(total_milestone_amount, 2):  
+            #     return JsonResponse({
+            #         "success": False,
+            #         "error": f"Milestone amount mismatch: Expected {total_milestone_amount}, but got {milestone_sum}"
+            #     })
+
             return JsonResponse({"success": True, "message": "Timeline updated successfully"})
+
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
+
 
     return JsonResponse({"success": False, "error": "Invalid request"})
 
@@ -790,10 +813,13 @@ def latestSinglePQ(request):
 
     # basic_revised_budget = bid.budget.replace(",", "").strip()
     # amount = float(basic_revised_budget)
-    bid.basic_revised_budget = calculate_percentage(bid.budget, 30, job.currency)  # Calculate percentage
+    bid.int_budget = int(bid.budget)
+    bid.basic_revised_budget = 0.30 * bid.int_budget
+    # bid.basic_revised_budget = calculate_percentage(bid.budget, 30, job.currency)  # Calculate percentage
     print("Job", bid)
     context = {'job':job, 'user':user, 'bid':bid}
     return render(request, 'myadmin/latestSinglePQ.html', context)
+
 
 def bidApproved(request):
     admin_id = request.session.get('user_id')
@@ -808,17 +834,25 @@ def bidApproved(request):
     if request.method == "POST":
         admin_margin = request.POST.get("adminMargin", "0").strip()
         bid_id = request.POST.get('bidId')
-        print("Admin Margin:", admin_margin, bid_id)  # Debugging
+        print("Hello Admin Margin:", admin_margin, bid_id)  # Debugging
         try:
             # Fetch the bid using bid_id
             bid = get_object_or_404(ProjectQuote, projectQuoteId=bid_id)  
-            admin_margin = format_currency(admin_margin, bid.currency)
+            
+            # Convert admin_margin to float (since it can have decimal values)
+            admin_margin = float(admin_margin)  
+
             # Update the admin margin and bid status
-            bid.admin_margin = admin_margin
+            bid.admin_margin = str(admin_margin)  
             bid.admin_id = admin_id
             bid.admin_bid_status = "approved"
-            bid.revised_budget = add_and_format(bid.budget, bid.admin_margin, bid.currency)
-            bid.advance_payment = calculate_percentage(bid.revised_budget, 30, bid.currency)
+
+            # Convert bid.budget to float before adding
+            bid.revised_budget = str(float(bid.budget) + admin_margin)  
+
+            # Calculate advance payment (30% of revised_budget)
+            bid.advance_payment = str(0.30 * float(bid.revised_budget))
+
             bid.save()  # Save changes
 
             print(f"Updated bid {bid_id}: admin_margin={admin_margin}, bid_status=approved")
@@ -828,6 +862,7 @@ def bidApproved(request):
         except Exception as e:
             print(f"Error updating bid: {e}")
             messages.error(request, f"Error updating bid {bid_id}: {str(e)}")
+            
     return render(request, 'myadmin/latestProjectQuotes.html', context)
 
 def bidRejected(request):
@@ -1171,6 +1206,8 @@ def addJobsPageAdv(request):
         media_input = request.FILES.get('mediaInput')
         media_type = request.POST.get('mediaType')
         redirect_link = request.POST.get('redirectLink').strip()
+        if not redirect_link.startswith("https://"):
+            redirect_link = "https://" + redirect_link
         if media_input:
             if section_name=="sec_1":
                 media_url, file_name = upload_to_s3("jobsPageAdvSec1", media_input)

@@ -670,3 +670,167 @@ main {
     color: #0c0c0c;
     /* Optional: Change color on hover */
 }
+
+/* General Styles for Mobile View */
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
+    .container {
+        width: 95%;
+        margin-top: -30px !important;
+    }
+
+    header {
+        padding: 15px 0;
+    }
+
+    .title-section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .title-section h1 {
+        font-size: 26px;
+    }
+
+    .flex {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .project-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .search-bar {
+        width: 90%;
+    }
+
+    .search-bar input {
+        width: 100%;
+    }
+
+    .btn {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .btn i {
+        margin-right: 3px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .card h2 {
+        font-size: 19px;
+    }
+
+    .card p {
+        font-size: 15px;
+    }
+
+    .progress-bar {
+        height: 15px;
+    }
+
+    .progress-percentage {
+        font-size: 12px;
+    }
+
+    .page_footer {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .page_footer button {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+
+    .badge {
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+
+    #popup {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .filter-dialog {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .filter-dialog .filter-header {
+        font-size: 16px;
+    }
+
+    .filter-dialog button {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .skill-tag {
+        font-size: 12px;
+        padding: 5px 8px;
+        margin: 3px;
+    }
+
+    .suggestion-item {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    /* Center modal content on mobile */
+    .modal-dialog {
+        width: 95%;
+        margin: 0;
+        padding: 10px 10px;
+    }
+
+    .modal-content {
+        padding: 10px;
+    }
+
+    .modal-body {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    /* Position the New Project button to the top right */
+    .btn-primary {
+        position: absolute;
+        background-color: #6366f1;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 8px;
+        font-size: 14px;
+        margin-top: -110px;
+        margin-left: 230px;
+
+    }
+
+}

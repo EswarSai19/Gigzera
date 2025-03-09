@@ -9,9 +9,18 @@
 <!-- content -->
 {% block content %}
 <!-- Main -->
+<div class="nav-buttons">
+  <button>
+    <i class="fa-solid fa-forward"></i>
+  </button>
+  <button>
+    <i class="fa-solid fa-backward"></i>
+  </button>
+</div>
 <div class="ctnr">
   <!-- Sidebar -->
   <div class="sidebar">
+    <button class="close-btn" onclick="closePopup()">&times;</button>
     <h2>{{job.title}}</h2>
     <p><strong>OPP ID:</strong> {{job.opportunityId}}</p>
     <p><strong>Project Description:</strong></p>
@@ -267,6 +276,7 @@
 
   <!-- message section  -->
   <div class="messages">
+    <button class="close-btn" onclick="closePopup()">&times;</button>
     <!-- Messages content remains unchanged -->
     <div class="messages-header">
       <h2>Messages</h2>
@@ -286,7 +296,9 @@
       {% else %}
       <!-- Received Message -->
       <div class="message received flex items-center gap-2">
-        <div class="w-20 h-20 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm font-bold">
+        <div
+          class="w-20 h-20 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm font-bold"
+        >
           <span id="profile-initials">{{ key|slice:"2" }}</span>
         </div>
         <div

@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
     popupPanel.style.right = "0"; // Slide in sidebar
   };
   contactBtn2.onclick = function () {
+    console.log("I clicke d btn 2");
     popupOverlay.style.display = "block"; // Show overlay
     popupPanel.style.right = "0"; // Slide in sidebar
   };

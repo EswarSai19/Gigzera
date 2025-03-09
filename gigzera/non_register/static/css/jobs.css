@@ -487,3 +487,222 @@ main {
     object-fit: cover;
     /* Make sure images cover the container */
 }
+
+
+/* From here */
+.hide1 {
+    display: none;
+}
+
+/* Mobile-Specific Adjustments */
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+    .popup-left {
+        display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 390px;
+        height: 100%;
+        background-color: #f9f9f9;
+        border-radius: 8px 0 0 8px;
+        box-shadow: -4px 0px 10px rgba(0, 0, 0, 0.1);
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        z-index: 100;
+    }
+
+    .popup-left.open {
+        display: block;
+        transform: translateX(0);
+    }
+
+    .popup-content-left {
+        padding: 20px;
+        overflow-y: auto;
+        height: 100%;
+    }
+
+    .close-popup-btn-left {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        margin-bottom: 20px;
+        font-size: 2rem;
+        color: #333;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+
+    .slide-left.active {
+        display: block;
+    }
+
+    /* Hamburger Icon Styling */
+    .hamburger-icon-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    .bar {
+        width: 100%;
+        height: 4px;
+        background-color: #333;
+        border-radius: 2px;
+    }
+
+    .hide-on-mobile {
+        display: none !important;
+    }
+
+    main {
+        flex-direction: column;
+        /* Stack sections vertically */
+        padding: 10px;
+        /* Adjust padding */
+    }
+
+    .left-section,
+    .right-section {
+        width: 100%;
+        /* Full width for both sections */
+        margin: 10px 0;
+        padding: 0 10px;
+    }
+
+
+    /* Social Media Box */
+    .social-media-box {
+        padding: 10px;
+    }
+
+    .social-media-box h3 {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .social-update {
+        padding: 6px 10px;
+    }
+
+    /* Featured Jobs */
+    .featured-jobs {
+        padding: 10px;
+        margin-bottom: -30px;
+    }
+
+    .job-cards {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .job-card {
+        background: #f8f9fa;
+        border: 1px solid #e1e1e1;
+        border-radius: 8px;
+        padding: 12px;
+        margin: 8px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .job-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 6px;
+    }
+
+    .job-duration-salary {
+        margin: 8px 0;
+        font-size: 1rem;
+    }
+
+    .job-description {
+        margin: 6px 0;
+        font-size: 0.9rem;
+    }
+
+    .job-tags {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 6px 0;
+    }
+
+    .tag {
+        background-color: #e0e7ff;
+        color: #1e3a8a;
+        padding: 6px 12px;
+        border-radius: 20px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        font-size: 0.8rem;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .tag:hover {
+        background-color: #3b82f6;
+        color: white;
+    }
+
+    .job-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 10px;
+    }
+
+    .view-more,
+    .provide-quote {
+        width: 100%;
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+        text-align: center;
+    }
+
+    .view-more {
+        background-color: white;
+        border: 1px solid #3b82f6;
+        color: #3b82f6;
+    }
+
+    .view-more:hover {
+        background-color: #e0e7ff;
+    }
+
+    .provide-quote {
+        background-color: #3b82f6;
+        color: white;
+    }
+
+    .provide-quote:hover {
+        background-color: #2563eb;
+    }
+
+    /* Ad Slideshow */
+    .ad-slideshow {
+        height: 200px;
+    }
+
+    .ad-box {
+        padding: 8px;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .mobile-ad {
+        display: block !important;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-ad {
+        display: none !important;
+    }
+}

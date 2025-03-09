@@ -10,11 +10,11 @@
     </a>
   </div>
   <nav class="nav">
-    <a href="{% url 'cl_index' %}">Home</a>
-    <a href="{% url 'cl_postajob' %}">Post a Job</a>
-    <a href="{% url 'cl_aboutus' %}">About Us</a>
-    <a id="contactBtn">Contact Us</a>
-    <a href="{% url 'cl_industries' %}">Industries</a>
+    <a class="nav-item" href="{% url 'cl_index' %}">Home</a>
+    <a class="nav-item" href="{% url 'cl_postajob' %}">Post a Job</a>
+    <a class="nav-item" href="{% url 'cl_aboutus' %}">About Us</a>
+    <a class="nav-item" id="contactBtn">Contact Us</a>
+    <a class="nav-item" href="{% url 'cl_industries' %}">Industries</a>
     <div class="profile-dropdown">
       <div class="profile-trigger" id="profile-trigger">
         <div class="profile-avatar">
@@ -32,6 +32,47 @@
       </div>
     </div>
   </nav>
+  <!-- Mobile Menu Button -->
+  <button
+    id="menuToggle"
+    class="lg:hidden text-gray-600 absolute right-8 top-8"
+  >
+    <i class="fa-solid fa-bars text-2xl"></i>
+  </button>
+  <!-- Mobile Menu (Hidden by Default) -->
+  <div id="navMenu" class="menu">
+    <a
+      href="{% url 'cl_index' %}"
+      class="nav-item block text-gray-600 hover:text-blue-600"
+      >Home</a
+    >
+    <a
+      href="{% url 'cl_postajob' %}"
+      class="nav-item block text-gray-600 hover:text-blue-600"
+      >Post a Job</a
+    >
+    <a
+      href="{% url 'cl_aboutus' %}"
+      class="nav-item block text-gray-600 hover:text-blue-600"
+      >About Us</a
+    >
+    <a
+      id="contactBtn4"
+      class="nav-item block text-gray-600 hover:text-blue-600 mb-2"
+      >Contact Us</a
+    >
+    <a
+      href="{% url 'cl_industries' %}"
+      class="nav-item block text-gray-600 hover:text-blue-600"
+      >Industries</a
+    >
+
+    <!-- Ensure spacing between login and sign-up buttons -->
+    <div class="actions">
+      <a href="{% url 'cl_profile' %}" class="profile-btn"> Profile</a>
+      <a href="{% url 'logout' %}" class="logout-btn"> Logout</a>
+    </div>
+  </div>
 </header>
 
 <!-- Popup Overlay -->
@@ -140,5 +181,22 @@
   </div>
 </div>
 {% block js %}
+<script>
+  // Get current path
+  let currentPath = window.location.pathname;
+
+  // Select all navigation items
+  let navItems = document.querySelectorAll(".nav-item");
+
+  // Loop through each item and highlight the active link
+  navItems.forEach((item) => {
+    if (item.getAttribute("href") === currentPath) {
+      item.classList.add("underline"); // Keep underline
+      item.style.color = "#3dd9d6"; // Apply text color
+      item.style.textDecorationColor = "#3dd9d6"; // Apply underline color
+      item.classList.remove("text-gray-600");
+    }
+  });
+</script>
 <script src="{% static 'js/cl_navbar.js' %}"></script>
 {% endblock %}

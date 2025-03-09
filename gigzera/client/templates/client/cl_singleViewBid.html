@@ -18,7 +18,14 @@
       </button>
     </div>
   </div>
-
+  <div class="nav-buttons">
+    <button id="opencardprojectoveriewBtn" onclick="opencardprojectoveriew()">
+      <i class="fa-solid fa-forward"></i>
+    </button>
+    <button id="opencardbiddetailsBtn" onclick="opencardbiddetails()">
+      <i class="fa-solid fa-backward"></i>
+    </button>
+  </div>
   <!-- Form that will be submitted for approval-->
   <form
     id="budget-form"
@@ -52,6 +59,7 @@
 
   <div class="ctnr">
     <div class="card project-overview">
+      <button class="close-btn" onclick="closePopup()">&times;</button>
       <h2>Project Overview</h2>
       <p><strong>Project Name:</strong> {{job.title}}</p>
       <p><strong>Opportunity ID:</strong> {{job.opportunityId}}</p>
@@ -79,7 +87,7 @@
     <div class="card bidder-profile">
       <h2>Bidder Profile</h2>
       <p><strong>User ID:</strong> {{fl_user.userId}}</p>
-      <p><strong>Name:</strong> *******</p>
+      <p><strong>Name:</strong> ********</p>
       {% if fl_user.is_verified %}
       <button class="more-options view-profile">
         <i class="fa-solid fa-circle-check"></i> Verified
@@ -112,6 +120,7 @@
 
     <!-- bid details -->
     <div class="card bid-details">
+      <button class="close-btn" onclick="closePopup()">&times;</button>
       <h2>Bid Details</h2>
       <p>
         <strong>Total Cost:</strong> {{bid.cur_symbol}} {{bid.revised_budget}}
@@ -148,5 +157,52 @@
     });
   });
 </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const overviewBtn = document.getElementById("opencardprojectoveriewBtn");
+    const bidDetailsBtn = document.getElementById("opencardbiddetailsBtn");
+    const projectOverview = document.querySelector(".project-overview");
+    const bidDetails = document.querySelector(".bid-details");
+    const overlay = document.createElement("div");
+
+    overlay.classList.add("overlay");
+    document.body.appendChild(overlay);
+
+    function isMobile() {
+      return window.innerWidth <= 767;
+    }
+
+    function closePopup() {
+      projectOverview.classList.remove("active");
+      bidDetails.classList.remove("active");
+      overlay.classList.remove("show");
+    }
+
+    overviewBtn.addEventListener("click", () => {
+      if (isMobile()) {
+        projectOverview.classList.add("active");
+        bidDetails.classList.remove("active");
+        overlay.classList.add("show");
+      }
+    });
+
+    bidDetailsBtn.addEventListener("click", () => {
+      if (isMobile()) {
+        bidDetails.classList.add("active");
+        projectOverview.classList.remove("active");
+        overlay.classList.add("show");
+      }
+    });
+
+    // Attach event listeners dynamically to close buttons
+    document.querySelectorAll(".close-btn").forEach((btn) => {
+      btn.addEventListener("click", closePopup);
+    });
+
+    overlay.addEventListener("click", closePopup);
+  });
+</script>
+
 <!-- <script src="{% static 'js/cl_profile.js' %}"></script> -->
 {% endblock %}
