@@ -17,7 +17,7 @@ from urllib.parse import urlparse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
-from db_schemas.models import Client, PartnerLogos, Tasks, ProjectsDisplay, Milestones, OngoingProjects, Contact, ProjectQuote, Freelancer, EmploymentHistory,Certificate, Skill
+from db_schemas.models import Client, PartnerLogos, JobsPageImages, Tasks, ProjectsDisplay, Milestones, OngoingProjects, Contact, ProjectQuote, Freelancer, EmploymentHistory,Certificate, Skill
 from django.core.exceptions import ValidationError
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
@@ -306,7 +306,8 @@ def cl_postajob(request):
         return redirect('login')
     user = Client.objects.get(userId=user_id)
     user.initials = get_initials(user.name)
-    context={'user':user, 'current_date': now().strftime('%Y-%m-%d')}
+    jobsImages = JobsPageImages.objects.all()
+    context={'user':user, 'jobsImages': jobsImages, 'current_date': now().strftime('%Y-%m-%d')}
 
     if request.method=="POST":
         title=request.POST.get('title')
@@ -502,6 +503,11 @@ def cl_ongoingProjects(request):
 
         ogp.title = job.title if job else ""
         ogp.name = fl_user.name if fl_user else ""
+        if ogp.status=="Bid Ongoing":
+            ogp.isViewStatusVisible = True
+        else:
+            ogp.isViewStatusVisible = False
+
 
     context={'user':user, 'ongProjects':ongProjects, 'current_date': now().strftime('%Y-%m-%d')}
     return render(request, 'client/cl_ongoingProjects.html', context)

@@ -10,6 +10,7 @@ django = "*"
 django-storages = "*"
 boto3 = "*"
 dotenv = "*"
+requests = "*"
 
 [dev-packages]
 

@@ -140,6 +140,37 @@ header h1 {
     margin-right: 8px;
 }
 
+.ad-table th:nth-child(1),
+.ad-table td:nth-child(1) {
+    width: 100px;
+    /* Small Serial Number column */
+    max-width: 100px;
+    text-align: center;
+}
+
+.ad-table td:nth-child(2) {
+    word-wrap: break-word;
+    white-space: normal;
+    width: 220px;
+    max-width: 220px;
+    overflow-wrap: break-word;
+    text-align: left;
+}
+
+.ad-table td:nth-child(3) {
+    word-wrap: break-word;
+    white-space: normal;
+    max-width: 150px;
+    overflow-wrap: break-word;
+    text-align: left;
+}
+
+.ad-table td:nth-child(4) {
+    width: 220px;
+    max-width: 240px;
+    text-align: left;
+}
+
 /* Styles for Action Buttons */
 /* button {
     background-color: #007bff;
@@ -165,15 +196,21 @@ button:hover {
 
 .delete-button {
     background-color: #dc3545;
+    /* Blue color */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    align-items: center;
 }
 
 .delete-button:hover {
     background-color: #c82333;
 }
 
-button i {
-    margin-right: 5px;
-}
 
 /* Notes and Footer Styling */
 footer {

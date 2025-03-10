@@ -12,58 +12,11 @@
 <!-- Image Section (Slideshow) -->
 <section class="text-section">
   <!-- First Slide -->
+  {% for img in jobsImages %}
   <div class="slide">
-    <img
-      src="https://cdn.yellowmessenger.com/PSpMKlSDepdi1735210401540.png"
-      alt="City View"
-      class="city-image"
-    />
+    <img src="{{img.media_url}}" alt="City View" class="city-image" />
   </div>
-
-  <!-- Second Slide -->
-  <div class="slide">
-    <img
-      src="https://cdn.yellowmessenger.com/awWcKeyMtYYX1735210522831.png"
-      alt="Boost Your Team"
-      class="city-image"
-    />
-  </div>
-
-  <!-- Third Slide -->
-  <div class="slide">
-    <img
-      src="https://cdn.yellowmessenger.com/WNC3rncek4B61735210555680.png"
-      alt="Post Your Jobs"
-      class="city-image"
-    />
-  </div>
-
-  <!-- Fourth Slide -->
-  <div class="slide">
-    <img
-      src="https://cdn.yellowmessenger.com/ePnzGFUzrasA1735210652173.png"
-      alt="Post Your Jobs"
-      class="city-image"
-    />
-  </div>
-
-  <!-- Fifth Slide -->
-  <div class="slide">
-    <img
-      src="https://cdn.yellowmessenger.com/tVydGqHwo3Le1735210676452.png"
-      alt="Post Your Jobs"
-      class="city-image"
-    />
-  </div>
-
-  <!-- Sixth Slide -->
-  <div class="slide">
-    <img
-      src="https://cdn.yellowmessenger.com/r6jrnKSConXC1735210701475.png"
-      alt="Post Your Jobs"
-      class="city-image"
-    />
-  </div>
+  {% endfor %}
 </section>
 
 <!-- Modal -->

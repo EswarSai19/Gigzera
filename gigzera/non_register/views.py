@@ -7,6 +7,9 @@ from django.contrib import messages
 import json
 import re
 import random
+import requests
+from django.core.cache import cache
+from .utils import send_sms
 from django.utils.timezone import now
 from db_schemas.models import Contact, PartnerLogos, JobsPageImages, WebAnnouncement, JobsPageAdv, Client, ProjectsDisplay, Freelancer, Skill, Certificate
 # from .forms import ContactForm
@@ -123,9 +126,6 @@ def login(request):
     return render(request, 'non_register/login.html')
 
 
-def forgot(request):
-    return render(request, 'non_register/forgot.html')
-
 def test(request):
     jobs = ProjectsDisplay.objects.all()
     for job in jobs:
@@ -163,11 +163,6 @@ def submit_contact(request):
     return redirect(request.META.get('HTTP_REFERER', 'contact'))
 
 
-
-
-
-
-
 # Freelancer form
 def submit_freelancer(request):
     if request.method == "POST":
@@ -183,12 +178,7 @@ def submit_freelancer(request):
         password2 = request.POST.get("password2")
         social_media = request.POST.get("social_media")
         print("Certificates", certifications)
-        
-        if experience:
-            match = re.search(r"\d+(\.\d+)?", experience)  # Extract number (including decimals)
-            experience_value = float(match.group()) if match else 0.0  # Convert to float or default to 0.0
-        else:
-            experience_value = 0.0
+    
 
         # Assign the non-empty value
         designation = otherdesignation if otherdesignation else designation
@@ -240,7 +230,7 @@ def submit_freelancer(request):
                     skills=skills,
                     social_media=social_media,
                     password=password1,
-                    profilePic = "https://eswar-s3-bkt.s3.ap-south-1.amazonaws.com/freelancers/profile_sample.jpeg"
+                    profilePic = "https://d32216yx1hwrs8.cloudfront.net/freelancers/profile_sample.jpeg"
                 )
                 freelancer.save()
                 for i in range(1,4):
@@ -303,7 +293,7 @@ def submit_client(request):
                     designation=designation,
                     social_media=social_media,
                     password=password1,
-                    profilePic = "https://eswar-s3-bkt.s3.ap-south-1.amazonaws.com/clients/default_profile.png"
+                    profilePic = "https://d32216yx1hwrs8.cloudfront.net/clients/profile_sample.jpeg"
                 )
                 client.save()
                 return render(request, "non_register/login.html")
@@ -416,3 +406,26 @@ def test_resetpass(request):
 
     return render(request, "non_register/login.html", {"user_role": user_role})
 
+
+def send_otp(request):
+    phone_number = request.GET.get("phone")
+    
+    if phone_number:
+        otp = random.randint(100000, 999999)
+        cache.set(phone_number, otp, timeout=300)  # Store OTP for 5 minutes
+        response = send_sms(phone_number, otp)
+        return JsonResponse({"message": "OTP Sent", "response": response})
+    else:
+        return JsonResponse({"error": "Phone number required"}, status=400)
+
+
+def verify_otp(request):
+    phone_number = request.GET.get("phone")
+    user_otp = request.GET.get("otp")
+
+    stored_otp = cache.get(phone_number)
+
+    if stored_otp and str(stored_otp) == user_otp:
+        return JsonResponse({"message": "OTP Verified"})
+    else:
+        return JsonResponse({"error": "Invalid OTP"}, status=400)

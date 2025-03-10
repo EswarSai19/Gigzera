@@ -68,11 +68,11 @@
             >Read More...</a
           >
           <a
-            href="{% url 'cl_singleOgProject' %}?ongpId={{ogp.ongProjectId}}"
-            class="btn btn-outline"
-            style="text-decoration: none"
-            >View Status</a
+            href="{% if ogp.status != 'Bid Ongoing' and ogp.status != 'Completed' %}{% url 'cl_singleOgProject' %}?ongpId={{ogp.ongProjectId}}{% else %}javascript:void(0);{% endif %}"
+            class="btn btn-outline {% if ogp.status == 'Bid Ongoing' or ogp.status == 'Completed' %}disabled{% endif %}"
           >
+            View Status
+          </a>
         </div>
         <div class="extra-info">{{ogp.full_description}}</div>
       </div>

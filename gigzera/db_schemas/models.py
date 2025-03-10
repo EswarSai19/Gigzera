@@ -38,7 +38,7 @@ class Client(models.Model):
         primary_key=True, max_length=12, default=generate_client_id, editable=False
     )
     name = models.CharField(max_length=255)
-    profilePic = models.ImageField(upload_to="client/profile_pics/", blank=True, null=True, default="client/profile_pics/default_profile.png")
+    profilePic = models.ImageField(upload_to="client/profile_pics/", blank=True, null=True, default="https://gigzera-s3-bkt.s3.ap-south-1.amazonaws.com/clients/profile_sample.jpeg")
     phone = models.CharField(max_length=15, unique=True)
     email = models.EmailField(unique=True)
     user_role = models.CharField(max_length=50, default='client')
@@ -87,7 +87,7 @@ class Freelancer(models.Model):
     skills = models.JSONField(default=dict, blank=True)  # Example: {"Python": 3.5, "Django": 2.0}
     projects_assigned = models.JSONField(default=dict, blank=True)
     # project_status = models.JSONField(default=dict, blank=True)
-    profilePic = models.ImageField(upload_to="freelancer/profile_pics/", blank=True, null=True, default="freelancer/profile_pics/default_profile.png")
+    profilePic = models.ImageField(upload_to="freelancer/profile_pics/", blank=True, null=True, default="https://gigzera-s3-bkt.s3.ap-south-1.amazonaws.com/freelancers/profile_sample.jpeg")
     password = models.CharField(max_length=128)
     created_at = models.DateTimeField(default=now)
     updated_at = models.DateTimeField(auto_now=True)
@@ -137,7 +137,7 @@ class MyAdmin(models.Model):
 class PartnerLogos(models.Model):
     admin_id = models.CharField(max_length=12)
     logo_name = models.CharField(max_length=255, null=True, blank=True)
-    logo_url = models.ImageField()
+    logo_url = models.URLField()
     created_at = models.DateTimeField(default=now)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -168,6 +168,7 @@ class Certificate(models.Model):
     issue_date = models.DateField(blank=True, null=True)  # Date when the certificate was issued
     expiry_date = models.DateField(blank=True, null=True)  # Expiry date (can be null)
     certification_id = models.CharField(max_length=100, unique=True, null=True, blank=True)  # Unique cert ID
+    certificate_img = models.ImageField(blank=True, null=True)
     certification_url = models.URLField(blank=True, null=True)  # URL to verify the cert
     created_at = models.DateTimeField(default=now)
     updated_at = models.DateTimeField(auto_now=True)
