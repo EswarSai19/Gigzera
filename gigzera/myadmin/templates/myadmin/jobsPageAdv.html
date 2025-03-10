@@ -44,19 +44,19 @@
           <td>{{adv.media_name}}</td>
           <td>{{adv.redirect_link}}</td>
           <td>
-            <button
+            <!-- <button
               class="edit-button btn btn-secondary btn-sm"
               onclick="editRow(this)"
             >
               <i class="fas fa-edit"></i> Edit
-            </button>
+            </button> -->
             <form
               action="{% url 'ad_removeJobsPageAdv' %}?advId={{adv.id}}"
               method="POST"
             >
               {% csrf_token %}
               <button type="submit" class="delete-button btn btn-danger btn-sm">
-                <i class="fas fa-trash-alt"></i> Delete
+                <i class="fas fa-trash-alt mr-2"></i> Delete
               </button>
             </form>
           </td>
@@ -101,19 +101,19 @@
           <td>{{adv.media_name}}</td>
           <td>{{adv.redirect_link}}</td>
           <td>
-            <button
+            <!-- <button
               class="edit-button btn btn-secondary btn-sm"
               onclick="editRow(this)"
             >
               <i class="fas fa-edit"></i> Edit
-            </button>
+            </button> -->
             <form
               action="{% url 'ad_removeJobsPageAdv' %}?advId={{adv.id}}"
               method="POST"
             >
               {% csrf_token %}
               <button type="submit" class="delete-button btn btn-danger btn-sm">
-                <i class="fas fa-trash-alt"></i> Delete
+                <i class="fas fa-trash-alt mr-2"></i> Delete
               </button>
             </form>
           </td>
@@ -158,19 +158,19 @@
           <td>{{adv.media_name}}</td>
           <td>{{adv.redirect_link}}</td>
           <td>
-            <button
+            <!-- <button
               class="edit-button btn btn-secondary btn-sm"
               onclick="editRow(this)"
             >
               <i class="fas fa-edit"></i> Edit
-            </button>
+            </button> -->
             <form
               action="{% url 'ad_removeJobsPageAdv' %}?advId={{adv.id}}"
               method="POST"
             >
               {% csrf_token %}
               <button type="submit" class="delete-button btn btn-danger btn-sm">
-                <i class="fas fa-trash-alt"></i> Delete
+                <i class="fas fa-trash-alt mr-2"></i> Delete
               </button>
             </form>
           </td>

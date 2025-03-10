@@ -861,7 +861,14 @@ function openChatModal(taskId) {
         messagesArray.forEach((messageObj) => {
           // Check if the message is from a client (starts with CL)
           const isClientMessage = messageObj.userId.startsWith("CL");
-          addMessageToUI(messageObj.message, messageObj.time, isClientMessage);
+          console.log(isClientMessage, messageObj.userId);
+          const senderInitials = messageObj.userId.substring(0, 2);
+          addMessageToUI(
+            messageObj.message,
+            messageObj.time,
+            isClientMessage,
+            senderInitials
+          );
         });
 
         // Scroll to bottom of message area
@@ -886,7 +893,7 @@ function sendNewMessage(event) {
   if (messageText) {
     // Add message to UI immediately (optimistic UI update)
     // Since this is the client interface, all sent messages are client messages
-    addMessageToUI(messageText, "Sending...", true);
+    addMessageToUI(messageText, "just now", true, "CL");
 
     // Send to server
     const form = document.getElementById("messageForm");
@@ -937,24 +944,43 @@ function sendNewMessage(event) {
 }
 
 // Function to add a message to the UI
-function addMessageToUI(messageText, timeStamp, isClientMessage) {
+function addMessageToUI(
+  messageText,
+  timeStamp,
+  isClientMessage,
+  senderInitials
+) {
+  console.log("I am in UI:", messageText, timeStamp, isClientMessage);
   const messageArea = document.getElementById("messageArea");
 
   const messageBox = document.createElement("div");
   // If it's a client message, make it appear on the right side
-  messageBox.className = isClientMessage
-    ? "message-box outgoing mb-3"
-    : "message-box incoming mb-3";
+  // messageBox.className = isClientMessage
+  //   ? "message-box outgoing mb-3"
+  //   : "message-box incoming mb-3";
 
-  messageBox.innerHTML = `
-    <div class="w-12 h-12 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm font-bold">
-      <span id="profile-initials">CL</span>
+  messageBox.className = isClientMessage
+    ? "message-box message sent flex items-center gap-2"
+    : "message-box message received flex items-center gap-2";
+  console.log(messageBox.className, "SS");
+  if (isClientMessage) {
+    messageBox.innerHTML = `
+    <div class="message-content-box">
+      <p>${messageText}</p>
+      <span class="time-stamp">${timeStamp}</span>
+    </div>
+  `;
+  } else {
+    messageBox.innerHTML = `
+    <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex justify-center items-center text-md font-bold">
+      <span id="profile-initials">${senderInitials}</span>
     </div>
     <div class="message-content-box">
       <p>${messageText}</p>
       <span class="time-stamp">${timeStamp}</span>
     </div>
   `;
+  }
 
   messageArea.appendChild(messageBox);
   messageArea.scrollTop = messageArea.scrollHeight;
@@ -1074,7 +1100,7 @@ function sendMessage(event) {
 
   if (messageText) {
     // Add message to UI immediately (optimistic UI update)
-    addMessageToMsgUI(messageText, "Sending...", true);
+    addMessageToMsgUI(messageText, "just now", true);
 
     // Get form and URL
     const form = document.getElementById("chatMessageForm");
@@ -1177,7 +1203,7 @@ function fetchLatestMessages() {
           messageDiv.classList.add("received");
           const senderInitials = key.substring(0, 2); // Get first two letters dynamically
           messageDiv.innerHTML = `
-            <div class="w-20 h-20 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm font-bold">
+            <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex justify-center items-center text-md font-bold">
                 <span id="profile-initials">${senderInitials}</span>
             </div>
             <div class="message-content bg-gray-200 text-black p-2 rounded-lg max-w-xs">

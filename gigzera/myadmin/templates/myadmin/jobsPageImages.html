@@ -41,12 +41,12 @@
             </td>
             <td>{{img.media_name}}</td>
             <td>
-              <button
+              <!-- <button
                 class="edit-button btn btn-secondary btn-sm"
                 onclick="editRow(this)"
               >
                 <i class="fas fa-edit"></i> Edit
-              </button>
+              </button> -->
               <form
                 action="{% url 'ad_removeJobsPageImages' %}?imgId={{img.id}}"
                 method="POST"
@@ -56,7 +56,7 @@
                   type="submit"
                   class="delete-button btn btn-danger btn-sm"
                 >
-                  <i class="fas fa-trash-alt"></i> Delete
+                  <i class="fas fa-trash-alt mr-2"></i> Delete
                 </button>
               </form>
             </td>

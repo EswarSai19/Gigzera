@@ -37,20 +37,18 @@
             <td>{{logo.logo_name}}</td>
             <td contenteditable="false">{{logo.logo_url}}</td>
             <td>
-              <button
+              <!-- <button
                 class="edit-button bg-yellow-500 text-black px-3.5 py-1 rounded-md hover:bg-yellow-600"
                 onclick="editRow(this)"
               >
                 <i class="fas fa-edit mr-2"></i> Edit
-              </button>
+              </button> -->
               <form
                 action="{% url 'ad_removePartnerLogo' %}?logoId={{logo.id}}"
                 method="POST"
               >
                 {% csrf_token %}
-                <button
-                  class="delete-button bg-red-500 text-white px-3.5 py-1 rounded-md hover:bg-red-600"
-                >
+                <button class="delete-button">
                   <i class="fas fa-trash-alt mr-2"></i> Delete
                 </button>
               </form>

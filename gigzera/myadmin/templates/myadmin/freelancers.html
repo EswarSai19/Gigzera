@@ -122,10 +122,7 @@
         </button>
         {% endif %}
 
-        <img
-          src="https://cdn.yellowmessenger.com/Xmnn1dek6nzZ1735637434099.jpeg"
-          alt="{{ user.name }}"
-        />
+        <img src="{{user.profilePic}}" alt="{{ user.name }}" />
         <h3 class="name">{{ user.name }}</h3>
         <div class="id">ID: {{ user.userId }}</div>
         <div class="company">{{ user.designation }}</div>

@@ -70,7 +70,11 @@
       >
         Read More...
       </a>
-      <button class="overall-project-status-btn">
+      <button
+        class="overall-project-status-btn {% if ogp.status == 'Bid Ongoing' or ogp.status == 'Completed' %}disabled{% endif %}"
+        data-id="{{ ogp.opportunityId }}"
+        data-ongp-id="{{ ogp.ongProjectId }}"
+      >
         View Overall Project Status
       </button>
     </div>
@@ -142,23 +146,30 @@
 {% block js %}
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const projectTrackingBtn = document.getElementsByClassName(
-      "overall-project-status-btn"
+    const projectTrackingBtns = document.querySelectorAll(
+      ".overall-project-status-btn"
     );
 
-    // Add click event to all buttons with the class "project-tracking-btn"
-    Array.from(projectTrackingBtn).forEach((btn) => {
+    projectTrackingBtns.forEach((btn) => {
       btn.addEventListener("click", (e) => {
-        // Get the opportunityId from the parent project-box div
-        const opportunityId = e.target
+        // Check if button is disabled
+        if (btn.classList.contains("disabled")) {
+          e.preventDefault();
+          return;
+        }
+
+        // Get the opportunityId and ongProjectId
+        const opportunityId = btn
           .closest(".project-box")
-          .getAttribute("data-id");
-        const ongProjectId = e.target
+          ?.getAttribute("data-id");
+        const ongProjectId = btn
           .closest(".project-box")
-          .getAttribute("data-ongp-id");
+          ?.getAttribute("data-ongp-id");
 
         // Redirect with query parameter
-        window.location.href = `{% url 'fl_singleProjectTracking' %}?ongpId=${ongProjectId}`;
+        if (ongProjectId) {
+          window.location.href = `{% url 'fl_singleProjectTracking' %}?ongpId=${ongProjectId}`;
+        }
       });
     });
   });
