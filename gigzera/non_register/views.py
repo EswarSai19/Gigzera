@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib.auth.hashers import check_password, make_password
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 import json
@@ -313,6 +313,7 @@ def forgot(request):
         input_phone = request.POST.get("phone", "").strip()  # Ensure input is valid
         user_role = request.POST.get("user_role", "").strip().lower()  # Get user role
         input_digits = extract_digits(input_phone)  # Remove non-numeric characters
+        print("input digits", input_digits)
 
         if not input_digits:
             messages.error(request, "Please enter a valid mobile number.")
@@ -331,15 +332,22 @@ def forgot(request):
         # Check if phone number exists in the selected model
         for user in users:
             db_phone_digits = extract_digits(user.phone)  # Extract numeric part of stored phone
+            print(f"db_phone_digits {db_phone_digits}")
 
-            if db_phone_digits.endswith(input_digits[-10:]):  # Compare last 10 digits
+            if db_phone_digits==input_digits:  
                 request.session['user_role'] = user_role
+                request.session['user_phone'] = db_phone_digits
                 request.session['user_id'] = user.userId
                 print(f"My role is {user_role} and id is {user.userId}")
-                print(messages.get_level(request))
+
+                # sending OTP
+                otp = random.randint(100000, 999999)
+                cache.set(input_digits, otp, timeout=300)  # Store OTP for 5 minutes
+                response = send_sms(input_digits, otp)
+                print(messages.get_level(request), response)
                 return render(request, "non_register/forgot.html", {"show_otp_frame": True})
 
-        messages.error(request, "The entered mobile number is not registered.")
+        messages.error(request, "The entered mobile number is either not registered or country code not matched.")
         print(messages.get_level(request))
         return render(request, "non_register/forgot.html", {"show_otp_frame": False})
 
@@ -349,10 +357,15 @@ def forgot(request):
 
 
 
-def validate_otp(otp):
-    """Ensure OTP is a 6-digit number."""
+def validate_otp(phone_number, otp):
+    """Ensure OTP is a 6-digit number and verify it against the stored OTP."""
     if not otp.isdigit() or len(otp) != 6:
-        raise ValidationError("Invalid OTP")
+        raise ValidationError("Invalid OTP. Must be a 6-digit number.")
+    
+    stored_otp = cache.get(phone_number)
+    if not stored_otp or str(stored_otp) != otp:
+        raise ValidationError("Invalid OTP. Please try again.")
+
 
 def validate_password(password, confirm_password):
     """Ensure passwords match."""
@@ -362,18 +375,19 @@ def validate_password(password, confirm_password):
 def test_resetpass(request):
     user_role = request.session.get('user_role')  # Get user role from session
     user_id = request.session.get('user_id')  # Get user ID from session
+    phone_number = request.session.get('user_phone')
 
     if not user_role or not user_id:
         messages.error(request, "No user information found.")
         return redirect('forgot')  # Redirect to forgot password page if no user info in session
 
     if request.method == "POST":
-        otp = request.POST.get("otp")
+        user_otp = request.POST.get("otp")
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
 
         try:
-            validate_otp(otp)  # Validate OTP (6-digit number)
+            validate_otp(phone_number,user_otp)  # Validate OTP (6-digit number)
             validate_password(password, confirm_password)  # Validate password match
 
             # Fetch the user based on userId and userRole
@@ -384,6 +398,7 @@ def test_resetpass(request):
                     user.password = make_password(password)    # Update password
                     user.save()
                     messages.success(request, "Password reset successfully for Freelancer.")
+                    return redirect('login')
                 else:
                     messages.error(request, "Freelancer not found.")
             elif user_role == "client":
@@ -393,6 +408,7 @@ def test_resetpass(request):
                     user.password = make_password(password)    # Update password
                     user.save()
                     messages.success(request, "Password reset successfully for Client.")
+                    return redirect('login')
                 else:
                     messages.error(request, "Client not found.")
             else:
@@ -401,14 +417,14 @@ def test_resetpass(request):
         except ValidationError as e:
             print(messages.get_level(request))
             messages.error(request, e.message)
-
-        return render(request, "non_register/login.html", {"user_role": user_role})
+            return redirect('test_resetpass')
 
     return render(request, "non_register/login.html", {"user_role": user_role})
 
 
 def send_otp(request):
     phone_number = request.GET.get("phone")
+    print(phone_number,"I am getting number as ")
     
     if phone_number:
         otp = random.randint(100000, 999999)
@@ -426,6 +442,7 @@ def verify_otp(request):
     stored_otp = cache.get(phone_number)
 
     if stored_otp and str(stored_otp) == user_otp:
+        print("Verified by OTP")
         return JsonResponse({"message": "OTP Verified"})
     else:
         return JsonResponse({"error": "Invalid OTP"}, status=400)
