@@ -10,6 +10,8 @@ import boto3
 import time
 import locale
 import re
+import csv
+from django.db import connection  # For direct SQL execution
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from urllib.parse import urlparse
@@ -276,9 +278,11 @@ def dashboard(request):
         bid.title = job.title if job else "No Title"  # Fixed variable name
         bid.username = user.name
         bid.imgUrl = user.profilePic
-        if bid.currency=="INR":
-            total_revenue += float(bid.admin_margin)
-            tot_advance_payment += float(bid.advance_payment)
+        
+    revenues = ProjectQuote.objects.filter(admin_bid_status="approved", client_bid_status="approved", currency="INR")
+    for rev in revenues:
+        total_revenue += float(rev.admin_margin)
+        tot_advance_payment += float(rev.advance_payment)
 
     milestones = Milestones.objects.filter(currency="INR").all()
     for ms in milestones:
@@ -287,7 +291,7 @@ def dashboard(request):
         elif ms.status == "Completed":
             completed_ms_payment += float(ms.amount)
         
-    print(f"The totoal revenue is {total_revenue}, total advance payment: {tot_advance_payment} pending payment {pending_payment}, completed ms amount {completed_ms_payment}")
+    print(f"len: {len(revenues)} The totoal revenue is {total_revenue}, total advance payment: {tot_advance_payment} pending payment {pending_payment}, completed ms amount {completed_ms_payment}")
 
     completed_payments = tot_advance_payment + completed_ms_payment
     final_total_revenue = format_currency(total_revenue, "INR")
@@ -898,6 +902,7 @@ def bidApproved(request):
     return render(request, 'myadmin/latestProjectQuotes.html', context)
 
 def bidRejected(request):
+    admin_id = request.session.get('user_id')
     bids = ProjectQuote.objects.all().order_by('-created_at')
     for bid in bids:
         job = ProjectsDisplay.objects.filter(opportunityId=bid.opportunityId).first()
@@ -1456,3 +1461,36 @@ def get_latest_messages(request):
     return JsonResponse({'messages': sorted_msg_comments})
 
     
+# download the data
+
+def download_csv(request, table_name):
+    """Downloads data from a PostgreSQL table as a CSV file."""
+    print("I am inside the download table")
+
+    try:
+        # Construct the SQL query (sanitize table_name!)
+        # IMPORTANT: Sanitize table_name to prevent SQL injection!
+        valid_tables = ["db_schemas_freelancer", "db_schemas_client", "db_schemas_milestones", "db_schemas_projectquote", "db_schemas_projectsdisplay"] #Add all your valid tables here.
+        if table_name not in valid_tables:
+            return HttpResponse("Invalid Table Name", status=400)
+
+        sql = f"SELECT * FROM public.{table_name};"
+        # print(sql, "SQL")
+        with connection.cursor() as cursor:
+            cursor.execute(sql)
+            columns = [col[0] for col in cursor.description] # Get column names
+            rows = cursor.fetchall()
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="{table_name}.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow(columns) # Write header row
+        writer.writerows(rows)  # Write data rows
+        print("I just came upto here")
+        return response
+
+    except Exception as e:
+        # Handle database errors gracefully (log, display error message)
+        print(f"Error downloading CSV: {e}") # Log the error
+        return HttpResponse("An error occurred.", status=500)

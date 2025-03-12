@@ -881,6 +881,33 @@ document
     }
   });
 
+// handle file section for editing the file
+document
+  .getElementById("file-input-cert2")
+  .addEventListener("change", function (event) {
+    const file = event.target.files[0]; // Get the selected file
+    const fileUploadContainer = document.getElementById(
+      "file-upload-container2"
+    ); // File upload container
+
+    if (file) {
+      const fileName = file.name; // File name
+      const fileSize = (file.size / 1024).toFixed(2) + " KB"; // File size in KB
+
+      // Update the file name and size in the modal
+      document.getElementById("file-name-cert2").textContent = fileName;
+      document.getElementById("file-size-cert2").textContent = fileSize;
+
+      // Show the uploaded file section
+      document.getElementById("uploaded-file-cert2").classList.remove("hidden");
+
+      // Remove red border if a file is selected
+      fileUploadContainer.classList.remove("border-red-500");
+    } else {
+      alert("No file selected.");
+    }
+  });
+
 // Function to remove the selected file
 function removeFile() {
   const fileUploadContainer = document.getElementById("file-upload-container"); // File upload container
@@ -891,32 +918,42 @@ function removeFile() {
   fileUploadContainer.classList.add("border-red-500");
 }
 
+// Function to remove the selected edit file
+function removeEditFile() {
+  const fileUploadContainer = document.getElementById("file-upload-container2"); // File upload container
+  document.getElementById("file-input-cert2").value = ""; // Clear file input
+  document.getElementById("uploaded-file-cert2").classList.add("hidden"); // Hide the file display section
+
+  // Add the red border back if file is removed
+  fileUploadContainer.classList.add("border-red-500");
+}
+
 // Save button logic
-document.getElementById("save-button").addEventListener("click", function () {
-  const form = document.querySelector(".certification-form");
-  const fileInput = document.getElementById("file-input-cert");
-  const fileUploadContainer = document.getElementById("file-upload-container");
+// document.getElementById("save-button").addEventListener("click", function () {
+//   const form = document.querySelector(".certification-form");
+//   const fileInput = document.getElementById("file-input-cert");
+//   const fileUploadContainer = document.getElementById("file-upload-container");
 
-  // Check if the form is valid
-  if (form.checkValidity()) {
-    if (fileInput.files.length === 0) {
-      // Add a red border to the file upload container if no file is selected
-      fileUploadContainer.classList.add("border-red-500");
-      return; // Prevent form submission
-    } else {
-      // Remove the red border if a file is selected
-      fileUploadContainer.classList.remove("border-red-500");
-    }
+//   // Check if the form is valid
+//   if (form.checkValidity()) {
+//     if (fileInput.files.length === 0) {
+//       // Add a red border to the file upload container if no file is selected
+//       fileUploadContainer.classList.add("border-red-500");
+//       return; // Prevent form submission
+//     } else {
+//       // Remove the red border if a file is selected
+//       fileUploadContainer.classList.remove("border-red-500");
+//     }
 
-    // Proceed with saving if form and file input are valid
-    form.reset();
-    document.getElementById("uploaded-file-cert").classList.add("hidden");
-    fileUploadContainer.classList.remove("border-red-500");
-    hideModal("addCertificateModal");
-  } else {
-    form.reportValidity();
-  }
-});
+//     // Proceed with saving if form and file input are valid
+//     form.reset();
+//     document.getElementById("uploaded-file-cert").classList.add("hidden");
+//     fileUploadContainer.classList.remove("border-red-500");
+//     hideModal("addCertificateModal");
+//   } else {
+//     form.reportValidity();
+//   }
+// });
 
 // Function to show the modal
 function openModal() {

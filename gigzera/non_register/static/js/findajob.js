@@ -459,30 +459,35 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#suggestions-container3")
   );
 });
-//password validation
-// function toggleVisibility(passwordFieldId, toggleIconId) {
-//   const passwordField = document.querySelector(`#${passwordFieldId}`);
-//   const toggleIcon = document.querySelector(`#${toggleIconId}`);
+// password validation
+function toggleVisibility(passwordFieldId, toggleIconId) {
+  const passwordField = document.querySelector(`#${passwordFieldId}`);
+  const toggleIcon = document.querySelector(`#${toggleIconId}`);
 
-//   toggleIcon.addEventListener("click", () => {
-//     const isPasswordVisible = passwordField.type === "password";
-//     passwordField.type = isPasswordVisible ? "text" : "password";
-//     toggleIcon.classList.toggle("fa-eye-slash");
-//   });
-// }
+  toggleIcon.addEventListener("click", () => {
+    const isPasswordVisible = passwordField.type === "password";
+    passwordField.type = isPasswordVisible ? "text" : "password";
+    toggleIcon.classList.toggle("fa-eye-slash");
+  });
+}
 
-// toggleVisibility("password", "togglePassword");
-// toggleVisibility("confirmPassword", "toggleConfirmPassword");
+toggleVisibility("password", "togglePassword");
+toggleVisibility("confirmPassword", "toggleConfirmPassword");
 
 // Script for phone number
 const countrySelect = document.getElementById("country-code");
 const phoneInput = document.getElementById("phone-number");
 const errorMessage = document.getElementById("error-message");
 const sendOtpButton = document.getElementById("send-otp");
-const otpSection = document.getElementById("otp-section");
-const otpInput = document.getElementById("otp-input");
 const validateOtpButton = document.getElementById("validate-otp");
+let countryCode = countrySelect.value.trim().replace("+", ""); // Ensure we remove "+"
+const validateOtpBtn = document.getElementById("validate-otp");
+const otpInput = document.getElementById("otp-input");
 const otpError = document.getElementById("otp-error");
+const sendOtpBtn = document.getElementById("send-otp");
+const otpSection = document.getElementById("otp-section");
+const otpMessage = document.getElementById("otp-message");
+const actionbutton = document.getElementById("actionbutton");
 
 // Define validation rules for different countries
 const phoneValidationRules = {
@@ -1166,25 +1171,37 @@ phoneInput.addEventListener("input", function () {
 
 // Function to validate OTP
 document.addEventListener("DOMContentLoaded", () => {
-  let countryCode = countrySelect.value.trim().replace("+", ""); // Ensure we remove "+"
-  const validateOtpBtn = document.getElementById("validate-otp");
-  const otpInput = document.getElementById("otp-input");
-  const otpError = document.getElementById("otp-error");
-  const phoneInput = document.getElementById("phone-number"); // Assuming the phone number input exists
+  let isOtpVerified = false;
+
+  // Function to disable elements
+  function disableElements() {
+    otpInput.disabled = true;
+    validateOtpBtn.disabled = true;
+    actionbutton.disabled = false;
+    isOtpVerified = true;
+
+    // Add styles to indicate disabled state
+    otpInput.classList.add("opacity-50", "cursor-not-allowed");
+    validateOtpBtn.classList.add("opacity-50", "cursor-not-allowed");
+    sendOtpBtn.classList.add("hidden", "cursor-not-allowed");
+    otpMessage.classList.add("hidden", "cursor-not-allowed");
+    actionbutton.classList.remove("disabled");
+  }
 
   validateOtpBtn.addEventListener("click", () => {
     const otp = otpInput.value.trim();
+    let countryCode = countrySelect.value.trim().replace("+", "");
     let phoneNumber = phoneInput.value.trim().replace(/\D/g, ""); // Remove non-numeric characters
 
-    // Check if the phone number starts with the country code, if so, remove it
+    // Remove country code if already present
     if (phoneNumber.startsWith(countryCode)) {
       phoneNumber = phoneNumber.substring(countryCode.length);
     }
 
     let fullPhoneNumber = countryCode + phoneNumber;
-    console.log("Sending OTP to:", fullPhoneNumber);
+    console.log("Verifying OTP for:", fullPhoneNumber);
 
-    // Check if OTP is exactly 6 digits
+    // Ensure OTP is exactly 6 digits
     if (!/^\d{6}$/.test(otp)) {
       otpError.textContent = "OTP must be exactly 6 digits.";
       otpError.classList.remove("hidden");
@@ -1201,6 +1218,14 @@ document.addEventListener("DOMContentLoaded", () => {
           otpError.classList.remove("text-red-500");
           otpError.classList.add("text-green-500");
           otpError.classList.remove("hidden");
+
+          // Disable OTP input, Validate OTP button, and Send OTP button
+          disableElements();
+
+          // Hide OTP section after 2 seconds (optional)
+          setTimeout(() => {
+            otpSection.classList.add("hidden");
+          }, 1000);
         } else {
           otpError.textContent = "Invalid OTP. Please try again.";
           otpError.classList.remove("hidden");
@@ -1216,19 +1241,21 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
+  actionbutton.addEventListener("click", (event) => {
+    if (!isOtpVerified) {
+      event.preventDefault();
+      alert("Please verify OTP before submitting.");
+    }
+  });
+
   // Ensure OTP input doesn't exceed 6 digits
   otpInput.addEventListener("input", () => {
-    otpInput.value = otpInput.value.replace(/\D/g, "").slice(0, 6); // Allow only numbers and limit to 6 digits
+    otpInput.value = otpInput.value.replace(/\D/g, "").slice(0, 6);
   });
 });
 
 // New functions for sending OTP and verifying
 document.addEventListener("DOMContentLoaded", () => {
-  const sendOtpBtn = document.getElementById("send-otp");
-  const countrySelect = document.getElementById("country-code"); // Select element for country code
-  const phoneInput = document.getElementById("phone-number");
-  const otpMessage = document.getElementById("otp-message");
-
   sendOtpBtn.addEventListener("click", () => {
     let countryCode = countrySelect.value.trim().replace("+", ""); // Ensure we remove "+"
     let phoneNumber = phoneInput.value.trim().replace(/\D/g, ""); // Remove non-numeric characters

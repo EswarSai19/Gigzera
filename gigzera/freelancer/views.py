@@ -412,10 +412,22 @@ def add_certification(request):
         # Retrieve form data
         cert_name = request.POST.get('cert_name')
         issue_date = request.POST.get('issue_date')
-        expiry_date = request.POST.get('end_date')
+        expiry_date = request.POST.get('expiry_date')
         cert_id = request.POST.get('cert_id')
         cert_url = request.POST.get('cert_url')
 
+        try:
+            issue_date = datetime.strptime(issue_date, "%Y-%m-%d").date() if issue_date else None
+            expiry_date = datetime.strptime(expiry_date, "%Y-%m-%d").date() if expiry_date else None
+        except ValueError:
+            messages.error(request, "Invalid date format! Please select a valid date.")
+            return redirect('fl_profile')
+
+        cert_file = request.FILES.get('cert_file')
+        if cert_file:
+            image_url = upload_to_s3("freelancers_certificates", cert_file)
+        else:
+            image_url="None"
 
         print("Here are the details\n", cert_name, issue_date, expiry_date, cert_id, cert_url)
 
@@ -430,7 +442,9 @@ def add_certification(request):
             expiry_date = expiry_date,
             certification_id = cert_id,
             certification_url = cert_url,
-            freelancer_id=user_id
+            freelancer_id=user_id,
+            certificate_img = image_url
+
         )
 
         current_certifications = freelancer.certifications
@@ -457,6 +471,7 @@ def edit_cert(request):
     freelancer.initials = get_initials(freelancer.name)
     cert_id = request.POST.get('cert_id')
     job = get_object_or_404(Certificate, id=cert_id)
+    current_url = str(job.certificate_img)
     if request.method == 'POST':
         cert_id = request.POST.get('cert_id')
         cert_name = request.POST.get('cert_name')
@@ -473,6 +488,15 @@ def edit_cert(request):
             expiry_date_obj = None
             if expiry_date:
                 expiry_date_obj = datetime.strptime(expiry_date, '%Y-%m-%d')
+
+            cert_file = request.FILES.get('cert_file')
+            if cert_file:
+                image_url = upload_to_s3("freelancers_certificates", cert_file)
+                if current_url:
+                    delete_if_uploaded(current_url)
+                job.certificate_img = image_url
+            else:
+                image_url="None"
 
             # Update the job in the database (pseudo-code)
             job.certificate_name = cert_name
@@ -695,6 +719,49 @@ def upload_to_s3(folder_name, image):
     image_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{file_path}"
     print(f"I just completed the upload image process with url: {image_url}")
     return image_url
+
+
+def delete_if_uploaded(url):
+    """
+    Deletes the file from S3 only if the filename contains a 10-digit number.
+    :param url: The full S3 file URL.
+    :return: A response message indicating success or failure.
+    """
+    print("I am inside the delete:", url)
+
+    # Extract the file path from the URL
+    parsed_url = urlparse(url)
+    file_path = parsed_url.path.lstrip('/')  # Remove leading '/'
+    
+    # Extract the filename from the path
+    filename = str(file_path.split('/')[-1]).strip()  # Ensure it's a clean string
+    print("Deleted file name:", repr(filename))  # Debugging print
+
+    # Check if the filename contains a 10-digit number
+    match = re.search(r'\d{10}', filename)
+    print("Regex Match:", match.group() if match else "No Match")  # Debugging print
+
+    if match:  
+        s3_client = boto3.client(
+            's3',
+            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+            region_name=settings.AWS_S3_REGION_NAME
+        )
+
+        try:
+            # Delete the file from S3
+            s3_client.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=file_path)
+            print(f"Successfully deleted {file_path}")
+            return {"success": True, "message": f"File '{file_path}' deleted successfully"}
+        except Exception as e:
+            print(f"Error during S3 deletion: {str(e)}")  # Debugging print
+            return {"success": False, "message": str(e)}
+
+    print("File name does not contain a 10-digit number, skipping deletion.")
+    return {"success": False, "message": "File name does not contain a 10-digit number, deletion skipped"}
+
+
 
 
 def delete_profile_pic(request):

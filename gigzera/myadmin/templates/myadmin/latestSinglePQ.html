@@ -108,7 +108,12 @@
           <button id="proposed-budget" class="budget-button">
             {{bid.cur_symbol}} {{bid.basic_revised_budget}}
           </button>
-          <input type="hidden" name="adminMargin" id="adminMargin" />
+          <input
+            type="hidden"
+            name="adminMargin"
+            id="adminMargin"
+            value="{{bid.basic_revised_budget}}"
+          />
           <button id="edit-button" class="edit-button">
             <i class="fa-solid fa-pen-to-square edit-icon"></i>
           </button>

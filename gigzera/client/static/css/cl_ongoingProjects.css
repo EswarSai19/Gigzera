@@ -118,12 +118,42 @@ main {
 }
 
 .btn-outline {
+    background-color: #007bff !important;
+    /* Blue background */
+    border: 1px solid #007bff !important;
+    /* Blue border */
+    border-radius: 3px !important;
+    /* Rounded corners */
+    color: white !important;
+    /* White text color */
+    padding: 6px 12px !important;
+    /* Padding inside the button */
+    font-size: 14px !important;
+    /* Font size */
+    text-align: center !important;
+    /* Centered text */
+    cursor: pointer !important;
+    /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease !important;
+    /* Smooth transition for hover effects */
+}
+
+.btn-outline:hover {
+    background-color: #0056b3 !important;
+    /* Darker blue background on hover */
+    color: white !important;
+    /* Keep the text color white on hover */
+    border: 1px solid #0056b3 !important;
+    /* Darker blue border on hover */
+}
+
+.btn-outline-filter {
     background-color: white;
     border: 1px solid #d1d5db;
     color: #374151;
 }
 
-.btn-outline:hover {
+.btn-outline-filter:hover {
     background-color: #f3f4f6;
 }
 
@@ -811,6 +841,7 @@ main {
     }
 
     /* Center modal content on mobile */
+
     .modal-dialog {
         width: 95%;
         margin: 0;
@@ -823,7 +854,13 @@ main {
 
     .modal-body {
         max-height: 70vh;
+        width: 83vw;
         overflow-y: auto;
+    }
+
+    #popup {
+        width: 95%;
+        padding: 15px;
     }
 
     /* Position the New Project button to the top right */
