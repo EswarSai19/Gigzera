@@ -8,21 +8,7 @@
 {% endblock %}
 <!--  -->
 {% block content %}
-<!-- Error Messages -->
-{% if messages %} {% for message in messages %}
-<div
-  id="alert-banner"
-  class="alert-banner bg-red-600 text-white text-center p-4 rounded-lg shadow-lg flex justify-between items-center"
->
-  <h1 class="alert-message text-xl font-medium text-center">{{message}}</h1>
-  <button
-    class="close-btn text-white text-2xl font-medium focus:outline-none"
-    onclick="document.getElementById('alert-banner').style.display='none'"
-  >
-    <i class="fas fa-times"></i>
-  </button>
-</div>
-{% endfor %} {% endif %}
+<!-- Main section -->
 <main class="main-content">
   <!-- Image Section -->
   <div class="signup-image hide-on-mobile">
@@ -676,33 +662,1675 @@
         <div class="checkbox-item">
           <input type="checkbox" id="terms" required />
           <label for="terms">
-            I agree to the <a href="#">Terms & Agreements</a>
+            I agree to the
+            <a href="#" id="openTerms" class="text-blue-500 underline"
+              >Terms & Agreements</a
+            >
           </label>
         </div>
         <div class="checkbox-item">
           <input type="checkbox" id="privacy" required />
           <label for="privacy">
-            I agree to the <a href="#">Privacy Policy</a>
+            I agree to the
+            <a href="#" id="openPrivacy" class="text-blue-500 underline"
+              >Privacy Policy</a
+            >
           </label>
         </div>
-        <button class="action-button" type="submit">
+        <button class="action-button disabled" id="actionbutton" type="submit">
           Start Searching Jobs
         </button>
       </div>
     </form>
   </div>
-
-  <!-- <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const messages = document.querySelectorAll(".messages li");
-      if (messages.length > 0) {
-        alert(messages[0].textContent.trim()); // Show only the first message
-      }
-    });
-  </script> -->
 </main>
+
+<!-- Terms and condition popups -->
+  <!-- // Terms Modal -->
+  <div id="termsModal" class="fixed inset-0 hidden bg-white-100 backdrop-blur-sm bg-opacity-50 overflow-y-auto flex items-center justify-center">
+      <div class="bg-white rounded-lg w-3/4 max-w-2xl p-6 relative max-h-[80vh] overflow-y-auto">
+          <span class="absolute top-3 right-4 text-gray-600 text-3xl cursor-pointer hover:text-red-500" onclick="closeModal('termsModal')">&times;</span>
+          <h2 class="text-xl font-bold mb-2">Terms & Agreements</h2>
+          <div class="p-4 border border-gray-300 rounded max-h-64 overflow-y-auto">
+            <div class="text-center">
+              <h1 class="text-2xl font-bold">Terms of Service</h1>
+          </div>
+            <div class="flex justify-end mt-2">
+              <p class="font-semibold">Posted as of: [Insert Date]</p>
+          </div>
+          <div class="flex justify-end mb-2">
+            <p class="font-semibold">Last Updated: [Insert Date]</p>
+            </div>
+            <p class="mt-2 text-gray-700">
+              This document is an electronic record in accordance with the Indian Information Technology Act, 2000 (and its amendments) and does not require physical signatures. By accessing or using the Gigzera website and mobile application (collectively, the “Platform”), you agree to be bound by these Terms of Service (“Terms”), our Privacy Policy, and all guidelines and policies referenced herein. If you do not agree with any of these provisions, please do not use the Platform.
+            </p>   
+            <hr class="my-6 border-gray-300">
+
+              <div class="mt-2">
+                <h2 class="text-2xl font-bold">1. General Terms & Definitions</h2>
+                <h4 class="text-xl font-semibold px-2 py-1 mr-2">• Definitions:</h4>
+                <ul class="space-y-2 text-gray-700 ml-10"> 
+                  <li class="flex items-start ml-4"> 
+                    <span class="mr-2">•</span> 
+                    <div>
+                      <span class="font-semibold">Gigzera/We/Our/Us:</span> 
+                      <p class="ml-4">Refers to Gigzera IT Consulting, the legal entity operating this Platform.</p>
+                    </div>
+                  </li>
+                  <li class="flex items-start ml-4">
+                    <span class="mr-2">•</span> 
+                    <div>
+                      <span class="font-semibold">You/User/Yourself:</span> 
+                      <p class="ml-4">Any natural or legal person accessing or using the Platform who is competent and legally eligible to enter into binding agreements.</p>
+                    </div>
+                  </li>
+                  <li class="flex items-start ml-4">
+                    <span class="mr-2">•</span> 
+                    <div>
+                      <span class="font-semibold">Third Parties:</span> 
+                      <p class="ml-4">Any person, entity, or website not affiliated with Gigzera.</p>
+                    </div>
+                  </li>
+                  <li class="flex items-start ml-4">
+                    <span class="mr-2">•</span> 
+                    <div>
+                      <span class="font-semibold">Website:</span> 
+                      <p class="ml-4">The online portal available at gigzera.com.</p>
+                    </div>
+                  </li>
+                  <li class="flex items-start ml-4">
+                    <span class="mr-2">•</span> 
+                    <div>
+                      <span class="font-semibold">Mobile Application:</span> 
+                      <p class="ml-4">The Gigzera app for smartphones.</p>
+                    </div>
+                  </li>
+                </ul>   
+                <h4 class="text-xl font-semibold px-2 py-1 mr-2">• Interpretation & Co-Terminus Nature:</h4>
+                <li class="flex items-start ml-4">
+                  <span class="mr-2">•</span> 
+                  Section headings are provided for organizational purposes only and do not affect the interpretation of the Terms.
+                </li>
+                <li class="flex items-start ml-4">
+                  <span class="mr-2">•</span> 
+                  These Terms and the Privacy Policy are co-terminus. Termination or expiry of one will result in the termination of the other.
+                </li>
+                <li class="flex items-start ml-4">
+                  <span class="mr-2">•</span> 
+                  Your use of the Platform constitutes your acceptance of this legally binding agreement without the need for a physical signature.
+                </li>
+                <h4 class="text-xl font-semibold px-2 py-1 mr-2">• Amendments:</h4>
+                <li class="flex items-start ml-4">
+                  <span class="mr-2">•</span> 
+                  We reserve the exclusive right to amend or modify these Terms at any time without prior notice. Any changes take effect immediately, and your continued use of the Platform signifies your acceptance of the revised Terms.
+                </li>
+              </div>  
+              <hr class="my-6 border-gray-300">
+
+              <div class="mt-2">
+                <h2 class="text-2xl font-bold">2. About Gigzera</h2>
+                <h4 class="text-xl font-semibold px-2 py-1 mr-2">• Company Details:</h4>
+                <ul class="space-y-2 text-gray-700 ml-10"> 
+                  <li class="flex items-start ml-4"> 
+                    <span class="mr-2">•</span> 
+                    <div>
+                      <span class="font-semibold">Name:</span> 
+                      <p class="ml-4">Gigzera IT Consulting</p>
+                    </div>
+                  </li>
+                  <li class="flex items-start ml-4"> 
+                    <span class="mr-2">•</span> 
+                    <div>
+                      <span class="font-semibold">Address:</span> 
+                      <p class="ml-4">006 Sprinkles, RGA Tech Park, Carmelaram, Sarjapur Rd, Kodathi, 560035</p>
+                      <p class="ml-4 italic">(This address serves as our official correspondence location.)</p>
+                    </div>
+                  </li>
+                  <li class="flex items-start ml-4"> 
+                    <span class="mr-2">•</span> 
+                    <div>
+                      <span class="font-semibold">Email:</span> 
+                      <p class="ml-4">Gigzera@gmail.com</p>
+                    </div>
+                  </li>
+                  <li class="flex items-start ml-4"> 
+                    <span class="mr-2">•</span> 
+                    <div>
+                      <span class="font-semibold">Brand Name:</span> 
+                      <p class="ml-4">Gigzera</p>
+                    </div>
+                  </li>
+                </ul>  
+                <h4 class="text-xl font-semibold px-2 py-1 mr-2">• Overview of Services:</h4>
+                <ul class="space-y-2 text-gray-700 ml-10"> 
+                  <li class="flex items-start ml-2"> 
+                    <p>
+                      Gigzera is a technology-driven marketplace designed to connect businesses with skilled freelancers for short-term, project-based work. Our services include:
+                    </P>
+                  </li>
+                  <li class="flex items-start ml-4"> 
+                    <span class="mr-2">•</span> 
+                    <div>
+                      <span class="font-semibold">Digital Goods & Services:</span> 
+                      <p class="ml-4">
+                        Facilitating projects such as software development, digital marketing, content creation, graphic design, and more.
+                      </p>
+                    </div>
+                  </li>
+                  <li class="flex items-start ml-4"> 
+                    <span class="mr-2">•</span> 
+                    <div>
+                      <span class="font-semibold">Information & Connections:</span> 
+                      <p class="ml-4">
+                        Providing essential insights and facilitating introductions between employers and freelancers.
+                      </p>
+                    </div>
+                  </li>
+                  <li class="flex items-start ml-4"> 
+                    <span class="mr-2">•</span> 
+                    <div>
+                      <span class="font-semibold">Advanced Matching Technologies:</span> 
+                      <p class="ml-4">
+                        Utilizing cloud computing, artificial intelligence, and proprietary algorithms to quickly and efficiently match employers with the right freelancers.
+                      </p>
+                    </div>
+                  </li>
+                  <li class="flex items-start ml-4"> 
+                    <span class="mr-2">•</span> 
+                    <div>
+                      <span class="font-semibold">Intermediary Role:</span> 
+                      <p class="ml-4">
+                        We function solely as an intermediary. While we facilitate connections, we do not guarantee project outcomes or the performance of any freelancer. Our fee is solely for the connection service.
+                      </p>
+                    </div>
+                  </li>
+                </ul>  
+              </div>
+              <hr class="my-6 border-gray-300">
+
+              <div class="mt-2">
+                <h2 class="text-2xl font-bold">3. Platform Description & Accessibility</h2>
+                <ul class="space-y-2 text-gray-700 ml-10"> 
+                  <li class="flex items-start ml-4"> 
+                    <span class="mr-2">•</span> 
+                    <div>
+                      <span class="font-semibold">Platform Type:</span> 
+                      <p class="ml-4">
+                        The Platform is available both as a website and a mobile application, ensuring users can access our services via standard web browsers or mobile devices.
+                      </p>
+                    </div>
+                  </li>
+                  <li class="flex items-start ml-4"> 
+                    <span class="mr-2">•</span> 
+                    <div>
+                      <span class="font-semibold">Business Model & Target Audience:</span> 
+                      <p class="ml-4">
+                        Gigzera operates as a digital marketplace connecting employers with freelancers. Although available globally, our primary focus is on users in the USA and EU, ensuring we meet relevant local regulations and market needs.
+                      </p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+                  
+              <hr class="my-6 border-gray-300">
+
+
+              <div class="mt-2">
+                    <h2 class="text-2xl font-bold">4. Registration and Eligibility</h2>
+                    <ul class="space-y-2 text-gray-700 ml-10"> 
+                      <li class="flex items-start ml-4"> 
+                        <span class="mr-2">•</span> 
+                        <div>
+                          <span class="font-semibold">Registration Process:</span> 
+                          <p class="ml-4 flex items-start">
+                            <span>•</span> 
+                            To use the Platform, you must register by providing your email address or mobile number. While some account creation methods include social media linkage, please note that as a responsible Platform, we exercise caution regarding automatic social media integration. You must complete registration by verifying your details (for example, via email authentication).
+                          </p>
+                          <p class="ml-4 flex items-start">
+                            <span class="mr-2">•</span> 
+                            The registration process requires you to provide basic details such as your full legal name, mobile number, and, where applicable, other credentials like your designation, company name, profile picture, educational background, certifications, total experience, and skill set.
+                          </p>
+                        </div>
+                      </li>
+                        <li class="flex items-start ml-4"> 
+                          <span class="mr-2">•</span> 
+                          <div>
+                            <span class="font-semibold">Eligibility:</span> 
+                            <p class="ml-4 flex items-start">
+                              <span>•</span> 
+                              You represent and warrant that you are at least 18 years old and legally capable of entering into binding contracts.
+                            </p>
+                            <p class="ml-4 flex items-start">
+                              <span>•</span> 
+                              If you are a minor, you may use the Platform only with the express consent and supervision of your legal guardian.
+                            </p>
+                            <p class="ml-4">
+                              <span>•</span> 
+                              You agree to comply with all applicable local, national, and international laws and regulations while using the Platform.
+                            </p>
+                          </div>
+                        </li>
+                    </ul>
+              </div>
+              <hr class="my-6 border-gray-300">
+              <div class="mt-2">
+                <h2 class="text-2xl font-bold">5. User Conduct and Prohibited Activities</h2>
+                <ul class="space-y-2 text-gray-700 ml-10"> 
+                  <li class="flex items-start ml-4"> 
+                    <span class="mr-2">•</span> 
+                    <div>
+                      <span class="font-semibold">User Obligations:</span> 
+                      <p class="ml-4 flex items-start">
+                        <span class="mr-2">•</span>  
+                        Provide accurate, true, and current information during registration and update your details as needed.
+                      </p>
+                      <p class="ml-4 flex items-start">
+                        <span class="mr-2">•</span> 
+                        Maintain the confidentiality of your account password and other login credentials; you are solely responsible for all activity under your account.
+                      </p>
+                      <p class="ml-4 flex items-start">
+                        <span class="mr-2">•</span> 
+                        Ensure that the information you provide (name, email, address, mobile number, etc.) is valid and up-to-date.
+                      </p>
+                    </div>
+                  </li>
+                    <li class="flex items-start ml-4"> 
+                      <span class="mr-2">•</span> 
+                      <div>
+                        <span class="font-semibold">Prohibited Activities:</span> 
+                        <div>
+                            <span>You agree not to:</span> 
+                            <p class="ml-4 flex items-start">
+                              <span class="mr-2">•</span> 
+                              Engage in any illegal, fraudulent, or harmful behavior, including but not limited to uploading fake or misleading documents.
+                            </p>
+                            <p class="ml-4 flex items-start">
+                              <span class="mr-2">•</span>  
+                              Interfere with or disrupt the normal functioning of the Platform (e.g., hacking, deploying malware, using deep-linking, robot, spider, or automated tools to access data).
+                            </p>
+                            <p class="ml-4 flex items-start">
+                              <span class="mr-2">•</span>  
+                              Infringe upon the intellectual property rights of others by copying, distributing, or transmitting copyrighted content without permission.
+                            </p>
+                            <p class="ml-4 flex items-start">
+                              <span class="mr-2">•</span>  
+                              Impersonate any person or entity or provide false information during registration or while using the Platform.
+                            </p>
+                            <p class="ml-4 flex items-start">
+                              <span class="mr-2">•</span>  
+                              Share or post content that is defamatory, offensive, obscene, vulgar, or intended to cause harassment.
+                            </p>
+                            <p class="ml-4 flex items-start">
+                              <span class="mr-2">•</span>  
+                              Reverse engineer, modify, or create derivative works of any part of the Platform without prior written consent.
+                            </p>
+                            <p class="ml-4 flex items-start">
+                              <span class="mr-2">•</span>  
+                              Use the Platform in any manner that violates any law, regulation, or the rights of a third party.
+                            </p>
+                          </div>
+                      </div>
+                    </li>
+                    <li class="flex items-start ml-4"> 
+                      <span class="mr-2">•</span> 
+                      <div>
+                        <span class="font-semibold">Additional Undertakings:</span> 
+                        <p class="ml-4 flex items-start">
+                          <span class="mr-2">•</span>  
+                          You are solely responsible for all content you upload, ensuring that you have the necessary rights and permissions.
+                        </p>
+                        <p class="ml-4 flex items-start">
+                          <span class="mr-2">•</span>  
+                          You authorize Gigzera to use, store, and process your personal information and any published content (including comments, reviews, or ratings) for service personalization, marketing, and promotional purposes.
+                        </p>
+                        <p class="ml-4 flex items-start">
+                          <span class="mr-2">•</span>  
+                          You agree that if you breach any of these obligations, Gigzera may suspend or terminate your account immediately, without notice.
+                        </p>
+                      </div>
+                    </li>
+                </ul>
+              </div>
+
+          <hr class="my-6 border-gray-300">
+
+            <div class="mt-2">
+              <h2 class="text-2xl font-bold">6. Payment and Transaction Terms</h2>
+              <ul class="space-y-2 text-gray-700 ml-10"> 
+                    <li class="flex items-start ml-4"> 
+                      <span class="mr-2">•</span> 
+                      <div>
+                        <span class="font-semibold">Payment Gateway & Models:</span> 
+                        <p class="ml-4 flex items-start">
+                          <span class="mr-2">•</span>  
+                          All payments are processed securely through a third-party payment gateway, and you will be subject to their terms for all payment-related aspects.
+                          <p class="ml-4 flex items-start">
+                          <span class="mr-2">•</span> 
+                          Gigzera supports both recurring subscriptions and one-time purchase transactions. Payments may be made via online payment gateways, offline methods (such as RTGS or bank transfers), or EMI options.
+                        </p>
+                        <p class="ml-4 flex items-start">
+                          <span class="mr-2">•</span> 
+                          International transactions are supported to ensure global accessibility.
+                        </p>
+                      </div>
+                    </li>
+                    <li class="flex items-start ml-4"> 
+                      <span class="mr-2">•</span> 
+                      <div>
+                        <span class="font-semibold">Fees, Billing, and Refunds:</span> 
+                            <p class="ml-4 flex items-start">
+                              <span class="mr-2">•</span> 
+                              Gigzera charges a service fee for facilitating connections between employers and freelancers. This fee will be clearly displayed at the time of the transaction.
+                            </p>
+                            <p class="ml-4 flex items-start">
+                              <span class="mr-2">•</span>  
+                              Payments must be made promptly as per the billing terms.
+                            </p>
+                            <p class="ml-4 flex items-start">
+                              <span class="mr-2">•</span>  
+                              All fees are final and non-refundable once a transaction is completed. (For example, program or consultancy fees, once paid, cannot be refunded.)
+                            </p>
+                          </div>
+                    </li>
+              </ul>
+            </div>
+
+          <hr class="my-6 border-gray-300">
+
+              <div class="mt-2">
+                  <h2 class="text-2xl font-bold">7. Content, Intellectual Property, and Usage</h2>
+                  <ul class="space-y-2 text-gray-700 ml-10"> 
+                        <li class="flex items-start ml-4"> 
+                          <span class="mr-2">•</span> 
+                          <div>
+                            <span class="font-semibold">Content Ownership:</span> 
+                            <p class="ml-4 flex items-start">
+                              <span class="mr-2">•</span>  
+                              All text, graphics, user interfaces, images, logos, and software on the Platform are the property of Gigzera IT Consulting or its partners and are protected by copyright and other intellectual property laws. 
+                            </p>
+                            <p class="ml-4 flex items-start">
+                              <span class="mr-2">•</span> 
+                              Content provided by users is their own responsibility. You affirm that you have the rights to any content you upload, and Gigzera is not liable for user-generated content that is untrue, inaccurate, or misleading.
+                            </p>
+                          </div>
+                        </li>
+                        <li class="flex items-start ml-4"> 
+                          <span class="mr-2">•</span> 
+                          <div>
+                            <span class="font-semibold">User-Generated Content:</span> 
+                                <p class="ml-4 flex items-start">
+                                  <span class="mr-2">•</span> 
+                                  You are granted a personal, non-exclusive, non-transferable, and revocable license to access the content on the Platform.
+                                </p>
+                                <p class="ml-4 flex items-start">
+                                  <span class="mr-2">•</span>  
+                                  You shall not copy, modify, or distribute any content without the express written permission of the owner.
+                                </p>
+                                <p class="ml-4 flex items-start">
+                                  <span class="mr-2">•</span>  
+                                  Gigzera reserves the right to suspend or terminate any user account that shares content deemed offensive, misleading, or infringing on the rights of others.
+                                </p>
+                              </div>
+                            </li>
+                        </ul>
+              </div>
+
+              <hr class="my-6 border-gray-300">
+
+              <div class="mt-2">
+                  <h2 class="text-2xl font-bold">8. Indemnity</h2>
+                  <p>
+                    You agree to indemnify, defend, and hold harmless Gigzera, its directors, officers, employees, agents, and affiliates from any losses, liabilities, claims, damages, or expenses (including legal fees) arising from:
+                  </p>
+                  <li class="flex items-start ml-4"> 
+                    <span class="mr-2">•</span> 
+                    <p>
+                      Your use of the Platform.
+                    </p>
+                  </li>
+                  <li class="flex items-start ml-4"> 
+                    <span class="mr-2">•</span> 
+                    <p>
+                      Any breach of these Terms or violation of third-party rights.
+                    </p>
+                  </li>
+                  <li class="flex items-start ml-4"> 
+                    <span class="mr-2">•</span> 
+                    <p>
+                      Providing false, inaccurate, or misleading information.
+                    </p>
+                  </li>
+                  <li class="flex items-start ml-4"> 
+                    <span class="mr-2">•</span> 
+                    <p>
+                      Any improper conduct or any act that causes harm to other users or Gigzera.
+                    </p>
+                  </li>
+                    <p>
+                      Additionally, you agree not to settle any claims with third parties without Gigzera’s consent and to fully cooperate in any indemnification process at your expense.
+                    </p>
+              </div>
+
+              <hr class="my-6 border-gray-300">
+
+              <div class="mt-2">
+                <h2 class="text-2xl font-bold">9. Disclaimers and Limitation of Liability</h2>
+                <ul class="space-y-2 text-gray-700 ml-10">
+                  <li class="flex items-start ml-4">
+                    <span class="mr-2">•</span>
+                    <div>
+                      <span class="font-semibold">Disclaimer of Warranties:</span>
+                      <ul class="ml-6 space-y-2">
+                        <li class="flex items-start">
+                          <span class="mr-2">•</span>
+                          The Platform is provided on an “as is” and “as available” basis, without any warranties (express or implied) regarding its uninterrupted operation, accuracy, or reliability.
+                        </li>
+                        <li class="flex items-start">
+                          <span class="mr-2">•</span>
+                          Gigzera does not provide professional advice (legal, medical, financial, etc.). Any information on the Platform is for informational purposes only, and you should seek professional guidance as needed.
+                        </li>
+                        <li class="flex items-start">
+                          <span class="mr-2">•</span>
+                          Your use of the Platform is at your own risk.
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+              
+                  <li class="flex items-start ml-4">
+                    <span class="mr-2">•</span>
+                    <div>
+                      <span class="font-semibold">Limitation of Liability:</span>
+                      <ul class="ml-6 space-y-2">
+                        <li class="flex items-start">
+                          <span class="mr-2">•</span>
+                          Gigzera’s total liability for any claim shall not exceed the amount you have paid for the service in question.
+                        </li>
+                        <li class="flex items-start">
+                          <span class="mr-2">•</span>
+                          Gigzera is not liable for any indirect, incidental, consequential, or punitive damages (including loss of profits or data), even if advised of the possibility of such damages.
+                        </li>
+                        <li class="flex items-start">
+                          <span class="mr-2">•</span>
+                          Specifically, Gigzera and its founders, promoters, partners, or associated personnel are not responsible for:
+                          <li class="flex items-start">
+                            <span class="mr-2">•</span>
+                            <div>
+                              Specifically, Gigzera and its founders, promoters, partners, or associated personnel are not responsible for:
+                              <ul class="ml-6 space-y-2 mt-2">
+                                <li class="flex items-start">
+                                  <span class="mr-2">•</span>
+                                  Website inoperability due to connectivity errors, slow internet, or server failures.
+                                </li>
+                                <li class="flex items-start">
+                                  <span class="mr-2">•</span>
+                                  Data deletion or delays caused by incorrect information provided by you.
+                                </li>
+                                <li class="flex items-start">
+                                  <span class="mr-2">•</span>
+                                  Communication delays or deficiencies in the services managed by Gigzera.
+                                </li>
+                                <li class="flex items-start">
+                                  <span class="mr-2">•</span>
+                                  Failures in any other services provided by Gigzera.
+                                </li>
+                              </ul>
+                            </div>
+                          </li>                          
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              
+              <hr class="my-6 border-gray-300">
+              
+            <div class="mt-2">
+                <h2 class="text-2xl font-bold">10. Force Majeure</h2>
+                <p>
+                  Gigzera shall not be liable for any delays or failures in performance due to events beyond its control (e.g., natural disasters, acts of war, riots, fires, labor disputes, internet interruptions, technical failures, or any other unforeseen events).
+                </p>
+            </div>
+
+            <hr class="my-6 border-gray-300">
+
+            <div class="mt-2">
+                <h2 class="text-2xl font-bold">11. Dispute Resolution, Arbitration, and Governing Law</h2>
+                <ul class="space-y-2 text-gray-700 ml-10"> 
+                      <li class="flex items-start ml-4"> 
+                        <span class="mr-2">•</span> 
+                        <div>
+                          <span class="font-semibold">Dispute Resolution:</span> 
+                          <p class="ml-4 flex items-start">
+                            <span class="mr-2">•</span>  
+                            Any dispute should first be addressed by contacting our support team.
+                          </p>                         
+                            <p class="ml-4 flex items-start">
+                            <span class="mr-2">•</span> 
+                            If unresolved, disputes will be submitted to arbitration by a sole arbitrator appointed by Gigzera. Arbitration proceedings shall be conducted in English, with the seat of arbitration in Nandyal, Andhra Pradesh, India. The arbitrator’s award is final and binding, and arbitration costs will be borne as determined by the arbitrator.
+                          </p>
+                        </div>
+                      </li>
+                      <li class="flex items-start ml-4"> 
+                        <span class="mr-2">•</span> 
+                        <div>
+                          <span class="font-semibold">Governing Law & Jurisdiction:</span> 
+                              <p class="ml-4 flex items-start">
+                                <span class="mr-2">•</span> 
+                                These Terms are governed by the laws of India.
+                              </p>
+                              <p class="ml-4 flex items-start">
+                                <span class="mr-2">•</span>  
+                                Subject to the arbitration clause, any legal proceedings shall be initiated exclusively in the courts located in Nandyal, Andhra Pradesh.
+                              </p>
+                            </div>
+                          </li>
+                      </ul>
+            </div>
+
+            <hr class="my-6 border-gray-300">
+
+            <div class="mt-2">
+              <h2 class="text-2xl font-bold">12. Term, Termination, and Suspension</h2>
+              <ul class="space-y-2 text-gray-700 ml-10"> 
+                <li class="flex items-start ml-4"> 
+                  <span class="mr-2">•</span> 
+                  <div>
+                    <span class="font-semibold">Term:</span> 
+                    <p class="ml-4">
+                      These Terms remain in effect as long as you access and use the Platform.
+                    </p>
+                  </div>
+                </li>
+                <li class="flex items-start ml-4"> 
+                  <span class="mr-2">•</span> 
+                  <div>
+                    <span class="font-semibold">User Termination:</span> 
+                    <p class="ml-4">
+                      You may cease using the Platform at any time; however, your obligations incurred prior to termination remain binding.
+                    </p>
+                  </div>
+                </li>
+                <li class="flex items-start ml-4"> 
+                  <span class="mr-2">•</span> 
+                  <div>
+                    <span class="font-semibold">Gigzera Termination:</span> 
+                    <p class="ml-4">
+                      Gigzera reserves the right to suspend or terminate your account or access to the Platform at any time, without prior notice, for any reason including breaches of these Terms or provision of false information.
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <hr class="my-6 border-gray-300">
+
+            <div class="mt-2">
+              <h2 class="text-2xl font-bold">13. Communication and Notifications</h2>
+              <ul class="space-y-2 text-gray-700 ml-10"> 
+                <li class="flex items-start ml-4"> 
+                  <span class="mr-2">•</span> 
+                  <div>
+                    <span class="font-semibold">Consent to Communication:</span> 
+                    <p class="ml-4">
+                      By providing your identity and contact information during registration or while using the Platform, you consent to receive calls, emails, or SMS from Gigzera or its representatives regarding your account, service updates, and important notices.
+                    </p>
+                  </div>
+                </li>
+                <li class="flex items-start ml-4"> 
+                  <span class="mr-2">•</span> 
+                  <div>
+                    <span class="font-semibold">Reporting Issues:</span> 
+                    <p class="ml-4">
+                      Should you encounter any discrepancies or issues with the Website or content, you may report these to Gigzera at Gigzera@gmail.com. Resolution times may vary based on the nature and scope of the investigation.
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <hr class="my-6 border-gray-300">
+
+            <div class="mt-2">
+              <h2 class="text-2xl font-bold">14. Data Retention and Privacy</h2>
+              <ul class="space-y-2 text-gray-700 ml-10"> 
+                <li class="flex items-start ml-4"> 
+                  <span class="mr-2">•</span> 
+                  <div>
+                    <span class="font-semibold">Data Retention:</span> 
+                    <p class="ml-4">
+                      Your personal data is retained only as long as necessary to provide our services and comply with legal obligations.
+                    </p>
+                  </div>
+                </li>
+                <li class="flex items-start ml-4"> 
+                  <span class="mr-2">•</span> 
+                  <div>
+                    <span class="font-semibold">Privacy:</span> 
+                    <p class="ml-4">
+                      Please refer to our Privacy Policy for details on how we collect, use, store, and protect your personal information. We employ industry-standard security measures to safeguard your data.
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <hr class="my-6 border-gray-300">
+
+            <div class="mt-2">
+              <h2 class="text-2xl font-bold">15. Modifications to the Terms</h2>
+              <p>
+                Gigzera reserves the right to modify these Terms at any time. Any significant changes will be communicated by updating the “Last Updated” date and, when necessary, via email. Your continued use of the Platform after such modifications indicates your acceptance of the revised Terms.
+              </p>
+            </div>
+
+            <hr class="my-6 border-gray-300">
+
+            <div class="mt-2">
+              <h2 class="text-2xl font-bold">16. Miscellaneous Provisions</h2>
+              <ul class="space-y-2 text-gray-700 ml-10"> 
+                <li class="flex items-start ml-4"> 
+                  <span class="mr-2">•</span> 
+                  <div>
+                    <span class="font-semibold">Entire Agreement:</span> 
+                    <p class="ml-4">
+                      These Terms, together with our Privacy Policy and any additional policies referenced herein, constitute the entire agreement between you and Gigzera regarding your use of the Platform, superseding all prior communications.
+                    </p>
+                  </div>
+                </li>
+                <li class="flex items-start ml-4"> 
+                  <span class="mr-2">•</span> 
+                  <div>
+                    <span class="font-semibold">Waiver:</span> 
+                    <p class="ml-4">
+                      Failure to enforce any provision of these Terms shall not constitute a waiver of that provision or any other.
+                    </p>
+                  </div>
+                </li>
+                <li class="flex items-start ml-4"> 
+                  <span class="mr-2">•</span> 
+                  <div>
+                    <span class="font-semibold">Severability:</span> 
+                    <p class="ml-4">
+                      If any provision of these Terms is held invalid or unenforceable, the remaining provisions shall continue in full force and effect, and the invalid provision shall be replaced with a valid provision that most closely reflects the original intent.
+                    </p>
+                  </div>
+                </li>
+                <li class="flex items-start ml-4"> 
+                  <span class="mr-2">•</span> 
+                  <div>
+                    <span class="font-semibold">Contact Us:</span> 
+                    <p class="ml-4">
+                      If you have any questions, concerns, or require further clarification regarding these Terms, please contact us at ⦁	Gigzera@gmail.com
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <p class="mt-4 mb-2">
+              <em>By accessing or using the Gigzera Platform, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service in their entirety.</em>
+            </p>
+            
+            <hr class="my-6 border-gray-300">
+
+        <div class="max-w-3xl mx-auto">
+                  <h1 class="text-center text-lg font-bold uppercase mt-2">TERMS AND CONDITIONS FOR NON DISCLOSURE</h1>
+                  <p class="mt-4">
+                      These Terms and Conditions (“Terms”) govern your use of the Gigzera website and any related platforms (collectively, the “Website”). By accessing or using the Website, you agree to be bound by these Terms. If you do not agree to these Terms, please do not access or use the Website.
+                  </p>
+              
+                  <hr class="my-6 border-gray-300">
+              
+                  <h2 class="font-bold text-lg mt-4">1. Introduction</h2>
+                  <p class="mt-2">
+                      Gigzera is an IT work platform that connects clients with qualified freelancers and preferred partners. In using the Website, you may access sensitive and proprietary information related to our business operations, client engagements, and project requirements (collectively, “Confidential Information”). These Terms set forth your obligations regarding such Confidential Information.
+                  </p>
+              
+                  <hr class="my-6 border-gray-300">
+              
+                  <h2 class="font-bold text-lg mt-4">2. Definitions</h2>
+                  <ul class="list-disc pl-10 mt-2 space-y-2">
+                      <li>
+                          <span class="font-semibold">Confidential Information:</span> All non-public, proprietary information disclosed by Gigzera on the Website in any form—whether oral, written, electronic, or otherwise. This includes, but is not limited to, documents, contracts, financial models, trade secrets, client data, technical information, proposals, designs, and marketing strategies. Information disclosed orally must be summarized in writing within five (5) business days and clearly marked as confidential.
+                      </li>
+                      <li>
+                          <span class="font-semibold">User:</span> Any person who accesses or uses the Website.
+                      </li>
+                      <li>
+                          <span class="font-semibold">Affiliate:</span> Any entity that controls, is controlled by, or is under common control with a Party.
+                      </li>
+                  </ul>
+                  
+                  <hr class="my-6 border-gray-300">
+
+                  <h2 class="font-bold text-lg ">3. Non-Disclosure and Use Restrictions</h2>
+                  
+                  <ul class="list-disc pl-10 space-y-2 mt-2">
+                      <li>
+                          <span class="font-semibold">Use Limitation:</span> Any Confidential Information provided on the Website is for your internal evaluation and engagement with Gigzera’s services only. You agree not to use such information for any other purpose.
+                      </li>
+                      <li>
+                          <span class="font-semibold">Non-Disclosure:</span> You shall not disclose any Confidential Information to any third party without Gigzera’s prior written consent, except as required by law.
+                      </li>
+                      <li>
+                          <span class="font-semibold">Protection Measures:</span> You agree to employ reasonable measures—at least as protective as those used for your own confidential information—to prevent unauthorized access, use, or disclosure of the Confidential Information.
+                      </li>
+                      <li>
+                          <span class="font-semibold">Record-Keeping:</span> You are responsible for maintaining accurate records of all individuals who access any Confidential Information you receive through the Website.
+                      </li>
+                      <li>
+                          <span class="font-semibold">Restrictions on Use:</span> You shall not reproduce, distribute, modify, reverse engineer, or otherwise exploit any Confidential Information for your benefit or for that of any third party. This includes the use of Gigzera’s website design, look, feel, or functionalities for purposes not expressly authorized.
+                      </li>
+                  </ul>
+                  <hr class="my-6 border-gray-300">
+              <h3 class="text-lg font-semibold">4. Non-Competition and Non-Solicitation</h3>
+              <ul class="pl-10 list-disc">
+                  <li>For a period of two (2) years following your last use of the Website, you agree not to directly contact, solicit, or engage any client introduced through the Website in a manner intended to bypass or undermine Gigzera’s role in facilitating the engagement.</li>
+              </ul>
+              <hr class="my-6 border-gray-300">
+
+              <h3 class="text-lg font-semibold">5. Exclusions from Confidential Information</h3>
+              <ul class="pl-10 list-disc">
+                  <li>Was in your possession prior to its disclosure by Gigzera without any obligation of confidentiality.</li>
+                  <li>Becomes publicly available through no breach of these Terms by you.</li>
+                  <li>Is independently developed by you without reference to or use of Gigzera’s Confidential Information.</li>
+              </ul>
+              <hr class="my-6 border-gray-300">
+
+              <h3 class="text-lg font-semibold">6. Term and Termination</h3>
+              <ul class="pl-10 list-disc">
+                  <li>These Terms are effective as of the Effective Date and remain in effect indefinitely, unless terminated as provided herein.</li>
+                  <li>Gigzera reserves the right to suspend or terminate your access to the Website at any time, with or without notice, for any reason—including for breaches of these Terms.</li>
+                  <li>Notwithstanding termination, your obligations regarding confidentiality, non-competition, and non-solicitation shall survive indefinitely.</li>
+              </ul>
+              <hr class="my-6 border-gray-300">
+
+              <h3 class="text-lg font-semibold">7. Remedies for Breach</h3>
+              <ul class="pl-10 list-disc">
+                  <li>You acknowledge that any breach of these Terms may cause irreparable harm to Gigzera, entitling Gigzera to seek injunctive relief in addition to other legal remedies.</li>
+                  <li>You agree to be liable for any damages arising from unauthorized disclosure or misuse of Confidential Information, including lost profits, replacement costs, and reputational harm.</li>
+              </ul>
+              <hr class="my-6 border-gray-300">
+
+              <h3 class="text-lg font-semibold">8. Return or Destruction of Confidential Information</h3>
+              <ul class="pl-10 list-disc">
+                  <li>Upon request by Gigzera or upon termination of your access to the Website, you agree to promptly return all tangible materials containing Confidential Information or securely destroy such materials and certify in writing that the destruction has been completed.</li>
+              </ul>
+              <hr class="my-6 border-gray-300">
+
+              <h3 class="text-lg font-semibold">9. No License or Ownership Rights</h3>
+              <ul class="list-disc pl-10 space-y-2">
+                <li><span class="font-semibold">No License Granted:</span> Nothing in these Terms grants you any rights, by license or otherwise, under any intellectual property rights of Gigzera.</li>
+                <li><span class="font-semibold">Retention of Ownership:</span> All Confidential Information remains the exclusive property of Gigzera. Your access to the Website does not constitute any transfer of title or rights.</li>
+                <li><span class="font-semibold">Pre-Existing Rights:</span> Any information you independently developed or possessed prior to accessing the Website remains your property.</li>
+            </ul>
+            
+            <hr class="my-6 border-gray-300">
+            
+            <h2 class="text-lg font-bold">10. Governing Law and Dispute Resolution</h2>
+            <ul class="list-disc  pl-10 space-y-2">
+                <li><span class="font-semibold">Governing Law:</span> These Terms shall be governed by and construed in accordance with the laws of India.</li>
+                <li><span class="font-semibold">Jurisdiction:</span> Any disputes arising from these Terms shall be subject to the exclusive jurisdiction of the courts located in Nandyal, Andhra Pradesh, India.</li>
+                <li><span class="font-semibold">Dispute Resolution:</span> In the event of a dispute, the parties agree to first attempt resolution through good faith negotiations. Failing such resolution, disputes shall be resolved by arbitration in accordance with Indian arbitration laws, conducted in English and held in Nandyal, Andhra Pradesh.</li>
+            </ul>
+            
+            <hr class="my-6 border-gray-300">
+            
+            <h2 class="text-lg font-bold">11. Miscellaneous</h2>
+            <ul class="list-disc  pl-10 space-y-2">
+                <li><span class="font-semibold">Entire Agreement:</span> These Terms constitute the entire understanding between you and Gigzera regarding your use of the Website and supersede all prior communications.</li>
+                <li><span class="font-semibold">Amendments:</span> Gigzera reserves the right to amend these Terms at any time. Continued use of the Website constitutes acceptance of the updated Terms.</li>
+                <li><span class="font-semibold">Severability:</span> If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions shall continue in full force and effect.</li>
+                <li><span class="font-semibold">Waiver:</span> Gigzera’s failure to enforce any provision of these Terms shall not be deemed a waiver of future enforcement of that or any other provision.</li>
+                <li><span class="font-semibold">Assignment:</span> You may not assign or transfer your rights under these Terms without Gigzera’s prior written consent.</li>
+            </ul>
+            
+            <hr class="my-6 border-gray-300">
+            
+            <h2 class="text-lg font-bold">Acknowledgement</h2>
+            <p class="mt-2">By accessing and using the Gigzera Website, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions. Any matters not expressly covered herein will be addressed in a separate Statement of Work (SOW) at Gigzera’s sole discretion.</p>
+        </div>
+        <hr class="my-6 border-gray-300">
+
+        <div class="max-w-3xl mx-auto">
+          <h1 class="text-center text-lg font-bold uppercase mt-2">TERMS AND CONDITIONS FOR THE FREELANCER</h1>
+          <p class="mt-4">This Terms and Conditions is entered into by and between: <strong>Gigzera</strong> and <strong>Freelancer</strong> (“Freelancer”) – as registered on the Gigzera work platform.</p>
+          <p class="mt-4">By using the Gigzera platform, Freelancer agrees to be bound by the following terms and conditions. Any additional or alternative terms proposed by Freelancer are hereby rejected unless explicitly set forth in an approved SOW.</p>
+          <hr class="my-6 border-gray-300">
+
+          <div class="pb-4">
+              <h2 class="text-lg font-semibold">1. SCOPE OF SERVICES</h2>
+              <p><strong>a. Services Provided:</strong> Freelancer agrees to provide IT consulting services (“Services”) as detailed in one or more SOWs.</p>
+              <p><strong>b. Statement of Work:</strong> The particulars of each project—including hours, milestones, deliverables, timelines, and performance metrics—will be documented in a separate SOW.</p>
+          </div>
+          <hr class="my-6 border-gray-300">
+
+          <div class="pb-4 ">
+              <h2 class="text-lg font-semibold">2. PAYMENT TERMS</h2>
+              <p><strong>a. Compensation:</strong> Payment will be rendered following a demonstration (“Demo”) of completed work and subsequent client acceptance.</p>
+              <p><strong>b. Milestone Payments:</strong> For projects exceeding three (3) months, payment will be based on the milestone breakdown.</p>
+              <p><strong>c. Invoicing and Payment:</strong> Freelancer shall submit invoices according to achieved milestones.</p>
+          </div>
+          <hr class="my-6 border-gray-300">
+
+          <div class="pb-4 ">
+              <h2 class="text-lg font-semibold">3. FREELANCER OBLIGATIONS</h2>
+              <p><strong>a. Compliance:</strong> Freelancer agrees to strictly comply with all policies, procedures, and guidelines.</p>
+              <p><strong>b. Performance:</strong> Freelancer shall perform services professionally and diligently.</p>
+          </div>
+          <hr class="my-6 border-gray-300">
+
+          <div class="pb-4 ">
+              <h2 class="text-lg font-semibold">4. HOURS OF WORK</h2>
+              <p>The required hours and scheduling will be set forth in the applicable SOW.</p>
+          </div>
+          <hr class="my-6 border-gray-300">
+
+          <div class="pb-4 ">
+              <h2 class="text-lg font-semibold">5. INDEPENDENT CONTRACTOR STATUS</h2>
+              <p><strong>a. Relationship:</strong> Freelancer is an independent contractor, not an employee.</p>
+              <p><strong>b. Taxes and Benefits:</strong> Freelancer is responsible for all applicable taxes and statutory obligations.</p>
+          </div>
+          <hr class="my-6 border-gray-300">
+
+          <div class="pb-4 ">
+              <h2 class="text-lg font-semibold">6. CONFIDENTIALITY AND NON-DISCLOSURE</h2>
+              <p><strong>a. Confidential Information:</strong> Freelancer agrees not to disclose or use confidential information.</p>
+              <p><strong>b. Duration:</strong> The confidentiality obligations last for two (2) years post-agreement.</p>
+          </div>
+        
+          <hr class="my-6 border-gray-300">
+          <div class="pb-4 ">
+              <h2 class="text-lg font-semibold">7. INTELLECTUAL PROPERTY</h2>
+              <p><strong>a. Ownership:</strong>Upon receipt of full payment, all work products, deliverables, and any related materials produced under this Agreement shall become the exclusive property of Gigzera.</p>
+              <p><strong>b. Pre-existing Materials:</strong> Any pre-existing materials used by Freelancer shall remain Freelancer’s property; however, all modifications, enhancements, or integrations performed pursuant to the Services are deemed work-for-hire and shall be owned exclusively by Gigzera.</p>
+          </div>
+                  <!-- <p class="mt-2">
+                      <span class="font-bold">a. Ownership:</span> Upon receipt of full payment, all work products, deliverables, and any related materials produced under this Agreement shall become the exclusive property of Gigzera.
+                  </p>
+                  <p class="mt-2">
+                      <span class="font-bold">b. Pre-existing Materials:</span> Any pre-existing materials used by Freelancer shall remain Freelancer’s property; however, all modifications, enhancements, or integrations performed pursuant to the Services are deemed work-for-hire and shall be owned exclusively by Gigzera.
+                  </p>
+              </div> -->
+
+              <hr class="my-6 border-gray-300">
+
+          <h2 class="text-lg font-bold">8. WARRANTIES AND REPRESENTATIONS</h2>
+          <p><strong>a. Quality and Compliance:</strong> Freelancer warrants that all Services will be performed in a professional and workmanlike manner and in compliance with applicable industry standards.</p>
+          <p><strong>b. No Conflicts:</strong> Freelancer represents that the execution and performance of this Agreement does not breach any other contractual or legal obligations.</p>
+
+          <hr class="my-6 border-gray-300">
+
+          <h2 class="text-lg font-bold">9. INDEMNIFICATION</h2>
+          <p>Freelancer agrees to indemnify, defend, and hold harmless Gigzera, its affiliates, and their respective directors, officers, and employees from any and all claims, damages, losses, liabilities, or expenses arising from Freelancer’s negligence, willful misconduct, or breach of this Agreement.</p>
+
+          <hr class="my-6 border-gray-300">
+
+          <h2 class="text-lg font-bold">10. LIMITATION OF LIABILITY</h2>
+          <p>Except in cases of gross negligence or willful misconduct, neither Party shall be liable for any indirect, incidental, or consequential damages arising from or related to this Agreement.</p>
+          
+          <hr class="my-6 border-gray-300">
+
+          <h2 class="text-lg font-bold">11. TERM AND TERMINATION</h2>
+          <p><strong>a. Term:</strong> This Agreement shall commence on the Effective Date and continue until the Services are completed as set forth in the applicable SOW.</p>
+          <p><strong>b. Termination:</strong> Either Party may terminate this Agreement upon thirty (30) days’ written notice. In the event of termination, Freelancer shall be compensated for all Services performed up to the termination date, subject to client acceptance and invoicing procedures at Gigzera’s sole discretion.</p>
+          
+          <hr class="my-6 border-gray-300">
+
+          <h2 class="text-lg font-bold">12. DISPUTE RESOLUTION</h2>
+          <p><strong>a. Good Faith Negotiation:</strong> The Parties agree to attempt to resolve any disputes arising from this Agreement through direct negotiation in good faith.</p>
+          <p><strong>b. Arbitration:</strong> If disputes cannot be resolved through negotiation, they shall be submitted to binding arbitration. The arbitrator shall be appointed by Gigzera, and any costs incurred shall be allocated as directed by the arbitrator. The arbitration proceedings shall be conducted in English, and the seat of arbitration shall be <strong>Nandyal, Andhra Pradesh.</strong></p>
+          
+          <hr class="my-6 border-gray-300">
+
+          <h2 class="text-lg font-bold">13. GOVERNING LAW AND JURISDICTION</h2>
+          <p>This Agreement shall be governed by and construed in accordance with the laws of India. The Parties hereby irrevocably consent to the exclusive jurisdiction and venue of the courts located in <strong>Nandyal, Andhra Pradesh</strong> for any matters not subject to arbitration.</p>
+          
+          <hr class="my-6 border-gray-300">
+
+          <h2 class="text-lg font-bold">14. MISCELLANEOUS</h2>
+          <p><strong>a. Entire Agreement:</strong> This Agreement, including any SOWs, constitutes the entire agreement between the Parties and supersedes all prior oral or written agreements or representations.</p>
+          <p><strong>b. Amendments:</strong> Any amendments or modifications must be in writing and agreed to by both Parties.</p>
+      <p class="mt-2">
+              Parties. Gigzera reserves the right to unilaterally propose modifications, which, upon Freelancer’s continued use of the platform, shall be deemed accepted.
+          </p>
+          <p class="mt-2">
+              <span class="font-bold">c. Severability:</span> If any provision of this Agreement is held invalid or unenforceable, the remaining provisions shall continue in full force and effect.
+          </p>
+          <p class="mt-2">
+              <span class="font-bold">d. Notices:</span> All notices must be provided in writing and delivered to the addresses listed above or to any address later designated by either Party in writing.
+          </p>
+          <p class="mt-2">
+              <span class="font-bold">e. SOW Supremacy:</span> Any terms or conditions not expressly covered by this Agreement shall be governed solely by the applicable SOW, which shall be at Gigzera’s sole discretion.
+          </p>
+          <hr class="my-6 border-gray-300">
+          <p class="text-gray-600 mt-2">
+            <em>By registering on and using the Gigzera platform, the Freelancer acknowledges that they have read, understood, and agree to be bound by these Terms and Conditions, and accepts that any additional terms will be solely defined in the applicable SOW.</em>
+        </p>
+        </div>
+        <hr class="my-6 border-gray-300">
+        <div class="max-w-3xl mx-auto">
+          <h2 class="text-center text-lg font-bold uppercase  mt-2">TERMS AND CONDITIONS FOR THE VENDOR</h2>
+      
+          <p class="mt-2">
+              This Terms and Conditions for the Vendor is entered into by and between: 
+              <span class="font-bold">Gigzera</span> 006 Sprinkles, RGA Tech Park, Carmelaram, Sarjapur Rd, Kodathi, – 560035, India 
+              (“Gigzera” or the “Company”, including its successors and assigns) and the Vendor, who by registering on and using the 
+              Gigzera platform, unconditionally agrees to the following terms and conditions. Any additional or alternative terms proposed 
+              by the Vendor are hereby rejected unless expressly set forth in an approved SOW.
+          </p>
+      
+          <hr class="my-6 border-gray-300">
+      
+          <h3 class="text-lg font-bold mb-2">1. PURPOSE AND BUSINESS RELATIONSHIP</h3>
+      
+          <p class="text-gray-700">
+              <span class="font-bold">a. Purpose:</span> Gigzera operates as an IT work platform connecting clients with qualified 
+              vendors to submit competitive quotations for IT projects. This Agreement governs the terms under which vendors may 
+              participate by submitting quotations. Once a quotation is approved by a client, the work will be executed under a separate SOW.
+          </p>
+      
+          <p class="text-gray-700 mt-2">
+              <span class="font-bold">b. Business Relationship:</span> Vendor participation is strictly transactional. Gigzera provides 
+              the platform and infrastructure for vendors to access client projects and retains the exclusive right to determine all project 
+              engagements. Nothing in this Agreement shall grant the Vendor any rights beyond those explicitly stated herein.
+          </p>
+      
+          <hr class="my-6 border-gray-300">
+      
+          <h3 class="text-lg font-bold mb-2">2. SCOPE OF SERVICES AND DELIVERABLES</h3>
+      
+          <p class="text-gray-700 mt-2">
+              <span class="font-bold">a. Project-Specific Engagement:</span> For each project, the detailed scope of work will be 
+              defined in a separate SOW. The SOW shall include:
+          </p>
+      
+          <ul class="list-disc pl-10 mt-2 text-gray-700">
+              <li>A comprehensive description of the IT product or service to be provided.</li>
+              <li>Quality standards, performance criteria, and applicable deadlines.</li>
+              <li>Any other specific requirements, timelines, and milestones.</li>
+            </ul>
+              <p class="text-gray-700 mt-2">
+                <span class="font-bold">b. Additional Requirements:</span> Any matters not expressly covered in this Agreement shall be addressed solely in the applicable SOW, at Gigzera’s sole discretion.
+            </p>
+            <div class="max-w-3xl mx-auto">
+              <hr class="my-6 border-gray-300">
+              
+              <h2 class="font-bold text-lg">3. PAYMENT AND PAYMENT TERMS</h2>
+              <p><span class="font-semibold">a. Pricing and Fees:</span> For each project, the Vendor’s approved quotation, along with the applicable payment terms (including total amount, schedule, and milestones), will be specified in the SOW. Gigzera’s service charge will be added to the Vendor’s quotation.</p>
+              <p class="mt-2"><span class="font-semibold">b. Invoicing and Payment:</span> The Vendor shall issue invoices as outlined in the applicable SOW upon achievement of designated milestones. Gigzera will process payments within the timeframe specified in the SOW, subject to client approval of the delivered work.</p>
+              
+              <hr class="my-6 border-gray-300">
+              
+              <h2 class="font-bold text-lg">4. RIGHTS & OBLIGATIONS OF THE PARTIES</h2>
+              <p class="font-semibold">a. Obligations of Gigzera (Company):</p>
+              <ul class="list-disc pl-10">
+                  <li>Gigzera reserves the exclusive right to receive and review vendor quotations based on client requirements and to make final selections for project engagements.</li>
+                  <li>Gigzera shall provide clear and complete project details and requirements via the applicable SOW.</li>
+                  <li>Gigzera may, at its sole discretion, impose a platform or service fee on each approved vendor quotation.</li>
+                  <li>Gigzera may terminate any SOW or this Agreement for any breach by the Vendor.</li>
+              </ul>
+              
+              <p class="font-semibold ">b. Obligations of the Vendor:</p>
+              <ul class="list-disc pl-10">
+                  <li>The Vendor shall provide IT services in a professional, workmanlike manner and strictly in accordance with the specifications, quality standards, and deadlines set forth in the applicable SOW.</li>
+                  <li>The Vendor shall comply with all Gigzera policies, procedures, and guidelines as published on the platform.</li>
+                  <li>The Vendor shall safeguard all confidential and proprietary information provided by Gigzera or its clients and use such information solely for fulfilling obligations under this Agreement and any SOW.</li>
+                  <li>The Vendor shall not copy, transfer, or misuse any data or information of Gigzera without Gigzera’s explicit written consent.</li>
+                  <li>The Vendor agrees to indemnify and hold Gigzera harmless from any claims, damages, or losses arising from the Vendor’s negligence or breach of this Agreement.</li>
+
+                </ul>
+          </div>
+          <hr class="my-6 border-gray-300">
+          <h2 class="font-bold text-lg">5. WARRANTIES AND REPRESENTATIONS</h2>
+          <ul class="list-disc pl-10">
+              <li>The Vendor represents and warrants that it is fully authorized to enter into this Agreement and perform the obligations hereunder.</li>
+              <li>The Vendor further warrants that all services will be performed in accordance with industry standards and in a professional and workmanlike manner.</li>
+          </ul>
+          <hr class="my-6 border-gray-300">
+          <div class="max-w-4xl mx-auto ">
+            <h2 class="text-xl font-bold  ">6. INDEMNIFICATION AND LIMITATION OF LIABILITY</h2>
+            
+            <h3 class="text-lg font-semibold">a. Indemnification:</h3>
+            <p class="mb-2">The Vendor agrees to indemnify, defend, and hold harmless Gigzera, its officers, employees, agents, and clients from any claims, damages, liabilities, costs, or expenses (including reasonable attorneys’ fees) arising from:</p>
+            <ul class="list-disc pl-10 space-y-1">
+                <li>Any breach of this Agreement or the applicable SOW;</li>
+                <li>The Vendor’s negligence, willful misconduct, or misrepresentation; or</li>
+                <li>Any third-party claim related to the services provided.</li>
+            </ul>
+            
+            <h3 class="text-lg font-semibold ">b. Limitation of Liability:</h3>
+            <p>Except in cases of gross negligence or willful misconduct, neither Party shall be liable for any indirect, incidental, consequential, or punitive damages arising out of this Agreement or any SOW.</p>
+        </div>
+        <hr class="my-6 border-gray-300">
+        <div class="max-w-4xl mx-auto ">
+          <h2 class="text-xl font-bold ">7. FORCE MAJEURE</h2>
+          <p>Neither Party shall be liable for any failure or delay in performing its obligations under this Agreement if such failure or delay is due to events beyond its reasonable control, including but not limited to natural disasters, acts of government, labor disputes, or other circumstances beyond the affected Party’s control.</p>
+          <hr class="my-6 border-gray-300">
+
+          <h2 class="text-xl font-bold ">8. INTELLECTUAL PROPERTY RIGHTS</h2>
+          <p><strong>a. Ownership:</strong> Unless otherwise expressly provided in the applicable SOW, all intellectual property rights arising from work performed under this Agreement shall be owned exclusively by Gigzera or its client, as applicable.</p>
+          <p><strong>b. Pre-Existing Materials:</strong> If the Vendor incorporates any pre-existing intellectual property into its deliverables, such materials must be identified in the applicable SOW. The Vendor retains ownership of its pre-existing IP; however, any modifications or enhancements made specifically for the project will be deemed work-for-hire and become the exclusive property of Gigzera or its client.</p>
+          <hr class="my-6 border-gray-300">
+
+          <h2 class="text-xl font-bold ">9. CONFIDENTIALITY</h2>
+          <p><strong>a. Confidential Information:</strong> Each Party acknowledges that it may receive confidential or proprietary information from the other Party. “Confidential Information” includes, without limitation, client data, technical details, pricing, project specifications, and any other non-public information designated as confidential.</p>
+            <p><strong>b. Obligations: </strong></p>
+            <p class="mt-2">The Vendor agrees to:</p>
+            <ul class="list-disc list-inside mt-2 pl-10">
+                <li>Use Confidential Information solely for the purpose of fulfilling its obligations under this Agreement and the applicable SOW.</li>
+            </ul>
+            <ul class="list-disc list-inside mt-2 pl-10">
+                <li>Not disclose Confidential Information to any third party without Gigzera’s prior written consent, except as required by law.</li>
+                <li>Implement reasonable security measures to protect the confidentiality of such information.</li>
+            </ul>
+        </div>
+        <hr class="my-6 border-gray-300">
+
+          <h2 class="text-xl font-bold ">10. TERM AND TERMINATION</h2>
+          <p><strong>a. Term:</strong> This Agreement shall commence on the Effective Date and continue until terminated by Gigzera. Each SOW executed under this Agreement will have its own term as defined therein.</p>
+          <p><strong>b. Termination:</strong> Gigzera may terminate this Agreement or any individual SOW at its sole discretion upon written notice to the Vendor. Termination shall not relieve the Vendor of obligations incurred prior to termination, including the obligation to complete any work accepted by a client.</p>
+          <hr class="my-6 border-gray-300">
+
+          <h2 class="text-xl font-bold ">11. MISCELLANEOUS PROVISIONS</h2>
+          <ul class="list-disc ml-8 mb-4 pl-10">
+              <li><strong>Notices:</strong> All notices and communications under this Agreement shall be in writing and sent to the addresses provided by Gigzera. Notices may be delivered via electronic mail or any mutually agreed method.</li>
+              <li><strong>Waiver:</strong> No waiver by Gigzera of any breach by the Vendor shall be deemed a waiver of any subsequent breach.</li>
+              <li><strong>Severability:</strong> If any provision of this Agreement is found invalid or unenforceable, the remaining provisions shall remain in full force and effect.</li>
+              <li><strong>Assignment:</strong> The Vendor may not assign its rights or obligations under this Agreement without Gigzera’s prior written consent.</li>
+              <li><strong>Governing Law and Jurisdiction:</strong> This Agreement shall be governed by the laws of India. The Vendor irrevocably consents to the exclusive jurisdiction and venue of the courts located in Nandyal, Andhra Pradesh, India for any disputes not subject to arbitration.</li>
+              <li><strong>Entire Agreement:</strong> This Agreement, together with any applicable SOW, constitutes the entire agreement between the Parties and supersedes all prior communications, agreements, or understandings.</li>
+              <li><strong>Dispute Resolution:</strong> Any disputes arising out of or in connection with this Agreement shall first be resolved amicably. Failing resolution, disputes shall be submitted to binding arbitration under the Arbitration and Conciliation Act, 1996, with arbitration proceedings held in Nandyal, Andhra Pradesh and conducted in English.</li>
+              <li><strong>Amendments:</strong> This Agreement may only be amended by a written instrument executed by Gigzera. Continued use of the Gigzera platform by the Vendor constitutes acceptance of any modifications made by Gigzera.</li>
+          </ul>
+          <p class="text-gray-600 mt-2">
+            <em>By registering on and using the Gigzera platform, the Vendor acknowledges that it has read, understood, and agrees to be bound by the terms and conditions of this Agreement. Any matters not explicitly covered herein will be addressed in the applicable SOW, at Gigzera’s sole discretion.</em>
+        </p>
+          <p class="mt-4 font-semibold">This is effective upon the Vendor’s registration on the Gigzera platform. No separate signature or additional vendor information is required.</p>
+      </div>
+          </div>
+      </div>
+  </div>
+  <!-- Privacy Policy Modal -->
+  <div
+    id="privacyModal"
+    class="fixed inset-0 hidden bg-white-100 backdrop-blur-sm bg-opacity-50 overflow-y-auto flex items-center justify-center"
+  >
+    <div
+      class="bg-white rounded-lg w-3/4 max-w-2xl p-6 relative max-h-[80vh] overflow-y-auto"
+    >
+      <span
+        class="absolute top-3 right-4 text-gray-600 text-3xl cursor-pointer hover:text-red-500"
+        onclick="closeModal('privacyModal')"
+        >&times;</span
+      >
+      <h2 class="text-xl font-bold mb-2">Privacy Policy</h2>
+      <div class="p-4 border border-gray-300 rounded max-h-64 overflow-y-auto">
+        <div class="text-center">
+          <h1 class="text-2xl font-bold">Privacy Policy</h1>
+        </div>
+        <div class="flex justify-end mt-2">
+          <p class="font-semibold">Effective Date: [Insert Date]</p>
+        </div>
+        <h2 class="text-2xl font-bold mt-2">1. Introduction</h2>
+        <p class="mt-2 text-gray-700">
+          Gigzera IT Consulting (“Gigzera”, “we”, “our”, or “us”) is committed
+          to safeguarding your personal information. This Privacy Policy
+          explains the types of data we collect when you use our website and
+          mobile application (the “Platform”), how that data is managed, and the
+          measures we employ to secure it. This policy applies to all users of
+          our Platform and is intended to offer a clear understanding of our
+          privacy practices.
+        </p>
+        <div class="mt-2">
+          <h2 class="text-2xl font-bold">2. Information We Collect</h2>
+
+          <h4 class="text-xl font-semibold px-2 py-1 mr-2">
+            2.1 Personal Information
+          </h4>
+
+          <p class="text-gray-700">
+            We collect personal data that identifies you as an individual. This
+            includes:
+          </p>
+
+          <ul class="mt-2 space-y-2 text-gray-700">
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Contact Information:</span>
+                <p class="ml-4">
+                  Your full name, email address, mobile number, and postal
+                  address. These details enable us to manage communications and
+                  account-related correspondence.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Profile Information:</span>
+                <p class="ml-4">
+                  Data such as your job title, company name, profile picture,
+                  educational background, certifications, professional
+                  experience, and skill set. This information helps us tailor
+                  your experience on the Platform and support effective matching
+                  between employers and freelancers.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Account Credentials:</span>
+                <p class="ml-4">
+                  Information such as your chosen username and password, which
+                  is necessary to create and secure your account.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Payment Information:</span>
+                <p class="ml-4">
+                  Details required for processing transactions (handled via
+                  secure, third-party payment systems), including billing
+                  addresses and transaction records.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Usage Data:</span>
+                <p class="ml-4">
+                  Technical data including your IP address, browser type,
+                  operating system, device information, and logs of your
+                  interactions on our Platform. This data is captured
+                  automatically as you navigate through our services.
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="space-y-4">
+          <h2 class="text-xl mt-2 font-bold">2.2 Non-Personal Information</h2>
+          <p>
+            In addition to personal data, we collect non-identifying information
+            that does not directly reveal your identity. This includes:
+          </p>
+          <ul class="space-y-2">
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Aggregated Data:</span>
+                <p class="ml-4">
+                  Statistical and analytical information derived from user
+                  interactions on the Platform, such as usage patterns and
+                  traffic trends.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Technical Information:</span>
+                <p class="ml-4">
+                  Data collected through cookies and similar technologies that
+                  support performance analysis, system diagnostics, and
+                  enhancements to the overall user experience.
+                </p>
+              </div>
+            </li>
+          </ul>
+
+          <h2 class="text-xl mt-2 font-bold">3. How We Use Your Information</h2>
+          <p>
+            The information we collect is used for multiple operational
+            purposes, including:
+          </p>
+          <ul class="space-y-2">
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Service Provision:</span>
+                <p class="ml-4">
+                  To create and maintain your account, process transactions, and
+                  enable you to access our services.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Platform Improvement:</span>
+                <p class="ml-4">
+                  To analyze usage trends, monitor system performance, and
+                  develop new features that enhance functionality and user
+                  experience.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Personalization:</span>
+                <p class="ml-4">
+                  To tailor content and features to your preferences, ensuring a
+                  customized interaction with our Platform.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Communication:</span>
+                <p class="ml-4">
+                  To send you notifications, service updates, support messages,
+                  and, where applicable, marketing communications about new
+                  features or offerings.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold"
+                  >Legal and Security Compliance:</span
+                >
+                <p class="ml-4">
+                  To comply with legal obligations, respond to lawful requests,
+                  and protect our rights and the security of our Platform.
+                </p>
+              </div>
+            </li>
+          </ul>
+
+          <h2 class="text-xl font-bold mt-2">4. Sharing and Disclosure</h2>
+          <p>
+            We share your information only in specific circumstances and under
+            controlled conditions:
+          </p>
+          <ul class="space-y-2">
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Service Providers:</span>
+                <p class="ml-4">
+                  Your data may be shared with reputable third-party service
+                  providers (e.g., payment processors, hosting services,
+                  analytics firms) who perform functions on our behalf. These
+                  partners adhere to strict confidentiality and data protection
+                  standards.
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="space-y-4">
+          <ul class="space-y-2">
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Legal Requirements:</span>
+                <p class="ml-4">
+                  We may disclose information if required to do so by law, in
+                  response to legal processes such as subpoenas, court orders,
+                  or governmental requests, ensuring compliance with applicable
+                  regulations.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Business Transactions:</span>
+                <p class="ml-4">
+                  In events such as mergers, acquisitions, or asset sales, your
+                  information might be transferred to the acquiring entity. In
+                  such cases, the recipient is bound by obligations to maintain
+                  your privacy as described herein.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Consent-Based Sharing:</span>
+                <p class="ml-4">
+                  We may share your data with third parties if you have provided
+                  explicit consent for a specific purpose.
+                </p>
+              </div>
+            </li>
+          </ul>
+
+          <h2 class="text-xl font-bold mt-2">5. Data Security</h2>
+          <p>
+            We implement robust security measures to protect your data from
+            unauthorized access or disclosure. These measures include:
+          </p>
+          <ul class="space-y-2">
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Encryption:</span>
+                <p class="ml-4">
+                  Sensitive data is encrypted during transmission and storage to
+                  prevent interception or unauthorized access.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Access Controls:</span>
+                <p class="ml-4">
+                  Access to personal data is restricted to authorized personnel
+                  only, based on role and need.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Regular Audits:</span>
+                <p class="ml-4">
+                  We periodically review our security practices and update our
+                  protocols to ensure ongoing protection.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Physical Security:</span>
+                <p class="ml-4">
+                  Our data centers and servers are housed in secure facilities
+                  with controlled access to protect against physical breaches.
+                </p>
+              </div>
+            </li>
+          </ul>
+
+          <h2 class="text-xl font-bold mt-2">6. Data Retention</h2>
+          <p>
+            We retain your personal information only for the duration necessary
+            to fulfill the purposes for which it was collected. Retention
+            periods vary based on the type of data and legal obligations. When
+            data is no longer required for service provision or compliance, we
+            follow secure deletion or anonymization processes to prevent further
+            use or disclosure.
+          </p>
+
+          <h2 class="text-xl font-bold mt-2">7. Your Rights and Choices</h2>
+          <p>
+            You have rights regarding the personal data we hold about you. These
+            rights include:
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          <ul class="space-y-2">
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Access and Correction:</span>
+                <p class="ml-4">
+                  You may request to review and update your personal information
+                  if you find any inaccuracies.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Deletion:</span>
+                <p class="ml-4">
+                  You can request that we remove your data, subject to any legal
+                  or contractual restrictions that may require retention.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Restriction and Objection:</span>
+                <p class="ml-4">
+                  In certain circumstances, you have the right to limit how we
+                  process your information or object to specific processing
+                  activities.
+                </p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2 pl-10">•</span>
+              <div>
+                <span class="font-semibold">Data Portability:</span>
+                <p class="ml-4">
+                  Where applicable, you may request a copy of your data in a
+                  structured, commonly used, and machine-readable format.
+                </p>
+              </div>
+            </li>
+          </ul>
+
+          <p class="mt-4">
+            To exercise these rights, you may contact us at
+            <a href="mailto:Gigzera@gmail.com" class="text-blue-600 underline"
+              >Gigzera@gmail.com</a
+            >.
+          </p>
+
+          <h2 class="text-xl font-bold mt-2">8. Children’s Privacy</h2>
+          <p>
+            Our Platform is intended for users who are 18 years of age or older.
+            We do not knowingly collect personal data from minors. In the event
+            that data from a minor is inadvertently collected, we will take
+            prompt steps to delete it, ensuring compliance with applicable
+            privacy regulations.
+          </p>
+
+          <h2 class="text-xl font-bold mt-2">
+            9. Changes to This Privacy Policy
+          </h2>
+          <p>
+            We may update this Privacy Policy periodically. When updates occur,
+            the revised version will be posted on our Platform with an updated
+            “Effective Date.” Continued use of our Platform after such changes
+            indicates your acceptance of the new terms.
+          </p>
+
+          <h2 class="text-xl font-bold mt-2">10. Contact Information</h2>
+          <p>
+            If you have any questions, concerns, or requests regarding this
+            Privacy Policy or your personal data, please contact us at:
+          </p>
+          <p class="font-semibold">Gigzera IT Consulting</p>
+          <p>
+            Email:
+            <a href="mailto:Gigzera@gmail.com" class="text-blue-600 underline"
+              >Gigzera@gmail.com</a
+            >
+          </p>
+        </div>
+
+        <div class="text-base font-serif">
+          <h1 class="text-center text-2xl font-bold">Cookie Policy</h1>
+          <div class="flex justify-end mt-2">
+            <p class="font-semibold">Effective Date: [Insert Date]</p>
+          </div>
+
+          <h2 class="text-xl font-bold mt-2">1. Introduction</h2>
+          <p>
+            This Cookie Policy explains how Gigzera uses cookies and related
+            tracking technologies on our website and mobile application (the
+            “Platform”). This policy provides detailed information on the types
+            of cookies we use and how you can manage them.
+          </p>
+
+          <h2 class="text-xl font-bold mt-2">2. What Are Cookies?</h2>
+          <p>
+            Cookies are small text files stored on your device by a website.
+            They enable the Platform to remember your interactions and
+            preferences, and help improve the overall user experience by
+            retaining session information and enhancing navigation.
+          </p>
+
+          <h2 class="text-xl font-bold mt-2">3. How We Use Cookies</h2>
+          <p>
+            We deploy cookies for various functional and analytical purposes,
+            including:
+          </p>
+
+          <ul class="list-disc pl-10 space-y-2">
+            <li>
+              <span class="font-semibold">Essential Cookies:</span>
+              These are necessary for the core functionality of the Platform,
+              such as maintaining secure sessions, enabling login features, and
+              ensuring smooth navigation across pages.
+            </li>
+            <li>
+              <span class="font-semibold"
+                >Analytics and Performance Cookies:</span
+              >
+              These cookies record information about how users interact with the
+              Platform, including page visits and error messages. This
+              information assists us in understanding usage patterns and
+              improving the performance and reliability of our services.
+            </li>
+            <li>
+              <span class="font-semibold">Functionality Cookies:</span>
+              These cookies store your preferences (such as language settings
+              and login details) to provide a more personalized experience
+              during subsequent visits.
+            </li>
+            <li>
+              <span class="font-semibold"
+                >Advertising and Marketing Cookies:</span
+              >
+              These cookies are used to serve targeted advertisements and
+              measure the effectiveness of our marketing efforts. They may also
+              be used by third-party advertising partners to display ads based
+              on your browsing activity.
+            </li>
+          </ul>
+
+          <h2 class="text-xl font-bold mt-2">4. Types of Cookies We Use</h2>
+          <ul class="list-disc pl-10 space-y-2">
+            <li>
+              <span class="font-semibold">Session Cookies:</span>
+              Temporary cookies that are automatically deleted when you close
+              your browser. They help manage your session as you navigate our
+              Platform.
+            </li>
+            <li>
+              <span class="font-semibold">Persistent Cookies:</span>
+              Cookies that remain on your device for a set period or until you
+              manually remove them. They store preferences and other information
+              across browsing sessions.
+            </li>
+            <li>
+              <span class="font-semibold">First-Party Cookies:</span>
+              Cookies that are set directly by our Platform and are only
+              accessible by us.
+            </li>
+            <li>
+              <span class="font-semibold">Third-Party Cookies:</span>
+              Cookies that are set by external partners (such as analytics or
+              advertising providers) whose services are integrated into our
+              Platform.
+            </li>
+          </ul>
+
+          <h2 class="text-xl font-bold mt-2">5. Managing Cookies</h2>
+          <p>
+            You have control over cookie settings through your browser. Most
+            browsers provide options to:
+          </p>
+          <ul class="list-disc pl-10 space-y-2">
+            <li>Accept or block cookies.</li>
+            <li>Delete cookies stored on your device.</li>
+            <li>
+              Adjust cookie preferences to restrict or allow cookies from
+              specific websites. Note that modifying your cookie settings may
+              impact the functionality and performance of the Platform.
+            </li>
+          </ul>
+
+          <h2 class="text-xl font-bold mt-2">
+            6. More Information About Cookies
+          </h2>
+          <p>
+            For additional details on cookies, including instructions on how to
+            manage and delete them, you can consult external resources such as
+            <a
+              href="https://www.allaboutcookies.org"
+              class="text-blue-600 underline"
+              >www.allaboutcookies.org</a
+            >.
+          </p>
+
+          <h2 class="text-xl font-bold mt-2">
+            7. Changes to This Cookie Policy
+          </h2>
+          <p>
+            This Cookie Policy may be revised periodically. The updated policy
+            will be posted on our Platform with a revised
+            <strong>“Effective Date.”</strong> Your continued use of our
+            Platform following any changes constitutes acceptance of the updated
+            policy.
+          </p>
+
+          <h2 class="text-xl font-bold mt-2">8. Contact Information</h2>
+          <p>
+            For any questions or concerns regarding our use of cookies, please
+            contact:
+            <strong>Gigzera IT Consulting</strong>
+          </p>
+          <p>
+            Email:
+            <a href="mailto:Gigzera@gmail.com" class="text-blue-600 underline"
+              >Gigzera@gmail.com</a
+            >
+          </p>
+
+          <hr class="my-4 border-gray-300 mt-2 mb-2" />
+
+          <p>
+            By using the <strong>Gigzera Platform</strong>, you acknowledge that
+            you have read and understand the terms set forth in both this
+            Privacy Policy and Cookie Policy.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 <!-- js -->
 {% block js %}
+<script>
+  function openModal(modalId) {
+    document.getElementById(modalId).classList.remove("hidden");
+  }
+  function closeModal(modalId) {
+    document.getElementById(modalId).classList.add("hidden");
+  }
+  document
+    .getElementById("openTerms")
+    .addEventListener("click", function (event) {
+      event.preventDefault();
+      openModal("termsModal");
+    });
+  document
+    .getElementById("openPrivacy")
+    .addEventListener("click", function (event) {
+      event.preventDefault();
+      openModal("privacyModal");
+    });
+</script>
 <script src="{% static 'js/findajob.js' %}"></script>
 {% endblock %}

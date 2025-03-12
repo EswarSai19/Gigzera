@@ -652,12 +652,11 @@
           </span>
         </div>
         <a
-          href="dummy-freelancers-data.pdf"
+          href="{% url 'download_csv' table_name='db_schemas_freelancer' %}"
           download
           class="text-blue-500 text-xl"
-        >
-          <i class="fa-solid fa-download"></i>
-        </a>
+          ><i class="fa-solid fa-download"></i
+        ></a>
       </div>
 
       <div
@@ -672,9 +671,12 @@
             >
           </span>
         </div>
-        <a href="dummy-project-data.pdf" download class="text-blue-500 text-xl">
-          <i class="fa-solid fa-download"></i>
-        </a>
+        <a
+          href="{% url 'download_csv' table_name='db_schemas_projectsdisplay' %}"
+          download
+          class="text-blue-500 text-xl"
+          ><i class="fa-solid fa-download"></i
+        ></a>
       </div>
 
       <div
@@ -690,12 +692,11 @@
           </span>
         </div>
         <a
-          href="dummy-recruiter-data.pdf"
+          href="{% url 'download_csv' table_name='db_schemas_client' %}"
           download
           class="text-blue-500 text-xl"
-        >
-          <i class="fa-solid fa-download"></i>
-        </a>
+          ><i class="fa-solid fa-download"></i
+        ></a>
       </div>
 
       <div
@@ -712,9 +713,12 @@
             >
           </span>
         </div>
-        <a href="dummy-finance-data.pdf" download class="text-blue-500 text-xl">
-          <i class="fa-solid fa-download"></i>
-        </a>
+        <a
+          href="{% url 'download_csv' table_name='db_schemas_projectquote' %}"
+          download
+          class="text-blue-500 text-xl"
+          ><i class="fa-solid fa-download"></i
+        ></a>
       </div>
     </div>
   </div>

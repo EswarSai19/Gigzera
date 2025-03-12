@@ -246,6 +246,45 @@ body {
     background-color: #0059b3;
 }
 
+/* toggle eye button */
+/* Hide default password toggle in Edge/IE */
+input::-ms-reveal,
+input::-ms-clear {
+    display: none;
+}
+
+/* For newer Edge versions that might use different implementation */
+::-webkit-credentials-auto-fill-button,
+::-webkit-caps-lock-indicator,
+::-webkit-contacts-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+    height: 0;
+    width: 0;
+    margin: 0;
+}
+
+/* Additional rules for mobile browsers */
+input[type="password"]::-webkit-textfield-decoration-container {
+    visibility: hidden;
+}
+
+input[type="password"]::-webkit-inner-spin-button,
+input[type="password"]::-webkit-outer-spin-button,
+input[type="password"]::-webkit-clear-button {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+}
+
+/* For iOS Safari */
+input[type="password"] {
+    -webkit-text-security: disc !important;
+}
+
+/* Toggle completed */
+
 .hide-on-desktop {
     display: none;
 }

@@ -326,39 +326,62 @@
 
       <!-- Modal Body (Scrollable) -->
       <div class="p-6 flex-1 overflow-y-auto">
-        <div class="file-upload-cert mb-6">
-          <div
-            class="upload-area-cert border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
-            id="file-upload-container"
-          >
-            <span class="upload-icon-cert text-2xl">&#8682;</span>
-            <p class="mt-2">Drag and drop your certificate here</p>
-            <p class="text-sm text-gray-500">
-              Supported formats: PDF, PNG, JPG
-            </p>
-            <button
-              class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-              onclick="document.getElementById('file-input-cert').click()"
-            >
-              Browse Files
-            </button>
-            <input
-              type="file"
-              id="file-input-cert"
-              accept=".pdf, .png, .jpg"
-              hidden
-              onchange="displayUploadedFile()"
-            />
-          </div>
-        </div>
-
         <!-- Form Section -->
         <form
           class="certification-form space-y-4"
           method="POST"
+          enctype="multipart/form-data"
           action="{% url 'add_certification' %}"
         >
           {% csrf_token %}
+          <div class="file-upload-cert mb-6">
+            <div
+              class="upload-area-cert border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+              id="file-upload-container"
+            >
+              <span class="upload-icon-cert text-2xl">&#8682;</span>
+              <p class="mt-2">Drag and drop your certificate here</p>
+              <p class="text-sm text-gray-500">
+                Supported formats: PDF, PNG, JPG
+              </p>
+              <button
+                type="button"
+                class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                onclick="document.getElementById('file-input-cert').click()"
+              >
+                Browse Files
+              </button>
+              <input
+                type="file"
+                name="cert_file"
+                id="file-input-cert"
+                accept=".pdf, .png, .jpg"
+                hidden
+              />
+            </div>
+            <!-- Display Uploaded File -->
+            <div
+              class="uploaded-file-cert mt-4 hidden flex items-center justify-between bg-gray-100 p-3 rounded-lg"
+              id="uploaded-file-cert"
+            >
+              <p class="flex items-center space-x-2">
+                <span class="file-icon-cert text-gray-600">&#128462;</span>
+                <span id="file-name-cert" class="text-gray-700">File Name</span>
+              </p>
+              <div class="flex items-center space-x-4">
+                <span id="file-size-cert" class="text-gray-500 text-sm"
+                  >File Size</span
+                >
+                <span
+                  class="remove-cert text-red-500 cursor-pointer"
+                  onclick="removeFile()"
+                >
+                  &times;
+                </span>
+              </div>
+            </div>
+          </div>
+
           <div>
             <label
               for="certification-name"
@@ -478,40 +501,64 @@
 
       <!-- Modal Body (Scrollable) -->
       <div class="p-6 flex-1 overflow-y-auto">
-        <div class="file-upload-cert mb-6">
-          <div
-            class="upload-area-cert border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
-            id="file-upload-container"
-          >
-            <span class="upload-icon-cert text-2xl">&#8682;</span>
-            <p class="mt-2">Drag and drop your certificate here</p>
-            <p class="text-sm text-gray-500">
-              Supported formats: PDF, PNG, JPG
-            </p>
-            <button
-              class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-              onclick="document.getElementById('file-input-cert').click()"
-            >
-              Browse Files
-            </button>
-            <input
-              type="file"
-              id="file-input-cert"
-              accept=".pdf, .png, .jpg"
-              hidden
-              onchange="displayUploadedFile()"
-            />
-          </div>
-        </div>
-
         <!-- Form Section -->
         <form
           class="certification-form space-y-4"
           method="POST"
           action="{% url 'edit_cert' %}"
+          enctype="multipart/form-data"
         >
           {% csrf_token %}
           <input type="hidden" name="cert_id" id="cert_id" />
+          <div class="file-upload-cert mb-6">
+            <div
+              class="upload-area-cert border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+              id="file-upload-container2"
+            >
+              <span class="upload-icon-cert text-2xl">&#8682;</span>
+              <p class="mt-2">Drag and drop your certificate here</p>
+              <p class="text-sm text-gray-500">
+                Supported formats: PDF, PNG, JPG
+              </p>
+              <button
+                type="button"
+                class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                onclick="document.getElementById('file-input-cert2').click()"
+              >
+                Browse Files
+              </button>
+              <input
+                type="file"
+                id="file-input-cert2"
+                name="cert_file"
+                accept=".pdf, .png, .jpg"
+                hidden
+              />
+            </div>
+            <!-- Display Uploaded File -->
+            <div
+              class="uploaded-file-cert mt-4 hidden flex items-center justify-between bg-gray-100 p-3 rounded-lg"
+              id="uploaded-file-cert2"
+            >
+              <p class="flex items-center space-x-2">
+                <span class="file-icon-cert text-gray-600">&#128462;</span>
+                <span id="file-name-cert2" class="text-gray-700"
+                  >File Name</span
+                >
+              </p>
+              <div class="flex items-center space-x-4">
+                <span id="file-size-cert2" class="text-gray-500 text-sm"
+                  >File Size</span
+                >
+                <span
+                  class="remove-cert text-red-500 cursor-pointer"
+                  onclick="removeEditFile()"
+                >
+                  &times;
+                </span>
+              </div>
+            </div>
+          </div>
           <div>
             <label
               for="certification-name"
