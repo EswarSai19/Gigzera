@@ -266,18 +266,45 @@ def dashboard(request):
     ongoingProjects = OngoingProjects.objects.all()
     yourProjects = ProjectQuote.objects.filter(admin_bid_status='approved', client_bid_status='approved', admin_id=admin_id)
     bids = ProjectQuote.objects.all().order_by('-created_at')[:3]
+    total_revenue = 0.0
+    pending_payment = 0.0
+    completed_ms_payment = 0.0
+    tot_advance_payment = 0.0
     for bid in bids:
         job = ProjectsDisplay.objects.filter(opportunityId=bid.opportunityId).first()
         user = Freelancer.objects.filter(userId=bid.freelancer_id).first()
         bid.title = job.title if job else "No Title"  # Fixed variable name
         bid.username = user.name
         bid.imgUrl = user.profilePic
+        if bid.currency=="INR":
+            total_revenue += float(bid.admin_margin)
+            tot_advance_payment += float(bid.advance_payment)
+
+    milestones = Milestones.objects.filter(currency="INR").all()
+    for ms in milestones:
+        if ms.status == "Pending":
+            pending_payment += float(ms.amount)
+        elif ms.status == "Completed":
+            completed_ms_payment += float(ms.amount)
+        
+    print(f"The totoal revenue is {total_revenue}, total advance payment: {tot_advance_payment} pending payment {pending_payment}, completed ms amount {completed_ms_payment}")
+
+    completed_payments = tot_advance_payment + completed_ms_payment
+    final_total_revenue = format_currency(total_revenue, "INR")
+    final_pending_payment = format_currency(pending_payment, "INR")
+    final_completed_payment = format_currency(completed_payments, "INR")
+
+
+    
     context = {
         'no_of_freelancers': format_currency(len(freelancers), "INR"),
         'no_of_clients': format_currency(len(clients), "INR"),
         'no_of_ogp': format_currency(len(ongoingProjects), "INR"),
         'no_of_yp': format_currency(len(yourProjects), "INR"),
-        'bids': bids
+        'bids': bids,
+        'final_total_revenue':final_total_revenue,
+        'final_pending_payment':final_pending_payment,
+        'final_completed_payment':final_completed_payment,
     }
     print(context)
     return render(request, 'myadmin/dashboard.html', context)
@@ -339,12 +366,17 @@ def freelancerProfileView(request):
     employment_history = EmploymentHistory.objects.filter(freelancer_id=user_id).order_by('-start_date')
     certificates = Certificate.objects.filter(freelancer_id=user_id).order_by('-issue_date')
     skills = Skill.objects.filter(freelancer_id=user_id).order_by('-updated_at')
+    current_projects = OngoingProjects.objects.filter(freelancer_id=user_id).order_by('-updated_at').all()
+    for project in current_projects:
+        job = ProjectsDisplay.objects.filter(opportunityId=project.opportunityId).first()
+        project.title = job.title
 
     context = {
         'user': user,
         'employment_history': employment_history,  # Corrected the assignment
         'certificates': certificates,
         'skills':skills,
+        'current_projects':current_projects,
     }
     print(context)
     return render(request, 'myadmin/ad_freelancerProfileView.html', context)

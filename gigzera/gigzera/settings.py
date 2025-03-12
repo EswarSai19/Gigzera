@@ -46,9 +46,6 @@ INSTALLED_APPS = [
     'db_schemas',
     'myadmin',
 
-    # mobile apps
-    'non_register_mb',
-
     # custom
     'storages',
 ]

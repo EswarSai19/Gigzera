@@ -226,7 +226,7 @@ def submit_freelancer(request):
                     designation=designation,
                     education=education,
                     certifications=certifications,
-                    experience=experience_value,
+                    experience=experience,
                     skills=skills,
                     social_media=social_media,
                     password=password1,
