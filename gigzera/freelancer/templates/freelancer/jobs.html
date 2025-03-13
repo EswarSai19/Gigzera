@@ -196,18 +196,14 @@
       <br />
     </div>
     <section class="text-section-left hide-on-mobile">
-      <div
-        class="relative w-full h-[180px] max-w-lg mx-auto overflow-hidden rounded-lg shadow-lg mt-8"
-      >
-        <div class="slider slider-4 relative w-full h-56">
+      <div class="relative overflow-hidden rounded-lg mt-4">
+        <div>
           {% for img in images %}
-          <div
-            class="slide slide-4 absolute w-full h-full opacity-0 transition-opacity duration-1000 cursor-pointer pointer-events-none"
-          >
+          <div class="slide-left">
             <img
               src="{{img.media_url}}"
               alt="Advertisement"
-              class="w-full h-full object-cover"
+              class="city-image-left"
             />
           </div>
           {% endfor %}

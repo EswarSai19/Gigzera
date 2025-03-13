@@ -195,7 +195,7 @@
       <p>{{web_obj.anc_text}}</p>
       <br />
     </div>
-    <section class="text-section-left hide-on-mobile">
+    <!-- <section class="text-section-left hide-on-mobile">
       <div
         class="relative w-full h-[180px] max-w-lg mx-auto overflow-hidden rounded-lg shadow-lg mt-8"
       >
@@ -208,6 +208,21 @@
               src="{{img.media_url}}"
               alt="Advertisement"
               class="w-full h-full object-cover"
+            />
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section> -->
+    <section class="text-section-left hide-on-mobile">
+      <div class="relative overflow-hidden rounded-lg mt-4">
+        <div>
+          {% for img in images %}
+          <div class="slide-left">
+            <img
+              src="{{img.media_url}}"
+              alt="Advertisement"
+              class="city-image-left"
             />
           </div>
           {% endfor %}
