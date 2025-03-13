@@ -136,20 +136,22 @@ setInterval(() => {
   showSlideLeft(currentSlideLeft);
 }, 5000);
 
-const filterInput = document.getElementById("job-filter");
+const filterInputs = document.querySelectorAll("#job-filter");
 const jobCards = document.querySelectorAll(".job-card");
 
-filterInput.addEventListener("input", function () {
-  const filterValue = filterInput.value.toLowerCase();
+filterInputs.forEach((filterInput) => {
+  filterInput.addEventListener("input", function () {
+    const filterValue = filterInput.value.toLowerCase();
 
-  jobCards.forEach((card) => {
-    const jobTitle = card.getAttribute("data-title").toLowerCase();
+    jobCards.forEach((card) => {
+      const jobTitle = card.getAttribute("data-title").toLowerCase();
 
-    if (jobTitle.includes(filterValue)) {
-      card.style.display = "block"; // Show the job card
-    } else {
-      card.style.display = "none"; // Hide the job card
-    }
+      if (jobTitle.includes(filterValue)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
   });
 });
 

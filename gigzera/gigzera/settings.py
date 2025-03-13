@@ -219,4 +219,3 @@ else:
 
 # AWS completed
 # AWS_LOCATION = ""
-

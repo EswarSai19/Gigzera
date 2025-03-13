@@ -6,7 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Gigzera Client{% endblock %}</title>
     {% block css %} {% endblock %}
-    <!-- <link href="{% static 'css/tailwind.css' %}" rel="stylesheet" /> -->
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-VLY3PG6S5M"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-VLY3PG6S5M");
+    </script>
+    <!-- fav icon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://d2m054rmna67sd.cloudfront.net/Gigzera-Fav%20Icon.png"
+    />
     <link rel="stylesheet" href="{% static 'css/cl_navbar.css' %}" />
     <link rel="stylesheet" href="{% static 'css/cl_footer.css' %}" />
     <link
