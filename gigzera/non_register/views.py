@@ -12,7 +12,7 @@ import requests
 from django.core.cache import cache
 from .utils import send_sms
 from django.utils.timezone import now
-from db_schemas.models import Contact, PartnerLogos, JobsPageImages, WebAnnouncement, JobsPageAdv, Client, ProjectsDisplay, Freelancer, Skill, Certificate
+from db_schemas.models import Contact, OTP, PartnerLogos, JobsPageImages, WebAnnouncement, JobsPageAdv, Client, ProjectsDisplay, Freelancer, Skill, Certificate
 # from .forms import ContactForm
 
 
@@ -356,37 +356,6 @@ def forgot(request):
 
 
 
-
-
-
-def validate_otp(phone_number, otp):
-    """Ensure OTP is a 6-digit number and verify it against the stored OTP."""
-    
-    # Check if OTP format is valid
-    if not otp.isdigit() or len(otp) != 6:
-        raise ValidationError("Invalid OTP. Must be a 6-digit number.")
-    
-    # Fetch stored OTP from cache (try twice to avoid race conditions)
-    stored_otp = cache.get(phone_number)
-    time.sleep(0.1)  # Allow cache sync (in case of delayed Redis updates)
-    stored_otp = cache.get(phone_number) if not stored_otp else stored_otp
-
-    # Log issue if OTP is missing in cache
-    if not stored_otp:
-        print(f"OTP not found for {phone_number}. Possible cache issue.")
-        raise ValidationError("OTP expired or invalid. Please request a new OTP.")
-    
-    # Validate OTP
-    if str(stored_otp) != otp:
-        raise ValidationError("Invalid OTP. Please try again.")
-
-    # Clear OTP after successful validation to prevent reuse
-    cache.delete(phone_number)
-
-    return True  # OTP validation successful
-
-
-
 def validate_password(password, confirm_password):
     """Ensure passwords match."""
     if password != confirm_password:
@@ -442,27 +411,137 @@ def test_resetpass(request):
     return render(request, "non_register/login.html", {"user_role": user_role})
 
 
-def send_otp(request):
+
+def send_otp_fl(request):
     phone_number = request.GET.get("phone")
-    print(phone_number,"I am getting number as ")
-    
-    if phone_number:
-        otp = random.randint(100000, 999999)
-        cache.set(phone_number, otp, timeout=300)  # Store OTP for 5 minutes
-        response = send_sms(phone_number, otp)
-        return JsonResponse({"message": "OTP Sent", "response": response})
-    else:
+
+    print("I am inside sendotp", phone_number)
+    if not phone_number:
         return JsonResponse({"error": "Phone number required"}, status=400)
 
+    # Normalize input phone number
+    normalized_phone = re.sub(r"\D", "", phone_number.strip())
 
-def verify_otp(request):
+    # Fetch all stored phone numbers and normalize them before comparison
+    freelancers = Freelancer.objects.values_list("phone", flat=True)
+    stored_phones = {re.sub(r"\D", "", phone.strip()) for phone in freelancers if phone}
+
+    if normalized_phone in stored_phones:
+        print("I am not coming because i am alredy exists")
+        return JsonResponse({"error": "Phone number already exists"})
+
+    print("I am coming up to here 23232")
+
+    # Generate OTP
+    otp = str(random.randint(100000, 999999))
+
+    # Save OTP to database (overwrite existing one)
+    OTP.objects.update_or_create(
+        phone_number=phone_number,
+        defaults={"otp": otp, "created_at": now()}
+    )
+
+    # Send OTP via SMS
+    response = send_sms(phone_number, otp)
+    return JsonResponse({"message": "OTP Sent", "response": response})
+
+
+def verify_otp_fl(request):
     phone_number = request.GET.get("phone")
-    user_otp = request.GET.get("otp")
+    otp = request.GET.get("otp")
 
-    stored_otp = cache.get(phone_number)
+    # Check if phone_number or otp is missing
+    if not phone_number or not otp:
+        return JsonResponse({"error": "Phone number and OTP are required."}, status=400)
 
-    if stored_otp and str(stored_otp) == user_otp:
-        print("Verified by OTP")
-        return JsonResponse({"message": "OTP Verified"})
-    else:
-        return JsonResponse({"error": "Invalid OTP"}, status=400)
+    # Check if OTP format is valid
+    if not otp.isdigit() or len(otp) != 6:
+        return JsonResponse({"error": "Invalid OTP. Must be a 6-digit number."}, status=400)
+
+    # Fetch OTP from database
+    try:
+        stored_otp = OTP.objects.get(phone_number=phone_number)
+    except OTP.DoesNotExist:
+        return JsonResponse({"error": "OTP expired or invalid. Please request a new OTP."}, status=400)
+
+    # Check expiration
+    if stored_otp.is_expired():  # Assuming `is_expired` method exists in OTP model
+        stored_otp.delete()  # Delete expired OTP
+        return JsonResponse({"error": "OTP expired. Please request a new one."}, status=400)
+
+    # Validate OTP
+    if stored_otp.otp != otp:
+        return JsonResponse({"error": "Invalid OTP. Please try again."}, status=400)
+
+    # Clear OTP after successful validation to prevent reuse
+    stored_otp.delete()
+
+    return JsonResponse({"message": "OTP Verified Successfully"})
+
+# Client send otp
+def send_otp_cl(request):
+    phone_number = request.GET.get("phone")
+
+    print("I am inside sendotp", phone_number)
+    if not phone_number:
+        return JsonResponse({"error": "Phone number required"}, status=400)
+
+    # Normalize input phone number
+    normalized_phone = re.sub(r"\D", "", phone_number.strip())
+
+    # Fetch all stored phone numbers and normalize them before comparison
+    clients = Client.objects.values_list("phone", flat=True)
+    stored_phones = {re.sub(r"\D", "", phone.strip()) for phone in clients if phone}
+
+    if normalized_phone in stored_phones:
+        print("I am not coming because i am alredy exists")
+        return JsonResponse({"error": "Phone number already exists"})
+
+    print("I am coming up to here 23232")
+
+    # Generate OTP
+    otp = str(random.randint(100000, 999999))
+
+    # Save OTP to database (overwrite existing one)
+    OTP.objects.update_or_create(
+        phone_number=phone_number,
+        defaults={"otp": otp, "created_at": now()}
+    )
+
+    # Send OTP via SMS
+    response = send_sms(phone_number, otp)
+    return JsonResponse({"message": "OTP Sent", "response": response})
+
+
+def verify_otp_cl(request):
+    phone_number = request.GET.get("phone")
+    otp = request.GET.get("otp")
+
+    # Check if phone_number or otp is missing
+    if not phone_number or not otp:
+        return JsonResponse({"error": "Phone number and OTP are required."}, status=400)
+
+    # Check if OTP format is valid
+    if not otp.isdigit() or len(otp) != 6:
+        return JsonResponse({"error": "Invalid OTP. Must be a 6-digit number."}, status=400)
+
+    # Fetch OTP from database
+    try:
+        stored_otp = OTP.objects.get(phone_number=phone_number)
+    except OTP.DoesNotExist:
+        return JsonResponse({"error": "OTP expired or invalid. Please request a new OTP."}, status=400)
+
+    # Check expiration
+    if stored_otp.is_expired():  # Assuming `is_expired` method exists in OTP model
+        stored_otp.delete()  # Delete expired OTP
+        return JsonResponse({"error": "OTP expired. Please request a new one."}, status=400)
+
+    # Validate OTP
+    if stored_otp.otp != otp:
+        return JsonResponse({"error": "Invalid OTP. Please try again."}, status=400)
+
+    # Clear OTP after successful validation to prevent reuse
+    stored_otp.delete()
+
+    return JsonResponse({"message": "OTP Verified Successfully"})
+
