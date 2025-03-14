@@ -7,6 +7,7 @@ from django.contrib import messages
 import json
 import re
 import random
+import time
 import requests
 from django.core.cache import cache
 from .utils import send_sms
@@ -357,14 +358,33 @@ def forgot(request):
 
 
 
+
 def validate_otp(phone_number, otp):
     """Ensure OTP is a 6-digit number and verify it against the stored OTP."""
+    
+    # Check if OTP format is valid
     if not otp.isdigit() or len(otp) != 6:
         raise ValidationError("Invalid OTP. Must be a 6-digit number.")
     
+    # Fetch stored OTP from cache (try twice to avoid race conditions)
     stored_otp = cache.get(phone_number)
-    if not stored_otp or str(stored_otp) != otp:
+    time.sleep(0.1)  # Allow cache sync (in case of delayed Redis updates)
+    stored_otp = cache.get(phone_number) if not stored_otp else stored_otp
+
+    # Log issue if OTP is missing in cache
+    if not stored_otp:
+        print(f"OTP not found for {phone_number}. Possible cache issue.")
+        raise ValidationError("OTP expired or invalid. Please request a new OTP.")
+    
+    # Validate OTP
+    if str(stored_otp) != otp:
         raise ValidationError("Invalid OTP. Please try again.")
+
+    # Clear OTP after successful validation to prevent reuse
+    cache.delete(phone_number)
+
+    return True  # OTP validation successful
+
 
 
 def validate_password(password, confirm_password):

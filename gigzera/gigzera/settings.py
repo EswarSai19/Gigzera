@@ -15,7 +15,8 @@ import os
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -107,12 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-# TIME_ZONE = 'UTC'
-# USE_I18N = True
-# USE_TZ = True
-
 TIME_ZONE = 'Asia/Kolkata'
-
 USE_I18N = True
 USE_TZ = False
 
@@ -126,7 +122,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Directory to collect static files during deployment
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')'/var/www/gigzera/staticfiles/' 
+STATIC_ROOT = '/var/www/gigzera/staticfiles/'
 
 
 # Default primary key field type
@@ -150,20 +147,6 @@ def get_ssm_parameter(param_name, default=None):
         print(f"Warning: {e}")
         return default
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'sampleDB',
-#         'USER': 'postgres',
-#         'PASSWORD': '********',
-#         'HOST': 'demo-postgre.ctigc0i0wbqn.ap-south-1.rds.amazonaws.com',
-#         'PORT': '5432',
-#     }
-# }
 
 # Load environment variables from .env
 load_dotenv()

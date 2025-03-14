@@ -652,6 +652,7 @@ def edit_freelancer(request):
     user = Freelancer.objects.get(userId=user_id)
     user.initials = get_initials(user.name)
     freelancer = get_object_or_404(Freelancer, userId=user_id)
+    current_img_url = str(freelancer.profilePic)
 
     # Check if the request method is POST
     if request.method == 'POST':
@@ -665,7 +666,12 @@ def edit_freelancer(request):
 
         # Handle file upload for profilePic
         profile_pic = request.FILES.get('profilePic')
-        image_url = upload_to_s3("freelancers", profile_pic)
+
+        if profile_pic:
+            response = delete_if_uploaded(current_img_url)
+            print("Response", response)
+            image_url = upload_to_s3("freelancers", profile_pic)
+            freelancer.profilePic = image_url
 
         # Update the freelancer instance
         freelancer.name = name
@@ -673,7 +679,6 @@ def edit_freelancer(request):
         freelancer.email = email
         freelancer.designation = designation
         freelancer.social_media = social_media
-        freelancer.profilePic = image_url
 
         # Save the updated freelancer object
         freelancer.save()

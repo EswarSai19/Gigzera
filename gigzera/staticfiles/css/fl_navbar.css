@@ -1,0 +1,480 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f4f4f4;
+  padding: 15px 60px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* .nav-links a {
+    text-decoration: none;
+    margin: 0 10px;
+    color: #333;
+  } */
+.logo img {
+  width: 120px;
+  height: auto;
+  /* padding: 10px 20px; */
+}
+
+/* Adjust Navigation Layout */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 45%;
+}
+
+.nav a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: hsl(0, 1%, 19%);
+  font-size: 16px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.nav a:hover {
+  color: #2b95d6;
+}
+
+.nav a.active {
+  color: #2b95d6;
+  /* font-weight: bold; */
+  border-bottom: 1px solid #2b95d6;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  /* Space between action buttons */
+}
+
+/* ended */
+
+.main-nav a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #333;
+}
+
+.profile-dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #007bff;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.profile-menu {
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 200px;
+  background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 10px 0;
+  z-index: 1000;
+}
+
+.profile-menu p {
+  margin: 10px 20px;
+  color: #555;
+}
+
+.profile-menu a {
+  display: block;
+  padding: 10px 20px;
+  color: #333;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.profile-menu a:hover {
+  background: #f5f5f5;
+}
+
+.logout {
+  color: #e63946;
+}
+
+.profile-menu hr {
+  margin: 10px 0;
+  border: 0;
+  border-top: 1px solid #eaeaea;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Search Bar Styling */
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  /* Space between search bar and navigation links */
+}
+
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px 0 0 4px;
+  width: 250px;
+  font-size: 14px;
+}
+
+.search-input:focus {
+  border-color: #007bff;
+  /* Set the border color to blue on focus */
+  outline: none;
+  /* Remove the default outline (optional, for a cleaner look) */
+}
+
+.search-button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  font-size: 14px;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+/* contact us pop overlay starts */
+
+/* Popup Overlay */
+#popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 999;
+}
+
+/* Sidebar (Popup Container) */
+#popupPanel {
+  position: fixed;
+  top: 0;
+  right: -400px;
+  /* Initially off-screen */
+  width: 400px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  transition: right 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.popup-header h2 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+#help-form {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+textarea {
+  resize: none;
+}
+
+.send-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.popup-image {
+  display: block;
+  max-width: 100%;
+  margin: 20px auto;
+}
+
+.address {
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  /* Side by side on desktop */
+  gap: 10px;
+  /* Space between buttons */
+  margin-left: auto;
+  /* Center the container */
+  margin-right: auto;
+  /* Center the container */
+}
+
+/* Profile button styling */
+.profile-btn {
+  padding: 0.5rem 1rem;
+  text-align: center;
+  color: #1e40af !important;
+  border: 1px solid #1e40af;
+  border-radius: 0.5rem;
+  text-decoration: none;
+}
+
+.profile-btn:hover {
+  color: white !important;
+  background-color: #1e3a8a;
+}
+
+/* Logout button styling */
+.logout-btn {
+  display: block;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  color: white !important;
+  background-color: #dc2626;
+  /* Red color */
+  border: 1px solid #dc2626;
+  border-radius: 0.5rem;
+  text-decoration: none;
+}
+
+.logout-btn:hover {
+  background-color: #b91c1c;
+}
+
+.menu {
+  display: none;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+
+  #popupOverlay {
+    display: none;
+    /* Ensure overlay is hidden by default */
+  }
+
+  #popupPanel {
+    width: calc(100% - 25px);
+    right: -400px;
+    /* Ensure it's off-screen by default */
+  }
+
+  .popup-header h2 {
+    font-size: 16px;
+    /* Adjust header font size */
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .form-input {
+    font-size: 14px;
+    /* Adjust input font size */
+  }
+
+  .send-button {
+    font-size: 14px;
+    /* Adjust button font size */
+    padding: 8px;
+    /* Adjust padding */
+  }
+
+  .popup-image {
+    max-width: 90%;
+    /* Ensure image fits within smaller screens */
+  }
+
+  .address {
+    font-size: 12px;
+    /* Adjust font size for address */
+    padding: 0 10px;
+    /* Add horizontal padding */
+  }
+
+  .search-bar-container {
+    width: 100%;
+    /* Full width */
+    margin: 0 auto;
+    /* Center align */
+    padding: 0 10px;
+    /* Add padding */
+    margin-top: 1.5rem;
+  }
+
+  .search-bar-container input {
+    width: 100%;
+    /* Full width */
+    padding-left: 2.75rem;
+    /* Adjust padding for mobile */
+  }
+
+  .search-bar-container i {
+    left: 2rem;
+    /* Adjust icon position */
+  }
+
+  .menu {
+    display: none;
+    position: absolute;
+    top: 4.6rem;
+    /* 20px converted to rem assuming base 16px */
+    left: 0;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000 !important;
+    padding: 1rem;
+    /* display: flex; */
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .menu.active {
+    display: flex;
+  }
+
+  .menu a {
+    margin: 0;
+    padding: 10px 15px;
+    text-align: left;
+    /* Align text to the left */
+    width: 100%;
+    /* Make the links fill the container */
+  }
+
+  .menu a:last-child {
+    border-bottom: none;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 95%;
+  }
+
+  .profile-btn,
+  .logout-btn {
+    width: 90%;
+    /* Make buttons take up 90% of the screen width */
+    text-align: center !important;
+    font-size: 16px;
+    /* Adjust font size for mobile */
+    padding: 0.75rem;
+    /* Adjust padding */
+  }
+
+  .profile-btn {
+    color: #1e40af !important;
+    /* Dark blue color */
+    background-color: transparent;
+    /* Transparent background */
+    border: 1px solid #1e40af;
+    /* Dark blue border */
+  }
+
+  .profile-btn:hover {
+    background-color: #1e3a8a;
+    /* Darker blue on hover */
+    color: white !important;
+  }
+
+
+  .logout-btn {
+    color: white !important;
+    background-color: #dc2626;
+    /* Red color */
+    border: 1px solid #dc2626;
+    /* Border matching the background */
+    margin-bottom: 20px !important;
+  }
+
+  .logout-btn:hover {
+    background-color: #b91c1c;
+    /* Darker red on hover */
+  }
+
+  .menu .mobile-search {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    /* Make the search bar fill the container */
+    padding: 0 15px;
+    margin-top: 10px;
+  }
+
+  .menu .mobile-search input {
+    width: 100%;
+    /* Make the input field fill the container */
+  }
+
+  .menu .mobile-search i {
+    left: 25px;
+  }
+}
