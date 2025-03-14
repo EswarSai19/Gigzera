@@ -1210,7 +1210,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     otpError.classList.add("hidden"); // Hide error message if format is correct
 
-    fetch(`/verify-otp/?phone=${fullPhoneNumber}&otp=${otp}`)
+    fetch(`/verify-otp-fl/?phone=${fullPhoneNumber}&otp=${otp}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.message) {
@@ -1279,7 +1279,7 @@ document.addEventListener("DOMContentLoaded", () => {
     otpSection.classList.remove("hidden");
 
     // Send request to backend
-    fetch(`/send-otp/?phone=${fullPhoneNumber}`)
+    fetch(`/send-otp-fl/?phone=${fullPhoneNumber}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.message) {
@@ -1287,7 +1287,7 @@ document.addEventListener("DOMContentLoaded", () => {
           otpMessage.classList.remove("text-red-500");
           otpMessage.classList.add("text-green-500");
         } else {
-          otpMessage.textContent = "Failed to send OTP.";
+          otpMessage.textContent = data.error;
           otpMessage.classList.add("text-red-500");
         }
       })

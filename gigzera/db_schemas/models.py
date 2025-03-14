@@ -4,6 +4,7 @@ from django.contrib.postgres.fields import ArrayField, JSONField
 from django.contrib.auth.hashers import make_password, check_password
 from django.utils.timezone import now
 from django.db.models import JSONField
+import datetime
 import json
 
 # Create your models here.
@@ -369,4 +370,11 @@ class Tasks(models.Model):
     def __str__(self):
         return f"{self.title}, {self.status} ({self.isChecked} are the task details)"
 
+# OTP model
+class OTP(models.Model):
+    phone_number = models.CharField(max_length=15, unique=True)
+    otp = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
 
+    def is_expired(self):
+        return now() > self.created_at + datetime.timedelta(minutes=5)  # Expire in 5 minutes
