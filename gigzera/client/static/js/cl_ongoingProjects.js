@@ -467,11 +467,19 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Add a skill when Enter is pressed
-  skillsInput.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" && skillsInput.value.trim()) {
-      event.preventDefault();
+  skillsInput.addEventListener("keydown", (e) => {
+    if ((e.key === "Enter" || e.key === "Tab") && skillsInput.value.trim()) {
+      e.preventDefault();
       addSkill(skillsInput.value.trim());
-      skillsInput.value = "";
+      skillsInput.value = ""; // Clear input after pressing Enter or Next
+    }
+  });
+
+  // Handle mobile keyboard "Next" press
+  skillsInput.addEventListener("input", (e) => {
+    if (e.inputType === "insertLineBreak" && skillsInput.value.trim()) {
+      addSkill(skillsInput.value.trim());
+      skillsInput.value = ""; // Clear input after pressing Next
     }
   });
 
