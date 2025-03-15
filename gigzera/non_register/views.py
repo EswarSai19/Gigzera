@@ -341,9 +341,16 @@ def forgot(request):
                 request.session['user_id'] = user.userId
                 print(f"My role is {user_role} and id is {user.userId}")
 
-                # sending OTP
-                otp = random.randint(100000, 999999)
-                cache.set(input_digits, otp, timeout=300)  # Store OTP for 5 minutes
+                # Generate OTP
+                otp = str(random.randint(100000, 999999))
+
+                # Save OTP to database (overwrite existing one)
+                OTP.objects.update_or_create(
+                    phone_number=input_digits,
+                    defaults={"otp": otp, "created_at": now()}
+                )
+
+                # Send OTP via SMS
                 response = send_sms(input_digits, otp)
                 print(messages.get_level(request), response)
                 return render(request, "non_register/forgot.html", {"show_otp_frame": True})
@@ -407,8 +414,14 @@ def test_resetpass(request):
             print(messages.get_level(request))
             messages.error(request, e.message)
             return redirect('test_resetpass')
-
-    return render(request, "non_register/login.html", {"user_role": user_role})
+    
+    context={
+        "show_otp_frame": True,
+        "user_role": user_role,
+        "user_id": user_id,
+        "user_phone": phone_number
+    }
+    return render(request, "non_register/forgot.html", context)
 
 
 
@@ -544,4 +557,26 @@ def verify_otp_cl(request):
     stored_otp.delete()
 
     return JsonResponse({"message": "OTP Verified Successfully"})
+
+# validate OTP
+def validate_otp(phone_number, otp):
+    if not phone_number or not otp:
+        raise ValidationError("Phone number and OTP are required.")
+
+    if not otp.isdigit() or len(otp) != 6:
+        raise ValidationError("Invalid OTP. Must be a 6-digit number.")
+
+    try:
+        stored_otp = OTP.objects.get(phone_number=phone_number)
+    except OTP.DoesNotExist:
+        raise ValidationError("OTP expired or invalid. Please request a new OTP.")
+
+    if stored_otp.is_expired():
+        stored_otp.delete()
+        raise ValidationError("OTP expired. Please request a new one.")
+
+    if stored_otp.otp != otp:
+        raise ValidationError("Invalid OTP. Please try again.")
+
+    stored_otp.delete()
 

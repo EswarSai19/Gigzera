@@ -24,7 +24,7 @@
     <link
       rel="icon"
       type="image/png"
-      href="https://d2m054rmna67sd.cloudfront.net/Gigzera-Fav%20Icon.png"
+      href="https://d2m054rmna67sd.cloudfront.net/Gigzera-Fav%20Icon2.png"
     />
     <link rel="stylesheet" href="{% static 'css/cl_navbar.css' %}" />
     <link rel="stylesheet" href="{% static 'css/cl_footer.css' %}" />
@@ -97,6 +97,7 @@
       document.addEventListener("DOMContentLoaded", function () {
         const contactBtn = document.getElementById("contactBtn");
         const contactBtn3 = document.getElementById("contactBtn3");
+        const contactBtn4 = document.getElementById("contactBtn4");
         const popupPanel = document.getElementById("popupPanel");
         const popupOverlay = document.getElementById("popupOverlay");
         const closeBtn = document.getElementById("closeBtn");
@@ -107,6 +108,10 @@
           popupPanel.style.right = "0"; // Slide in sidebar
         };
         contactBtn3.onclick = function () {
+          popupOverlay.style.display = "block"; // Show overlay
+          popupPanel.style.right = "0"; // Slide in sidebar
+        };
+        contactBtn4.onclick = function () {
           popupOverlay.style.display = "block"; // Show overlay
           popupPanel.style.right = "0"; // Slide in sidebar
         };
