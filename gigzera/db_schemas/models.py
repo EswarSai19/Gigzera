@@ -168,7 +168,7 @@ class Certificate(models.Model):
     certificate_name = models.CharField(max_length=255)  # Name of the certification
     issue_date = models.DateField(blank=True, null=True)  # Date when the certificate was issued
     expiry_date = models.DateField(blank=True, null=True)  # Expiry date (can be null)
-    certification_id = models.CharField(max_length=100, unique=True, null=True, blank=True)  # Unique cert ID
+    certification_id = models.CharField(max_length=512, unique=True, null=True, blank=True)  # Unique cert ID
     certificate_img = models.ImageField(blank=True, null=True)
     certification_url = models.URLField(blank=True, null=True)  # URL to verify the cert
     created_at = models.DateTimeField(default=now)
